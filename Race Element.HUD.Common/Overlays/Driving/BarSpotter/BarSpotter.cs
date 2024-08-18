@@ -1,7 +1,6 @@
 ﻿using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games.iRacing;
-using RaceElement.Data.Games.iRacing.SDK;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using System.Diagnostics;
@@ -26,6 +25,9 @@ internal sealed class BarSpotter : CommonAbstractOverlay
     //private CachedBitmap _cachedBackground;       
     private Color _color;
     private CachedBitmap _cachedColorBar;
+
+    private float previewClosestCarDistance = -3.0F;
+    private CarLeftRight previewSpotterCallout = CarLeftRight.CarLeft;
 
     public BarSpotter(Rectangle rectangle) : base(rectangle, "Bar Spotter")
     {
@@ -100,13 +102,13 @@ internal sealed class BarSpotter : CommonAbstractOverlay
     {
         IRacingDataProvider racingDataProvider = (IRacingDataProvider) SimDataProvider.Instance;
         CarLeftRight spotterCallout = racingDataProvider.GetSpotterCallout();
-
+        
         // Off, Clear -> Nothing to show
-        if (spotterCallout == CarLeftRight.Off || spotterCallout == CarLeftRight.Clear) return;        
-       
-
-        // if there's a 0.5% difference in percent track completed add the car to the list we need to possibly spot
-        float distanceThreshold = 0.05F;
+        if (spotterCallout == CarLeftRight.Off || spotterCallout == CarLeftRight.Clear) return;               
+        
+        // Porsche 911 and Audi R8 are 4.5 meters. MX5 however is 3.9 and Dallara 4.8. We can see if this is part of metadata.
+        float carLengthMeters = 5.0F;
+                
         // cars we consider for spotting
         List<KeyValuePair<float, CarInfo>> spottableCars = [];
 
@@ -115,58 +117,101 @@ internal sealed class BarSpotter : CommonAbstractOverlay
             CarInfo carInfo = kvp.Value;
             
             if (carInfo == playerCar) continue;
-            float distance = Math.Abs(carInfo.TrackPercentCompleted - playerCar.TrackPercentCompleted);
-            if (distance < distanceThreshold) {
-                spottableCars.Add(KeyValuePair.Create(distance, carInfo));
-                Debug.WriteLine("Car {0} is in distance {1} ", carInfo.CupPosition, distance);
-            } else
-            {
-                Debug.WriteLine("Car {0} is NOT in distance {1} ", carInfo.CupPosition, distance);
+
+            float distanceMeters = (carInfo.TrackPercentCompleted - playerCar.TrackPercentCompleted) * (float) SessionData.Instance.Track.Length;
+
+            if (Math.Abs(distanceMeters) <= carLengthMeters / 2.0) {
+                spottableCars.Add(KeyValuePair.Create(distanceMeters, carInfo));                
             }
         }
-        var orderedSpottableCars = spottableCars.OrderBy(d => d.Key);
+        var orderedSpottableCars = spottableCars.OrderBy(d => Math.Abs(d.Key));
 
+        if (orderedSpottableCars.Count() == 0) return; 
+       
+        float closestCarDistance = spottableCars.First().Key;
+
+        
+        /* TODO preview doesn't work if (IsPreviewing)
+         {
+            closestCarDistance = previewClosestCarDistance;
+            previewClosestCarDistance += 0.1F;
+            spotterCallout = previewSpotterCallout;
+            if (previewClosestCarDistance > 3.0F)
+            {
+                previewClosestCarDistance = -3.0F;
+            previewSpotterCallout = previewSpotterCallout == CarLeftRight.CarLeft ? CarLeftRight.CarRight : CarLeftRight.CarLeft;
+            }
+        } */
+        
         // CarLeft, CarRight: show overlap of one car clipping from start or end        
         // Use track length and fixed aberage car length to determine what the overlap is in terms of car lenths. And then either
         // show the overlap on the front or rear (on the correct side).
+        int leftRectY = 0;
+        int leftRectHeight= 0;
+        int rightRectY = 0;
+        int rightRectHeight = 0;
+        float overlapMeters = (carLengthMeters / 2.0F - Math.Abs(closestCarDistance)) / carLengthMeters * 2.0F;
         if (spotterCallout == CarLeftRight.CarLeft)
         {
+            if (closestCarDistance > 0)
+            {                                
+                leftRectHeight = (int)(_config.Bar.Height * this.Scale * overlapMeters);
+            } else
+            {                
+                leftRectY = (int)(_config.Bar.Height * this.Scale * (1.0F - overlapMeters));
+                leftRectHeight = (int)(_config.Bar.Height * this.Scale * overlapMeters);
+            }
           
         } else if (spotterCallout == CarLeftRight.CarRight)
         {
-
+            if (closestCarDistance > 0)
+            {
+                rightRectHeight = (int)(_config.Bar.Height * this.Scale * overlapMeters);                
+            }
+            else
+            {
+                rightRectY = (int)(_config.Bar.Height * this.Scale * (1.0F - overlapMeters));
+                rightRectHeight = (int)(_config.Bar.Height * this.Scale * overlapMeters);
+            }
+        } else if (spotterCallout == CarLeftRight.Off || spotterCallout == CarLeftRight.Clear)
+        {
+            return;
         } else
         {
             // CarLeftRight: Show full bars in different color like iOverlay? We can figure out overlap, but don't know whether cars are left or right. https://youtu.be/RTWNssC6tQY?t=107 TODO: remove 
             throw new NotImplementedException("Spotter callout handling for " + spotterCallout + " not implemented yet.");
         }
+        Debug.WriteLine("Car {0}  distance {1} overlap {2}  leftRectY{3} leftRectHeight{4} rightRectY{5} rightRectHeight{6} spotted {7}", spottableCars.First().Value.RaceNumber, closestCarDistance, overlapMeters,
+            leftRectY, leftRectHeight, rightRectY, rightRectHeight, spotterCallout);
 
 
-
-        // TODO: sample data for now. player's car has 2 cars on left overlapping and 1 on right.
-        // percentages of bar where overlap starts and ends.
-        // Needs to be calculated from car positions that are next to the player
-        int leftFrontOverlap = 10;
-        int leftRearOverlap = 30;
-        int rightFrontOverlap = 0;
-        int rightRearOverlap = 50;
-
+        /*        
         // TODO: calculate these using bar height
-        int leftClipYStart = 10;
-        int leftClipYEnd = _config.Bar.Height; // 2;
-        int rightClipYStart = 50;
-        int rightClipYEnd = _config.Bar.Height;  // 3;        
+        int leftClipYStart = 0;
+        int leftClipYEnd = _config.Bar.Height;
+        int rightClipYStart = 0;
+        int rightClipYEnd = _config.Bar.Height;
 
         g.SetClip(new Rectangle(0, leftClipYStart, _config.Bar.Width, leftClipYEnd));
         g.SetClip(new Rectangle(_config.Bar.Distance, rightClipYStart, _config.Bar.Width, rightClipYEnd), CombineMode.Union);
         // _cachedColorBar.Draw(g, 1, 0, Width - 1, _config.Bar.Height - 1);
 
-        int cornerRadius = (int)(10 * this.Scale);
+        
         Rectangle rectL = new(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
         using HatchBrush hatchBrushL = new(HatchStyle.LightUpwardDiagonal, _color, Color.FromArgb(_color.A - 40, _color));
         g.FillRoundedRectangle(hatchBrushL, rectL, cornerRadius);
         Rectangle rectR = new(_config.Bar.Distance, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
         using HatchBrush hatchBrushR = new(HatchStyle.LightUpwardDiagonal, _color, Color.FromArgb(_color.A - 40, _color));
         g.FillRoundedRectangle(hatchBrushL, rectR, cornerRadius);
+        */
+
+        // TODO: I could not get the cachged bitmaps and clipping above to work. Using drawn rectanges for now until I get help
+        int cornerRadius = (int)(10 * this.Scale);
+        Rectangle rectL = new(0, leftRectY, (int)(_config.Bar.Width * this.Scale), leftRectHeight);
+        using HatchBrush hatchBrushL = new(HatchStyle.LightUpwardDiagonal, _color, Color.FromArgb(_color.A - 40, _color));
+        g.FillRectangle(hatchBrushL, rectL);
+        Rectangle rectR = new(_config.Bar.Distance, rightRectY, (int)(_config.Bar.Width * this.Scale), rightRectHeight);
+        using HatchBrush hatchBrushR = new(HatchStyle.LightUpwardDiagonal, _color, Color.FromArgb(_color.A - 40, _color));
+        g.FillRectangle(hatchBrushL, rectR);
     }
 }

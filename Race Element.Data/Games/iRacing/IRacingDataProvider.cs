@@ -285,7 +285,11 @@ namespace RaceElement.Data.Games.iRacing
         public override void SetupPreviewData()
         {
             SessionData.Instance.FocusedCarIndex = 1;
-            SessionData.Instance.Track.Length = 2000;
+
+            SessionData.Instance.Track.GameName = "Spa";
+            SessionData.Instance.Track.Length = 7004;
+            SessionData.Instance.Track.Temperature = 21;
+
             SimDataProvider.LocalCar.CarModel.CarClass = "F1";
 
             var lap1 = new LapInfo();
@@ -315,7 +319,8 @@ namespace RaceElement.Data.Games.iRacing
 
 
             CarInfo car2 = new CarInfo(2);
-            car2.TrackPercentCompleted = 10.03f;
+            // 1 meter behind car1
+            car2.TrackPercentCompleted = car1.TrackPercentCompleted + (1.0F / ((float) SessionData.Instance.Track.Length));
             car2.Position = 2;
             car2.CarLocation = CarInfo.CarLocationEnum.Track;
             car2.CurrentDriverIndex = 0;            
@@ -335,7 +340,7 @@ namespace RaceElement.Data.Games.iRacing
             AddCarClassEntry("F1", Color.Sienna);
 
             SpotterCallout = CarLeftRight.CarLeft;
-
+            
             hasTelemetry = true; // TODO: will this work when we have real telemetry? And is this sample telemetry valid for all sim providers?
         }
 
