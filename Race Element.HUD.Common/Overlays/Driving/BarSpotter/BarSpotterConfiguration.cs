@@ -37,6 +37,10 @@ internal sealed class BarSpotterConfiguration : OverlayConfiguration
     {
         public Color NormalColor { get; init; } = Color.FromArgb(255, 5, 255, 5);
         [IntRange(75, 255, 1)]
+
+        public Color ThreeCarsColor { get; init; } = Color.FromArgb(255, 5, 255, 5);
+        [IntRange(75, 255, 1)]
+
         public int NormalOpacity { get; init; } = 255;
 
    }
