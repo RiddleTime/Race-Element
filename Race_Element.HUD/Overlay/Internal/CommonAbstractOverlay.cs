@@ -53,8 +53,6 @@ public abstract class CommonAbstractOverlay : FloatingWindow
     public float Scale { get; private set; } = 1f;
     private bool _allowRescale = false;
 
-    public bool SubscribeToACCData = true;
-
     public virtual void SetupPreviewData()
     {
     }
