@@ -25,6 +25,9 @@ internal sealed class InputBarsOverlay : CommonAbstractOverlay
     private VerticalProgressBar _verticalGasBar;
     private VerticalProgressBar _verticalBrakeBar;
 
+    private float _throttle = 0f;
+    private float _brake = 0f;
+
     public InputBarsOverlay(Rectangle rectangle) : base(rectangle, "Input Bars")
     {
         RefreshRateHz = _config.Bars.RefreshRate;
@@ -41,6 +44,12 @@ internal sealed class InputBarsOverlay : CommonAbstractOverlay
             Width = _config.Bars.Thickness * 2 + _config.Bars.Spacing + 1;
             Height = _config.Bars.Length + 1;
         }
+    }
+
+    public override void SetupPreviewData()
+    {
+        _throttle = 0.823f;
+        _brake = 0.117f;
     }
 
     public sealed override void BeforeStart()
@@ -151,14 +160,21 @@ internal sealed class InputBarsOverlay : CommonAbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
+        if (!IsPreviewing)
+        {
+            _throttle = SimDataProvider.LocalCar.Inputs.Throttle;
+            _brake = SimDataProvider.LocalCar.Inputs.Brake;
+        }
+
+
         ApplyElectronicsColors();
 
         if (_config.Bars.Orientation == InputBarsConfiguration.BarOrientation.Horizontal)
         {
             _cachedBackground?.Draw(g, _config.Bars.Length, _config.Bars.Thickness * 2 + _config.Bars.Spacing);
 
-            _horizontalGasBar.Value = SimDataProvider.LocalCar.Inputs.Throttle;
-            _horizontalBrakeBar.Value = SimDataProvider.LocalCar.Inputs.Brake;
+            _horizontalGasBar.Value = _throttle;
+            _horizontalBrakeBar.Value = _brake;
 
             _horizontalBars[0]?.Draw(g, 0, 0);
             _horizontalBars[1]?.Draw(g, 0, _config.Bars.Thickness + _config.Bars.Spacing);
@@ -167,8 +183,8 @@ internal sealed class InputBarsOverlay : CommonAbstractOverlay
         {
             _cachedBackground?.Draw(g, _config.Bars.Thickness * 2 + _config.Bars.Spacing, _config.Bars.Length);
 
-            _verticalBrakeBar.Value = SimDataProvider.LocalCar.Inputs.Brake;
-            _verticalGasBar.Value = SimDataProvider.LocalCar.Inputs.Throttle;
+            _verticalBrakeBar.Value = _brake;
+            _verticalGasBar.Value = _throttle;
 
             _verticalBars[0]?.Draw(g, 0, 0);
             _verticalBars[1]?.Draw(g, _config.Bars.Thickness + _config.Bars.Spacing, 0);
