@@ -1,6 +1,7 @@
 ﻿using RaceElement.Broadcast.Structs;
 using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Games;
 using RaceElement.Data.Games.iRacing;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -11,7 +12,7 @@ using System.Drawing.Text;
 using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkEnum;
 using CarInfo = RaceElement.Data.Common.SimulatorData.CarInfo;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayBarSpotter;
+namespace RaceElement.HUD.Common.Overlays.BarSpotter;
 
 [Overlay(Name = "Bar Spotter",
     Description = "Spotter indicating overlap with other drivers with bars. (BETA)",
@@ -19,13 +20,13 @@ namespace RaceElement.HUD.Common.Overlays.OverlayBarSpotter;
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Driving,
 Authors = ["Dirk Wolf"])]
-internal sealed class BarSpotter : CommonAbstractOverlay
+internal sealed class BarSpotterOverlay : CommonAbstractOverlay
 {
     private readonly BarSpotterConfiguration _config = new();
     
-    private List<Color> colors = [];
+    private readonly List<Color> colors = [];
 
-    public BarSpotter(Rectangle rectangle) : base(rectangle, "Bar Spotter")
+    public BarSpotterOverlay(Rectangle rectangle) : base(rectangle, "Bar Spotter")
     {
         this.RefreshRateHz = this._config.Bar.RefreshRate;
         this.Height = _config.Bar.Height + 1;
@@ -52,7 +53,7 @@ internal sealed class BarSpotter : CommonAbstractOverlay
     {
         if (!SimDataProvider.HasTelemetry()) return;
 
-        if (SimDataProvider.Instance.GetType() != typeof(IRacingDataProvider))
+        if (GameManager.CurrentGame != Game.iRacing) 
         {
             // This HUD makes only sense if the sim provider gives the e.g. the "car left" and "three wide" callouts. This could be refactored
             // for other sims using the car world coordination, but then the radar is a better visualization.

@@ -1,7 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayBarSpotter;
+namespace RaceElement.HUD.Common.Overlays.BarSpotter;
 
 internal sealed class BarSpotterConfiguration : OverlayConfiguration
 {
