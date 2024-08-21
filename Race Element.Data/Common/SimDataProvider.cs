@@ -94,5 +94,19 @@ namespace RaceElement.Data.Common
         {
             return (Instance != null && Instance.HasTelemetry());
         }
+
+        public static event EventHandler<RaceSessionType> OnSessionTypeChanged;
+        public static event EventHandler<SessionPhase> OnSessionPhaseChanged;
+        public static event EventHandler<Status> OnStatusChanged;
+
+        internal static void CallSessionTypeChanged(AbstractSimDataProvider simDataProvider, RaceSessionType sessionType)
+        {
+            OnSessionTypeChanged?.Invoke(simDataProvider, SessionData.Instance.SessionType);
+        }
+
+        internal static void CallSessionPhaseChanged(AbstractSimDataProvider simDataProvider, SessionPhase sessionPhase)
+        {
+            OnSessionPhaseChanged?.Invoke(simDataProvider, SessionData.Instance.Phase);
+        }
     }
 }

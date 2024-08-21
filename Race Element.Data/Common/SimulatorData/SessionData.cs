@@ -32,6 +32,14 @@ namespace RaceElement.Data.Common.SimulatorData
             }
         }
 
+        /// <summary>
+        /// Car index of the player. This is game provided that can differ from
+        /// session to session. E.g. not the race car number.
+        /// </summary>
+        public int PlayerCarIndex { get; internal set; }
+        /// <summary>
+        /// Car index that is focused on. E.g. in a replay or in the pit.
+        /// </summary>
         public int FocusedCarIndex {get; set;}
         public RaceSessionType SessionType { get; set; }
         public SessionPhase Phase { get; set; }
@@ -71,26 +79,34 @@ namespace RaceElement.Data.Common.SimulatorData
     }
 
     public enum RaceSessionType
-{
-    Practice = 0,
-    Qualifying = 4,
-    Superpole = 9,
-    Race = 10,
-    Hotlap = 11,
-    Hotstint = 12,
-    HotlapSuperpole = 13,
-    Replay = 14
-};
-public enum SessionPhase
-{
-    NONE = 0,
-    Starting = 1,
-    PreFormation = 2,
-    FormationLap = 3,
-    PreSession = 4,
-    Session = 5,
-    SessionOver = 6,
-    PostSession = 7,
-    ResultUI = 8
-};
+    {
+        Practice = 0,
+        Qualifying = 4,
+        Superpole = 9,
+        Race = 10,
+        Hotlap = 11,
+        Hotstint = 12,
+        HotlapSuperpole = 13,
+        Replay = 14
+    };
+    public enum SessionPhase
+    {
+        NONE = 0,
+        Starting = 1,
+        PreFormation = 2,
+        FormationLap = 3,
+        PreSession = 4,
+        Session = 5,
+        SessionOver = 6,
+        PostSession = 7,
+        ResultUI = 8
+    };
+
+    public enum Status : int
+    {
+        OFF,
+        REPLAY,
+        LIVE,
+        PAUSE,
+    }
 }

@@ -18,7 +18,9 @@ public abstract class AbstractSimDataProvider
 
     abstract public bool HasTelemetry();
 
-    public virtual void SetupPreviewData()
-    {        
-    }
+    public virtual void SetupPreviewData() { }
+
+
+
+    
 }

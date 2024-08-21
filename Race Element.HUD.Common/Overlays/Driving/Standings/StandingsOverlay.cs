@@ -39,7 +39,6 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
 
     public sealed override void SetupPreviewData()
     {
-
         SimDataProvider.Instance.SetupPreviewData();        
     }
 
@@ -47,7 +46,15 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
     public sealed override void BeforeStart()
     {
         InitCarClassEntryLists();
+        // Can be registered before SimDataProvider.Instance was created
+        SimDataProvider.OnSessionTypeChanged += Instance_OnSessionTypeChanged;
+  
         base.BeforeStart();
+    }
+
+    private void Instance_OnSessionTypeChanged(object? sender, RaceSessionType e)
+    {
+        ClearCarClassEntryList();            
     }
 
     private void ClearCarClassEntryList()
@@ -56,14 +63,14 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         {
             CarClasses = SimDataProvider.Instance.GetCarClasses();
         }
-        foreach (string carClass in CarClasses)
+        foreach (string carClass in _entryListForCarClass.Keys)
         {
             if (!_entryListForCarClass.ContainsKey(carClass))
             {
                 InitCarClassEntryLists();
             }
             _entryListForCarClass[carClass].Clear();
-        }
+        }                
     }
 
     private void InitCarClassEntryLists()
@@ -101,6 +108,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         List<KeyValuePair<int, CarInfo>> cars = SessionData.Instance.Cars;
         if (cars.Count == 0) return;
 
+        // TODO: optimize. DetermineDriversClass and SplitEntryList should not be necessary every Render. Just Sort.
         DetermineDriversClass(cars);
         SplitEntryList(cars);
         SortAllEntryLists();
