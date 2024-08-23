@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common;
+using RaceElement.Data.Common.SimulatorData;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
@@ -68,6 +69,11 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         
         if (!SimDataProvider.HasTelemetry())
             return false;
+
+        // For show only HUDs when player is on track. 
+        // TODO: Distinguish in sim data providers between pit and garage and only show in pit, but not garage or make configurable.
+        CarInfo carInfo = SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value;
+        if (carInfo.CarLocation != CarInfo.CarLocationEnum.Track) return false;
 
         bool shouldRender = true;
 

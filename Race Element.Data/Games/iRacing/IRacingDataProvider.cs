@@ -33,8 +33,15 @@ namespace RaceElement.Data.Games.iRacing
                 };
                 _iRacingSDK.OnTelemetryData += OnTelemetryData;
                 _iRacingSDK.OnSessionInfo += OnSessionInfo;
+                _iRacingSDK.OnStopped += OnStopped;
+
                 _iRacingSDK.Start();
             }                
+        }
+
+        private void OnStopped()
+        {
+            hasTelemetry = false;
         }
 
         /// <summary>
@@ -47,12 +54,17 @@ namespace RaceElement.Data.Games.iRacing
            if (!_iRacingSDK.IsConnected && _iRacingSDK.IsStarted) {
             return;
            }
+           if (_iRacingSDK.Data.SessionInfo == null)
+           { 
+            Debug.WriteLine("No session info");
+                return;
+           }
 
            if (SessionData.Instance.Cars.Count == 0) {
             Debug.WriteLine("No SessionData.Instance.Cars");
             return;
            };
-
+            
             try
             {
                 // for each class, the time to get to the track position for the leader in that class (HUH? TODO)
@@ -66,8 +78,29 @@ namespace RaceElement.Data.Games.iRacing
                     
                     carInfo.TrackPercentCompleted = _iRacingSDK.Data.GetFloat("CarIdxLapDistPct", index);
 
-                    // TODO: CarIdxTrackSurface irsdk_TrkLoc allows also for offtrack, pit stall, approaching pits
-                    carInfo.CarLocation = _iRacingSDK.Data.GetBool("CarIdxOnPitRoad", index) ? CarInfo.CarLocationEnum.Pitlane : CarInfo.CarLocationEnum.Track;
+                    // TODO: more finer mapping. Figure out how to detect whether the player is in the garage or pit.
+                    // And allow HUDs to check if players are off track/approaching pits
+                    // PlayerCarInPitStall
+                    /* CarIdxTrackSurface irsdk_TrkLoc :
+                        NotInWorld = -1,
+                        OffTrack,
+                        InPitStall,
+                        AproachingPits,
+                        OnTrack
+                    
+                    if (index == SessionData.Instance.PlayerCarIndex)
+                    {
+                        Debug.WriteLine("CarIdxOnPitRoad {0} garage {1} PlayerCarInPitStall {2} IsGarageVisible{3}", _iRacingSDK.Data.GetBool("CarIdxOnPitRoad", index), 
+                            _iRacingSDK.Data.GetBool("IsInGarage", index), _iRacingSDK.Data.GetBool("PlayerCarInPitStall", index), _iRacingSDK.Data.GetBool("IsGarageVisible", index));
+                    } */
+                    if (_iRacingSDK.Data.GetBool("CarIdxOnPitRoad", index)) {
+                        carInfo.CarLocation = CarInfo.CarLocationEnum.Pitlane;
+                    } else
+                    {
+                        carInfo.CarLocation = CarInfo.CarLocationEnum.Track;                        
+                    }
+                                        
+                    
                     carInfo.CurrentDriverIndex = 0;
                     LapInfo lapInfo = new LapInfo();
                     lapInfo.LaptimeMS = (int)(_iRacingSDK.Data.GetFloat("CarIdxLastLapTime", index) * 1000.0);                    
@@ -91,7 +124,7 @@ namespace RaceElement.Data.Games.iRacing
                     }
                     carInfo.GapToRaceLeaderMs = (int)(trackPositionTime * 1000.0);                                        
                     
-                    carInfo.GapToPlayerMs = GetGapToPlayerMs(index, SessionData.Instance.PlayerCarIndex);                    
+                    carInfo.GapToPlayerMs = GetGapToPlayerMs(index, SessionData.Instance.PlayerCarIndex);
                 }
 
                 // determine the gaps for each car to the class leader
@@ -160,7 +193,7 @@ namespace RaceElement.Data.Games.iRacing
                              LapDeltaToSessionLastlLap_OK    bool
                          */
 
-                SessionData.Instance.Weather.AirTemperature = _iRacingSDK.Data.GetFloat("AirTemp");
+                    SessionData.Instance.Weather.AirTemperature = _iRacingSDK.Data.GetFloat("AirTemp");
                 SessionData.Instance.Weather.AirVelocity = _iRacingSDK.Data.GetFloat("WindVel") * 3.6f;
                 SessionData.Instance.Track.Temperature = _iRacingSDK.Data.GetFloat("TrackTempCrew");                
 
@@ -253,7 +286,7 @@ namespace RaceElement.Data.Games.iRacing
 
             DriverModel driverModel = _iRacingSDK.Data.SessionInfo.DriverInfo.Drivers[SessionData.Instance.PlayerCarIndex];
             localCar.Race.CarNumber = driverModel.CarNumberRaw;
-            localCar.CarModel.CarClass = driverModel.CarScreenNameShort;
+            localCar.CarModel.CarClass = driverModel.CarClassShortName != null ? driverModel.CarClassShortName : driverModel.CarScreenNameShort;
             localCar.CarModel.GameName = driverModel.CarScreenNameShort;
 
             // TODO: pit limiter doesn't seem to work properly
@@ -279,7 +312,7 @@ namespace RaceElement.Data.Games.iRacing
                 carInfo.IsSpectator = driverModel.IsSpectator == 1;
 
                 string currCarClassColor = driverModel.CarClassColor;
-                AddCarClassEntry(driverModel.CarScreenNameShort, Color.Aquamarine);  // TODO: need mapping from string currCarClassColor to Color
+                AddCarClassEntry(carInfo.CarClass, Color.Aquamarine);  // TODO: need mapping from string currCarClassColor to Color
 
                 // TODO: it looks like this might change in a team race when the driver changes. We need to test this with a team race at some point.
                 // None of the currently ported HUDs do want to display the non-driving drivers in the team anyway.
@@ -342,6 +375,8 @@ namespace RaceElement.Data.Games.iRacing
             SessionData.Instance.AddOrUpdateCar(1, car1);
             var car1driver0 = new DriverInfo();
             car1driver0.Name = "Max Verstappen";
+            car1driver0.Rating = 7123;
+            car1driver0.Category = "A 2.7";
             car1.AddDriver(car1driver0);
 
 
@@ -362,6 +397,8 @@ namespace RaceElement.Data.Games.iRacing
             SessionData.Instance.AddOrUpdateCar(2, car2);
             var car2driver0 = new DriverInfo();
             car2driver0.Name = "Michael Schumacher";
+            car2driver0.Rating = 8123;
+            car2driver0.Category = "A 2.2";
             car2.AddDriver(car2driver0);
             
             AddCarClassEntry("F1", Color.Sienna);
