@@ -1,14 +1,12 @@
-﻿using RaceElement.Data;
-using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
-using RaceElement.Data.Common;
+﻿using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Numerics;
 using static RaceElement.Data.Common.SimulatorData.CarInfo;
 
 
@@ -39,7 +37,6 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
 
     public sealed override void SetupPreviewData()
     {
-
         SimDataProvider.Instance.SetupPreviewData();        
     }
 
@@ -47,7 +44,15 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
     public sealed override void BeforeStart()
     {
         InitCarClassEntryLists();
+        // Can be registered before SimDataProvider.Instance was created
+        SimDataProvider.OnSessionTypeChanged += Instance_OnSessionTypeChanged;
+  
         base.BeforeStart();
+    }
+
+    private void Instance_OnSessionTypeChanged(object? sender, RaceSessionType e)
+    {
+        ClearCarClassEntryList();            
     }
 
     private void ClearCarClassEntryList()
@@ -56,14 +61,14 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         {
             CarClasses = SimDataProvider.Instance.GetCarClasses();
         }
-        foreach (string carClass in CarClasses)
+        foreach (string carClass in _entryListForCarClass.Keys)
         {
             if (!_entryListForCarClass.ContainsKey(carClass))
             {
                 InitCarClassEntryLists();
             }
             _entryListForCarClass[carClass].Clear();
-        }
+        }                
     }
 
     private void InitCarClassEntryLists()
@@ -101,6 +106,8 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         List<KeyValuePair<int, CarInfo>> cars = SessionData.Instance.Cars;
         if (cars.Count == 0) return;
 
+        // TODO: optimize. DetermineDriversClass and SplitEntryList should not be necessary every Render. Just Sort.
+        //       Maybe we need to add cars that joined a practice session after it started.
         DetermineDriversClass(cars);
         SplitEntryList(cars);
         SortAllEntryLists();
@@ -276,7 +283,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
 
     public static String GetLapTime(LapInfo lap)
     {
-        if (lap == null || !lap.LaptimeMS.HasValue)
+        if (lap == null || !lap.LaptimeMS.HasValue || lap.LaptimeMS < 0)
         {
             return "--:--.---";
         }
@@ -310,7 +317,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
                             {
                                 cars.Sort((a, b) =>
                                 {
-                                    return a.Value.CupPosition.CompareTo(b.Value.CupPosition);
+                                    return CompareToCupPosition(a.Value.CupPosition, b.Value.CupPosition);
                                 });
                                 break;
                             }
@@ -355,14 +362,14 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
                 {
                     cars.Sort((a, b) =>
                     {
-                        return a.Value.CupPosition.CompareTo(b.Value.CupPosition);
+                        return CompareToCupPosition(a.Value.CupPosition, b.Value.CupPosition);
                     });
                     break;
                 }
 
             default: break;
         }
-    }
+    }    
 
     private void DetermineDriversClass(List<KeyValuePair<int, CarInfo>> cars)
     {
@@ -402,16 +409,34 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
     {
         return SimDataProvider.LocalCar.CarModel.CarClass;
     }
-}
 
-public class StandingsTableRow
+    /// <summary>
+    /// Compares the cup postion. Some cars might have position 0, which means they are ordered after other cars.
+    /// </summary>    
+    private int CompareToCupPosition(int cupPositionA, int cupPositionB)
+    {
+        if (cupPositionA == 0)
+        {
+            return cupPositionB == 0 ? 0 : 1;
+        }
+        else if (cupPositionB == 0)
+        {
+            return -1;
+        }
+        else
+        {
+            return BigInteger.Compare(cupPositionA, cupPositionB);
+        }    
+    }
+
+    public class StandingsTableRow
 {
     public int CarIdx { get; set; }
     public int Position { get; set; }
     public int RaceNumber { get; set; }
     public String DriverName { get; set; }
 
-    // e.g. "A3.43 4.1k" for A class, 3.43 safety rating 4100 irating
+    // e.g. "A3.43 4155" for A class, 3.43 safety rating 4155 irating
     public String LicenseInfo { get; set; }
 
     // gap to car in front that's in the same class
@@ -640,55 +665,56 @@ public class OverlayStandingsTableTextLabel
 }
 
 
-public class OverlayStandingsTablePositionLabel
-{
-    private readonly int _spacing = 10;
-    private readonly Font _fontFamily;
-
-    private readonly int _x;
-    private readonly int _y;
-    public int Width { get; }
-    public int Height { get; }
-    private readonly int _maxFontWidth;
-    private CachedBitmap _cachedBackground;
-
-    private readonly GraphicsPath _path;
-
-    public OverlayStandingsTablePositionLabel(Graphics g, int x, int y, SolidBrush background, SolidBrush highlight, Font font)
+    public class OverlayStandingsTablePositionLabel
     {
+        private readonly int _spacing = 10;
+        private readonly Font _fontFamily;
 
-        _x = x;
-        _y = y;
-        _fontFamily = font;
+        private readonly int _x;
+        private readonly int _y;
+        public int Width { get; }
+        public int Height { get; }
+        private readonly int _maxFontWidth;
+        private CachedBitmap _cachedBackground;
 
-        string maxString = new('K', 2); // max two figures are allowed :-)
-        var fontSize = g.MeasureString(maxString, _fontFamily);
-        _maxFontWidth = (int)fontSize.Width;
-        Width = (int)(fontSize.Width) + _spacing;
-        Height = (int)(fontSize.Height);
+        private readonly GraphicsPath _path;
 
-
-        var rectanle = new Rectangle(_x, _y, Width - (_spacing / 2), Height);
-        _path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, 0, Height / 3, 0);
-
-        _cachedBackground = new CachedBitmap((int)(fontSize.Width + _spacing), (int)fontSize.Height, gr =>
+        public OverlayStandingsTablePositionLabel(Graphics g, int x, int y, SolidBrush background, SolidBrush highlight, Font font)
         {
-            LinearGradientBrush lgb = new(new Point() { X = _x - _spacing, Y = _y }, new Point() { X = Width + _spacing, Y = _y }, highlight.Color, background.Color);
-            g.FillPath(lgb, _path);
 
-            var highlightRectanle = new Rectangle(_x, _y, 4, Height);
-            g.FillRectangle(highlight, highlightRectanle);
-        });
+            _x = x;
+            _y = y;
+            _fontFamily = font;
 
-    }
+            string maxString = new('K', 2); // max two figures are allowed :-)
+            var fontSize = g.MeasureString(maxString, _fontFamily);
+            _maxFontWidth = (int)fontSize.Width;
+            Width = (int)(fontSize.Width) + _spacing;
+            Height = (int)(fontSize.Height);
 
-    public void Draw(Graphics g, String number)
-    {
 
-        _cachedBackground.Draw(g, _x, _y);
-        var numberWidth = g.MeasureString(number, _fontFamily).Width;
-        var textOffset = 2;
-        g.DrawString(number, _fontFamily, Brushes.White, new PointF(_x + _spacing / 2 + _maxFontWidth / 2 - numberWidth / 2, _y + textOffset));
+            var rectanle = new Rectangle(_x, _y, Width - (_spacing / 2), Height);
+            _path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, 0, Height / 3, 0);
 
+            _cachedBackground = new CachedBitmap((int)(fontSize.Width + _spacing), (int)fontSize.Height, gr =>
+            {
+                LinearGradientBrush lgb = new(new Point() { X = _x - _spacing, Y = _y }, new Point() { X = Width + _spacing, Y = _y }, highlight.Color, background.Color);
+                g.FillPath(lgb, _path);
+
+                var highlightRectanle = new Rectangle(_x, _y, 4, Height);
+                g.FillRectangle(highlight, highlightRectanle);
+            });
+
+        }
+
+        public void Draw(Graphics g, String number)
+        {
+
+            _cachedBackground.Draw(g, _x, _y);
+            var numberWidth = g.MeasureString(number, _fontFamily).Width;
+            var textOffset = 2;
+            g.DrawString(number, _fontFamily, Brushes.White, new PointF(_x + _spacing / 2 + _maxFontWidth / 2 - numberWidth / 2, _y + textOffset));
+
+        }
     }
 }
