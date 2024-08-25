@@ -123,7 +123,8 @@ internal sealed class BarSpotterOverlay : CommonAbstractOverlay
                 leftRectY = (int)(_config.Bar.Height * this.Scale * (1.0F - overlapPercent));
                 leftRectHeight = (int)(_config.Bar.Height * this.Scale * overlapPercent);
             }
-          
+            g.DrawRectangle(Pens.Black, 0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
+
         } else if (spotterCallout == CarLeftRight.CarRight)
         {
             if (closestCarDistance > 0)
@@ -135,6 +136,7 @@ internal sealed class BarSpotterOverlay : CommonAbstractOverlay
                 rightRectY = (int)(_config.Bar.Height * this.Scale * (1.0F - overlapPercent));
                 rightRectHeight = (int)(_config.Bar.Height * this.Scale * overlapPercent);
             }
+            g.DrawRectangle(Pens.Black, 0, _config.Bar.Distance, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
         } else if (spotterCallout == CarLeftRight.Off || spotterCallout == CarLeftRight.Clear)
         {
             return;
@@ -144,6 +146,8 @@ internal sealed class BarSpotterOverlay : CommonAbstractOverlay
             color = colors[1]; 
             leftRectHeight = (int)(_config.Bar.Height * this.Scale);            
             rightRectHeight = (int)(_config.Bar.Height * this.Scale);
+            g.DrawRectangle(Pens.Black, 0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
+            g.DrawRectangle(Pens.Black, 0, _config.Bar.Distance, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
         }
 
         Rectangle rectL = new(0, leftRectY, (int)(_config.Bar.Width * this.Scale), leftRectHeight);

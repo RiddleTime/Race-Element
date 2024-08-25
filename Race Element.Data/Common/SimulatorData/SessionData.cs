@@ -43,6 +43,10 @@ namespace RaceElement.Data.Common.SimulatorData
         public int FocusedCarIndex {get; set;}
         public RaceSessionType SessionType { get; set; }
         public SessionPhase Phase { get; set; }
+        public float LapDeltaToSessionBestLapMs { get; set; }
+        
+        public bool IsSetupMenuVisible { get; set; }
+        public double SessionTimeLeftSecs { get; set; }        
     }
 
     public sealed record TrackData
@@ -73,7 +77,7 @@ namespace RaceElement.Data.Common.SimulatorData
         public float AirVelocity { get; set; }
 
         /// <summary>
-        /// The direction of the air in degrees
+        /// The direction of the air in radians
         /// </summary>
         public float AirDirection { get; set; }
     }
