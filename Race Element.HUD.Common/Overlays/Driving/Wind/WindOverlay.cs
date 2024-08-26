@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -95,7 +96,10 @@ internal sealed class WindDirectionOverlay : CommonAbstractOverlay
         double vaneAngle = SessionData.Instance.Weather.AirDirection;
         double carDirection = 90 + (SimDataProvider.LocalCar.Physics.Heading * -180d) / Math.PI;
         double relativeAngle = vaneAngle + carDirection;
-        
+
+        if (GameManager.CurrentGame == Game.iRacing)
+            relativeAngle = (2 * Math.PI) - SimDataProvider.LocalCar.Physics.Heading - SimDataProvider.Session.Weather.AirDirection;
+
         g.SmoothingMode = SmoothingMode.AntiAlias;
         Rectangle rect = new(padding / 2, padding / 2, _config.Shape.Size - padding, _config.Shape.Size - padding);
 
