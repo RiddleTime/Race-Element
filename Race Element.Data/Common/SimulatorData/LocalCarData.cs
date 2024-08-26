@@ -37,6 +37,12 @@ namespace RaceElement.Data.Common.SimulatorData
         /// Maximum revolutions per minute
         /// </summary>
         public int MaxRpm { get; set; }
+
+        // Fuel info
+        public float FuelLiters { get; set; }
+        public float MaxFuelLiters { get; set; }
+        public float FuelLitersXLap { get; set; }
+        public float FuelEstimatedLaps { get; set; }
     }
     public sealed record TyresData
     {
@@ -78,6 +84,13 @@ namespace RaceElement.Data.Common.SimulatorData
         /// The g-forces. (X,Y,Z)
         /// </summary>
         public Vector3 Acceleration { get; set; } = new();
+
+        /// <summary>
+        /// Heading relative to north in radians.
+        /// </summary>
+        public float Heading { get; set; }
+        public float Pitch { get; internal set; }
+        public float Roll { get; internal set; }
     }
     public sealed record InputsData
     {

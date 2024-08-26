@@ -45,6 +45,11 @@ public sealed class CarInfo
     public string CarClass { get; set; }
     public bool IsSpectator { get; set; }
 
+    /// <summary>
+    /// Delta to driver's best session lap
+    /// </summary>
+    /// Might not be available for all sims. 
+    public float LapDeltaToSessionBestLap { get; set; }
 
     public CarInfo(int carIndex)
     {

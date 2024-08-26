@@ -21,6 +21,10 @@ namespace RaceElement.Data.Games.iRacing
 
         private IRSDKSharper _iRacingSDK;
         private int lastSessionNumber = -1;
+       
+        private int lastLapIndex = 0;
+        private float lastLapFuelLevelLiters = 0;
+        private float lastLapFuelConsumption = 0;
 
         public CarLeftRight SpotterCallout { get; private set; }
 
@@ -60,14 +64,14 @@ namespace RaceElement.Data.Games.iRacing
                 return;
            }
 
-           if (SessionData.Instance.Cars.Count == 0) {
-            Debug.WriteLine("No SessionData.Instance.Cars");
+           if (SessionData.Instance.Cars.Count == 0 || _iRacingSDK.Data.SessionInfo.DriverInfo == null) {
+            Debug.WriteLine("No SessionData.Instance.Cars or DriverInfo");
             return;
            };
             
             try
             {
-                // for each class, the time to get to the track position for the leader in that class (HUH? TODO)
+                // for each class, the time to get to the track position for the leader in that class
                 Dictionary<string, float> classLeaderTrackPositionTimeDict = new Dictionary<string, float>();
                 
                 for (var index = 0; index < SessionData.Instance.Cars.Count; index++)
@@ -78,7 +82,8 @@ namespace RaceElement.Data.Games.iRacing
                     
                     carInfo.TrackPercentCompleted = _iRacingSDK.Data.GetFloat("CarIdxLapDistPct", index);
 
-                    // TODO: more finer mapping. Figure out how to detect whether the player is in the garage or pit.
+                    TrkLoc trackSurface = (TrkLoc)_iRacingSDK.Data.GetInt("CarIdxTrackSurface", index);
+                    // TODO: more finer mapping for CarLocation? Figure out how to detect whether the player is in the garage or pit.
                     // And allow HUDs to check if players are off track/approaching pits
                     // PlayerCarInPitStall
                     /* CarIdxTrackSurface irsdk_TrkLoc :
@@ -87,19 +92,21 @@ namespace RaceElement.Data.Games.iRacing
                         InPitStall,
                         AproachingPits,
                         OnTrack
-                    
-                    if (index == SessionData.Instance.PlayerCarIndex)
+                    */
+                    /* if (index == SessionData.Instance.PlayerCarIndex)
                     {
-                        Debug.WriteLine("CarIdxOnPitRoad {0} garage {1} PlayerCarInPitStall {2} IsGarageVisible{3}", _iRacingSDK.Data.GetBool("CarIdxOnPitRoad", index), 
-                            _iRacingSDK.Data.GetBool("IsInGarage", index), _iRacingSDK.Data.GetBool("PlayerCarInPitStall", index), _iRacingSDK.Data.GetBool("IsGarageVisible", index));
+                        Debug.WriteLine("CarIdxOnPitRoad {0} garage {1} PlayerCarInPitStall {2} IsGarageVisible {3} IsSpectator {4} CarIdxTrackSurface {5} CamCarIdx {6}", 
+                            _iRacingSDK.Data.GetBool("CarIdxOnPitRoad", index), _iRacingSDK.Data.GetBool("IsInGarage", index), 
+                            _iRacingSDK.Data.GetBool("PlayerCarInPitStall", index), _iRacingSDK.Data.GetBool("IsGarageVisible", index),
+                            _iRacingSDK.Data.SessionInfo.DriverInfo.Drivers[index].IsSpectator, trackSurface,
+                            _iRacingSDK.Data.GetInt("CamCarIdx"));
                     } */
                     if (_iRacingSDK.Data.GetBool("CarIdxOnPitRoad", index)) {
                         carInfo.CarLocation = CarInfo.CarLocationEnum.Pitlane;
                     } else
                     {
                         carInfo.CarLocation = CarInfo.CarLocationEnum.Track;                        
-                    }
-                                        
+                    }                                        
                     
                     carInfo.CurrentDriverIndex = 0;
                     LapInfo lapInfo = new LapInfo();
@@ -112,6 +119,14 @@ namespace RaceElement.Data.Games.iRacing
                     float fl = _iRacingSDK.Data.GetFloat("CarIdxBestLapTime", index);
                     lapInfo.LaptimeMS = (int) (_iRacingSDK.Data.GetFloat("CarIdxBestLapTime", index) * 1000.0);
                     carInfo.FastestLap = lapInfo;
+
+                    lapInfo = new LapInfo();
+                    carInfo.CurrentLap = lapInfo;
+                    if (trackSurface == TrkLoc.OffTrack)
+                    {
+                        // TODO: we need to reset this for other cars. Right now we only do so for player's car
+                        carInfo.CurrentLap.IsInvalid = true;                         
+                    }
 
                     // "CarIdxF2Time: Race time behind leader or fastest lap time otherwise"
                     // "CarIdxEstTime":  Estimated time to reach current location on track
@@ -146,20 +161,39 @@ namespace RaceElement.Data.Games.iRacing
                 // DEBUG PrintAllCarInfo();
 
                 // fill player's car from telemetry
-                LocalCarData localCar = SimDataProvider.LocalCar;                
+                LocalCarData localCar = SimDataProvider.LocalCar;
+                int playerCarIdx = _iRacingSDK.Data.SessionInfo.DriverInfo.DriverCarIdx;
+                CarInfo playerCarInfo = SessionData.Instance.Cars[playerCarIdx].Value;
                 localCar.Race.GlobalPosition = _iRacingSDK.Data.GetInt("PlayerCarPosition");
-                                
+                
+                localCar.Engine.FuelLiters = _iRacingSDK.Data.GetFloat("FuelLevel");
+                int lapIndex = playerCarInfo.LapIndex;
+                // check if we completed a lap
+                if ( lapIndex > lastLapIndex)
+                {
+                    lastLapFuelConsumption = lastLapFuelLevelLiters - localCar.Engine.FuelLiters;
+                    lastLapFuelLevelLiters = localCar.Engine.FuelLiters;
+                    playerCarInfo.CurrentLap.IsInvalid = false;
+                    lastLapIndex = lapIndex;
+                    Debug.WriteLine("new lap lastLapFuelConsumption {0} lastLapFuelLevelLiters {1}", lastLapFuelConsumption, lastLapFuelLevelLiters);
+                }                
+
                 localCar.Engine.Rpm = (int)_iRacingSDK.Data.GetFloat("RPM");
+                // m/s -> km/h
                 localCar.Physics.Velocity = _iRacingSDK.Data.GetFloat("Speed") * 3.6f;
+                localCar.Physics.Heading = _iRacingSDK.Data.GetFloat("YawNorth");
+                localCar.Physics.Pitch = _iRacingSDK.Data.GetFloat("Pitch");
+                localCar.Physics.Roll = _iRacingSDK.Data.GetFloat("Roll");
+
                 localCar.Race.GlobalPosition = _iRacingSDK.Data.GetInt("PlayerCarPosition");
 
                 localCar.Inputs.Gear = _iRacingSDK.Data.GetInt("Gear") + 1;
                 localCar.Inputs.Brake = _iRacingSDK.Data.GetFloat("Brake");
                 localCar.Inputs.Throttle = _iRacingSDK.Data.GetFloat("Throttle");
                 localCar.Inputs.Steering = _iRacingSDK.Data.GetFloat("SteeringWheelAngle");
-                
 
-                // TODO: mark lap invalid. This seems to be only provided for player
+                
+                SessionData.Instance.LapDeltaToSessionBestLapMs = _iRacingSDK.Data.GetFloat("LapDeltaToSessionBestLap");
 
                 /* as per https://github.com/alexanderzobnin/grafana-simracing-telemetry/blob/8c008f01003502c687aa4e5278018b000b0a5eaf/pkg/iracing/sharedmemory/models.go#L193
                    we can add these to local car (not available for opponent cars)
@@ -193,11 +227,36 @@ namespace RaceElement.Data.Games.iRacing
                              LapDeltaToSessionLastlLap_OK    bool
                          */
 
-                    SessionData.Instance.Weather.AirTemperature = _iRacingSDK.Data.GetFloat("AirTemp");
+                SessionData.Instance.Weather.AirTemperature = _iRacingSDK.Data.GetFloat("AirTemp");
                 SessionData.Instance.Weather.AirVelocity = _iRacingSDK.Data.GetFloat("WindVel") * 3.6f;
-                SessionData.Instance.Track.Temperature = _iRacingSDK.Data.GetFloat("TrackTempCrew");                
+                SessionData.Instance.Weather.AirDirection = _iRacingSDK.Data.GetFloat("WindDir");
 
-                
+                SessionData.Instance.Track.Temperature = _iRacingSDK.Data.GetFloat("TrackTempCrew");
+
+                // Fuel telemetry and fuel consumption calc. This is using the last lap                
+                var fuelLevelPercent = _iRacingSDK.Data.GetFloat("FuelLevelPct");
+                localCar.Engine.MaxFuelLiters = _iRacingSDK.Data.SessionInfo.DriverInfo.DriverCarFuelMaxLtr;
+
+                // TODO: iRacing gives unreasonable values for fuelUseKgPerHour. At least off by a factor 10
+                // We keep track of fuel usage in the last lap until this is worked out.
+                /* var fuelUseKgPerHour = _iRacingSDK.Data.GetFloat("FuelUsePerHour");                 
+                float fuelKgPerLtr = _iRacingSDK.Data.SessionInfo.DriverInfo.DriverCarFuelKgPerLtr;
+                float lapsPerHour = (float)TimeSpan.FromMinutes(60).TotalMilliseconds /
+                    ((float) SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value.LastLap.LaptimeMS);
+                float fuelKgPerLap = fuelUseKgPerHour / lapsPerHour;
+                float fuelLitersXLap = fuelKgPerLap / fuelKgPerLtr; 
+                Debug.WriteLine("Fuel kgPerLr {0} KgPerHour {1} lapsPerHour {2} kgPerLap {3} LitersXLap {4} ", fuelKgPerLtr, fuelUseKgPerHour, lapsPerHour, fuelKgPerLap, fuelLitersXLap);
+                */
+
+                localCar.Engine.FuelLitersXLap = lastLapFuelConsumption; 
+                localCar.Engine.FuelEstimatedLaps = localCar.Engine.FuelLiters / localCar.Engine.FuelLitersXLap;                
+
+                // ABS. We don't seem to get any other info for localCar.Electronics such as TC and engine map.
+                // There is brake bias in CarSetupModel, but it is unclear if that would be updated when the user changes it when driving.
+                localCar.Electronics.AbsActivation = _iRacingSDK.Data.GetBool("BrakeABSactive") ? 1.0F : 0.0F; 
+
+                // TODO : public int DriverIncidentCount { get; set; } and other incident info (CurDriverIncidentCount , TeamIncidentCount, ..)
+
                 int sessionNumber = _iRacingSDK.Data.GetInt("SessionNum");
                 var sessionType = _iRacingSDK.Data.SessionInfo.SessionInfo.Sessions[sessionNumber].SessionType;
                 switch (sessionType)
@@ -245,6 +304,13 @@ namespace RaceElement.Data.Games.iRacing
                     SimDataProvider.CallSessionPhaseChanged(this, SessionData.Instance.Phase);
                     lastSessionNumber = sessionNumber;
                 }
+                SessionData.Instance.SessionTimeLeftSecs = _iRacingSDK.Data.GetDouble("SessionTimeRemain");                
+                /* TODO more session info
+	                SessionLapsRemain               int32
+	                SessionLapsRemainEx             int32
+	                SessionTimeTotal                float64
+	                SessionLapsTotal                int32
+	                SessionTimeOfDay                float32 */
 
                 SpotterCallout = (CarLeftRight)_iRacingSDK.Data.GetInt("CarLeftRight");
 
@@ -274,16 +340,17 @@ namespace RaceElement.Data.Games.iRacing
             
             int playerCarIdx = _iRacingSDK.Data.SessionInfo.DriverInfo.DriverCarIdx;
             SessionData.Instance.PlayerCarIndex = playerCarIdx;
-            SessionData.Instance.FocusedCarIndex = playerCarIdx; // TODO: we don't have a mechanism yet to set the focussed driver.
+            SessionData.Instance.FocusedCarIndex = playerCarIdx; // TODO: we don't have a mechanism yet to set the focussed driver. iRacing has https://sajax.github.io/irsdkdocs/telemetry/camcaridx.html
+                                                                 // Does that give the spectating car? The doc seems to list available telemetry too.
 
             string TrackLengthText = _iRacingSDK.Data.SessionInfo.WeekendInfo.TrackLength; // e.g. "3.70 km"
             string[] parts = TrackLengthText.Split(' ');
             SessionData.Instance.Track.Length = (int)(double.Parse(parts[0]) * 1000); // convert to meters
-            // TODO: we can get the sectors and their start and endpoints (in track%) from the session info.
-                        
+            // TODO: we can get the sectors and their start and endpoints (in track%) from the session info. struct is  "SplitTimeInfoModel".
+
             LocalCarData localCar = SimDataProvider.LocalCar;
             localCar.Engine.MaxRpm = (int)_iRacingSDK.Data.SessionInfo.DriverInfo.DriverCarSLLastRPM;
-
+            
             DriverModel driverModel = _iRacingSDK.Data.SessionInfo.DriverInfo.Drivers[SessionData.Instance.PlayerCarIndex];
             localCar.Race.CarNumber = driverModel.CarNumberRaw;
             localCar.CarModel.CarClass = driverModel.CarClassShortName != null ? driverModel.CarClassShortName : driverModel.CarScreenNameShort;
@@ -345,6 +412,7 @@ namespace RaceElement.Data.Games.iRacing
         public override void SetupPreviewData()
         {
             SessionData.Instance.FocusedCarIndex = 1;
+            SessionData.Instance.PlayerCarIndex = 1;
 
             SessionData.Instance.Track.GameName = "Spa";
             SessionData.Instance.Track.Length = 7004;
@@ -378,6 +446,8 @@ namespace RaceElement.Data.Games.iRacing
             car1driver0.Rating = 7123;
             car1driver0.Category = "A 2.7";
             car1.AddDriver(car1driver0);
+            SimDataProvider.LocalCar.Engine.FuelEstimatedLaps = 3;
+            SimDataProvider.LocalCar.Engine.FuelLiters = 26.35f;
 
 
             CarInfo car2 = new CarInfo(2);
@@ -488,5 +558,14 @@ namespace RaceElement.Data.Games.iRacing
         {
             return SpotterCallout;            
         }
+
+        override public bool IsSpectating(int playerCarIndex, int focusedIndex)
+        {
+            // TODO We need to test how spotting team mates works in a multi-driver team race. 
+            // E.g. what telemetry is available
+            return false;
+        }
     }
+
+    
 }
