@@ -181,54 +181,46 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         _trackBoundingBox = boundaries;
         _trackPositions = track;
 
-        if (trackData.Sectors.Count >= 2)
+        int idx = 0, fromSectorOne = 0;
+        while (_trackPositions[idx].Spline > 0.9f && _trackPositions[idx].Spline < _trackPositions[idx + 1].Spline)
         {
-            int idx = 0, fromSectorOne = 0;
-            while (_trackPositions[idx].Spline > 0.9f && _trackPositions[idx].Spline < _trackPositions[idx + 1].Spline)
-            {
-                ++idx;
-                ++fromSectorOne;
-            }
-
-            if (1.0f - _trackPositions[idx].Spline < float.Epsilon)
-            {
-                ++idx;
-                ++fromSectorOne;
-            }
-
-            while (_trackPositions[idx].Spline < trackData.Sectors[0])
-            {
-                sector1.Add(_trackPositions[idx]);
-                ++idx;
-            }
-
-            while (_trackPositions[idx].Spline < trackData.Sectors[1])
-            {
-                sector2.Add(_trackPositions[idx]);
-                ++idx;
-            }
-
-            while (idx < _trackPositions.Count)
-            {
-                sector3.Add(_trackPositions[idx]);
-                ++idx;
-            }
-
-            for (var i = 0; i < fromSectorOne; ++i)
-            {
-                sector3.Add(_trackPositions[i]);
-            }
-
-            var s1 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector1, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
-            var s2 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector2, _config.General.Thickness, _margin, sector2, _trackBoundingBox);
-            var s3 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector3, _config.General.Thickness, _margin, sector3, _trackBoundingBox);
-            _mapCache.Map = TrackMapDrawer.MixImages(s1, s2, s3, s1.Width, s1.Height);
+            ++idx;
+            ++fromSectorOne;
         }
-        else
+
+        if (1.0f - _trackPositions[idx].Spline < float.Epsilon)
         {
-            // TODO(Andrei): Add sectors for Nurburgring 24h
-            _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(Color.Snow, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
+            ++idx;
+            ++fromSectorOne;
         }
+
+        while (_trackPositions[idx].Spline < trackData.Sectors[0])
+        {
+            sector1.Add(_trackPositions[idx]);
+            ++idx;
+        }
+
+        while (_trackPositions[idx].Spline < trackData.Sectors[1])
+        {
+            sector2.Add(_trackPositions[idx]);
+            ++idx;
+        }
+
+        while (idx < _trackPositions.Count)
+        {
+            sector3.Add(_trackPositions[idx]);
+            ++idx;
+        }
+
+        for (var i = 0; i < fromSectorOne; ++i)
+        {
+            sector3.Add(_trackPositions[i]);
+        }
+
+        var s1 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector1, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
+        var s2 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector2, _config.General.Thickness, _margin, sector2, _trackBoundingBox);
+        var s3 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector3, _config.General.Thickness, _margin, sector3, _trackBoundingBox);
+        _mapCache.Map = TrackMapDrawer.MixImages(s1, s2, s3, s1.Width, s1.Height);
 
         Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
 
@@ -264,7 +256,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             if (it.Value.CarInfo != null)
             {
                 car.RaceNumber = it.Value.CarInfo.RaceNumber.ToString();
-;
+
                 var carModel = ConversionFactory.GetCarModels(it.Value.CarInfo.CarModelType);
                 car.CarClass = ConversionFactory.GetConversion(carModel).CarClass;
             }
