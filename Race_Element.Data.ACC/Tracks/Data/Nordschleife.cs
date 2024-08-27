@@ -35,5 +35,5 @@ internal sealed class Nordschleife : AbstractTrackData
     //    { new FloatRangeStruct(0, 16), (15, "")},
     //};
 
-    public override List<float> Sectors => [];
+    public override List<float> Sectors => new () { 0.32676908f, 0.641197f };
 }
