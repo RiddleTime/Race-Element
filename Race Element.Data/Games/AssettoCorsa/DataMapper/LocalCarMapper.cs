@@ -26,6 +26,7 @@ internal static partial class LocalCarMapper
     // -- Electronics activation
     [MapProperty(nameof(PageFilePhysics.TC), nameof(@LocalCarData.Electronics.TractionControlActivation))]
     [MapProperty(nameof(PageFilePhysics.Abs), nameof(@LocalCarData.Electronics.AbsActivation))]
+    [MapProperty(nameof(PageFilePhysics.Fuel), nameof(@LocalCarData.Engine.FuelLiters))]    
     private static partial void WithPhysicsPage(PageFilePhysics pagePhysics, LocalCarData commonData);
 
     internal static void AddPhysics(ref PageFilePhysics pagePhysics, ref LocalCarData commonData)
@@ -47,7 +48,8 @@ internal static partial class LocalCarMapper
 
     // Engine Data
     [MapProperty(nameof(PageFileStatic.MaxRpm), nameof(@LocalCarData.Engine.MaxRpm))]
+    [MapProperty(nameof(PageFileStatic.MaxFuel), nameof(@LocalCarData.Engine.MaxFuelLiters))]
     // Model Data
-    [MapProperty(nameof(PageFileStatic.CarModel), nameof(@LocalCarData.CarModel.GameName))]
+    [MapProperty(nameof(PageFileStatic.CarModel), nameof(@LocalCarData.CarModel.GameName))]    
     internal static partial void WithStaticPage(PageFileStatic pageStatic, LocalCarData commonData);
 }

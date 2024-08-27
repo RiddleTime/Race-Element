@@ -1,15 +1,16 @@
-﻿using RaceElement.Data.SharedMemory;
+﻿using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.SharedMemory;
 using System;
 using System.Collections.Generic;
 using System.IO.MemoryMappedFiles;
 using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 
 // Used parts of: https://github.com/gro-ove/actools/tree/master/AcManager.Tools/SharedMemory
+// Crew chief shared memory layout (requiring crew chief plugin):
+// https://github.com/mrbelowski/CrewChiefV4/blob/84fe63b6e7d466022acd8bce3d00e044ded864a3/CrewChiefV4/ACS/ACSData.cs#L298
 namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
 {
     internal static class AcSharedMemory
@@ -17,10 +18,14 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
         private static readonly string physicsMap = "Local\\acpmf_physics";
         private static readonly string graphicsMap = "Local\\acpmf_graphics";
         private static readonly string staticMap = "Local\\acpmf_static";
+        private static readonly string crewChiefMap = "Local\\acpmf_crewchief";
+
+        public const int MaxVehicles = 128;
 
         public static PageFileStatic StaticPage { get; private set; }
         public static PageFilePhysics PhysicsPage { get; private set; }
         public static PageFileGraphics GraphicsPage { get; private set; }
+        public static PageFileCrewChief CrewChiefPage { get; private set; }
 
         public enum AcStatus : int
         {
@@ -355,7 +360,7 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
 
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)]
             public float[] LocalVelocity;
-        
+
             public static readonly int Size = Marshal.SizeOf(typeof(PageFilePhysics));
             public static readonly byte[] Buffer = new byte[Size];
         };
@@ -450,6 +455,65 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             public static readonly byte[] Buffer = new byte[Size];
         };
 
+        [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+        [Serializable]
+        public struct AcsVec3
+        {
+            public float x;
+            public float y;
+            public float z;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+        [Serializable]
+        public struct AcsVehicleInfo
+        {
+            public int carId;
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 64)]
+            public byte[] driverName;
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 64)]
+            public byte[] carModel;
+            public float speedMS;
+            public int bestLapMS;
+            public int lapCount;
+            public int currentLapInvalid;
+            public int currentLapTimeMS;
+            public int lastLapTimeMS;
+            public AcsVec3 worldPosition;
+            public int isCarInPitline;
+            public int isCarInPit;
+            public int carLeaderboardPosition;
+            public int carRealTimeLeaderboardPosition;
+            public float spLineLength;
+            public int isConnected;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] suspensionDamage;
+            public float engineLifeLeft;
+            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
+            public float[] tyreInflation;
+        }
+
+        [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+        [Serializable]
+        public struct PageFileCrewChief
+        {
+            public int numVehicles;
+            public int focusVehicle;
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 512)]
+            public byte[] serverName;
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 64)]
+            public AcsVehicleInfo[] vehicle;
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 512)]
+            public byte[] acInstallPath;
+            public int isInternalMemoryModuleLoaded;
+            [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 32)]
+            public byte[] pluginVersion;
+
+            public static readonly int Size = Marshal.SizeOf(typeof(PageFileCrewChief));
+            public static readonly byte[] Buffer = new byte[Size];
+        }
+
+
         public static PageFileGraphics ReadGraphicsPageFile(bool fromCache = false)
         {
             if (fromCache) return GraphicsPage;
@@ -466,6 +530,12 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
         {
             if (fromCache) return PhysicsPage;
             return PhysicsPage = MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<PageFilePhysics>(PageFilePhysics.Buffer);
+        }
+
+        public static PageFileCrewChief ReadCrewChiefPageFile(bool fromCache = false)
+        {
+            if (fromCache) return CrewChiefPage;
+            return CrewChiefPage = MemoryMappedFile.CreateOrOpen(crewChiefMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<PageFileCrewChief>(PageFileCrewChief.Buffer);
         }
     }
 }
