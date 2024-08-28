@@ -49,7 +49,7 @@ public sealed class FloatRangeAttribute : Attribute
     {
         float min = Min;
 
-        if (GameMins.Length > 0 && MinGames.Length > 0)
+        if (GameMins.Length > 0 && MinGames.Length == GameMins.Length)
         {
             if (MinGames.Contains(currentGame))
             {
@@ -65,7 +65,7 @@ public sealed class FloatRangeAttribute : Attribute
     {
         float max = Max;
 
-        if (GameMaxs.Length > 0 && MaxGames.Length > 0)
+        if (GameMaxs.Length > 0 && MaxGames.Length == GameMaxs.Length)
         {
             if (MaxGames.Contains(currentGame))
             {
