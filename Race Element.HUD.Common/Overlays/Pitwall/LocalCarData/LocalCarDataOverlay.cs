@@ -88,6 +88,9 @@ internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
 
         string carModel = JsonConvert.SerializeObject(obj, Formatting.Indented);
         carModel = $"{header}:\n{carModel.Remove(0, 3)}";
+        carModel = carModel.Remove(carModel.Length - 1, 1);
+        carModel = carModel.Replace("  },\r\n", "");
+        carModel = carModel.Replace(" {", "");
         SizeF carModelSize = g.MeasureString(carModel, _font, Width);
         g.DrawStringWithShadow(carModel, _font, Brushes.White, new RectangleF(0, y, carModelSize.Width, carModelSize.Height));
 
