@@ -36,7 +36,7 @@ internal sealed class BarSpotterOverlay : CommonAbstractOverlay
 
     public sealed override void SetupPreviewData()
     {
-        SimDataProvider.Instance.SetupPreviewData();
+        SimDataProvider.Instance?.SetupPreviewData();
     }
 
     public sealed override void BeforeStart()
