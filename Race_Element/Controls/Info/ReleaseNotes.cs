@@ -6,6 +6,13 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
+        {"1.2.0.0", "- Added BETA Multi-Sim support for Assetto Corsa 1 and iRacing with a various amount of huds:"+
+                    "\n  - Multi-Sim works by selecting a different game than ACC in the top-right of the app. This will reload the HUD Tab."+
+                    "\n  - Report any feedback in the Race Element discord server in the dedicated Multi-Sim Testing thread."+
+                    "\n- HUD Tab:"+
+                    "\n  - Checked Checkboxes and their labels are now highlighted in a more visible color."+
+                    "\n- ACC HUDs:"+
+                    "\n  - Added Track Map HUD(BETA) by Andrei Jianu."},
         {"1.1.1.2", "- Input Trace, Oversteer Trace, G Force Trace HUDs: Lower cpu usage by roughly 20%."+
                     "\n- Added new Tyre Temp History HUD: showing minimum, average and maximum tyre temps for the last lap."},
         {"1.1.1.0", "- Corner Data HUD: Fixed collection of data on tracks that had straights."+
