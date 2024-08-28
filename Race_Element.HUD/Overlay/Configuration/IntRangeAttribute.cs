@@ -12,10 +12,26 @@ public sealed class IntRangeAttribute : Attribute
     public int Max;
     public int Increment;
 
+    /// <summary>
+    /// Used to override default Min value for a specific game.
+    /// /// Uses <see cref="MinGames"/> for indexing.
+    /// </summary>
     public int[] GameMins = [];
+    /// <summary>
+    /// Set the min value to override for a specific game.
+    /// Uses <see cref="GameMins"/> for indexing.
+    /// </summary>
     public Game[] MinGames = [];
 
+    /// <summary>
+    /// Used to override default Max value for a specific game.
+    /// /// Uses <see cref="MaxGames"/> for indexing.
+    /// </summary>
     public int[] GameMaxs = [];
+    /// <summary>
+    /// Set the max value to override for a specific game.
+    /// Uses <see cref="GameMaxs"/> for indexing.
+    /// </summary>
     public Game[] MaxGames = [];
 
     public IntRangeAttribute()
