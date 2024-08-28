@@ -66,14 +66,17 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         if (IsRepositioning)
             return true;
 
-        
+
         if (!SimDataProvider.HasTelemetry())
             return false;
 
         // For show only HUDs when player is on track. 
         // TODO: Distinguish in sim data providers between pit and garage and only show in pit, but not garage or make configurable.
-        CarInfo carInfo = SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value;
-        if (carInfo.CarLocation != CarInfo.CarLocationEnum.Track) return false;
+        if (SessionData.Instance.Cars.Count > 0)
+        {
+            CarInfo carInfo = SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value;
+            if (carInfo.CarLocation != CarInfo.CarLocationEnum.Track) return false;
+        }
 
         bool shouldRender = true;
 
@@ -201,7 +204,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         catch (Exception ex) { Debug.WriteLine(ex); }
     }
 
-    
+
     public void RequestRedraw()
     {
         if (hasClosed)
@@ -213,7 +216,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         this.UpdateLayeredWindow();
     }
 
-    
+
     public void Stop()
     {
         try
