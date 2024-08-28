@@ -41,7 +41,11 @@ internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
     }
 
     private Font? _font;
-    public LocalCarDataOverlay(Rectangle rectangle) : base(rectangle, "LocalCarData") => RefreshRateHz = _config.Data.RefreshRateHz;
+    public LocalCarDataOverlay(Rectangle rectangle) : base(rectangle, "LocalCarData")
+    {
+        RefreshRateHz = _config.Data.RefreshRateHz;
+        Width = 330;
+    }
 
     public sealed override void BeforeStart() => _font = FontUtil.FontSegoeMono(10);
     public sealed override void BeforeStop() => _font?.Dispose();
