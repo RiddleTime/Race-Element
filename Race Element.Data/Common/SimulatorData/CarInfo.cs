@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Numerics;
 
 namespace RaceElement.Data.Common.SimulatorData;
 
@@ -50,6 +51,12 @@ public sealed class CarInfo
     /// </summary>
     /// Might not be available for all sims. 
     public float LapDeltaToSessionBestLap { get; set; }
+
+    /// <summary>
+    /// Location (x/y/z)
+    /// </summary>
+    /// Note: this is not provided by all sims.
+    public Vector3 Location { get; set; } = new();
 
     public CarInfo(int carIndex)
     {
