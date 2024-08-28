@@ -57,7 +57,7 @@ internal sealed class IntegerValueControl : IValueControl<int>, IControl
             _label.Content = _field.Value;
         };
         int value = int.Parse(_field.Value.ToString());
-        value.Clip(intRange.GetMin(GameManager.CurrentGame), intRange.GetMin(GameManager.CurrentGame));
+        value.Clip(intRange.GetMin(GameManager.CurrentGame), intRange.GetMax(GameManager.CurrentGame));
         _slider.Value = value;
         _grid.Children.Add(_slider);
         _slider.HorizontalAlignment = HorizontalAlignment.Right;
