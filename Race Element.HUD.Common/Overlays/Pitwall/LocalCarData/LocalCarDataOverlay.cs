@@ -45,6 +45,7 @@ internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
 
     public sealed override void BeforeStart() => _font = FontUtil.FontSegoeMono(10);
     public sealed override void BeforeStop() => _font?.Dispose();
+    public sealed override bool ShouldRender() => true;
 
     public sealed override void Render(Graphics g)
     {
