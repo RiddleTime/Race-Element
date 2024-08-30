@@ -125,7 +125,7 @@ public partial class TitleBar : UserControl
         comboBoxCurrentGame.Items.Clear();
         foreach (Game game in Enum.GetValues(typeof(Game)))
         {
-            if (game == Game.None) continue;
+            if (game == Game.Any) continue;
             string friendlyName = game.ToShortName();
             if (friendlyName.Length > 0)
             {
