@@ -47,7 +47,7 @@ public partial class HudOptions : UserControl
     private DateTime _lastMovementModeChange = DateTime.MinValue;
     private const int MovementModeDebounce = 250;
 
-    public static List<CommonAbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
+    internal static List<CommonAbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
     {
         Game.AssettoCorsaCompetizione => OverlaysAcc.ActiveOverlays,
         _ => CommonHuds.ActiveOverlays
