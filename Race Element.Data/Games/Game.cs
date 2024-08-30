@@ -2,7 +2,7 @@
 namespace RaceElement.Data.Games
 {
     [Flags]
-    public enum Game
+    public enum Game : int
     {
         None = 0,
         AssettoCorsa1 = 1,
