@@ -12,7 +12,7 @@ public static class ReleaseNotes
                     "\n- HUD Tab:"+
                     "\n  - Checked Checkboxes and their labels are now highlighted in a more visible color."+
                     "\n- ACC HUDs:"+
-                    "\n  - Added Track Map HUD(BETA) by Andrei Jianu."
+                    "\n  - Added Track Map HUD(BETA) by Andrei Jianu."+
                     "\n  - Added Track Distance HUD: Shows the current percentual distance and the stint distance in meters." },
         {"1.1.1.2", "- Input Trace, Oversteer Trace, G Force Trace HUDs: Lower cpu usage by roughly 20%."+
                     "\n- Added new Tyre Temp History HUD: showing minimum, average and maximum tyre temps for the last lap."},
