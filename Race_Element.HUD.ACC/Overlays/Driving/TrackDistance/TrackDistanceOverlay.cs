@@ -17,7 +17,7 @@ internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverla
 
     private InfoPanel _panel;
 
-    public override void SetupPreviewData()
+    public sealed override void SetupPreviewData()
     {
         pageGraphics.NormalizedCarPosition = 0.312f;
         pageStatic.Track = "Paul_Ricard";
@@ -25,7 +25,7 @@ internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverla
 
     public sealed override void BeforeStart()
     {
-        _panel = new InfoPanel(12, 300);
+        _panel = new InfoPanel(12, 300) { FirstRowLine = 1 };
         Width = 300;
         Height = _panel.FontHeight * 2;
     }
@@ -38,7 +38,7 @@ internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverla
         else
             _panel.AddProgressBarWithCenteredText($"{pageGraphics.NormalizedCarPosition * currentTrack.TrackLength:F1}M", 0, 1, pageGraphics.NormalizedCarPosition);
 
-        _panel.AddLine("Stint Distance", $"{pageGraphics.DistanceTraveled:F0}M");
+        _panel.AddLine("Stint Distance", $"{pageGraphics.DistanceTraveled:F1}M");
 
         _panel.Draw(g);
     }
