@@ -6,7 +6,10 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackDistance;
 
-[Overlay(Name = "Track Distance", Description = "Shows the total track distance and current distance on track.")]
+[Overlay(
+    Name = "Track Distance",
+    Description = "Shows the total track distance and current distance on track.",
+    Authors = ["Reinier Klarenberg"])]
 internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Track Distance")
 {
     private readonly TrackDistanceConfiguration _config = new();
