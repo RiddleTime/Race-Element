@@ -23,7 +23,12 @@ internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverla
         pageStatic.Track = "Paul_Ricard";
     }
 
-    public sealed override void BeforeStart() => _panel = new InfoPanel(12, 300);
+    public sealed override void BeforeStart()
+    {
+        _panel = new InfoPanel(12, 300);
+        Width = 300;
+        Height = _panel.FontHeight * 2;
+    }
 
     public sealed override void Render(Graphics g)
     {
