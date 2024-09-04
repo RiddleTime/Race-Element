@@ -16,6 +16,14 @@ internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverla
     private sealed class TrackDistanceConfiguration : OverlayConfiguration
     {
         public TrackDistanceConfiguration() => GenericConfiguration.AllowRescale = true;
+
+        [ConfigGrouping("Data", "Customize which data should be displayed.")]
+        public DataGrouping Data { get; init; } = new DataGrouping();
+        public sealed class DataGrouping
+        {
+            [ToolTip("Shows the total stint distance in meters")]
+            public bool ShowStintDistance { get; init; } = false;
+        }
     }
 
     private InfoPanel _panel;
@@ -30,7 +38,10 @@ internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverla
     {
         _panel = new InfoPanel(12, 300) { FirstRowLine = 1 };
         Width = 300;
-        Height = _panel.FontHeight * 2;
+        Height = _panel.FontHeight * 2 + 1;
+
+        if (!_config.Data.ShowStintDistance)
+            Height -= _panel.FontHeight;
     }
 
     public sealed override void Render(Graphics g)
@@ -39,9 +50,11 @@ internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverla
         if (currentTrack == null)
             _panel.AddLine($"No Track", "Waiting...");
         else
-            _panel.AddProgressBarWithCenteredText($"{pageGraphics.NormalizedCarPosition * currentTrack.TrackLength:F1}M", 0, 1, pageGraphics.NormalizedCarPosition);
+            _panel.AddProgressBarWithCenteredText($"{pageGraphics.NormalizedCarPosition * currentTrack.TrackLength:F1}M", 0, 1, 0);
 
-        _panel.AddLine("Stint Distance", $"{pageGraphics.DistanceTraveled:F1}M");
+
+        if (_config.Data.ShowStintDistance)
+            _panel.AddLine("Stint Distance", $"{pageGraphics.DistanceTraveled:F1}M");
 
         _panel.Draw(g);
     }
