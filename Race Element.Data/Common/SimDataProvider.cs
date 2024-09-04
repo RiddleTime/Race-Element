@@ -50,6 +50,11 @@ namespace RaceElement.Data.Common
                         Instance.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
+                case Game.RaceRoom:
+                    {
+
+                        break;
+                    }
                 default: { break; }
             }
         }
