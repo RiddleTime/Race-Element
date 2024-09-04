@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -6,11 +7,14 @@ using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 using System.Drawing.Text;
 
-namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTrackBar;
+namespace RaceElement.HUD.Common.Overlays.Driving.TrackBar;
 
-[Overlay(Name = "Track Bar",
-         Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.",
-Authors = ["Reinier Klarenberg"])]
+[Overlay(
+    Name = "Track Bar",
+    Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.",
+    Game = Game.iRacing | Game.AssettoCorsa1,
+    Authors = ["Reinier Klarenberg"]
+)]
 internal sealed class TrackBarOverlay : CommonAbstractOverlay
 {
     private readonly TrackBarConfiguration _config = new();
@@ -100,7 +104,7 @@ internal sealed class TrackBarOverlay : CommonAbstractOverlay
         if (SessionData.Instance.Cars.Count == 0) return;
 
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
-        
+
         var spectatingCar = SessionData.Instance.Cars[SessionData.Instance.FocusedCarIndex];
         float spectatingSplinePosition = spectatingCar.Value.TrackPercentCompleted;
 
@@ -137,13 +141,13 @@ internal sealed class TrackBarOverlay : CommonAbstractOverlay
             float correctedPos = maxSpline - pos;
             bool isSpectatingCar = SessionData.Instance.FocusedCarIndex == entry.Key;
 
-            float correctedPercentage = (correctedPos * 100) / _range / 100;
+            float correctedPercentage = correctedPos * 100 / _range / 100;
             if (isSpectatingCar) correctedPercentage = 0.5f;
             // Debug.WriteLine($"pos:{pos} --> cor:{correctedPos} --> perc:{correctedPercentage:F3}");
 
             int x = BarRect.Width - (int)(BarRect.Width * correctedPercentage);
 
-            bool isInPits = (entry.Value.CarLocation == CarInfo.CarLocationEnum.Pitlane);
+            bool isInPits = entry.Value.CarLocation == CarInfo.CarLocationEnum.Pitlane;
 
             Pen pen = isSpectatingCar ? Pens.Red : isInPits ? Pens.Green : Pens.White;
             if (!isInPits && !isSpectatingCar && entry.Value.Kmh < 33)
