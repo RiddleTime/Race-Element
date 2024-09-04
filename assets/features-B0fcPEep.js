@@ -13,7 +13,7 @@ Get started and download the app: **[Download](/guide/how-to-get-started)**
 - Assetto Corsa Competizione
 - Assetto Corsa (beta)
 - iRacing (beta)
-- RaceRoom
+- RaceRoom (beta)
 
 # HUDs (40+)
 HUDs(Head-up displays) are 2D graphics that can be used to provide you data whilst driving. There are a various amount of HUDs that each provides you useful information in a minimalistic manner whilst being highly configurable.
