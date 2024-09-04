@@ -32,16 +32,17 @@ internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverla
     {
         pageGraphics.NormalizedCarPosition = 0.312f;
         pageStatic.Track = "Paul_Ricard";
+        pageGraphics.DistanceTraveled = 23789;
     }
 
     public sealed override void BeforeStart()
     {
-        _panel = new InfoPanel(12, 300) { FirstRowLine = 1 };
-        Width = 300;
-        Height = _panel.FontHeight * 2 + 1;
+        _panel = new InfoPanel(12, 200) { FirstRowLine = 1 };
+        Width = 200;
+        Height = _panel.FontHeight * 2 + _panel.ExtraLineSpacing * 2;
 
         if (!_config.Data.ShowStintDistance)
-            Height -= _panel.FontHeight;
+            Height -= (_panel.FontHeight + _panel.ExtraLineSpacing);
     }
 
     public sealed override void Render(Graphics g)
@@ -50,11 +51,11 @@ internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverla
         if (currentTrack == null)
             _panel.AddLine($"No Track", "Waiting...");
         else
-            _panel.AddProgressBarWithCenteredText($"{pageGraphics.NormalizedCarPosition * currentTrack.TrackLength:F1}M", 0, 1, 0);
+            _panel.AddProgressBarWithCenteredText($"{pageGraphics.NormalizedCarPosition * currentTrack.TrackLength:F0} M", 0, 1, 0);
 
 
         if (_config.Data.ShowStintDistance)
-            _panel.AddLine("Stint Distance", $"{pageGraphics.DistanceTraveled:F1}M");
+            _panel.AddLine("Stint", $"{pageGraphics.DistanceTraveled:F0} M");
 
         _panel.Draw(g);
     }
