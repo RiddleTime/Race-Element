@@ -13,6 +13,7 @@ public abstract class OverlayConfiguration
     public GenericConfig GenericConfiguration { get; set; } = new GenericConfig();
     public sealed class GenericConfig
     {
+        /// <summary>Sets the Visibility of the <see cref="Scale"/>, when true it will show the Scale option in the GUI, make sure you test Scaling before enabling this option.</summary>
         public bool AllowRescale = false;
 
         [ToolTip("Defines the scale of the overlay.")]
