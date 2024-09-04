@@ -3,6 +3,7 @@ using RaceElement.Data.Games.RaceRoom.DataMapper;
 using RaceElement.Data.Games.RaceRoom.SharedMemory;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -29,9 +30,16 @@ namespace RaceElement.Data.Games.RaceRoom
 
         public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
-            Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
-            RR3LocalCarMapper.AddR3SharedMemory(sharedMemory, localCar);
-            RR3SessionDataMapper.AddR3SharedMemory(sharedMemory, sessionData);
+            try
+            {
+                Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
+                RR3LocalCarMapper.AddR3SharedMemory(sharedMemory, localCar);
+                RR3SessionDataMapper.AddR3SharedMemory(sharedMemory, sessionData);
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
         }
 
         internal override void Stop()
