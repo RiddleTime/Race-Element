@@ -15,7 +15,7 @@ internal static partial class RR3LocalCarMapper
     // Race
     [MapProperty(nameof(Shared.Position), nameof(@LocalCarData.Race.GlobalPosition))]
     [MapProperty(nameof(Shared.PositionClass), nameof(@LocalCarData.Race.ClassPosition))]
-    private static partial void WithR3SharedMemory(Shared sharedData, LocalCarData commonData);
+    static partial void WithR3SharedMemory(Shared sharedData, LocalCarData commonData);
 
     public static void AddR3SharedMemory(Shared sharedData, LocalCarData commonData)
     {
