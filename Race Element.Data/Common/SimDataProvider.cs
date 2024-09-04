@@ -36,7 +36,8 @@ namespace RaceElement.Data.Common
                     }
                 case Game.AssettoCorsaCompetizione:
                     {
-                        AssettoCorsaCompetizioneDataProvider.Update(ref _localCarData, ref _session, ref _gameData);
+                        //  -- ACC is currently still running it's own data updater mechanisms, so this is for commented for the time being.
+                        //  AssettoCorsaCompetizioneDataProvider.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
                 case Game.iRacing:
