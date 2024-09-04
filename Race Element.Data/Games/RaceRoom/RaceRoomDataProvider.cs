@@ -30,7 +30,7 @@ namespace RaceElement.Data.Games.RaceRoom
         public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
             Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
-            LocalCarMapper.WithR3SharedMemory(sharedMemory, localCar);
+            RR3LocalCarMapper.AddR3SharedMemory(sharedMemory, localCar);
         }
 
         internal override void Stop()
