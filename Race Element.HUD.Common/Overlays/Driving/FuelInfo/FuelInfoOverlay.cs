@@ -2,6 +2,7 @@
 //using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
@@ -11,13 +12,16 @@ using System.Drawing;
 
 namespace RaceElement.HUD.Common.Overlays.OverlayFuelInfo;
 
-[Overlay(Name = "Fuel Info (ALPHA)",
+[Overlay(
+    Name = "Fuel Info (ALPHA)",
     Description = "A panel showing information about the fuel: laps left, fuel to end of race. Optionally showing stint information." +
     "\nBest to be used in a race, Do not use this before you start it as the game doesn't provide accurate data at that point.",
     Version = 1.00,
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Car,
-Authors = ["Kris Vickers", "Reinier Klarenberg", "Dirk Wolf"])]
+    Game = Game.iRacing | Game.AssettoCorsa1,
+    Authors = ["Kris Vickers", "Reinier Klarenberg", "Dirk Wolf"]
+)]
 internal sealed class FuelInfoOverlay : CommonAbstractOverlay
 {
     private readonly InfoPanel _infoPanel;
@@ -150,7 +154,7 @@ internal sealed class FuelInfoOverlay : CommonAbstractOverlay
         // TODO ACC uses -1000 in single player races. We use the same for iRacing right now.
         int driverStintTimeLeft = -1000;
         double stintFuel = 0; // TODO not used w/o stints driverStintTimeLeft / bestLapTime * SimDataProvider.LocalCar.Engine.FuelLitersXLap + pageGraphics.UsedFuelSinceRefuel;
-        
+
         double fuelToEnd = SessionData.Instance.SessionTimeLeftSecs / bestLapTime * SimDataProvider.LocalCar.Engine.FuelLitersXLap;
         double fuelToAdd = FuelToAdd(lapBufferVar, stintDebug, stintFuel, fuelToEnd);
         string fuelTime = $"{TimeSpan.FromMilliseconds(fuelTimeLeft):hh\\:mm\\:ss}";
