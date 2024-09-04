@@ -8,7 +8,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackDistance;
 
 [Overlay(
     Name = "Track Distance",
-    Description = "Shows the total track distance and current distance on track.",
+    Description = "Shows the current distance on track and optionally the stint distance.",
     Authors = ["Reinier Klarenberg"])]
 internal sealed class TrackDistanceOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Track Distance")
 {
