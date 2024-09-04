@@ -4,7 +4,7 @@ slug: multi-sim
 description: Getting Race Element Ready for Multi-Sim
 type: guide 
 ---
-Race Element is now in the process of adding support for sims other than ACC. Currently in development is support for iRacing and Assetto Corsa 1. 
+Race Element is now in the process of adding support for sims other than ACC. Currently in development is support for iRacing, Assetto Corsa 1 and RaceRoom. 
 
 While development is ongoing there might be some bugs that we need help with identifying. Below is a list of HUDs and their development state. Alpha HUDs might have a larger number of bugs than beta HUDs. In general if Race Element hangs or doesn't show proper values, try restarting it.
 
