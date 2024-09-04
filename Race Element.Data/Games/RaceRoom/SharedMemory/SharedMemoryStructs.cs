@@ -904,4 +904,7 @@ internal struct Shared
     // Contains name and basic vehicle info for all drivers in place order
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
     public DriverData[] DriverData;
+
+    public static readonly int Size = Marshal.SizeOf(typeof(Shared));
+    public static readonly byte[] Buffer = new byte[Size];
 }

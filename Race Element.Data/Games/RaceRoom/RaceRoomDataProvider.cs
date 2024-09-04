@@ -1,4 +1,6 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Games.RaceRoom.DataMapper;
+using RaceElement.Data.Games.RaceRoom.SharedMemory;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
@@ -22,17 +24,18 @@ namespace RaceElement.Data.Games.RaceRoom
 
         public override bool HasTelemetry()
         {
-            return true;
+            return false;
         }
 
         public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
-            
+            Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
+            LocalCarMapper.WithR3SharedMemory(sharedMemory, localCar);
         }
 
         internal override void Stop()
         {
-            
+
         }
     }
 }

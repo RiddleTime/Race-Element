@@ -3,6 +3,7 @@ using RaceElement.Data.Games.AssettoCorsaCompetizione;
 using RaceElement.Data.Games;
 using RaceElement.Data.Games.AssettoCorsa;
 using RaceElement.Data.Games.iRacing;
+using RaceElement.Data.Games.RaceRoom;
 
 namespace RaceElement.Data.Common
 {
@@ -26,10 +27,7 @@ namespace RaceElement.Data.Common
             {
                 case Game.AssettoCorsa1:
                     {
-                        if (Instance == null)
-                        {
-                            Instance = new AssettoCorsa1DataProvider();
-                        }
+                        Instance ??= new AssettoCorsa1DataProvider();
 
                         Instance.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
@@ -42,17 +40,14 @@ namespace RaceElement.Data.Common
                     }
                 case Game.iRacing:
                     {
-                        if (Instance == null)
-                        {
-                            Instance = new IRacingDataProvider();
-                        }
-
+                        Instance ??= new IRacingDataProvider();
                         Instance.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
                 case Game.RaceRoom:
                     {
-
+                        Instance ??= new RaceRoomDataProvider();
+                        Instance.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
                 default: { break; }
@@ -72,7 +67,7 @@ namespace RaceElement.Data.Common
             {
                 case Game.AssettoCorsa1:
                     {
-                        Instance.Stop();
+                        Instance?.Stop();
                         Instance = null;
                         break;
                     }
@@ -83,12 +78,13 @@ namespace RaceElement.Data.Common
                     }
                 case Game.iRacing:
                     {
-                        if (Instance == null)
-                        {
-                            return;
-                        }
-
-                        Instance.Stop();
+                        Instance?.Stop();
+                        Instance = null;
+                        break;
+                    }
+                case Game.RaceRoom:
+                    {
+                        Instance?.Stop();
                         Instance = null;
                         break;
                     }
