@@ -103,6 +103,11 @@ namespace RaceElement.Data.Common.SimulatorData
         /// -1 to 1, 0 is centered
         /// </summary>
         public float Steering { get; set; }
+
+        /// <summary>
+        /// The maximum steering angle(degrees) lock-to-lock for the current car.
+        /// </summary>
+        public float MaxSteeringAngle { get; set; }
         public int Gear { get; set; }
     }
 

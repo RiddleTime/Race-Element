@@ -12,17 +12,19 @@ internal static partial class RR3LocalCarMapper
     [MapProperty(nameof(Shared.Brake), nameof(@LocalCarData.Inputs.Brake))]
     [MapProperty(nameof(Shared.Clutch), nameof(@LocalCarData.Inputs.Clutch))]
     [MapProperty(nameof(Shared.SteerInputRaw), nameof(@LocalCarData.Inputs.Steering))]
+    [MapProperty(nameof(Shared.SteerWheelRangeDegrees), nameof(@LocalCarData.Inputs.MaxSteeringAngle))]
     // Race
     [MapProperty(nameof(Shared.Position), nameof(@LocalCarData.Race.GlobalPosition))]
     [MapProperty(nameof(Shared.PositionClass), nameof(@LocalCarData.Race.ClassPosition))]
-    static partial void WithR3SharedMemory(Shared sharedData, LocalCarData commonData);
+    static partial void WithR3SharedMemory(Shared sharedData, LocalCarData localCarData);
 
-    public static void AddR3SharedMemory(Shared sharedData, LocalCarData commonData)
+    public static void AddR3SharedMemory(Shared sharedData, LocalCarData localCarData)
     {
-        WithR3SharedMemory(sharedData, commonData);
-        commonData.Inputs.Gear = sharedData.Gear + 1;
+        WithR3SharedMemory(sharedData, localCarData);
+        localCarData.Inputs.Gear = sharedData.Gear + 1;
 
-        commonData.Engine.MaxRpm = (int)Utilities.RpsToRpm(sharedData.MaxEngineRps);
-        commonData.Engine.Rpm = (int)Utilities.RpsToRpm(sharedData.EngineRps);
+        localCarData.Engine.MaxRpm = (int)Utilities.RpsToRpm(sharedData.MaxEngineRps);
+        localCarData.Engine.Rpm = (int)Utilities.RpsToRpm(sharedData.EngineRps);
+
     }
 }
