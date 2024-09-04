@@ -55,7 +55,7 @@ internal static partial class LocalCarMapper
         WithGraphicsPage(pageGraphics, commonData);
         int playerArrayIndex = Array.IndexOf(pageGraphics.CarIds, pageGraphics.PlayerCarID);
         if (playerArrayIndex != -1)
-            commonData.Physics.Location = pageGraphics.CarCoordinates[playerArrayIndex]
+            commonData.Physics.Location = pageGraphics.CarCoordinates[playerArrayIndex];
     }
     // Engine Data
     [MapProperty(nameof(PageFileStatic.MaxRpm), nameof(@LocalCarData.Engine.MaxRpm))]
