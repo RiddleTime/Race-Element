@@ -17,6 +17,7 @@ namespace RaceElement.HUD.Common.Overlays.OverlayWind;
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Track,
     Version = 1.00,
+    Game = Game.iRacing | Game.AssettoCorsa1,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class WindDirectionOverlay : CommonAbstractOverlay
 {
