@@ -3,15 +3,12 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Linq;
 using Unglide;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayShiftIndicator;
+namespace RaceElement.HUD.Common.Overlays.Driving.ShiftIndicator;
 
 [Overlay(Name = "Shift Indicator",
     Description = "Shift Bar with RPM Text. Adjustable colors and percentages. (BETA)",
@@ -49,9 +46,9 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 
     public ShiftIndicatorOverlay(Rectangle rectangle) : base(rectangle, "Shift Indicator")
     {
-        this.RefreshRateHz = this._config.Bar.RefreshRate;
-        this.Height = _config.Bar.Height + 1;
-        this.Width = _config.Bar.Width + 1;
+        RefreshRateHz = _config.Bar.RefreshRate;
+        Height = _config.Bar.Height + 1;
+        Width = _config.Bar.Width + 1;
     }
 
     public sealed override void SetupPreviewData()
@@ -73,7 +70,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
             height.Clip(11, 22);
             _font = FontUtil.FontSegoeMono(height);
         }
-        int cornerRadius = (int)(10 * this.Scale);
+        int cornerRadius = (int)(10 * Scale);
 
         _colors =
             [
@@ -86,33 +83,33 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         _cachedColorBars = [];
         foreach (var color in _colors.Select(x => x.Item2))
         {
-            _cachedColorBars.Add(new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
+            _cachedColorBars.Add(new CachedBitmap((int)(_config.Bar.Width * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
             {
-                Rectangle rect = new(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
+                Rectangle rect = new(0, 1, (int)(_config.Bar.Width * Scale), (int)(_config.Bar.Height * Scale));
                 using HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
                 g.FillRoundedRectangle(hatchBrush, rect, cornerRadius);
             }));
         }
 
-        _cachedFlashBar = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
+        _cachedFlashBar = new CachedBitmap((int)(_config.Bar.Width * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
         {
             Color color = Color.FromArgb(_config.Colors.FlashOpacity, _config.Colors.FlashColor);
-            Rectangle rect = new(0, 1, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale));
+            Rectangle rect = new(0, 1, (int)(_config.Bar.Width * Scale), (int)(_config.Bar.Height * Scale));
             using HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, color, Color.FromArgb(color.A - 40, color));
             g.FillRoundedRectangle(hatchBrush, rect, cornerRadius);
         }, opacity: 0f);
 
 
-        _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
+        _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
         {
-            int midHeight = (int)(_config.Bar.Height * this.Scale) / 2;
-            using LinearGradientBrush linerBrush = new(new Point(0, midHeight), new Point((int)(_config.Bar.Width * this.Scale), midHeight), Color.FromArgb(160, 0, 0, 0), Color.FromArgb(230, 0, 0, 0));
-            g.FillRoundedRectangle(linerBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
-            using Pen pen = new(Color.Black, 1 * this.Scale);
-            g.DrawRoundedRectangle(pen, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
+            int midHeight = (int)(_config.Bar.Height * Scale) / 2;
+            using LinearGradientBrush linerBrush = new(new Point(0, midHeight), new Point((int)(_config.Bar.Width * Scale), midHeight), Color.FromArgb(160, 0, 0, 0), Color.FromArgb(230, 0, 0, 0));
+            g.FillRoundedRectangle(linerBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * Scale), (int)(_config.Bar.Height * Scale)), cornerRadius);
+            using Pen pen = new(Color.Black, 1 * Scale);
+            g.DrawRoundedRectangle(pen, new Rectangle(0, 0, (int)(_config.Bar.Width * Scale), (int)(_config.Bar.Height * Scale)), cornerRadius);
         });
 
-        _cachedRpmLines = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
+        _cachedRpmLines = new CachedBitmap((int)(_config.Bar.Width * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
         {
             int lineCount = (int)Math.Floor((maxRpm - _config.Bar.HideRpm) / 1000d);
 
@@ -122,24 +119,24 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 
             lineCount.ClipMin(0);
             using SolidBrush brush = new(Color.FromArgb(220, Color.Black));
-            using Pen linePen = new(brush, 1.5f * this.Scale);
+            using Pen linePen = new(brush, 1.5f * Scale);
 
-            double thousandPercent = (1000d / (maxRpm - _config.Bar.HideRpm)) * lineCount;
-            double baseX = (_config.Bar.Width * this.Scale) / lineCount * thousandPercent;
+            double thousandPercent = 1000d / (maxRpm - _config.Bar.HideRpm) * lineCount;
+            double baseX = _config.Bar.Width * Scale / lineCount * thousandPercent;
             for (int i = 1; i <= lineCount; i++)
             {
                 int x = (int)(i * baseX);
-                g.DrawLine(linePen, x, 1, x, (_config.Bar.Height * this.Scale) - 1);
+                g.DrawLine(linePen, x, 1, x, _config.Bar.Height * Scale - 1);
             }
         });
 
         if (_config.Bar.ShowPitLimiter)
         {
             _pitLimiterTweener = new Tweener();
-            _cachedPitLimiterOutline = new CachedBitmap((int)(Width * this.Scale), (int)(Height * this.Scale), g =>
+            _cachedPitLimiterOutline = new CachedBitmap((int)(Width * Scale), (int)(Height * Scale), g =>
             {
                 using Pen pen = new(Color.FromArgb(190, Color.Yellow), 5 * Scale);
-                g.DrawRoundedRectangle(pen, new Rectangle(0, 0, (int)(Width * this.Scale - 1), (int)(Height * this.Scale - 1)), cornerRadius);
+                g.DrawRoundedRectangle(pen, new Rectangle(0, 0, (int)(Width * Scale - 1), (int)(Height * Scale - 1)), cornerRadius);
             });
         }
 
@@ -183,17 +180,17 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         // draw calculated early and upshift rpm, this gets activated by the SetupPreviewData() override. (Used in GUI only).
         if (_drawShiftRPM)
         {
-            int x = (int)((_halfRpmStringWidth + 8) + _halfRpmStringWidth * 2 + 5);
+            int x = (int)(_halfRpmStringWidth + 8 + _halfRpmStringWidth * 2 + 5);
             int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
-            string earlyShiftRpm = $"Early:{(_config.Upshift.Early / 100f * maxRpm):F0}";
+            string earlyShiftRpm = $"Early:{_config.Upshift.Early / 100f * maxRpm:F0}";
             float earlyWidth = g.MeasureString(earlyShiftRpm, _font).Width;
-            Rectangle earlyRect = new((int)(x - earlyWidth / 5), y, (int)(earlyWidth), _font.Height);
+            Rectangle earlyRect = new((int)(x - earlyWidth / 5), y, (int)earlyWidth, _font.Height);
             DrawTextWithOutline(g, Color.White, earlyShiftRpm, x, y, earlyRect);
 
             x += (int)(earlyWidth + 5);
-            string upshiftRpm = $"Up:{(_config.Upshift.Upshift / 100f * maxRpm):F0}";
+            string upshiftRpm = $"Up:{_config.Upshift.Upshift / 100f * maxRpm:F0}";
             float upshiftWidth = g.MeasureString(upshiftRpm, _font).Width;
-            Rectangle upshiftRect = new((int)(x - upshiftWidth / 3.5), y, (int)(upshiftWidth), _font.Height);
+            Rectangle upshiftRect = new((int)(x - upshiftWidth / 3.5), y, (int)upshiftWidth, _font.Height);
             DrawTextWithOutline(g, Color.White, upshiftRpm, x, y, upshiftRect);
         }
 
@@ -229,7 +226,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         if (_halfRpmStringWidth < 0)
             _halfRpmStringWidth = g.MeasureString("9999", _font).Width / 2;
 
-        int x = (int)((_halfRpmStringWidth + 8));
+        int x = (int)(_halfRpmStringWidth + 8);
         int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
         Rectangle backgroundDimension = new((int)(x - _halfRpmStringWidth), y, (int)(_halfRpmStringWidth * 2), _font.Height);
         DrawTextWithOutline(g, Color.White, currentRpm, x, y, backgroundDimension);
@@ -239,7 +236,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
     {
         using SolidBrush brush = new(Color.FromArgb(185, 0, 0, 0));
         g.FillRoundedRectangle(brush, rect, 2);
-        g.DrawStringWithShadow(text, _font, textColor, new PointF(x - _halfRpmStringWidth, y + _font.Height / 14f), 1.5f * this.Scale);
+        g.DrawStringWithShadow(text, _font, textColor, new PointF(x - _halfRpmStringWidth, y + _font.Height / 14f), 1.5f * Scale);
     }
 
     private void DrawRpmBar(Graphics g)
@@ -249,7 +246,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         double percent = 0;
 
         if (maxRpm > 0 && currentRpm > 0)
-            percent = ((double)currentRpm) / maxRpm;
+            percent = (double)currentRpm / maxRpm;
 
         if (percent > 0)
         {

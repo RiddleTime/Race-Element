@@ -1,7 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayShiftIndicator;
+namespace RaceElement.HUD.Common.Overlays.Driving.ShiftIndicator;
 
 internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
 {
@@ -74,6 +74,6 @@ internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
 
     public ShiftIndicatorConfiguration()
     {
-        this.GenericConfiguration.AllowRescale = true;
+        GenericConfiguration.AllowRescale = true;
     }
 }
