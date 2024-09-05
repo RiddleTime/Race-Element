@@ -33,9 +33,5 @@ internal static partial class RR3LocalCarMapper
         localCarData.Engine.Rpm = (int)Utilities.RpsToRpm(sharedData.EngineRps);
 
         localCarData.Physics.Velocity = sharedData.CarSpeed * 3.6f;
-
-        var playerDriverData = sharedData.DriverData.First(x => x.DriverInfo.Name == sharedData.PlayerName);
-        if (playerDriverData.DriverInfo.Name != null)
-            localCarData.CarModel.GameName = $"{playerDriverData.DriverInfo.ModelId}";
     }
 }

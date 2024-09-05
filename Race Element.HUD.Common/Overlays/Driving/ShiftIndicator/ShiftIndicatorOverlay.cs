@@ -20,7 +20,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 {
     private readonly ShiftIndicatorConfiguration _config = new();
 
-    private string _lastCar = string.Empty;
+    private int _lastMaxRpm = -1;
     private CachedBitmap _cachedBackground;
     private CachedBitmap _cachedRpmLines;
 
@@ -289,10 +289,10 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 
     private void DrawRpmBar1kLines(Graphics g)
     {
-        if (_lastCar != SimDataProvider.LocalCar.CarModel.GameName)
+        if (_lastMaxRpm != SimDataProvider.LocalCar.Engine.MaxRpm)
         {
             _cachedRpmLines.Render();
-            _lastCar = SimDataProvider.LocalCar.CarModel.GameName;
+            _lastMaxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
         }
 
         _cachedRpmLines.Draw(g, _config.Bar.Width, _config.Bar.Height);
