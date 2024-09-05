@@ -1,9 +1,11 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayStandings;
+namespace RaceElement.HUD.Common.Overlays.Driving.Standings;
 
 internal sealed class StandingsConfiguration : OverlayConfiguration
 {
+    public StandingsConfiguration() => GenericConfiguration.AllowRescale = true;
+
     [ConfigGrouping("Information", "Show or hide additional information in the standings.")]
     public InformationGrouping Information { get; init; } = new InformationGrouping();
     public class InformationGrouping
@@ -29,10 +31,5 @@ internal sealed class StandingsConfiguration : OverlayConfiguration
         [ToolTip("Multiclass Rows")]
         [IntRange(1, 10, 1)]
         public int MulticlassRows { get; init; } = 4;
-    }
-
-    public StandingsConfiguration()
-    {
-        this.GenericConfiguration.AllowRescale = true;
     }
 }
