@@ -1,7 +1,6 @@
 ﻿using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games;
-using RaceElement.HUD.Common.Overlays.OverlayStandings;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -31,9 +30,9 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
     private string _driverName = "";
 
     // the entry list splint into separate lists for every car class
-    private Dictionary<string, List<KeyValuePair<int, CarInfo>>> _entryListForCarClass = [];
+    private readonly Dictionary<string, List<KeyValuePair<int, CarInfo>>> _entryListForCarClass = [];
 
-    public List<string> CarClasses { get; private set; } = null;
+    internal List<string> CarClasses { get; private set; } = [];
 
     public StandingsOverlay(Rectangle rectangle) : base(rectangle, "Live Standings")
     {

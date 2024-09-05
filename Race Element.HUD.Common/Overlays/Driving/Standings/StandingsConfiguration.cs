@@ -8,7 +8,7 @@ internal sealed class StandingsConfiguration : OverlayConfiguration
 
     [ConfigGrouping("Information", "Show or hide additional information in the standings.")]
     public InformationGrouping Information { get; init; } = new InformationGrouping();
-    public class InformationGrouping
+    public sealed class InformationGrouping
     {
         [ToolTip("Multiclass")]
         public bool MultiClass { get; init; } = true;
