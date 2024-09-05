@@ -53,16 +53,20 @@ internal sealed class TrackBarOverlay : CommonAbstractOverlay
     public sealed override void SetupPreviewData()
     {
         SessionData.Instance.FocusedCarIndex = 1;
-        var car1 = new CarInfo(1);
-        car1.TrackPercentCompleted = 1.0f;
-        car1.Position = 1;
-        car1.CarLocation = CarInfo.CarLocationEnum.Track;
-        SessionData.Instance.AddOrUpdateCar(1, car1);
-        CarInfo car2 = new CarInfo(2);
-        car2.TrackPercentCompleted = 1.03f;
-        car2.Position = 2;
-        car2.CarLocation = CarInfo.CarLocationEnum.Track;
-        SessionData.Instance.AddOrUpdateCar(2, car2);
+        CarInfo car1 = new(1)
+        {
+            TrackPercentCompleted = 1.0f,
+            Position = 1,
+            CarLocation = CarInfo.CarLocationEnum.Track
+        };
+        SessionData.Instance.AddOrUpdateCar(car1.CarIndex, car1);
+        CarInfo car2 = new(2)
+        {
+            TrackPercentCompleted = 1.03f,
+            Position = 2,
+            CarLocation = CarInfo.CarLocationEnum.Track
+        };
+        SessionData.Instance.AddOrUpdateCar(car2.CarIndex, car2);
     }
 
     public sealed override void BeforeStart()
