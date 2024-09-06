@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RaceElement.Data.Games;
 using RaceElement.Util;
 using System;
 using System.Collections.Generic;
@@ -19,13 +20,8 @@ public class OverlaySettings
 
     private static DirectoryInfo GetOverlayDirectory()
     {
-        DirectoryInfo overlayDir = new(FileUtil.RaceElementOverlayPath);
-
-        if (!overlayDir.Exists)
-        {
-            overlayDir.Create();
-        }
-
+        DirectoryInfo overlayDir = new(FileUtil.RaceElementOverlayPath + GameManager.CurrentGame.ToFriendlyName());
+        if (!overlayDir.Exists) overlayDir.Create();
         return overlayDir;
     }
 
@@ -51,14 +47,12 @@ public class OverlaySettings
 
     public static OverlaySettingsJson SaveOverlaySettings(string overlayName, OverlaySettingsJson settings)
     {
-        DirectoryInfo tagDir = GetOverlayDirectory();
-
-        FileInfo[] tagFiles = tagDir.GetFiles($"{overlayName}.json");
+        FileInfo[] tagFiles = GetOverlayDirectory().GetFiles($"{overlayName}.json");
         FileInfo overlaySettingsFile = null;
 
         if (tagFiles.Length == 0)
         {
-            overlaySettingsFile = new FileInfo($"{FileUtil.RaceElementOverlayPath}{overlayName}.json");
+            overlaySettingsFile = new FileInfo($"{GetOverlayDirectory().FullName}{Path.DirectorySeparatorChar}{overlayName}.json");
         }
         else
         {
@@ -72,7 +66,7 @@ public class OverlaySettings
             }
         }
 
-        overlaySettingsFile ??= new FileInfo($"{FileUtil.RaceElementOverlayPath}{overlayName}.json");
+        overlaySettingsFile ??= new FileInfo($"{GetOverlayDirectory().FullName}{Path.DirectorySeparatorChar}{overlayName}.json");
 
         string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
 
