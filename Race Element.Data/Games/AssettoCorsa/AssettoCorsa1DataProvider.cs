@@ -157,4 +157,9 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
         // TODO: Can we spectate other cars in the pits in AC1?
         return false;
     }
+
+    public override Color? GetColorForCategory(string category)
+    {
+        return Color.Gray;
+    }
 }

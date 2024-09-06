@@ -7,14 +7,14 @@ using RaceElement.Data.Common.SimulatorData;
 
 namespace RaceElement.HUD.Overlay.Internal
 {
-    internal static class DataUtil
+    public static class DataUtil
     {
 
         // Get the grap to the car in front.
         // Restrictions
         //   1) Does not take into account classes
         //   2) Needs the sim to provide the speed of each car (Kmh)
-        private static string GetGapToCarInFront(List<KeyValuePair<int, CarInfo>> list, int i)
+        public static string GetGapToCarInFront(List<KeyValuePair<int, CarInfo>> list, int i)
         {
             // inspired by acc bradcasting client
 
@@ -33,6 +33,37 @@ namespace RaceElement.HUD.Overlay.Internal
             }
             return $"{gabMeters / currentCar.Kmh * 3.6:F1}s ⇅";
 
+        }
+
+        /// <summary>
+        /// Format a lap time difference in milliseconds
+        /// </summary>        
+        public static String GetTimeDiff(int? LaptimeMS)
+        {
+            if (LaptimeMS == null || LaptimeMS == 0)
+            {
+                return "--:--.---";
+            }
+
+            TimeSpan lapTime = TimeSpan.FromMilliseconds((double)LaptimeMS);
+            if (lapTime.Minutes > 0)
+                return $"{lapTime:m\\:s\\.f}";
+            else
+                return $"{lapTime:s\\.f}";
+        }
+
+        /// <summary>
+        /// Format a lap time
+        /// </summary>
+        public static String GetLapTime(LapInfo lap)
+        {
+            if (lap == null || !lap.LaptimeMS.HasValue || lap.LaptimeMS < 0)
+            {
+                return "--:--.---";
+            }
+
+            TimeSpan lapTime = TimeSpan.FromMilliseconds(lap.LaptimeMS.Value);
+            return $"{lapTime:mm\\:ss\\.fff}";
         }
     }
 }

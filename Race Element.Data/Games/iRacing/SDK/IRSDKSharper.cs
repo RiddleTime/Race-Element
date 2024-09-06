@@ -384,7 +384,7 @@ namespace RaceElement.Data.Games.iRacing.SDK
 
                 while (isStarted == 1)
                 {
-                    Debug.WriteLine("Waiting for session info event.");
+                    // Debug.WriteLine("Waiting for session info event.");
 
                     sessionInfoAutoResetEvent?.WaitOne();
 
@@ -392,7 +392,7 @@ namespace RaceElement.Data.Games.iRacing.SDK
                     {
                         if (isStarted == 1)
                         {
-                            Debug.WriteLine("Updating session info.");
+                            // Debug.WriteLine("Updating session info.");
 
                             if (Data.UpdateSessionInfo())
                             {
@@ -452,7 +452,7 @@ namespace RaceElement.Data.Games.iRacing.SDK
 
                         if (lastSessionInfoUpdate != Data.SessionInfoUpdate)
                         {
-                            Debug.WriteLine("Data.SessionInfoUpdate has changed.");
+                            // Debug.WriteLine("Data.SessionInfoUpdate has changed.");
 
                             lastSessionInfoUpdate = Data.SessionInfoUpdate;
 
@@ -465,7 +465,7 @@ namespace RaceElement.Data.Games.iRacing.SDK
 
                         if (Interlocked.Exchange(ref sessionInfoUpdateReady, 0) == 1)
                         {
-                            Debug.WriteLine("Invoking OnSessionInfo.");
+                            // Debug.WriteLine("Invoking OnSessionInfo.");
 
                             OnSessionInfo?.Invoke();
                         }

@@ -8,10 +8,12 @@ namespace RaceElement.Data.Games;
 
 public abstract class AbstractSimDataProvider
 {
+    // Get color to be used for a car class (GT3, GT4,..)
     abstract public Color GetColorForCarClass(String carClass);
-    abstract public List<string> GetCarClasses();
-    // TODO: Should we allow for both Update being driven and the simracing data provider doing its own polls? E.g. Update could return true if 
-    // all future updates can be handes w/o calls to Update
+
+    // Get color to be used for a driver's category (Gold, A-License,..)
+    abstract public Color? GetColorForCategory(string category);
+    abstract public List<string> GetCarClasses();    
     abstract public void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData);
 
     abstract internal void Stop();
@@ -23,5 +25,5 @@ public abstract class AbstractSimDataProvider
     public virtual bool IsSpectating(int playerCarIndex, int focusedIndex)
     {
         throw new NotImplementedException();
-    }
+    }        
 }

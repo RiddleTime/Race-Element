@@ -64,20 +64,26 @@ public abstract class CommonAbstractOverlay : FloatingWindow
             return true;
 
         if (IsRepositioning)
-            return true;
-
+            return true;        
+        
         
         if (!SimDataProvider.HasTelemetry())
             return false;
 
         // For show only HUDs when player is on track. 
         // TODO: Distinguish in sim data providers between pit and garage and only show in pit, but not garage or make configurable.
-        CarInfo carInfo = SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value;
-        if (carInfo.CarLocation != CarInfo.CarLocationEnum.Track) return false;
-
-        bool shouldRender = true;
-
-        return shouldRender;
+        if (SessionData.Instance.Cars.Count > SessionData.Instance.PlayerCarIndex)
+        {
+            CarInfo carInfo = SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value;
+            if (carInfo.CarLocation == CarInfo.CarLocationEnum.NONE || carInfo.CarLocation == CarInfo.CarLocationEnum.Garage) return false;
+        } else
+        {
+            Debug.WriteLine("Telemetry initialized by no player data. PlayerIdx {0} Driver count {1}",
+                SessionData.Instance.PlayerCarIndex, SessionData.Instance.Cars.Count);
+            return false;
+        }        
+        
+        return true;
     }
 
     private void LoadFieldConfig()
