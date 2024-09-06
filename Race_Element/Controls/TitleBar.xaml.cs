@@ -126,10 +126,10 @@ public partial class TitleBar : UserControl
         foreach (Game game in Enum.GetValues(typeof(Game)))
         {
             if (game == Game.Any) continue;
-            string friendlyName = game.ToShortName();
-            if (friendlyName.Length > 0)
+            string shortName = game.ToShortName();
+            if (shortName.Length > 0)
             {
-                ComboBoxItem comboBoxItem = new() { Content = friendlyName, DataContext = game };
+                ComboBoxItem comboBoxItem = new() { Content = shortName, DataContext = game, ToolTip = game.ToFriendlyName() };
                 comboBoxCurrentGame.Items.Add(comboBoxItem);
             }
             else
@@ -144,8 +144,8 @@ public partial class TitleBar : UserControl
         int index = -1;
         for (int i = 0; i < comboBoxCurrentGame.Items.Count; i++)
         {
-            var comboBoxItem = comboBoxCurrentGame.Items.GetItemAt(i);
-            if (comboBoxItem is ComboBoxItem item && item.DataContext != null && item.DataContext is Game game)
+            var itemObject = comboBoxCurrentGame.Items.GetItemAt(i);
+            if (itemObject is ComboBoxItem item && item.DataContext != null && item.DataContext is Game game)
                 if (game == selectedGame)
                     index = i;
         }
