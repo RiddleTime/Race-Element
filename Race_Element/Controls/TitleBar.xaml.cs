@@ -138,9 +138,18 @@ public partial class TitleBar : UserControl
             }
         }
 
-        int index = (int)new UiSettings().Get().SelectedGame - 1;
-        index.Clip(0, Enum.GetValues(typeof(Game)).Length - 1);
-        comboBoxCurrentGame.SelectedIndex = index;
+        var uiSettings = new UiSettings();
+        Game selectedGame = uiSettings.Get().SelectedGame;
+        if (selectedGame == Game.Any) selectedGame = uiSettings.Default().SelectedGame;
+        int index = -1;
+        for (int i = 0; i < comboBoxCurrentGame.Items.Count; i++)
+        {
+            var comboBoxItem = comboBoxCurrentGame.Items.GetItemAt(i);
+            if (comboBoxItem is ComboBoxItem item && item.DataContext != null && item.DataContext is Game game)
+                if (game == selectedGame)
+                    index = i;
+        }
+        if (index != -1) comboBoxCurrentGame.SelectedIndex = index;
     }
 
     private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)
