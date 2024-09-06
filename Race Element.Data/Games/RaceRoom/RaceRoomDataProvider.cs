@@ -21,13 +21,7 @@ namespace RaceElement.Data.Games.RaceRoom
         public override Color GetColorForCarClass(string carClass)
         {
             return Color.White;
-        }
-
-        public override Color? GetColorForCategory(string category)
-        {
-            // TODO: if RRE supports multiple classes with different colors in HUDs.
-            return Color.White;
-        }
+        }        
 
         public override bool HasTelemetry()
         {

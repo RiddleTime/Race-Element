@@ -720,7 +720,7 @@ namespace RaceElement.Data.Games.iRacing
         /// <summary>
         /// iRacing license class to color mapping.
         /// </summary>        
-        public override Color? GetColorForCategory(string category)
+        public override Color GetColorForCategory(string category)
         {
             if (category.StartsWith("A"))
             {

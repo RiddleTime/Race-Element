@@ -158,8 +158,8 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
         return false;
     }
 
-    public override Color? GetColorForCategory(string category)
+    public override Color GetColorForCategory(string category)
     {
-        return Color.Gray;
+        return Color.White;
     }
 }
