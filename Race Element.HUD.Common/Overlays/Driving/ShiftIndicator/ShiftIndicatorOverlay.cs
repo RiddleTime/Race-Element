@@ -63,7 +63,6 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 
     public sealed override void BeforeStart()
     {
-        int maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
         if (_config.Bar.ShowRpmText || _config.Bar.ShowPitLimiter)
         {
             float height = _config.Bar.Height - 14;
@@ -111,9 +110,9 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 
         _cachedRpmLines = new CachedBitmap((int)(_config.Bar.Width * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
         {
-            int lineCount = (int)Math.Floor((maxRpm - _config.Bar.HideRpm) / 1000d);
+            int lineCount = (int)Math.Floor((SimDataProvider.LocalCar.Engine.MaxRpm - _config.Bar.HideRpm) / 1000d);
 
-            int leftOver = (maxRpm - _config.Bar.HideRpm) % 1000;
+            int leftOver = (SimDataProvider.LocalCar.Engine.MaxRpm - _config.Bar.HideRpm) % 1000;
             if (leftOver < 70)
                 lineCount--;
 
@@ -121,7 +120,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
             using SolidBrush brush = new(Color.FromArgb(220, Color.Black));
             using Pen linePen = new(brush, 1.5f * Scale);
 
-            double thousandPercent = 1000d / (maxRpm - _config.Bar.HideRpm) * lineCount;
+            double thousandPercent = 1000d / (SimDataProvider.LocalCar.Engine.MaxRpm - _config.Bar.HideRpm) * lineCount;
             double baseX = _config.Bar.Width * Scale / lineCount * thousandPercent;
             for (int i = 1; i <= lineCount; i++)
             {
@@ -291,8 +290,8 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
     {
         if (_lastMaxRpm != SimDataProvider.LocalCar.Engine.MaxRpm)
         {
-            _cachedRpmLines.Render();
             _lastMaxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
+            _cachedRpmLines.Render();
         }
 
         _cachedRpmLines.Draw(g, _config.Bar.Width, _config.Bar.Height);
