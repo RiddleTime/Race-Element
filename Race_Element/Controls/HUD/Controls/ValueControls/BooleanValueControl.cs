@@ -42,8 +42,9 @@ internal sealed class BooleanValueControl : IValueControl<bool>, IControl
         // add toggle button
         _toggleButton = new ToggleButton()
         {
-            IsChecked = bool.Parse(_field.Value.ToString())
+            IsChecked = bool.Parse(_field.Value.ToString()),
         };
+        _toggleButton.Background = _toggleButton.IsChecked.Value ? Brushes.LimeGreen : Brushes.Red;
         _toggleButton.Checked += ToggleButtonValueChanged;
         _toggleButton.Unchecked += ToggleButtonValueChanged;
         UpdateLabel();
@@ -60,6 +61,8 @@ internal sealed class BooleanValueControl : IValueControl<bool>, IControl
     private void ToggleButtonValueChanged(object sender, RoutedEventArgs e)
     {
         _field.Value = _toggleButton.IsChecked;
+
+        _toggleButton.Background = _toggleButton.IsChecked.Value ? Brushes.LimeGreen : Brushes.Red;
         UpdateLabel();
         Save();
     }
@@ -67,6 +70,7 @@ internal sealed class BooleanValueControl : IValueControl<bool>, IControl
     private void UpdateLabel()
     {
         _label.Content = bool.Parse(_field.Value.ToString()) ? "On" : "Off";
+        _label.Foreground = _toggleButton.IsChecked.Value ? Brushes.LimeGreen : Brushes.White;
     }
 
     public void Save()

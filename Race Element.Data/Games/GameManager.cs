@@ -8,7 +8,7 @@ public static class GameManager
 {
     private readonly static SimpleLoopJob _dataUpdaterJob = new() { Action = () => SimDataProvider.Update(), IntervalMillis = 1000 / 50 };
 
-    public static Game CurrentGame { get; private set; } = Game.AssettoCorsaCompetizione;
+    public static Game CurrentGame { get; private set; } = Game.Any;
 
     public static event EventHandler<Game>? OnGameChanged;
     public static void SetCurrentGame(Game game)

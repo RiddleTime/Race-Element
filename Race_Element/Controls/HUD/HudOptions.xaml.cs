@@ -47,7 +47,7 @@ public partial class HudOptions : UserControl
     private DateTime _lastMovementModeChange = DateTime.MinValue;
     private const int MovementModeDebounce = 250;
 
-    public static List<CommonAbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
+    internal static List<CommonAbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
     {
         Game.AssettoCorsaCompetizione => OverlaysAcc.ActiveOverlays,
         _ => CommonHuds.ActiveOverlays
@@ -88,7 +88,9 @@ public partial class HudOptions : UserControl
 
             GameManager.OnGameChanged += (s, newGame) =>
             {
-                BuildOverlayPanel();
+                if (newGame != Game.Any)
+                    BuildOverlayPanel();
+                PreviewCache._cachedPreviews.Clear();
             };
 
             bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
@@ -97,7 +99,9 @@ public partial class HudOptions : UserControl
                 {
                     PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
                     PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
-                    BuildOverlayPanel();
+
+                    if (GameManager.CurrentGame != Game.Any)
+                        BuildOverlayPanel();
 
                     ToolTipService.SetInitialShowDelay(listBoxItemToggleDemoMode, 1);
                     ToolTipService.SetInitialShowDelay(listBoxItemToggleMovementMode, 1);
@@ -403,7 +407,6 @@ public partial class HudOptions : UserControl
                 listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
                 listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
                 overlay = (CommonAbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
-
                 overlay.Start();
 
                 SaveOverlaySettings(overlay, true);

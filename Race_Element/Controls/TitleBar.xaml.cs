@@ -125,11 +125,11 @@ public partial class TitleBar : UserControl
         comboBoxCurrentGame.Items.Clear();
         foreach (Game game in Enum.GetValues(typeof(Game)))
         {
-            if (game == Game.None) continue;
-            string friendlyName = game.ToShortName();
-            if (friendlyName.Length > 0)
+            if (game == Game.Any) continue;
+            string shortName = game.ToShortName();
+            if (shortName.Length > 0)
             {
-                ComboBoxItem comboBoxItem = new() { Content = friendlyName, DataContext = game };
+                ComboBoxItem comboBoxItem = new() { Content = shortName, DataContext = game, ToolTip = game.ToFriendlyName() };
                 comboBoxCurrentGame.Items.Add(comboBoxItem);
             }
             else
@@ -138,9 +138,18 @@ public partial class TitleBar : UserControl
             }
         }
 
-        int index = (int)new UiSettings().Get().SelectedGame - 1;
-        index.Clip(0, Enum.GetValues(typeof(Game)).Length - 1);
-        comboBoxCurrentGame.SelectedIndex = index;
+        var uiSettings = new UiSettings();
+        Game selectedGame = uiSettings.Get().SelectedGame;
+        if (selectedGame == Game.Any) selectedGame = uiSettings.Default().SelectedGame;
+        int index = -1;
+        for (int i = 0; i < comboBoxCurrentGame.Items.Count; i++)
+        {
+            var itemObject = comboBoxCurrentGame.Items.GetItemAt(i);
+            if (itemObject is ComboBoxItem item && item.DataContext != null && item.DataContext is Game game)
+                if (game == selectedGame)
+                    index = i;
+        }
+        if (index != -1) comboBoxCurrentGame.SelectedIndex = index;
     }
 
     private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)

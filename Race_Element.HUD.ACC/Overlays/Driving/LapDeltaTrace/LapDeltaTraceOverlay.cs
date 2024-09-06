@@ -82,7 +82,7 @@ internal sealed class LapDeltaTraceOverlay : AbstractOverlay
             if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
                 lock (EntryListTracker.Instance.Cars)
                 {
-                    if (EntryListTracker.Instance.Cars.Any())
+                    if (EntryListTracker.Instance.Cars.Count > 0)
                     {
                         var car = EntryListTracker.Instance.Cars.First(car => car.Key == focusedIndex);
                         delta = car.Value.RealtimeCarUpdate.Delta / 1000f;

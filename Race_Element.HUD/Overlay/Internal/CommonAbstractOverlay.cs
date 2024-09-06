@@ -64,9 +64,9 @@ public abstract class CommonAbstractOverlay : FloatingWindow
             return true;
 
         if (IsRepositioning)
-            return true;        
-        
-        
+            return true;
+
+
         if (!SimDataProvider.HasTelemetry())
             return false;
 
@@ -207,7 +207,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         catch (Exception ex) { Debug.WriteLine(ex); }
     }
 
-    
+
     public void RequestRedraw()
     {
         if (hasClosed)
@@ -219,7 +219,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         this.UpdateLayeredWindow();
     }
 
-    
+
     public void Stop()
     {
         try

@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -11,10 +12,15 @@ using System.Numerics;
 using static RaceElement.Data.Common.SimulatorData.CarInfo;
 
 
-namespace RaceElement.HUD.Common.Overlays.OverlayStandings;
+namespace RaceElement.HUD.Common.Overlays.Driving.Standings;
 
-[Overlay(Name = "Live Standings", Version = 1.00,
-Description = "Shows race standings table for different car classes. (ALPHA)", OverlayType = OverlayType.Drive, Authors = ["FG", "Dirk Wolf"])]
+[Overlay(
+    Name = "Live Standings",
+    Version = 1.00,
+    Description = "Shows race standings table for different car classes. (ALPHA)",
+    OverlayType = OverlayType.Drive,
+    Game = Game.iRacing | Game.AssettoCorsa1,
+    Authors = ["FG", "Dirk Wolf"])]
 public sealed class StandingsOverlay : CommonAbstractOverlay
 {
     private readonly StandingsConfiguration _config = new();
@@ -22,23 +28,23 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
     private const int _width = 800;
 
 
-    private String _driverName = "";
+    private string _driverName = "";
 
     // the entry list splint into separate lists for every car class
-    private Dictionary<string, List<KeyValuePair<int, CarInfo>>> _entryListForCarClass = [];
+    private readonly Dictionary<string, List<KeyValuePair<int, CarInfo>>> _entryListForCarClass = [];
 
-    public List<string> CarClasses { get; private set; } = null;
+    internal List<string> CarClasses { get; private set; } = [];
 
     public StandingsOverlay(Rectangle rectangle) : base(rectangle, "Live Standings")
     {
-        this.Height = _height;
-        this.Width = _width;
-        this.RefreshRateHz = 1;
+        Height = _height;
+        Width = _width;
+        RefreshRateHz = 1;
     }
 
     public sealed override void SetupPreviewData()
     {
-        SimDataProvider.Instance.SetupPreviewData();        
+        SimDataProvider.Instance.SetupPreviewData();
     }
 
 
@@ -47,13 +53,13 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         InitCarClassEntryLists();
         // Can be registered before SimDataProvider.Instance was created
         SimDataProvider.OnSessionTypeChanged += Instance_OnSessionTypeChanged;
-  
+
         base.BeforeStart();
     }
 
     private void Instance_OnSessionTypeChanged(object? sender, RaceSessionType e)
     {
-        ClearCarClassEntryList();            
+        ClearCarClassEntryList();
     }
 
     private void ClearCarClassEntryList()
@@ -69,7 +75,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
                 InitCarClassEntryLists();
             }
             _entryListForCarClass[carClass].Clear();
-        }                
+        }
     }
 
     private void InitCarClassEntryLists()
@@ -153,8 +159,8 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
             return;
         }
 
-        int startIdx = (playersIndex - _config.Layout.AdditionalRows) < 0 ? 0 : (playersIndex + _config.Layout.AdditionalRows - _config.Layout.MulticlassRows);
-        int endIdx = (playersIndex + _config.Layout.AdditionalRows + 1) > list.Count() ? list.Count() : (playersIndex + _config.Layout.AdditionalRows + 1);
+        int startIdx = playersIndex - _config.Layout.AdditionalRows < 0 ? 0 : playersIndex + _config.Layout.AdditionalRows - _config.Layout.MulticlassRows;
+        int endIdx = playersIndex + _config.Layout.AdditionalRows + 1 > list.Count() ? list.Count() : playersIndex + _config.Layout.AdditionalRows + 1;
 
         if (startIdx < _config.Layout.MulticlassRows) startIdx = _config.Layout.MulticlassRows;
 
@@ -203,7 +209,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
     {
         DriverInfo driverInfo = carData.Drivers[carData.CurrentDriverIndex];
 
-        String additionInfo = AdditionalInfo(carData);
+        string additionInfo = AdditionalInfo(carData);
 
         // Interval based on the type of session:
         // - practice/qualifying: interval is gap to driver in front's BEST time (within) same class 
@@ -253,7 +259,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         });
     }
 
-    private String AdditionalInfo(CarInfo realtimeCarUpdate)
+    private string AdditionalInfo(CarInfo realtimeCarUpdate)
     {
         if (SessionData.Instance.SessionType != RaceSessionType.Race
             && SessionData.Instance.SessionType != RaceSessionType.Qualifying) return "";
@@ -361,7 +367,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
 
             default: break;
         }
-    }    
+    }
 
     private void DetermineDriversClass(List<KeyValuePair<int, CarInfo>> cars)
     {
@@ -418,89 +424,89 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         else
         {
             return BigInteger.Compare(cupPositionA, cupPositionB);
-        }    
+        }
     }
 
     public class StandingsTableRow
-{
-    public int CarIdx { get; set; }
-    public int Position { get; set; }
-    public int RaceNumber { get; set; }
-    public String DriverName { get; set; }
-
-    // e.g. "A3.43 4155" for A class, 3.43 safety rating 4155 irating
-    public String LicenseInfo { get; set; }
-
-    // gap to car in front that's in the same class
-    public LapInfo IntervalMs { get; set; }
-    public LapInfo LastLapTime { get; set; }
-    public LapInfo FastestLapTime { get; set; }
-    public String AdditionalInfo { get; set; }
-}
-
-public class OverlayStandingsTable
-{
-    public int Height { get; set; }
-    private readonly int _x;
-    private readonly int _y;
-    // pixels between columns
-    private readonly int _columnGap = 5;
-    // pixels between rows
-    private readonly int _rowGap = 3;
-    private readonly int _fontSize = 0;
-
-    private readonly SolidBrush _oddBackground = new(Color.FromArgb(100, Color.Black));
-    private readonly SolidBrush _evenBackground = new(Color.FromArgb(180, Color.Black));
-    private readonly SolidBrush _driversCarBackground = new(Color.FromArgb(180, Color.DarkSeaGreen));
-
-    public OverlayStandingsTable(int x, int y, int fontSize)
     {
-        _x = x;
-        _y = y;
-        _fontSize = fontSize;
+        public int CarIdx { get; set; }
+        public int Position { get; set; }
+        public int RaceNumber { get; set; }
+        public string DriverName { get; set; }
+
+        // e.g. "A3.43 4155" for A class, 3.43 safety rating 4155 irating
+        public string LicenseInfo { get; set; }
+
+        // gap to car in front that's in the same class
+        public LapInfo IntervalMs { get; set; }
+        public LapInfo LastLapTime { get; set; }
+        public LapInfo FastestLapTime { get; set; }
+        public string AdditionalInfo { get; set; }
     }
 
-    public void Draw(Graphics g, int y, List<StandingsTableRow> tableData, int splitRowIndex, SolidBrush classBackground, string header, string ownName /*, bool showDeltaRow*/, bool showInvalidLapIndicator)
+    public class OverlayStandingsTable
     {
-        var rowPosY = _y + y;
+        public int Height { get; set; }
+        private readonly int _x;
+        private readonly int _y;
+        // pixels between columns
+        private readonly int _columnGap = 5;
+        // pixels between rows
+        private readonly int _rowGap = 3;
+        private readonly int _fontSize = 0;
 
-        if (tableData.Count == 0) return;
+        private readonly SolidBrush _oddBackground = new(Color.FromArgb(100, Color.Black));
+        private readonly SolidBrush _evenBackground = new(Color.FromArgb(180, Color.Black));
+        private readonly SolidBrush _driversCarBackground = new(Color.FromArgb(180, Color.DarkSeaGreen));
 
-        OverlayStandingTableHeaderLabel tableHeader = new(g, _x, rowPosY, classBackground, FontUtil.FontSegoeMono(_fontSize));
-        tableHeader.Draw(g, Brushes.White, header);
-        rowPosY += tableHeader.Height + _rowGap;
-
-        for (int i = 0; i < tableData.Count; i++)
+        public OverlayStandingsTable(int x, int y, int fontSize)
         {
+            _x = x;
+            _y = y;
+            _fontSize = fontSize;
+        }
 
-            var columnPosX = _x;
+        public void Draw(Graphics g, int y, List<StandingsTableRow> tableData, int splitRowIndex, SolidBrush classBackground, string header, string ownName /*, bool showDeltaRow*/, bool showInvalidLapIndicator)
+        {
+            var rowPosY = _y + y;
 
-            SolidBrush backgroundColor = _oddBackground;
-            if (i % 2 == 0)
+            if (tableData.Count == 0) return;
+
+            OverlayStandingTableHeaderLabel tableHeader = new(g, _x, rowPosY, classBackground, FontUtil.FontSegoeMono(_fontSize));
+            tableHeader.Draw(g, Brushes.White, header);
+            rowPosY += tableHeader.Height + _rowGap;
+
+            for (int i = 0; i < tableData.Count; i++)
             {
-                backgroundColor = _evenBackground;
-            }
 
-            if (tableData[i].DriverName.Equals(ownName))
-            {
-                backgroundColor = _driversCarBackground;
-            }
+                var columnPosX = _x;
+
+                SolidBrush backgroundColor = _oddBackground;
+                if (i % 2 == 0)
+                {
+                    backgroundColor = _evenBackground;
+                }
+
+                if (tableData[i].DriverName.Equals(ownName))
+                {
+                    backgroundColor = _driversCarBackground;
+                }
 
 
-            OverlayStandingsTablePositionLabel position = new(g, columnPosX, rowPosY, backgroundColor, classBackground, FontUtil.FontSegoeMono(_fontSize));
-            position.Draw(g, tableData[i].Position.ToString());
+                OverlayStandingsTablePositionLabel position = new(g, columnPosX, rowPosY, backgroundColor, classBackground, FontUtil.FontSegoeMono(_fontSize));
+                position.Draw(g, tableData[i].Position.ToString());
 
-            columnPosX += position.Width + _columnGap;
-            OverlayStandingsTableTextLabel raceNumber = new(g, columnPosX, rowPosY, 4, FontUtil.FontSegoeMono(_fontSize));
-            raceNumber.Draw(g, backgroundColor, (SolidBrush)Brushes.White, Brushes.White, "#" + tableData[i].RaceNumber.ToString(), false);
+                columnPosX += position.Width + _columnGap;
+                OverlayStandingsTableTextLabel raceNumber = new(g, columnPosX, rowPosY, 4, FontUtil.FontSegoeMono(_fontSize));
+                raceNumber.Draw(g, backgroundColor, (SolidBrush)Brushes.White, Brushes.White, "#" + tableData[i].RaceNumber.ToString(), false);
 
-            columnPosX += raceNumber.Width + _columnGap;
-            OverlayStandingsTableTextLabel driverName = new(g, columnPosX, rowPosY, 20, FontUtil.FontSegoeMono(_fontSize));
-            driverName.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].DriverName, false);
+                columnPosX += raceNumber.Width + _columnGap;
+                OverlayStandingsTableTextLabel driverName = new(g, columnPosX, rowPosY, 20, FontUtil.FontSegoeMono(_fontSize));
+                driverName.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].DriverName, false);
 
-            columnPosX += driverName.Width + _columnGap;
-            OverlayStandingsTableTextLabel licenseInfo = new(g, columnPosX, rowPosY, 11, FontUtil.FontSegoeMono(_fontSize));
-            licenseInfo.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].LicenseInfo, false);
+                columnPosX += driverName.Width + _columnGap;
+                OverlayStandingsTableTextLabel licenseInfo = new(g, columnPosX, rowPosY, 11, FontUtil.FontSegoeMono(_fontSize));
+                licenseInfo.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].LicenseInfo, false);
 
             columnPosX += licenseInfo.Width + _columnGap;
             OverlayStandingsTableTextLabel interval = new(g, columnPosX, rowPosY, 6, FontUtil.FontSegoeMono(_fontSize));
@@ -527,134 +533,134 @@ public class OverlayStandingsTable
             OverlayStandingsTableTextLabel fastestLaptTime = new(g, columnPosX, rowPosY, 9, FontUtil.FontSegoeMono(_fontSize));
             fastestLaptTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, DataUtil.GetLapTime(tableData[i].FastestLapTime), false);
 
-            if (tableData[i].AdditionalInfo != "")
-            {
-                if (tableData[i].AdditionalInfo == "X")
+                if (tableData[i].AdditionalInfo != "")
                 {
-                    if (showInvalidLapIndicator) fastestLaptTime.DrawAdditionalInfo(g, Brushes.DarkRed, "");
+                    if (tableData[i].AdditionalInfo == "X")
+                    {
+                        if (showInvalidLapIndicator) fastestLaptTime.DrawAdditionalInfo(g, Brushes.DarkRed, "");
+                    }
+                    else
+                    {
+                        fastestLaptTime.DrawAdditionalInfo(g, Brushes.DarkGreen, tableData[i].AdditionalInfo);
+                    }
+
                 }
-                else
-                {
-                    fastestLaptTime.DrawAdditionalInfo(g, Brushes.DarkGreen, tableData[i].AdditionalInfo);
-                }
+
+                rowPosY += position.Height + _rowGap;
+
+                if (i == splitRowIndex - 1) rowPosY += 10;
 
             }
+            Height = rowPosY;
+        }
+    }
 
-            rowPosY += position.Height + _rowGap;
+    public class OverlayStandingTableHeaderLabel
+    {
+        private readonly int _x;
+        private readonly int _y;
+        private CachedBitmap _cachedBackground;
+        private SolidBrush _backgroundBrush;
+        public int Height { get; }
+        private readonly Font _fontFamily;
 
-            if (i == splitRowIndex - 1) rowPosY += 10;
+        public OverlayStandingTableHeaderLabel(Graphics g, int x, int y, SolidBrush backgroundBrush, Font font)
+        {
+            _x = x;
+            _y = y;
+            _fontFamily = font;
+            _backgroundBrush = backgroundBrush;
+            var fontSize = g.MeasureString(" ", _fontFamily);
+            Height = (int)fontSize.Height;
 
         }
-        Height = rowPosY;
-    }
-}
 
-public class OverlayStandingTableHeaderLabel
-{
-    private readonly int _x;
-    private readonly int _y;
-    private CachedBitmap _cachedBackground;
-    private SolidBrush _backgroundBrush;
-    public int Height { get; }
-    private readonly Font _fontFamily;
-
-    public OverlayStandingTableHeaderLabel(Graphics g, int x, int y, SolidBrush backgroundBrush, Font font)
-    {
-        _x = x;
-        _y = y;
-        _fontFamily = font;
-        _backgroundBrush = backgroundBrush;
-        var fontSize = g.MeasureString(" ", _fontFamily);
-        Height = (int)fontSize.Height;
-
-    }
-
-    public void Draw(Graphics g, Brush fontBruch, String text)
-    {
-        var fontSize = g.MeasureString(text, _fontFamily);
-
-        if (_cachedBackground == null || fontSize.Width > _cachedBackground.Width)
+        public void Draw(Graphics g, Brush fontBruch, string text)
         {
-            if (_cachedBackground != null) _cachedBackground.Dispose();
-            _cachedBackground = new CachedBitmap((int)(fontSize.Width + 10), (int)fontSize.Height, gr =>
+            var fontSize = g.MeasureString(text, _fontFamily);
+
+            if (_cachedBackground == null || fontSize.Width > _cachedBackground.Width)
             {
-                var rectanle = new Rectangle(_x, _y, (int)(fontSize.Width + 10), (int)fontSize.Height);
-                g.FillRoundedRectangle(_backgroundBrush, rectanle, 3);
-            });
+                if (_cachedBackground != null) _cachedBackground.Dispose();
+                _cachedBackground = new CachedBitmap((int)(fontSize.Width + 10), (int)fontSize.Height, gr =>
+                {
+                    var rectanle = new Rectangle(_x, _y, (int)(fontSize.Width + 10), (int)fontSize.Height);
+                    g.FillRoundedRectangle(_backgroundBrush, rectanle, 3);
+                });
+            }
+
+            _cachedBackground.Draw(g, _x, _y);
+            var textOffset = 2;
+            g.DrawStringWithShadow(text, _fontFamily, fontBruch, new PointF(_x, _y + textOffset));
         }
-
-        _cachedBackground.Draw(g, _x, _y);
-        var textOffset = 2;
-        g.DrawStringWithShadow(text, _fontFamily, fontBruch, new PointF(_x, _y + textOffset));
-    }
-}
-
-public class OverlayStandingsTableTextLabel
-{
-    private readonly int _x;
-    private readonly int _y;
-    private readonly int _height;
-    private readonly int _maxStringLength;
-    private readonly Font _fontFamily;
-
-    private readonly int _spacing = 10; // possible to set value in contructor
-
-    public int Width { get; }
-
-
-    public OverlayStandingsTableTextLabel(Graphics g, int x, int y, int maxStringLength, Font font)
-    {
-        _fontFamily = font;
-        _maxStringLength = maxStringLength;
-        _x = x;
-        _y = y;
-
-        string maxString = new('K', _maxStringLength);
-        var fontSize = g.MeasureString(maxString, _fontFamily);
-        Width = (int)fontSize.Width + _spacing;
-        _height = (int)fontSize.Height;
-
     }
 
-    public void Draw(Graphics g, SolidBrush backgroundBrush, SolidBrush highlightBrush, Brush fontBruch, String text, bool highlight)
+    public class OverlayStandingsTableTextLabel
     {
-        Rectangle graphRect = new(_x - (_spacing / 2), _y, (int)Width, (int)_height);
+        private readonly int _x;
+        private readonly int _y;
+        private readonly int _height;
+        private readonly int _maxStringLength;
+        private readonly Font _fontFamily;
 
-        if (highlight)
+        private readonly int _spacing = 10; // possible to set value in contructor
+
+        public int Width { get; }
+
+
+        public OverlayStandingsTableTextLabel(Graphics g, int x, int y, int maxStringLength, Font font)
         {
-            LinearGradientBrush lgb = new(graphRect, backgroundBrush.Color, highlightBrush.Color, 0f, true);
-            lgb.SetBlendTriangularShape(.5f, .6f);
-            g.FillRectangle(lgb, graphRect);
-            Rectangle hightlightRect = new(_x - (_spacing / 2), _y + (int)_height - 4, (int)Width, 4);
-            g.FillRoundedRectangle(highlightBrush, hightlightRect, 3);
+            _fontFamily = font;
+            _maxStringLength = maxStringLength;
+            _x = x;
+            _y = y;
+
+            string maxString = new('K', _maxStringLength);
+            var fontSize = g.MeasureString(maxString, _fontFamily);
+            Width = (int)fontSize.Width + _spacing;
+            _height = (int)fontSize.Height;
+
         }
-        else
+
+        public void Draw(Graphics g, SolidBrush backgroundBrush, SolidBrush highlightBrush, Brush fontBruch, string text, bool highlight)
         {
-            g.FillRoundedRectangle(backgroundBrush, graphRect, 3);
+            Rectangle graphRect = new(_x - _spacing / 2, _y, Width, _height);
+
+            if (highlight)
+            {
+                LinearGradientBrush lgb = new(graphRect, backgroundBrush.Color, highlightBrush.Color, 0f, true);
+                lgb.SetBlendTriangularShape(.5f, .6f);
+                g.FillRectangle(lgb, graphRect);
+                Rectangle hightlightRect = new(_x - _spacing / 2, _y + _height - 4, Width, 4);
+                g.FillRoundedRectangle(highlightBrush, hightlightRect, 3);
+            }
+            else
+            {
+                g.FillRoundedRectangle(backgroundBrush, graphRect, 3);
+            }
+
+            var textOffset = 2;
+            g.DrawStringWithShadow(TruncateString(text), _fontFamily, fontBruch, new PointF(_x, _y + textOffset));
+
         }
 
-        var textOffset = 2;
-        g.DrawStringWithShadow(TruncateString(text), _fontFamily, fontBruch, new PointF(_x, _y + textOffset));
+        public void DrawAdditionalInfo(Graphics g, Brush brush, string text)
+        {
+            var fontSize = g.MeasureString(text, _fontFamily);
 
+            var rectanle = new Rectangle(_x + Width, _y, (int)(fontSize.Width + 10), _height);
+            using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, _height / 4, _height / 4, 0);
+            g.FillPath(brush, path);
+            var textOffset = 2;
+            g.DrawString(text, _fontFamily, Brushes.White, new PointF(_x + (Width + 5), _y + textOffset));
+
+        }
+
+        private string TruncateString(string text)
+        {
+            return text.Length <= _maxStringLength ? text : text.Substring(0, _maxStringLength);
+        }
     }
-
-    public void DrawAdditionalInfo(Graphics g, Brush brush, String text)
-    {
-        var fontSize = g.MeasureString(text, _fontFamily);
-
-        var rectanle = new Rectangle(_x + Width, _y, (int)(fontSize.Width + 10), _height);
-        using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, _height / 4, _height / 4, 0);
-        g.FillPath(brush, path);
-        var textOffset = 2;
-        g.DrawString(text, _fontFamily, Brushes.White, new PointF(_x + (int)(Width + 5), _y + textOffset));
-
-    }
-
-    private string TruncateString(String text)
-    {
-        return text.Length <= _maxStringLength ? text : text.Substring(0, _maxStringLength);
-    }
-}
 
 
     public class OverlayStandingsTablePositionLabel
@@ -681,11 +687,11 @@ public class OverlayStandingsTableTextLabel
             string maxString = new('K', 2); // max two figures are allowed :-)
             var fontSize = g.MeasureString(maxString, _fontFamily);
             _maxFontWidth = (int)fontSize.Width;
-            Width = (int)(fontSize.Width) + _spacing;
-            Height = (int)(fontSize.Height);
+            Width = (int)fontSize.Width + _spacing;
+            Height = (int)fontSize.Height;
 
 
-            var rectanle = new Rectangle(_x, _y, Width - (_spacing / 2), Height);
+            var rectanle = new Rectangle(_x, _y, Width - _spacing / 2, Height);
             _path = GraphicsExtensions.CreateRoundedRectangle(rectanle, 0, 0, Height / 3, 0);
 
             _cachedBackground = new CachedBitmap((int)(fontSize.Width + _spacing), (int)fontSize.Height, gr =>
@@ -699,7 +705,7 @@ public class OverlayStandingsTableTextLabel
 
         }
 
-        public void Draw(Graphics g, String number)
+        public void Draw(Graphics g, string number)
         {
             _cachedBackground.Draw(g, _x, _y);
             var numberWidth = g.MeasureString(number, _fontFamily).Width;

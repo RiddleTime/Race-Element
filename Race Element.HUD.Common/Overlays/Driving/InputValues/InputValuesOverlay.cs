@@ -92,7 +92,7 @@ internal sealed class InputValuesOverlay : CommonAbstractOverlay
         });
         _graphicsGrid.Grid[1][0] = _brakeCell;
 
-        Width = (int)baseWidth;
+        Width = (int)baseWidth + 1;
         Height = (int)(baseHeight * 2f) + 1;
     }
 

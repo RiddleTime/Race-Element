@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -6,11 +7,14 @@ using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 using System.Drawing.Text;
 
-namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTrackBar;
+namespace RaceElement.HUD.Common.Overlays.Driving.TrackBar;
 
-[Overlay(Name = "Track Bar",
-         Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.",
-Authors = ["Reinier Klarenberg"])]
+[Overlay(
+    Name = "Track Bar",
+    Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.",
+    Game = Game.iRacing | Game.AssettoCorsa1,
+    Authors = ["Reinier Klarenberg"]
+)]
 internal sealed class TrackBarOverlay : CommonAbstractOverlay
 {
     private readonly TrackBarConfiguration _config = new();
@@ -49,16 +53,20 @@ internal sealed class TrackBarOverlay : CommonAbstractOverlay
     public sealed override void SetupPreviewData()
     {
         SessionData.Instance.FocusedCarIndex = 1;
-        var car1 = new CarInfo(1);
-        car1.TrackPercentCompleted = 1.0f;
-        car1.Position = 1;
-        car1.CarLocation = CarInfo.CarLocationEnum.Track;
-        SessionData.Instance.AddOrUpdateCar(1, car1);
-        CarInfo car2 = new CarInfo(2);
-        car2.TrackPercentCompleted = 1.03f;
-        car2.Position = 2;
-        car2.CarLocation = CarInfo.CarLocationEnum.Track;
-        SessionData.Instance.AddOrUpdateCar(2, car2);
+        CarInfo car1 = new(1)
+        {
+            TrackPercentCompleted = 1.0f,
+            Position = 1,
+            CarLocation = CarInfo.CarLocationEnum.Track
+        };
+        SessionData.Instance.AddOrUpdateCar(car1.CarIndex, car1);
+        CarInfo car2 = new(2)
+        {
+            TrackPercentCompleted = 1.03f,
+            Position = 2,
+            CarLocation = CarInfo.CarLocationEnum.Track
+        };
+        SessionData.Instance.AddOrUpdateCar(car2.CarIndex, car2);
     }
 
     public sealed override void BeforeStart()
@@ -100,7 +108,7 @@ internal sealed class TrackBarOverlay : CommonAbstractOverlay
         if (SessionData.Instance.Cars.Count == 0) return;
 
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
-        
+
         var spectatingCar = SessionData.Instance.Cars[SessionData.Instance.FocusedCarIndex];
         float spectatingSplinePosition = spectatingCar.Value.TrackPercentCompleted;
 
@@ -137,13 +145,13 @@ internal sealed class TrackBarOverlay : CommonAbstractOverlay
             float correctedPos = maxSpline - pos;
             bool isSpectatingCar = SessionData.Instance.FocusedCarIndex == entry.Key;
 
-            float correctedPercentage = (correctedPos * 100) / _range / 100;
+            float correctedPercentage = correctedPos * 100 / _range / 100;
             if (isSpectatingCar) correctedPercentage = 0.5f;
             // Debug.WriteLine($"pos:{pos} --> cor:{correctedPos} --> perc:{correctedPercentage:F3}");
 
             int x = BarRect.Width - (int)(BarRect.Width * correctedPercentage);
 
-            bool isInPits = (entry.Value.CarLocation == CarInfo.CarLocationEnum.Pitlane);
+            bool isInPits = entry.Value.CarLocation == CarInfo.CarLocationEnum.Pitlane;
 
             Pen pen = isSpectatingCar ? Pens.Red : isInPits ? Pens.Green : Pens.White;
             if (!isInPits && !isSpectatingCar && entry.Value.Kmh < 33)

@@ -1,7 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayShiftIndicator;
+namespace RaceElement.HUD.Common.Overlays.Driving.ShiftIndicator;
 
 internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
 {
@@ -15,7 +15,7 @@ internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
 
         [ToolTip("Sets the Height of the shift indicator bar.")]
         [IntRange(25, 50, 5)]
-        public int Height { get; init; } = 40;
+        public int Height { get; init; } = 30;
 
         [ToolTip("Hide Rpms in the bar, starting from 0.")]
         [IntRange(0, 3000, 100)]
@@ -29,7 +29,7 @@ internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
 
         [ToolTip("Sets the refresh rate.")]
         [IntRange(20, 70, 2)]
-        public int RefreshRate { get; init; } = 50;
+        public int RefreshRate { get; init; } = 60;
 
         [ToolTip("Sets the frequency of the upshift flash.")]
         [FloatRange(0.5f, 10f, 0.5f, 1)]
@@ -74,6 +74,6 @@ internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
 
     public ShiftIndicatorConfiguration()
     {
-        this.GenericConfiguration.AllowRescale = true;
+        GenericConfiguration.AllowRescale = true;
     }
 }
