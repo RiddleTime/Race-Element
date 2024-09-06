@@ -612,7 +612,7 @@ namespace RaceElement.Data.Games.iRacing
             car3driver0.Category = "B 2.7";
             car3.AddDriver(car3driver0);
 
-            AddCarClassEntry("F1", "TODOPrevieColor");
+            AddCarClassEntry("F1", "0xffffff");
 
             SpotterCallout = CarLeftRight.CarLeft;
             
