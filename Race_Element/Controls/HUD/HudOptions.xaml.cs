@@ -49,6 +49,7 @@ public partial class HudOptions : UserControl
 
     internal static List<CommonAbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
     {
+        Game.Any => [],
         Game.AssettoCorsaCompetizione => OverlaysAcc.ActiveOverlays,
         _ => CommonHuds.ActiveOverlays
     };
@@ -86,11 +87,26 @@ public partial class HudOptions : UserControl
                 listOverlays.SelectedIndex = -1;
             };
 
-            GameManager.OnGameChanged += (s, newGame) =>
+            GameManager.OnGameChanged += (s, e) =>
             {
-                if (newGame != Game.Any)
+                if (e.next != Game.Any)
+                {
+                    switch (e.previous)
+                    {
+                        case Game.Any: break;
+                        case Game.AssettoCorsaCompetizione:
+                            {
+                                OverlaysAcc.CloseAll(); break;
+                            }
+                        default:
+                            {
+                                CommonHuds.CloseAll(); break;
+                            }
+                    }
+
+                    PreviewCache._cachedPreviews.Clear();
                     BuildOverlayPanel();
-                PreviewCache._cachedPreviews.Clear();
+                }
             };
 
             bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
@@ -438,7 +454,7 @@ public partial class HudOptions : UserControl
                 listViewItem.Background = Brushes.Transparent;
                 listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
                 CommonAbstractOverlay overlay = ActiveOverlays.Find(f => f.GetType() == type);
-
+                if (overlay == null) return;
                 SaveOverlaySettings(overlay, false);
 
 
@@ -603,12 +619,10 @@ public partial class HudOptions : UserControl
 
         if (GameManager.CurrentGame != Game.AssettoCorsaCompetizione)
         {
-            OverlaysAcc.CloseAll();
             availableOverlays = CommonHuds.AbstractOverlays;
         }
         else
         {
-            CommonHuds.CloseAll();
             availableOverlays = OverlaysAcc.AbstractOverlays;
         }
 
