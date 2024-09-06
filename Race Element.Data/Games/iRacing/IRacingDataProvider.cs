@@ -6,7 +6,7 @@ using RaceElement.Data.Common;
 using System.Drawing;
 using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkEnum;
 using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkSessionInfo.SessionInfoModel.SessionModel;
-using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkSessionInfo.SessionInfoModel
+using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkSessionInfo.SessionInfoModel;
 
 // https://github.com/mherbold/IRSDKSharper
 // https://sajax.github.io/irsdkdocs/telemetry/
@@ -702,6 +702,7 @@ namespace RaceElement.Data.Games.iRacing
             // Convert hex string to Color
             Color color = ColorTranslator.FromHtml("#" + carClassColor);
             if (color == null) return Color.White;
+            return color;
         }
 
         public CarLeftRight GetSpotterCallout()
