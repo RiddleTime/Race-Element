@@ -1,6 +1,6 @@
 const t=`---
 title: Pushing Too Hard and How To Fix It
-slug: arnout-hoekstra-guide-overdriving-the-car
+slug: overdriving-the-car-simracing-arnout
 description: An article by SimRacing Arnout
 date: 2024-09-09
 type: news
