@@ -105,6 +105,7 @@ public partial class HudOptions : UserControl
                     }
 
                     PreviewCache._cachedPreviews.Clear();
+                    Thread.Sleep(500);
                     BuildOverlayPanel();
                 }
             };
