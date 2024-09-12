@@ -105,7 +105,11 @@ public partial class HudOptions : UserControl
                     }
 
                     PreviewCache._cachedPreviews.Clear();
-                    Thread.Sleep(500);
+                    Thread.Sleep(1000);
+
+                    PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
+                    PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
+
                     BuildOverlayPanel();
                 }
             };
@@ -604,12 +608,12 @@ public partial class HudOptions : UserControl
             box.Items.Add(item);
         }
 
-        box.SelectedIndex = 0;
-
         box.SelectionChanged += (s, e) =>
         {
-            BuildOverlayListView(listView, overlayType, (OverlayCategory)((ComboBoxItem)box.SelectedItem).DataContext);
+            if (box.HasItems)
+                BuildOverlayListView(listView, overlayType, (OverlayCategory)((ComboBoxItem)box.SelectedItem).DataContext);
         };
+        box.SelectedIndex = 0;
     }
 
     private void BuildOverlayListView(ListView listView, OverlayType overlayType, OverlayCategory category)
@@ -622,7 +626,7 @@ public partial class HudOptions : UserControl
         {
             availableOverlays = CommonHuds.AbstractOverlays;
         }
-        else
+        else if (GameManager.CurrentGame != Game.Any)
         {
             availableOverlays = OverlaysAcc.AbstractOverlays;
         }

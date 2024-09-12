@@ -21,9 +21,9 @@ public static class GameManager
         ExitGameData(CurrentGame);
 
         SimDataProvider.Clear();
-
-        OnGameChanged?.Invoke(null, (CurrentGame, nextGame));
+        Game previousGame = CurrentGame;
         CurrentGame = nextGame;
+        OnGameChanged?.Invoke(null, (previousGame, nextGame));
 
         _dataUpdaterJob.Run();
     }
