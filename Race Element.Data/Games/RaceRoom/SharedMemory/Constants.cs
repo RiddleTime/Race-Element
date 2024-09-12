@@ -7,13 +7,17 @@ internal sealed class Constants
 
     enum VersionMajor
     {
-        // Major version number to test against
+        /// <summary>
+        /// Major version number to test against
+        /// </summary>
         R3E_VERSION_MAJOR = 2
     };
 
     enum VersionMinor
     {
-        // Minor version number to test against
+        /// <summary>
+        /// Minor version number to test against
+        /// </summary>
         R3E_VERSION_MINOR = 15
     };
 
@@ -30,22 +34,34 @@ internal sealed class Constants
     {
         Unavailable = -1,
 
-        // Currently in garage
+        /// <summary>
+        /// Currently in garage
+        /// </summary>
         Garage = 1,
 
-        // Gridwalk or track walkthrough
+        /// <summary>
+        /// Gridwalk or track walkthrough
+        /// </summary>
         Gridwalk = 2,
 
-        // Formation lap, rolling start etc.
+        /// <summary>
+        /// Formation lap, rolling start etc.
+        /// </summary>
         Formation = 3,
 
-        // Countdown to race is ongoing
+        /// <summary>
+        /// Countdown to race is ongoing
+        /// </summary>
         Countdown = 4,
 
-        // Race is ongoing
+        /// <summary>
+        /// Race is ongoing
+        /// </summary>
         Green = 5,
 
-        // End of session
+        /// <summary>
+        /// End of session
+        /// </summary>
         Checkered = 6,
     };
 
@@ -53,16 +69,24 @@ internal sealed class Constants
     {
         Unavailable = -1,
 
-        // Controlled by the actual player
+        /// <summary>
+        /// Controlled by the actual player
+        /// </summary>
         Player = 0,
 
-        // Controlled by AI
+        /// <summary>
+        /// Controlled by AI
+        /// </summary>
         AI = 1,
 
-        // Controlled by a network entity of some sort
+        /// <summary>
+        /// Controlled by a network entity of some sort
+        /// </summary>
         Remote = 2,
 
-        // Controlled by a replay or ghost
+        /// <summary>
+        /// Controlled by a replay or ghost
+        /// </summary>
         Replay = 3,
     };
 
@@ -70,80 +94,120 @@ internal sealed class Constants
     {
         Unavailable = -1,
 
-        // Pit stops are not enabled for this session
+        /// <summary>
+        /// Pit stops are not enabled for this session
+        /// </summary>
         Disabled = 0,
 
-        // Pit stops are enabled, but you're not allowed to perform one right now
+        /// <summary>
+        /// Pit stops are enabled, but you're not allowed to perform one right now
+        /// </summary>
         Closed = 1,
 
-        // Allowed to perform a pit stop now
+        /// <summary>
+        /// Allowed to perform a pit stop now
+        /// </summary>
         Open = 2,
 
-        // Currently performing the pit stop changes (changing driver, etc.)
+        /// <summary>
+        /// Currently performing the pit stop changes (changing driver, etc.)
+        /// </summary>
         Stopped = 3,
 
-        // After the current mandatory pitstop have been completed
+        /// <summary>
+        /// After the current mandatory pitstop have been completed
+        /// </summary>
         Completed = 4,
     };
 
     enum PitStopStatus
     {
-        // No mandatory pitstops
+        /// <summary>
+        /// No mandatory pitstops
+        /// </summary>
         Unavailable = -1,
 
-        // Mandatory pitstop for two tyres not served yet
+        /// <summary>
+        /// Mandatory pitstop for two tyres not served yet
+        /// </summary>
         UnservedTwoTyres = 0,
 
-        // Mandatory pitstop for four tyres not served yet
+        /// <summary>
+        /// Mandatory pitstop for four tyres not served yet
+        /// </summary>
         UnservedFourTyres = 1,
 
-        // Mandatory pitstop served
+        /// <summary>
+        /// Mandatory pitstop served
+        /// </summary>
         Served = 2,
     };
 
     enum FinishStatus
     {
-        // N/A
+        /// <summary>
+        /// N/A
+        /// </summary>
         Unavailable = -1,
 
-        // Still on track, not finished
+        /// <summary>
+        /// Still on track, not finished
+        /// </summary>
         None = 0,
 
-        // Finished session normally
+        /// <summary>
+        /// Finished session normally
+        /// </summary>
         Finished = 1,
 
-        // Did not finish
+        /// <summary>
+        /// Did not finish
+        /// </summary>
         DNF = 2,
 
-        // Did not qualify
+        /// <summary>
+        /// Did not qualify
+        /// </summary>
         DNQ = 3,
 
-        // Did not start
+        /// <summary>
+        /// Did not start
+        /// </summary>
         DNS = 4,
 
-        // Disqualified
+        /// <summary>
+        /// Disqualified
+        /// </summary>
         DQ = 5,
     };
 
     enum SessionLengthFormat
     {
-        // N/A
+        /// <summary>
+        /// N/A
+        /// </summary>
         Unavailable = -1,
 
         TimeBased = 0,
 
         LapBased = 1,
 
-        // Time and lap based session means there will be an extra lap after the time has run out
+        /// <summary>
+        /// Time and lap based session means there will be an extra lap after the time has run out
+        /// </summary>
         TimeAndLapBased = 2
     };
 
     enum PitMenuSelection
     {
-        // Pit menu unavailable
+        /// <summary>
+        /// Pit menu unavailable
+        /// </summary>
         Unavailable = -1,
 
-        // Pit menu preset
+        /// <summary>
+        /// Pit menu preset
+        /// </summary>
         Preset = 0,
 
         // Pit menu actions
@@ -156,11 +220,18 @@ internal sealed class Constants
         Rearwing = 7,
         Suspension = 8,
 
-        // Pit menu buttons
+        /// <summary>
+        /// Pit menu buttons up
+        /// </summary>
         ButtonTop = 9,
+        /// <summary>
+        /// Pit menu button down
+        /// </summary>
         ButtonBottom = 10,
 
-        // Pit menu nothing selected
+        /// <summary>
+        /// Pit menu nothing selected
+        /// </summary>
         Max = 11
     };
 
