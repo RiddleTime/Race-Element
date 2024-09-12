@@ -6,10 +6,9 @@ using System.Drawing;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTesting
 {
-    [Overlay(Name = "Testing", Description = "some testing ", OverlayType = OverlayType.Drive)]
+    [Overlay(Name = "Testing", Description = "Only used for testing", OverlayType = OverlayType.Pitwall)]
     internal class TestingOverlay : CommonAbstractOverlay
     {
-        private readonly AbstractLoopJob _job;
         private readonly InfoPanel _panel;
 
         public TestingOverlay(Rectangle rectangle) : base(rectangle, "Testing")
@@ -19,17 +18,6 @@ namespace RaceElement.HUD.Common.Overlays.Driving.OverlayTesting
             RefreshRateHz = 50;
 
             _panel = new InfoPanel(10, 500);
-            _job = new SimpleLoopJob() { Action = () => SimDataProvider.Update(), IntervalMillis = 1000 / 50 };
-        }
-
-        public override void BeforeStart()
-        {
-            _job.Run();
-        }
-
-        public override void BeforeStop()
-        {
-            _job.CancelJoin();
         }
 
         public override bool ShouldRender() => true;// SimDataProvider.LocalCar.Engine.RPM > 0;
