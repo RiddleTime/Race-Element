@@ -320,15 +320,25 @@ internal struct TireTemperature<T>
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct AidSettings
 {
-    // ABS; -1 = N/A, 0 = off, 1 = on, 5 = currently active
+    /// <summary>
+    /// ABS; -1 = N/A, 0 = off, 1 = on, 5 = currently active
+    /// </summary>
     public Int32 Abs;
-    // TC; -1 = N/A, 0 = off, 1 = on, 5 = currently active
+    /// <summary>
+    /// TC; -1 = N/A, 0 = off, 1 = on, 5 = currently active
+    /// </summary>
     public Int32 Tc;
-    // ESP; -1 = N/A, 0 = off, 1 = on low, 2 = on medium, 3 = on high, 5 = currently active
+    /// <summary>
+    /// ESP; -1 = N/A, 0 = off, 1 = on low, 2 = on medium, 3 = on high, 5 = currently active
+    /// </summary>
     public Int32 Esp;
-    // Countersteer; -1 = N/A, 0 = off, 1 = on, 5 = currently active
+    /// <summary>
+    /// Countersteer; -1 = N/A, 0 = off, 1 = on, 5 = currently active
+    /// </summary>
     public Int32 Countersteer;
-    // Cornering; -1 = N/A, 0 = off, 1 = on, 5 = currently active
+    /// <summary>
+    /// Cornering; -1 = N/A, 0 = off, 1 = on, 5 = currently active
+    /// </summary>
     public Int32 Cornering;
 }
 
