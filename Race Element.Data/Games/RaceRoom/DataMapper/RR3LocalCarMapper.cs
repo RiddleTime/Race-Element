@@ -28,6 +28,8 @@ internal static partial class RR3LocalCarMapper
     {
         WithR3SharedMemory(sharedData, localCarData);
         localCarData.Inputs.Gear = sharedData.Gear + 1;
+        localCarData.Electronics.AbsActivation = sharedData.AidSettings.Abs == 5 ? 1 : 0;
+        localCarData.Electronics.TractionControlActivation = sharedData.AidSettings.Tc == 5 ? 1 : 0;
 
         localCarData.Engine.MaxRpm = (int)Utilities.RpsToRpm(sharedData.MaxEngineRps);
         localCarData.Engine.Rpm = (int)Utilities.RpsToRpm(sharedData.EngineRps);

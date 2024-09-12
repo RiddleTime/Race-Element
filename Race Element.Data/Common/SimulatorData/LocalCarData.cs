@@ -115,8 +115,17 @@ namespace RaceElement.Data.Common.SimulatorData
     {
         public int TractionControlLevel { get; set; }
         public int TractionControlCutLevel { get; set; }
+
+        /// <summary>
+        /// 0 is no activation, 1 is full activation.
+        /// </summary>
         public float TractionControlActivation { get; set; }
+
         public int AbsLevel { get; set; }
+
+        /// <summary>
+        /// 0 is no activation, 1 is full activation.
+        /// </summary>
         public float AbsActivation { get; set; }
         public float BrakeBias { get; set; }
     }
