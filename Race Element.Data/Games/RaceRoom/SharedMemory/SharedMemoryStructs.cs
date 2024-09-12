@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace RaceElement.Data.Games.RaceRoom.SharedMemory;
 
@@ -41,63 +42,93 @@ internal struct SectorStarts<T>
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct PlayerData
 {
-    // Virtual physics time
-    // Unit: Ticks (1 tick = 1/400th of a second)
+    /// <summary>
+    /// Virtual physics time
+    /// Unit: Ticks (1 tick = 1/400th of a second)
+    /// </summary>
     public Int32 GameSimulationTicks;
 
-    // Virtual physics time
-    // Unit: Seconds
+    /// <summary>
+    /// Virtual physics time
+    /// Unit: Seconds
+    /// </summary>
     public Double GameSimulationTime;
 
-    // Car world-space position
+    /// <summary>
+    /// Car world-space position
+    /// </summary>
     public Vector3<Double> Position;
 
-    // Car world-space velocity
-    // Unit: Meter per second (m/s)
+    /// <summary>
+    /// Car world-space velocity
+    /// Unit: Meter per second (m/s)
+    /// </summary>
     public Vector3<Double> Velocity;
 
-    // Car local-space velocity
-    // Unit: Meter per second (m/s)
+    /// <summary>
+    /// Car local-space velocity
+    /// Unit: Meter per second (m/s)
+    /// </summary>
     public Vector3<Double> LocalVelocity;
 
-    // Car world-space acceleration
-    // Unit: Meter per second squared (m/s^2)
+    /// <summary>
+    /// Car world-space acceleration
+    /// Unit: Meter per second squared (m/s^2)
+    /// </summary>
     public Vector3<Double> Acceleration;
 
-    // Car local-space acceleration
-    // Unit: Meter per second squared (m/s^2)
+    /// <summary>
+    /// Car local-space acceleration
+    /// Unit: Meter per second squared (m/s^2)
+    /// </summary>
     public Vector3<Double> LocalAcceleration;
 
-    // Car body orientation
-    // Unit: Euler angles
+    /// <summary>
+    /// Car body orientation
+    /// Unit: Euler angles
+    /// </summary>
     public Vector3<Double> Orientation;
 
-    // Car body rotation
+    /// <summary>
+    /// Car body rotation
+    /// </summary>
     public Vector3<Double> Rotation;
 
-    // Car body angular acceleration (torque divided by inertia)
+    /// <summary>
+    /// Car body angular acceleration (torque divided by inertia)
+    /// </summary>
     public Vector3<Double> AngularAcceleration;
 
-    // Car world-space angular velocity
-    // Unit: Radians per second
+    /// <summary>
+    /// Car world-space angular velocity
+    /// Unit: Radians per second
+    /// </summary>
     public Vector3<Double> AngularVelocity;
 
-    // Car local-space angular velocity
-    // Unit: Radians per second
+    /// <summary>
+    /// Car local-space angular velocity
+    /// Unit: Radians per second
+    /// </summary>
     public Vector3<Double> LocalAngularVelocity;
 
-    // Driver g-force local to car
+    /// <summary>
+    /// Driver g-force local to car
+    /// </summary>
     public Vector3<Double> LocalGforce;
 
     // Total steering force coming through steering bars
     public Double SteeringForce;
     public Double SteeringForcePercentage;
 
-    // Current engine torque
+    /// <summary>
+    /// Current engine torque
+    /// </summary>
     public Double EngineTorque;
 
-    // Current downforce
-    // Unit: Newtons (N)
+    /// <summary>
+    /// Current downforce
+    /// Unit: Newtons (N)
+    /// </summary>
     public Double CurrentDownforce;
 
     // Currently unused
@@ -120,7 +151,9 @@ internal struct PlayerData
     public Double ThirdSpringSuspensionDeflectionRear;
     public Double ThirdSpringSuspensionVelocityRear;
 
-    // Reserved data
+    /// <summary>
+    /// Reserved data
+    /// </summary>
     public Double Unused1;
 }
 
@@ -502,7 +535,9 @@ internal struct Shared
     // High Detail
     //////////////////////////////////////////////////////////////////////////
 
-    // High precision data for player's vehicle only
+    /// <summary>
+    /// High precision data for player's vehicle only
+    /// </summary>
     public PlayerData Player;
 
     //////////////////////////////////////////////////////////////////////////
@@ -570,7 +605,9 @@ internal struct Shared
     //  4 = 4x
     public Int32 FuelUseActive;
 
-    // Total number of laps in the race, or -1 if player is not in race mode (practice, test mode, etc.)
+    /// <summary>
+    /// Total number of laps in the race, or -1 if player is not in race mode (practice, test mode, etc.)
+    /// </summary>
     public Int32 NumberOfLaps;
 
     // Amount of time and time remaining for the current session
@@ -579,10 +616,14 @@ internal struct Shared
     public Single SessionTimeDuration;
     public Single SessionTimeRemaining;
 
-    // Server max incident points, -1 = N/A
+    /// <summary>
+    /// Server max incident points, -1 = N/A
+    /// </summary>
     public Int32 MaxIncidentPoints;
 
-    // Reserved data
+    /// <summary>
+    /// Reserved data
+    /// </summary>
     public Single EventUnused2;
 
     //////////////////////////////////////////////////////////////////////////
@@ -601,24 +642,32 @@ internal struct Shared
     // Unit: Minutes in time-based sessions, otherwise lap
     public Int32 PitWindowEnd;
 
-    // If current vehicle is in pitline (-1 = N/A)
+    /// <summary>
+    /// If current vehicle is in pitline (-1 = N/A)
+    /// </summary>
     public Int32 InPitlane;
 
     // What is currently selected in pit menu, and array of states (preset/buttons: -1 = not selectable, 1 = selectable) (actions: -1 = N/A, 0 = unmarked for fix, 1 = marked for fix)
     public Int32 PitMenuSelection;
     public PitMenuState PitMenuState;
 
-    // Current vehicle pit state (-1 = N/A, 0 = None, 1 = Requested stop, 2 = Entered pitlane heading for pitspot, 3 = Stopped at pitspot, 4 = Exiting pitspot heading for pit exit)
+    /// <summary>
+    /// Current vehicle pit state (-1 = N/A, 0 = None, 1 = Requested stop, 2 = Entered pitlane heading for pitspot, 3 = Stopped at pitspot, 4 = Exiting pitspot heading for pit exit)
+    /// </summary>
     public Int32 PitState;
 
     // Current vehicle pitstop actions duration
     public Single PitTotalDuration;
     public Single PitElapsedTime;
 
-    // Current vehicle pit action (-1 = N/A, 0 = None, 1 = Preparing, (combination of 2 = Penalty serve, 4 = Driver change, 8 = Refueling, 16 = Front tires, 32 = Rear tires, 64 = Body, 128 = Front wing, 256 = Rear wing, 512 = Suspension))
+    /// <summary>
+    /// Current vehicle pit action (-1 = N/A, 0 = None, 1 = Preparing, (combination of 2 = Penalty serve, 4 = Driver change, 8 = Refueling, 16 = Front tires, 32 = Rear tires, 64 = Body, 128 = Front wing, 256 = Rear wing, 512 = Suspension))
+    /// </summary>
     public Int32 PitAction;
 
-    // Number of pitstops the current vehicle has performed (-1 = N/A)
+    /// <summary>
+    /// Number of pitstops the current vehicle has performed (-1 = N/A)
+    /// </summary>
     public Int32 NumPitstopsPerformed;
 
     public Single PitMinDurationTotal;
@@ -628,37 +677,57 @@ internal struct Shared
     // Scoring & Timings
     //////////////////////////////////////////////////////////////////////////
 
-    // The current state of each type of flag
+    /// <summary>
+    /// The current state of each type of flag
+    /// </summary>
     public Flags Flags;
 
-    // Current position (1 = first place)
+    /// <summary>
+    /// Current position (1 = first place)
+    /// </summary>
     public Int32 Position;
-    // Based on performance index
+    /// <summary>
+    /// Based on performance index
+    /// </summary>
     public Int32 PositionClass;
 
-    // Note: See the R3E.Constant.FinishStatus enum
+    /// <summary>
+    /// <see cref="Constants.FinishStatus"/>
+    /// </summary>
     public Int32 FinishStatus;
 
-    // Total number of cut track warnings (-1 = N/A)
+    /// <summary>
+    /// Total number of cut track warnings (-1 = N/A)
+    /// </summary>
     public Int32 CutTrackWarnings;
 
-    // The number of penalties the car currently has pending of each type (-1 = N/A)
+    /// <summary>
+    /// The number of penalties the car currently has pending of each type (-1 = N/A)
+    /// </summary>
     public CutTrackPenalties Penalties;
     // Total number of penalties pending for the car
     // Note: See the 'penalties' field
     public Int32 NumPenalties;
 
-    // How many laps the player has completed. If this value is 6, the player is on his 7th lap. -1 = n/a
+    /// <summary>
+    /// How many laps the player has completed. If this value is 6, the player is on his 7th lap. -1 = n/a
+    /// </summary>
     public Int32 CompletedLaps;
     public Int32 CurrentLapValid;
     public Int32 TrackSector;
     public Single LapDistance;
-    // fraction of lap completed, 0.0-1.0, -1.0 = N/A
+    /// <summary>
+    /// fraction of lap completed, 0.0-1.0, -1.0 = N/A
+    /// </summary>
     public Single LapDistanceFraction;
 
-    // The current best lap time for the leader of the session (-1.0 = N/A)
+    /// <summary>
+    /// The current best lap time for the leader of the session (-1.0 = N/A)
+    /// </summary>
     public Single LapTimeBestLeader;
-    // The current best lap time for the leader of the player's class in the current session (-1.0 = N/A)
+    /// <summary>
+    /// The current best lap time for the leader of the player's class in the current session (-1.0 = N/A)
+    /// </summary>
     public Single LapTimeBestLeaderClass;
     // Sector times of fastest lap by anyone in session
     // Unit: Seconds (-1.0 = N/A)
@@ -695,8 +764,13 @@ internal struct Shared
     // -1 = N/A, 0 = this and next lap valid, 1 = this lap invalid, 2 = this and next lap invalid
     public Int32 LapValidState;
 
-    // Reserved data
+    /// <summary>
+    /// Reserved data
+    /// </summary>
     public Single ScoreUnused1;
+    /// <summary>
+    /// Reserved data
+    /// </summary>
     public Single ScoreUnused2;
 
     //////////////////////////////////////////////////////////////////////////
@@ -715,27 +789,47 @@ internal struct Shared
     // Note: See the R3E.Constant.Control enum
     public Int32 ControlType;
 
-    // Unit: Meter per second (m/s)
+    /// <summary>
+    /// Unit: Meter per second (m/s)
+    /// </summary>
     public Single CarSpeed;
 
-    // Unit: Radians per second (rad/s)
+    /// <summary>
+    /// Unit: Radians per second (rad/s)
+    /// </summary>
     public Single EngineRps;
+    /// <summary>
+    /// Unit: Radians per second (rad/s)
+    /// </summary>
     public Single MaxEngineRps;
+    /// <summary>
+    /// Unit: Radians per second (rad/s)
+    /// </summary>
     public Single UpshiftRps;
 
-    // -2 = N/A, -1 = reverse, 0 = neutral, 1 = first gear, ...
+    /// <summary>
+    /// -2 = N/A, -1 = reverse, 0 = neutral, 1 = first gear, ...
+    /// </summary>
     public Int32 Gear;
-    // -1 = N/A
+    /// <summary>
+    /// -1 = N/A
+    /// </summary>
     public Int32 NumGears;
 
-    // Physical location of car's center of gravity in world space (X, Y, Z) (Y = up)
+    /// <summary>
+    /// Physical location of car's center of gravity in world space (X, Y, Z) (Y = up)
+    /// </summary>
     public Vector3<Single> CarCgLocation;
-    // Pitch, yaw, roll
-    // Unit: Radians (rad)
+    /// <summary>
+    /// Pitch, yaw, roll
+    /// Unit: Radians (rad)
+    /// </summary>
     public Orientation<Single> CarOrientation;
-    // Acceleration in three axes (X, Y, Z) of car body in local-space.
-    // From car center, +X=left, +Y=up, +Z=back.
-    // Unit: Meter per second squared (m/s^2)
+    /// <summary>
+    /// Acceleration in three axes (X, Y, Z) of car body in local-space.
+    /// From car center, +X=left, +Y=up, +Z=back.
+    /// Unit: Meter per second squared (m/s^2)
+    /// </summary>
     public Vector3<Single> LocalAcceleration;
 
     // Unit: Kilograms (kg)
@@ -788,16 +882,24 @@ internal struct Shared
     // Note: Not valid for AI or remote players
     public Int32 SteerWheelRangeDegrees;
 
-    // Aid settings
+    /// <summary>
+    /// Aid settings
+    /// </summary>
     public AidSettings AidSettings;
 
-    // DRS data
+    /// <summary>
+    /// DRS data
+    /// </summary>
     public DRS Drs;
 
-    // Pit limiter (-1 = N/A, 0 = inactive, 1 = active)
+    /// <summary>
+    /// Pit limiter (-1 = N/A, 0 = inactive, 1 = active)
+    /// </summary>
     public Int32 PitLimiter;
 
-    // Push to pass data
+    /// <summary>
+    /// Push to pass data
+    /// </summary>
     public PushToPass PushToPass;
 
     // How much the vehicle's brakes are biased towards the back wheels (0.3 = 30%, etc.) (-1.0 = N/A)
@@ -817,11 +919,18 @@ internal struct Shared
     // Unit: Liters (l)
     public Single WaterLeft;
 
-    // -1.0 = N/A
+    /// <summary>
+    /// -1.0 = N/A
+    /// </summary>
     public Int32 AbsSetting;
 
-    // Reserved data
+    /// <summary>
+    /// Reserved data
+    /// </summary>
     public Single VehicleUnused1;
+    /// <summary>
+    /// Reserved data
+    /// </summary>
     public Single VehicleUnused2;
 
     //////////////////////////////////////////////////////////////////////////
@@ -867,33 +976,50 @@ internal struct Shared
     // Note: See the R3E.Constant.TireSubtype enum
     public Int32 TireSubtypeFront;
     public Int32 TireSubtypeRear;
-
-    // Current brake temperature (-1.0 = N/A)
-    // Optimum temperature
-    // Cold temperature
-    // Hot temperature
-    // Unit: Celsius (C)
-    // Note: Not valid for AI or remote players
+    /// <summary>
+    /// Current brake temperature (-1.0 = N/A)
+    /// Optimum temperature
+    /// Cold temperature
+    /// Hot temperature
+    /// Unit: Celsius (C)
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public TireData<BrakeTemp> BrakeTemp;
-    // Brake pressure (-1.0 = N/A)
-    // Unit: Kilo Newtons (kN)
-    // Note: Not valid for AI or remote players
+
+    /// <summary>
+    /// Brake pressure (-1.0 = N/A)
+    /// Unit: Kilo Newtons (kN) /// Note: Not valid for AI or remote players
+    /// </summary>
     public TireData<Single> BrakePressure;
 
-    // -1.0 = N/A
+    /// <summary>
+    /// -1.0 = N/A
+    /// </summary>
     public Int32 TractionControlSetting;
+    /// <summary>
+    /// -1.0 = N/A
+    /// </summary>
     public Int32 EngineMapSetting;
+    /// <summary>
+    /// -1.0 = N/A
+    /// </summary>
     public Int32 EngineBrakeSetting;
 
-    // -1.0 = N/A, 0.0 -> 100.0 percent
+    /// <summary>
+    /// -1.0 = N/A, 0.0 -> 100.0 percent
+    /// </summary>
     public Single TractionControlPercent;
 
-    // Which type of material under player car tires (tarmac, gravel, etc.)
-    // Note: See the R3E.Constant.MtrlType enum
+    /// <summary>
+    /// Which type of material under player car tires (tarmac, gravel, etc.)
+    /// <see cref="Constants.MtrlType"/>
+    /// </summary>
     public TireData<Int32> TireOnMtrl;
 
-    // Tire load (N)
-    // -1.0 = N/A
+    /// <summary>
+    /// Tire load (N)
+    /// -1.0 = N/A
+    /// </summary>
     public TireData<Single> TireLoad;
 
     //////////////////////////////////////////////////////////////////////////
@@ -908,10 +1034,14 @@ internal struct Shared
     // Driver Info
     //////////////////////////////////////////////////////////////////////////
 
-    // Number of cars (including the player) in the race
+    /// <summary>
+    /// Number of cars (including the player) in the race
+    /// </summary>
     public Int32 NumCars;
 
-    // Contains name and basic vehicle info for all drivers in place order
+    /// <summary>
+    /// Contains name and basic vehicle info for all drivers in place order
+    /// </summary>
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
     public DriverData[] DriverData;
 
