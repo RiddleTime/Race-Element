@@ -18,7 +18,7 @@ internal sealed class Constants
         /// <summary>
         /// Minor version number to test against
         /// </summary>
-        R3E_VERSION_MINOR = 15
+        R3E_VERSION_MINOR = 16
     };
 
     /// <summary>

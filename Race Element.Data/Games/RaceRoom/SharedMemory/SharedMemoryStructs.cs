@@ -1,8 +1,6 @@
-﻿using System.Numerics;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
 namespace RaceElement.Data.Games.RaceRoom.SharedMemory;
-
 
 // https://github.com/sector3studios/r3e-api
 
@@ -407,10 +405,16 @@ internal struct DriverInfo
 internal struct DriverData
 {
     public DriverInfo DriverInfo;
-    // Note: See the R3E.Constant.FinishStatus enum
+
+    /// <summary>
+    /// <see cref="Constants.FinishStatus"/>
+    /// </summary>
     public Int32 FinishStatus;
     public Int32 Place;
-    // Based on performance index
+
+    /// <summary>
+    /// Based on performance index
+    /// </summary>
     public Int32 PlaceClass;
     public Single LapDistance;
     public Vector3<Single> Position;
@@ -423,7 +427,10 @@ internal struct DriverData
     public Sectors<Single> SectorTimeBestSelf;
     public Single TimeDeltaFront;
     public Single TimeDeltaBehind;
-    // Note: See the R3E.Constant.PitStopStatus enum
+
+    /// <summary>
+    /// <see cref="Constants.PitStopStatus"/>
+    /// </summary>
     public Int32 PitStopStatus;
     public Int32 InPitlane;
 
@@ -442,11 +449,15 @@ internal struct DriverData
     public Single BasePenaltyWeight;
     public Single AidPenaltyWeight;
 
-    // -1 unavailable, 0 = not engaged, 1 = engaged
+    /// <summary>
+    /// -1 unavailable, 0 = not engaged, 1 = engaged
+    /// </summary>
     public Int32 DrsState;
     public Int32 PtpState;
 
-    // -1 unavailable, DriveThrough = 0, StopAndGo = 1, Pitstop = 2, Time = 3, Slowdown = 4, Disqualify = 5,
+    /// <summary>
+    /// -1 unavailable, DriveThrough = 0, StopAndGo = 1, Pitstop = 2, Time = 3, Slowdown = 4, Disqualify = 5,
+    /// </summary>
     public Int32 PenaltyType;
 
     // Based on the PenaltyType you can assume the reason is:
@@ -501,11 +512,15 @@ internal struct DriverData
     // DisqualifyPenaltyMax = 14
     public Int32 PenaltyReason;
 
-    // -1 unavailable, 0 = ignition off, 1 = ignition on but not running, 2 = ignition on and running
+    /// <summary>
+    /// -1 unavailable, 0 = ignition off, 1 = ignition on but not running, 2 = ignition on and running
+    /// </summary>
     public Int32 EngineState;
 
-    // Car body orientation
-    // Unit: Euler angles
+    /// <summary>
+    /// Car body orientation
+    /// Unit: Euler angles
+    /// </summary>
     public Vector3<Single> Orientation;
 }
 
@@ -925,13 +940,14 @@ internal struct Shared
     public Int32 AbsSetting;
 
     /// <summary>
-    /// Reserved data
+    /// -1 = N/A, 0 = off, 1 = on, 2 = strobing
     /// </summary>
-    public Single VehicleUnused1;
+    public Int32 HeadLights;
+
     /// <summary>
     /// Reserved data
     /// </summary>
-    public Single VehicleUnused2;
+    public Single VehicleUnused1;
 
     //////////////////////////////////////////////////////////////////////////
     // Tires
