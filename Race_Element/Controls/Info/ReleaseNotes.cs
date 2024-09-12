@@ -6,7 +6,8 @@ public static class ReleaseNotes
 {
     internal readonly static Dictionary<string, string> Notes = new()
     {
-        {"1.2.0.0", "- Added BETA Multi-Sim support for Assetto Corsa 1, iRacing and RaceRoom with a various amount of huds:"+
+        {"1.2.0.0", "To Restore your ACC HUD Settings, click the main Settings tab and open the Race Element folder. In that folder open the Overlay folder and copy all the .json files and place them in the Assetto Corsa Competizione folder. Then Restart the app."+
+                    "\n- Added BETA Multi-Sim support for Assetto Corsa 1, iRacing and RaceRoom with a various amount of huds:"+
                     "\n  - Multi-Sim works by selecting a different game than ACC in the top-right of the app. This will reload the HUD Tab."+
                     "\n  - Report any feedback in the Race Element discord server in the dedicated Multi-Sim Testing thread."+
                     "\n- HUD Tab:"+

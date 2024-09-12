@@ -6,18 +6,24 @@ namespace RaceElement.Data.Games;
 
 public static class GameManager
 {
-    private readonly static SimpleLoopJob _dataUpdaterJob = new() { Action = () => SimDataProvider.Update(), IntervalMillis = 1000 / 50 };
+    private readonly static SimpleLoopJob _dataUpdaterJob = new()
+    {
+        Action = () => SimDataProvider.Update(),
+        IntervalMillis = 1000 / 50        // TODO: adjust for each game.
+    };
 
     public static Game CurrentGame { get; private set; } = Game.Any;
 
-    public static event EventHandler<Game>? OnGameChanged;
-    public static void SetCurrentGame(Game game)
+
+    public static event EventHandler<(Game previous, Game next)>? OnGameChanged;
+    public static void SetCurrentGame(Game nextGame)
     {
         ExitGameData(CurrentGame);
 
-        CurrentGame = game;
         SimDataProvider.Clear();
-        OnGameChanged?.Invoke(null, game);
+        Game previousGame = CurrentGame;
+        CurrentGame = nextGame;
+        OnGameChanged?.Invoke(null, (previousGame, nextGame));
 
         _dataUpdaterJob.Run();
     }
@@ -27,8 +33,8 @@ public static class GameManager
     /// </summary>
     /// <param name="game"></param>
     private static void ExitGameData(Game game)
-    {        
-        SimDataProvider.Stop();        
+    {
+        SimDataProvider.Stop();
         _dataUpdaterJob?.CancelJoin();
     }
 }

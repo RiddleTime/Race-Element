@@ -42,5 +42,6 @@ public static class CommonHuds
                 ActiveOverlays[0].Stop();
                 ActiveOverlays.Remove(ActiveOverlays[0]);
             }
+        Thread.Sleep(2000);
     }
 }

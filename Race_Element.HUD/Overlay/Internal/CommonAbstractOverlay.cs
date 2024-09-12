@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
@@ -21,6 +22,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
     public virtual void BeforeStop() { }
     public virtual bool ShouldRender() => DefaultShouldRender();
 
+
     protected CommonAbstractOverlay(Rectangle rectangle, string Name)
     {
         this.X = rectangle.X;
@@ -38,6 +40,8 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         }
         catch (Exception) { }
     }
+
+    public Game GameWhenStarted { get; private set; } = Game.Any;
 
     private bool Draw = false;
 
@@ -142,7 +146,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
     {
         try
         {
-
+            GameWhenStarted = GameManager.CurrentGame;
             try
             {
                 BeforeStart();
@@ -306,14 +310,14 @@ public abstract class CommonAbstractOverlay : FloatingWindow
                     }
 
                     // save overlay settings
-                    OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name);
+                    OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(this.Name, GameWhenStarted);
                     if (settings == null)
                         return;
                     Point point = Monitors.IsInsideMonitor(X, Y, this.Size.Width, this.Size.Height, this.Handle);
                     settings.X = point.X;
                     settings.Y = point.Y;
 
-                    OverlaySettings.SaveOverlaySettings(this.Name, settings);
+                    OverlaySettings.SaveOverlaySettings(this.Name, settings, GameWhenStarted);
 
                     this.SetDraggy(false);
                     UpdateLayeredWindow();

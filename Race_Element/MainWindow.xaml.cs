@@ -148,11 +148,11 @@ public partial class MainWindow : Window
 
 
     private bool initialChange = true;
-    private void GameManager_OnGameChanged(object sender, Game selectedGame)
+    private void GameManager_OnGameChanged(object sender, (Game previous, Game next) e)
     {
-        tabSetups.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
-        tabLiveries.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
-        tabTelemetry.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
+        tabSetups.Visibility = e.next == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
+        tabLiveries.Visibility = e.next == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
+        tabTelemetry.Visibility = e.next == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
 
 
         if (!initialChange)

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 
 namespace RaceElement.HUD.ACC;
 
@@ -36,5 +37,7 @@ public class OverlaysAcc
                 ActiveOverlays[0].Stop();
                 ActiveOverlays.Remove(ActiveOverlays[0]);
             }
+
+        Thread.Sleep(2000);
     }
 }

@@ -7,6 +7,7 @@ using System.Drawing;
 using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkEnum;
 using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkSessionInfo.SessionInfoModel.SessionModel;
 using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkSessionInfo.SessionInfoModel;
+using System.Numerics;
 
 // https://github.com/mherbold/IRSDKSharper
 // https://sajax.github.io/irsdkdocs/telemetry/
@@ -250,9 +251,7 @@ namespace RaceElement.Data.Games.iRacing
                 localCar.Engine.Rpm = (int)_iRacingSDK.Data.GetFloat(rPMDatum);
                 // m/s -> km/h
                 localCar.Physics.Velocity = _iRacingSDK.Data.GetFloat(speedDatum) * 3.6f;
-                localCar.Physics.Heading = _iRacingSDK.Data.GetFloat(yawNorthDatum);
-                localCar.Physics.Pitch = _iRacingSDK.Data.GetFloat(pitchDatum);
-                localCar.Physics.Roll = _iRacingSDK.Data.GetFloat(rollDatum);
+                localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(_iRacingSDK.Data.GetFloat(yawNorthDatum), _iRacingSDK.Data.GetFloat(pitchDatum), _iRacingSDK.Data.GetFloat(rollDatum));
 
                 localCar.Race.GlobalPosition = _iRacingSDK.Data.GetInt(playerCarPositionDatum);
 

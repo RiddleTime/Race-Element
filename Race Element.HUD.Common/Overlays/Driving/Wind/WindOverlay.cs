@@ -10,6 +10,7 @@ using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Numerics;
 
 namespace RaceElement.HUD.Common.Overlays.OverlayWind;
 
@@ -95,11 +96,12 @@ internal sealed class WindDirectionOverlay : CommonAbstractOverlay
         _background?.Draw(g, 0, 0, _config.Shape.Size, _config.Shape.Size);
 
         double vaneAngle = SessionData.Instance.Weather.AirDirection;
-        double carDirection = 90 + (SimDataProvider.LocalCar.Physics.Heading * -180d) / Math.PI;
+
+        double carDirection = 90 + (SimDataProvider.LocalCar.Physics.Rotation.Y * -180d) / Math.PI;
         double relativeAngle = vaneAngle + carDirection;
 
         if (GameManager.CurrentGame == Game.iRacing)
-            relativeAngle = (2 * Math.PI) - SimDataProvider.LocalCar.Physics.Heading - SimDataProvider.Session.Weather.AirDirection;
+            relativeAngle = (2 * Math.PI) - SimDataProvider.LocalCar.Physics.RotationEuler.Y - SimDataProvider.Session.Weather.AirDirection;
 
         g.SmoothingMode = SmoothingMode.AntiAlias;
         Rectangle rect = new(padding / 2, padding / 2, _config.Shape.Size - padding, _config.Shape.Size - padding);

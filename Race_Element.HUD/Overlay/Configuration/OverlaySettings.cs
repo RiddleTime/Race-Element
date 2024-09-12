@@ -18,16 +18,17 @@ public class OverlaySettings
         public List<ConfigField> Config;
     }
 
-    private static DirectoryInfo GetOverlayDirectory()
+    private static DirectoryInfo GetOverlayDirectory(Game gameWhenStarted = Game.Any)
     {
-        DirectoryInfo overlayDir = new(FileUtil.RaceElementOverlayPath + GameManager.CurrentGame.ToFriendlyName());
+        if (gameWhenStarted == Game.Any) gameWhenStarted = GameManager.CurrentGame;
+        DirectoryInfo overlayDir = new(FileUtil.RaceElementOverlayPath + gameWhenStarted.ToFriendlyName());
         if (!overlayDir.Exists) overlayDir.Create();
         return overlayDir;
     }
 
-    public static OverlaySettingsJson LoadOverlaySettings(string overlayName)
+    public static OverlaySettingsJson LoadOverlaySettings(string overlayName, Game gameWhenStarted = Game.Any)
     {
-        DirectoryInfo overlayDir = GetOverlayDirectory();
+        DirectoryInfo overlayDir = GetOverlayDirectory(gameWhenStarted);
 
         FileInfo[] overlayFiles = overlayDir.GetFiles($"*.json");
         foreach (FileInfo overlayFile in overlayFiles)
@@ -45,14 +46,14 @@ public class OverlaySettings
         return new OverlaySettingsJson(); ;
     }
 
-    public static OverlaySettingsJson SaveOverlaySettings(string overlayName, OverlaySettingsJson settings)
+    public static OverlaySettingsJson SaveOverlaySettings(string overlayName, OverlaySettingsJson settings, Game gameWhenStarted = Game.Any)
     {
-        FileInfo[] tagFiles = GetOverlayDirectory().GetFiles($"{overlayName}.json");
+        FileInfo[] tagFiles = GetOverlayDirectory(gameWhenStarted).GetFiles($"{overlayName}.json");
         FileInfo overlaySettingsFile = null;
 
         if (tagFiles.Length == 0)
         {
-            overlaySettingsFile = new FileInfo($"{GetOverlayDirectory().FullName}{Path.DirectorySeparatorChar}{overlayName}.json");
+            overlaySettingsFile = new FileInfo($"{GetOverlayDirectory(gameWhenStarted).FullName}{Path.DirectorySeparatorChar}{overlayName}.json");
         }
         else
         {
@@ -66,7 +67,7 @@ public class OverlaySettings
             }
         }
 
-        overlaySettingsFile ??= new FileInfo($"{GetOverlayDirectory().FullName}{Path.DirectorySeparatorChar}{overlayName}.json");
+        overlaySettingsFile ??= new FileInfo($"{GetOverlayDirectory(gameWhenStarted).FullName}{Path.DirectorySeparatorChar}{overlayName}.json");
 
         string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
 
@@ -78,6 +79,7 @@ public class OverlaySettings
             }
 
             File.WriteAllText(overlaySettingsFile.FullName, jsonString);
+            Debug.WriteLine($"Written to {overlaySettingsFile.FullName}\n - Game: {gameWhenStarted.ToFriendlyName()}");
         }
         catch (Exception)
         {

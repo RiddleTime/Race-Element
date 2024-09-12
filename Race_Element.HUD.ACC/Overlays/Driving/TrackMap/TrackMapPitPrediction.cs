@@ -10,7 +10,7 @@ public static class TrackMapPitPrediction
     public static PitStop GetPitStop(List<TrackPoint> track, float pitTimeMs)
     {
         var info = TrackData.GetCurrentTrack(ACCSharedMemory.Instance.PageFileStatic.Track);
-        return ComputePitStop(track, pitTimeMs + info.PitLaneTime);
+        return ComputePitStop(track, pitTimeMs + info.PitLaneTime * 1000);
     }
 
     public static PitStop GetPitStopWithDamage(List<TrackPoint> track, float pitTimeMs)
