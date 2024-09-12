@@ -21,6 +21,9 @@ internal sealed class Constants
         R3E_VERSION_MINOR = 15
     };
 
+    /// <summary>
+    /// Session Type
+    /// </summary>
     enum Session
     {
         Unavailable = -1,
@@ -30,6 +33,10 @@ internal sealed class Constants
         Warmup = 3,
     };
 
+
+    /// <summary>
+    /// Phase of the session.
+    /// </summary>
     enum SessionPhase
     {
         Unavailable = -1,
