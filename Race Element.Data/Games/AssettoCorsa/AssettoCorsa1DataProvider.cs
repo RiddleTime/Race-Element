@@ -50,7 +50,7 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
         // TODO: AC1 does not provide delta info like ACC and iRacing. We need to try to calculate it.
         // But that would mean we need some way of telling if the car is at 66% of track and has 12345ms from 12000ms expected at
         // that precentage -> delta is 345ms.
-        // SessionData.Instance.LapDeltaToSessionBestLapMs 
+        // SessionData.Instance.LapDeltaToSessionBestLapMs
 
         MapEntryList(CrewChiefPage, GraphicsPage);
 
@@ -70,7 +70,7 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
             {
                 carInfo.CarLocation = CarInfo.CarLocationEnum.Pitlane;
             } else if (vehicle.isCarInPitline != 0)
-            {            
+            {
                 if (vehicle.spLineLength < 0.1F)
                 {
                     carInfo.CarLocation = CarInfo.CarLocationEnum.PitExit;
@@ -100,7 +100,7 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
             carInfo.CurrentLap = current;
             carInfo.CurrentLap.IsInvalid = vehicle.currentLapInvalid != 0;
 
-            carInfo.TrackPercentCompleted = vehicle.spLineLength;           
+            carInfo.TrackPercentCompleted = vehicle.spLineLength;
 
             DriverInfo driverInfo = new DriverInfo();
             driverInfo.Name = Encoding.UTF8.GetString(vehicle.driverName);
@@ -110,14 +110,13 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
             // m/s -> km/h
             carInfo.Kmh = (int) (vehicle.speedMS * 3.6F);
             carInfo.Laps = vehicle.lapCount;
-            
 
             carInfo.Location = new Vector3(vehicle.worldPosition.x, vehicle.worldPosition.y, vehicle.worldPosition.z);
 
             carInfo.GapToClassLeaderMs = vehicle.currentLapTimeMS - crewChiefPage.vehicle[0].currentLapTimeMS;
             carInfo.GapToRaceLeaderMs = carInfo.GapToClassLeaderMs;
             // TODO: double-check
-            carInfo.GapToPlayerMs = vehicle.currentLapTimeMS - crewChiefPage.vehicle[SessionData.Instance.PlayerCarIndex].currentLapTimeMS;            
+            carInfo.GapToPlayerMs = vehicle.currentLapTimeMS - crewChiefPage.vehicle[SessionData.Instance.PlayerCarIndex].currentLapTimeMS;
         }
     }
 
@@ -131,13 +130,13 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
     }
 
     public override List<string> GetCarClasses()
-    {        
+    {
         return classes;
     }
 
     public override Color GetColorForCarClass(string carClass)
     {
-        // There's only one class. 
+        // There's only one class.
         return Color.AliceBlue;
     }
 
@@ -146,7 +145,7 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
         return lastPhysicsPacketId > 0;
     }
 
-    
+
     internal override void Stop()
     {
         // No-op

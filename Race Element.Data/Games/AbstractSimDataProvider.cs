@@ -21,7 +21,7 @@ public abstract class AbstractSimDataProvider
     /// <param name="category">Sim dependent category name. E.g. in iRacing "A 2.7" for an A license driver, which returns blue. In ACC this could be "Gold" or an LFM license level.</param>
     /// <returns>The color to be used for this category in the HUDs.</returns>
     virtual public Color GetColorForCategory(string category) => Color.Gray;
-    abstract public List<string> GetCarClasses();    
+    abstract public List<string> GetCarClasses();
     abstract public void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData);
 
     abstract internal void Stop();
@@ -33,5 +33,5 @@ public abstract class AbstractSimDataProvider
     public virtual bool IsSpectating(int playerCarIndex, int focusedIndex)
     {
         throw new NotImplementedException();
-    }        
+    }
 }

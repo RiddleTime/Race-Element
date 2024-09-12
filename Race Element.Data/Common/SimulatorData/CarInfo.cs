@@ -6,7 +6,7 @@ namespace RaceElement.Data.Common.SimulatorData;
 public sealed class CarInfo
 {
     public int CarIndex { get; }
-    
+
     public string TeamName { get; protected internal set; }
     public int RaceNumber { get; set; }
     public byte CupCategory { get; protected internal set; }
@@ -15,7 +15,7 @@ public sealed class CarInfo
 
     // Percentage 0.0f (0%) to 1.0f to (100%) of track completed. Might not read full 0% and 100% at start and end of lap and is therefore rounded in that case.
     public float TrackPercentCompleted { get; set; }
-    
+
 
     public CarLocationEnum CarLocation { get; set; }
 
@@ -39,7 +39,7 @@ public sealed class CarInfo
     // Gap to class leader
     public int GapToClassLeaderMs { get; set; }
     // Gap from player's car to others regardless of class
-    public int GapToPlayerMs { get; set; }    
+    public int GapToPlayerMs { get; set; }
 
     // lap number the car is in
     public int LapIndex{ get; set; }
@@ -49,7 +49,7 @@ public sealed class CarInfo
     /// <summary>
     /// Delta to driver's best session lap
     /// </summary>
-    /// Might not be available for all sims. 
+    /// Might not be available for all sims.
     public float LapDeltaToSessionBestLap { get; set; }
 
     /// <summary>
