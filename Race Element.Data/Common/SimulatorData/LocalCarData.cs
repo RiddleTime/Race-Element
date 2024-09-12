@@ -68,17 +68,10 @@ namespace RaceElement.Data.Common.SimulatorData
 
     public sealed record PhysicsData
     {
+        /// <summary>
+        /// The location of the local car. (X,Y,Z)
+        /// </summary>
         public Vector3 Location { get; set; } = new();
-
-        /// <summary>
-        /// The global rotation of the car (yaw/pitch/roll)
-        /// </summary>
-        public Quaternion Rotation { get; set; } = Quaternion.Zero;
-
-        /// <summary>
-        /// The speed of the car in kilometers per hour.
-        /// </summary>
-        public float Velocity { get; set; }
 
         /// <summary>
         /// The g-forces. (X,Y,Z)
@@ -86,11 +79,19 @@ namespace RaceElement.Data.Common.SimulatorData
         public Vector3 Acceleration { get; set; } = new();
 
         /// <summary>
-        /// Heading relative to north in radians.
+        /// The global rotation of the car (yaw/pitch/roll)
         /// </summary>
-        public float Heading { get; set; }
-        public float Pitch { get; internal set; }
-        public float Roll { get; internal set; }
+        public Quaternion Rotation { get; set; } = Quaternion.Zero;
+
+        /// <summary>
+        /// The global rotation of the car (X:yaw/heading, Y:pitch, Z:roll), in euler angles
+        /// </summary>
+        public Vector3 RotationEuler => Vector3.Transform(new(), Rotation);
+
+        /// <summary>
+        /// The speed of the car in kilometers per hour.
+        /// </summary>
+        public float Velocity { get; set; }
     }
     public sealed record InputsData
     {
