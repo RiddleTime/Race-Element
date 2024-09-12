@@ -197,13 +197,13 @@ internal sealed class TrackMapOverlay : AbstractOverlay
                 ++fromSectorOne;
             }
 
-            while (_trackPositions[idx].Spline < trackData.Sectors[0])
+            while (idx < _trackPositions.Count && _trackPositions[idx].Spline < trackData.Sectors[0])
             {
                 sector1.Add(_trackPositions[idx]);
                 ++idx;
             }
 
-            while (_trackPositions[idx].Spline < trackData.Sectors[1])
+            while (idx < _trackPositions.Count && _trackPositions[idx].Spline < trackData.Sectors[1])
             {
                 sector2.Add(_trackPositions[idx]);
                 ++idx;
@@ -217,7 +217,8 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
             for (var i = 0; i < fromSectorOne; ++i)
             {
-                sector3.Add(_trackPositions[i]);
+                if (i < _trackPositions.Count)
+                    sector3.Add(_trackPositions[i]);
             }
 
             var s1 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector1, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
