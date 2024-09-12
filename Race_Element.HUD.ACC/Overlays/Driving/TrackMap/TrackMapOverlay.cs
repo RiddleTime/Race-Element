@@ -14,6 +14,7 @@ using System.Diagnostics;
 using System.Drawing;
 using RaceElement.Data;
 using RaceElement.Data.ACC.Tracks;
+using System;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
@@ -160,77 +161,85 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private void OnMapPositionsCallback(object sender, List<TrackPoint> positions)
     {
-        var trackData = TrackData.GetCurrentTrack(pageStatic.Track);
-        _scale = trackData.FactorScale * _config.General.ScaleFactor;
-
-        _miniMapCreationJob.Cancel();
-        _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
-
-        var track = TrackMapTransform.ScaleAndRotate(positions, _trackOriginalBoundingBox, _scale, _config.General.Rotation);
-        var boundaries = TrackMapTransform.GetBoundingBox(track);
-
-        for (var i = 0; i < track.Count; ++i)
+        try
         {
-            var y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
-            var x = track[i].X - boundaries.Left + _margin * 0.5f;
+            var trackData = TrackData.GetCurrentTrack(pageStatic.Track);
+            _scale = trackData.FactorScale * _config.General.ScaleFactor;
 
-            track[i] = new TrackPoint(track[i]) { X = x, Y = y };
+            _miniMapCreationJob.Cancel();
+            _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
+
+            var track = TrackMapTransform.ScaleAndRotate(positions, _trackOriginalBoundingBox, _scale, _config.General.Rotation);
+            var boundaries = TrackMapTransform.GetBoundingBox(track);
+
+            for (var i = 0; i < track.Count; ++i)
+            {
+                var y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
+                var x = track[i].X - boundaries.Left + _margin * 0.5f;
+
+                track[i] = new TrackPoint(track[i]) { X = x, Y = y };
+            }
+
+            List<TrackPoint> sector1 = new(), sector2 = new(), sector3 = new();
+            _trackBoundingBox = boundaries;
+            _trackPositions = track;
+
+            int idx = 0, fromSectorOne = 0;
+            while (_trackPositions[idx].Spline > 0.9f && _trackPositions[idx].Spline < _trackPositions[idx + 1].Spline)
+            {
+                ++idx;
+                ++fromSectorOne;
+            }
+
+            if (1.0f - _trackPositions[idx].Spline < float.Epsilon)
+            {
+                ++idx;
+                ++fromSectorOne;
+            }
+
+            while (_trackPositions[idx].Spline < trackData.Sectors[0])
+            {
+                sector1.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            while (_trackPositions[idx].Spline < trackData.Sectors[1])
+            {
+                sector2.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            while (idx < _trackPositions.Count)
+            {
+                sector3.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            for (var i = 0; i < fromSectorOne; ++i)
+            {
+                sector3.Add(_trackPositions[i]);
+            }
+
+            var s1 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector1, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
+            var s2 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector2, _config.General.Thickness, _margin, sector2, _trackBoundingBox);
+            var s3 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector3, _config.General.Thickness, _margin, sector3, _trackBoundingBox);
+            _mapCache.Map = TrackMapDrawer.MixImages(s1, s2, s3, s1.Width, s1.Height);
+
+            Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
+
+            if (!_config.Others.SavePreview || pageStatic.Track.Length == 0)
+            {
+                return;
+            }
+
+            var path = FileUtil.RaceElementTracks + pageStatic.Track.ToLower() + ".jpg";
+            _mapCache.Map.Save(path);
         }
-
-        List<TrackPoint> sector1 = new(), sector2 = new(), sector3 = new();
-        _trackBoundingBox = boundaries;
-        _trackPositions = track;
-
-        int idx = 0, fromSectorOne = 0;
-        while (_trackPositions[idx].Spline > 0.9f && _trackPositions[idx].Spline < _trackPositions[idx + 1].Spline)
+        catch (Exception ex)
         {
-            ++idx;
-            ++fromSectorOne;
+            Debug.WriteLine(ex);
+            LogWriter.WriteToLog(ex);
         }
-
-        if (1.0f - _trackPositions[idx].Spline < float.Epsilon)
-        {
-            ++idx;
-            ++fromSectorOne;
-        }
-
-        while (_trackPositions[idx].Spline < trackData.Sectors[0])
-        {
-            sector1.Add(_trackPositions[idx]);
-            ++idx;
-        }
-
-        while (_trackPositions[idx].Spline < trackData.Sectors[1])
-        {
-            sector2.Add(_trackPositions[idx]);
-            ++idx;
-        }
-
-        while (idx < _trackPositions.Count)
-        {
-            sector3.Add(_trackPositions[idx]);
-            ++idx;
-        }
-
-        for (var i = 0; i < fromSectorOne; ++i)
-        {
-            sector3.Add(_trackPositions[i]);
-        }
-
-        var s1 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector1, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
-        var s2 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector2, _config.General.Thickness, _margin, sector2, _trackBoundingBox);
-        var s3 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector3, _config.General.Thickness, _margin, sector3, _trackBoundingBox);
-        _mapCache.Map = TrackMapDrawer.MixImages(s1, s2, s3, s1.Width, s1.Height);
-
-        Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
-
-        if (!_config.Others.SavePreview || pageStatic.Track.Length == 0)
-        {
-            return;
-        }
-
-        var path = FileUtil.RaceElementTracks + pageStatic.Track.ToLower() + ".jpg";
-        _mapCache.Map.Save(path);
     }
 
     #endregion
