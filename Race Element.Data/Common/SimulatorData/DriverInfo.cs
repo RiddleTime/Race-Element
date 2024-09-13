@@ -3,7 +3,7 @@
 public struct DriverInfo
 {
     // "Firstname Lastname" or whatever the sim wants displayed
-    public string Name { get; set; }    
+    public string Name { get; set; }
     public string ShortName { get; internal set; }
     // Something like Rookie/D-class/Gold.
     public string Category { get; internal set; }

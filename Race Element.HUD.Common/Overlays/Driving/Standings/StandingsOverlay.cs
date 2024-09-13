@@ -4,11 +4,13 @@ using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Numerics;
 using static RaceElement.Data.Common.SimulatorData.CarInfo;
+using DataUtil = RaceElement.Data.Common.DataUtil;
 
 
 namespace RaceElement.HUD.Common.Overlays.Driving.Standings;
@@ -214,19 +216,33 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         // - practice/qualifying: interval is gap to driver in front's BEST time (within) same class 
         // - race: interval is gap to car in front in the same class.        
         int intervalMs = 0;
-        if (standingsTableRows.Count > 1)
+        if (standingsTableRows.Count > 0)
         {
             if (SessionData.Instance.SessionType != RaceSessionType.Race)
             {
-                intervalMs = (int)(carData.FastestLap.LaptimeMS - standingsTableRows[standingsTableRows.Count - 1].FastestLapTime.LaptimeMS);
+                // TODO: maybe special case when no-one has fastest lap?
+                if (carData.FastestLap != null  && standingsTableRows[standingsTableRows.Count - 1].FastestLapTime != null )
+                    intervalMs = ((int)(carData.FastestLap.LaptimeMS - standingsTableRows[standingsTableRows.Count - 1].FastestLapTime.LaptimeMS));
+                else
+                {
+                    intervalMs = 0;
+                    // Debug.WriteLine("No interval b/c fastest lap null. curr {0} front {1}", carData.RaceNumber, standingsTableRows[standingsTableRows.Count - 1].RaceNumber);
+                }
             }
             else
             {
                 // TODO: take into account being lap down. e.g. print "1L" for 1 lap down
                 int carInFont = standingsTableRows[standingsTableRows.Count - 1].CarIdx;
-                intervalMs = carData.GapToRaceLeaderMs - SessionData.Instance.Cars[carInFont].Value.GapToRaceLeaderMs;
+                if (carInFont >= SessionData.Instance.Cars.Count || carInFont < 0)
+                {                    
+                    Debug.WriteLine("out of range. carInFront {0} car count {1}", carInFont, SessionData.Instance.Cars.Count);                    
+                }
+                else
+                {
+                    intervalMs = ((int)(carData.GapToRaceLeaderMs - SessionData.Instance.Cars[carInFont].Value.GapToRaceLeaderMs));
+                }
             }
-        }
+        }        
 
         standingsTableRows.Add(new StandingsTableRow()
         {
@@ -239,8 +255,8 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
             IntervalMs = new LapInfo() { LaptimeMS = intervalMs },
             AdditionalInfo = additionInfo,
             FastestLapTime = carData.FastestLap,
-            // should be something like "A3.43 4.1k" for iRacing. TODO at a later point we can add color.
-            LicenseInfo = carData.Drivers[carData.CurrentDriverIndex].Category + " " + carData.Drivers[carData.CurrentDriverIndex].Rating
+            // should be something like "A3.43 4.1k" for iRacing.
+            LicenseInfo = driverInfo.Category + " " + driverInfo.Rating
         });
     }
 
@@ -273,30 +289,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
         return "";
     }
 
-    public static string GetTimeDiff(LapInfo lap)
-    {
-        if (lap == null || !lap.LaptimeMS.HasValue)
-        {
-            return "--:--.---";
-        }
 
-        TimeSpan lapTime = TimeSpan.FromMilliseconds(lap.LaptimeMS.Value);
-        if (lapTime.Minutes > 0)
-            return $"{lapTime:m\\:s\\.f}";
-        else
-            return $"{lapTime:s\\.f}";
-    }
-
-    public static string GetLapTime(LapInfo lap)
-    {
-        if (lap == null || !lap.LaptimeMS.HasValue || lap.LaptimeMS < 0)
-        {
-            return "--:--.---";
-        }
-
-        TimeSpan lapTime = TimeSpan.FromMilliseconds(lap.LaptimeMS.Value);
-        return $"{lapTime:mm\\:ss\\.fff}";
-    }
 
     private void SortAllEntryLists()
     {
@@ -405,7 +398,7 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
 
             CarInfo carInfo = kvp.Value;
             string carClass = carInfo.CarClass;
-
+            
             GetEntryListForClass(carClass).Add(kvp);
 
         }
@@ -516,30 +509,30 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
                 OverlayStandingsTableTextLabel licenseInfo = new(g, columnPosX, rowPosY, 11, FontUtil.FontSegoeMono(_fontSize));
                 licenseInfo.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, tableData[i].LicenseInfo, false);
 
-                columnPosX += licenseInfo.Width + _columnGap;
-                OverlayStandingsTableTextLabel interval = new(g, columnPosX, rowPosY, 6, FontUtil.FontSegoeMono(_fontSize));
-                string intervalString = GetTimeDiff(tableData[i].IntervalMs);
-                if (tableData[i].IntervalMs.LaptimeMS < -100)
-                {
-                    interval.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkGreen, Brushes.White, "-" + intervalString, true);
-                }
-                else if (tableData[i].IntervalMs.LaptimeMS > 100)
-                {
-                    interval.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkRed, Brushes.White, "+" + intervalString, true);
-                }
-                else
-                {
-                    interval.Draw(g, backgroundColor, (SolidBrush)Brushes.Red, Brushes.White, " " + intervalString, false);
-                }
+            columnPosX += licenseInfo.Width + _columnGap;
+            OverlayStandingsTableTextLabel interval = new(g, columnPosX, rowPosY, 6, FontUtil.FontSegoeMono(_fontSize));
+            String intervalString = DataUtil.GetTimeDiff(tableData[i].IntervalMs.LaptimeMS);
+            if (tableData[i].IntervalMs.LaptimeMS < -100)
+            {
+                interval.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkGreen, Brushes.White, "-" + intervalString, true);
+            }
+            else if (tableData[i].IntervalMs.LaptimeMS > 100)
+            {
+                interval.Draw(g, backgroundColor, (SolidBrush)Brushes.DarkRed, Brushes.White, "+" + intervalString, true);
+            }
+            else
+            {
+                interval.Draw(g, backgroundColor, (SolidBrush)Brushes.Red, Brushes.White, " " + intervalString, false);
+            }
 
-                // TODO: hightling if improved or purple
-                columnPosX += interval.Width + _columnGap;
-                OverlayStandingsTableTextLabel lastLaptTime = new(g, columnPosX, rowPosY, 9, FontUtil.FontSegoeMono(_fontSize));
-                lastLaptTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, GetLapTime(tableData[i].LastLapTime), false);
+            // TODO: hightling if improved or purple
+            columnPosX += interval.Width + _columnGap;
+            OverlayStandingsTableTextLabel lastLaptTime = new(g, columnPosX, rowPosY, 9, FontUtil.FontSegoeMono(_fontSize));
+            lastLaptTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, DataUtil.GetLapTime(tableData[i].LastLapTime), false);
 
-                columnPosX += lastLaptTime.Width + _columnGap;
-                OverlayStandingsTableTextLabel fastestLaptTime = new(g, columnPosX, rowPosY, 9, FontUtil.FontSegoeMono(_fontSize));
-                fastestLaptTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, GetLapTime(tableData[i].FastestLapTime), false);
+            columnPosX += lastLaptTime.Width + _columnGap;
+            OverlayStandingsTableTextLabel fastestLaptTime = new(g, columnPosX, rowPosY, 9, FontUtil.FontSegoeMono(_fontSize));
+            fastestLaptTime.Draw(g, backgroundColor, (SolidBrush)Brushes.Purple, Brushes.White, DataUtil.GetLapTime(tableData[i].FastestLapTime), false);
 
                 if (tableData[i].AdditionalInfo != "")
                 {
@@ -715,7 +708,6 @@ public sealed class StandingsOverlay : CommonAbstractOverlay
 
         public void Draw(Graphics g, string number)
         {
-
             _cachedBackground.Draw(g, _x, _y);
             var numberWidth = g.MeasureString(number, _fontFamily).Width;
             var textOffset = 2;

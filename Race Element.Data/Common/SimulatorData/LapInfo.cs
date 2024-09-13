@@ -62,7 +62,6 @@ public sealed class LapInfo
         return $"{LaptimeMS,5}|{string.Join("|", Splits)}";
     }
 
-    
 public enum LapType
 {
     ERROR = 0,

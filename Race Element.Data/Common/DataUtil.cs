@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
 using RaceElement.Data.Common.SimulatorData;
 
-namespace RaceElement.HUD.Overlay.Internal
+namespace RaceElement.Data.Common
 {
     public static class DataUtil
     {

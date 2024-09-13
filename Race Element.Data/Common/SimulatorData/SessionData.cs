@@ -44,9 +44,9 @@ namespace RaceElement.Data.Common.SimulatorData
         public RaceSessionType SessionType { get; set; }
         public SessionPhase Phase { get; set; }
         public float LapDeltaToSessionBestLapMs { get; set; }
-        
+
         public bool IsSetupMenuVisible { get; set; }
-        public double SessionTimeLeftSecs { get; set; }        
+        public double SessionTimeLeftSecs { get; set; }
     }
 
     public sealed record TrackData
