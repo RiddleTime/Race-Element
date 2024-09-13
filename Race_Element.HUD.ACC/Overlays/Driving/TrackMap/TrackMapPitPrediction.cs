@@ -24,7 +24,7 @@ public static class TrackMapPitPrediction
         }
 
         var info = TrackData.GetCurrentTrack(ACCSharedMemory.Instance.PageFileStatic.Track);
-        time = time * 1000 + pitTimeMs + info.PitLaneTime;
+        time = time * 1000 + pitTimeMs + info.PitLaneTime * 1000;
         var pitStop = ComputePitStop(track, time);
 
         if (pitStop != null)
