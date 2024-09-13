@@ -3,18 +3,11 @@ using System.Drawing;
 
 namespace RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 
-public abstract class AbstractDrawableCell : IScalableDrawing
+public abstract class AbstractDrawableCell(RectangleF rect) : IScalableDrawing
 {
-    public RectangleF Rectangle { get; private set; }
-    public CachedBitmap CachedBackground { get; set; }
-    public CachedBitmap CachedForeground { get; set; }
-
-    public AbstractDrawableCell(RectangleF rect)
-    {
-        Rectangle = rect;
-        CachedBackground = new CachedBitmap((int)rect.Width, (int)rect.Height, g => { });
-        CachedForeground = new CachedBitmap((int)rect.Width, (int)rect.Height, g => { });
-    }
+    public RectangleF Rectangle { get; private set; } = rect;
+    public CachedBitmap CachedBackground { get; set; } = new CachedBitmap((int)rect.Width, (int)rect.Height, g => { });
+    public CachedBitmap CachedForeground { get; set; } = new CachedBitmap((int)rect.Width, (int)rect.Height, g => { });
 
     public void Draw(Graphics g, float scaling = 1)
     {
