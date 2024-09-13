@@ -271,17 +271,21 @@ public partial class MainWindow : Window
 
     private void UpdateUsage()
     {
-#if DEBUG
-        return;
-#endif
-        try
-        {
-            string hitCounter = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FRace-Element";
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hitCounter);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            response.Close();
-        }
-        catch (Exception) { }
+        // prevent beta versions from increasing real life usage
+        bool runningBeta = false;
+        if (int.TryParse(FileVersionInfo.GetVersionInfo(Environment.ProcessPath).FileVersion.Last().ToString(), out int versionLast))
+            if (versionLast % 2 != 0)
+                runningBeta = true;
+
+        if (!runningBeta)
+            try
+            {
+                string hitCounter = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FRace-Element";
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hitCounter);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                response.Close();
+            }
+            catch (Exception) { }
     }
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
