@@ -45,8 +45,8 @@ internal sealed class WindDirectionOverlay : CommonAbstractOverlay
         public WindDirectionConfiguration() => GenericConfiguration.AllowRescale = true;
     }
 
-    private CachedBitmap _background;
-    private DrawableTextCell _textCell;
+    private CachedBitmap? _background;
+    private DrawableTextCell? _textCell;
     private const int padding = 50;
 
     public WindDirectionOverlay(Rectangle rectangle) : base(rectangle, "Wind Direction")
