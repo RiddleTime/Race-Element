@@ -8,16 +8,16 @@ using System.Drawing.Text;
 using System.Windows.Forms;
 using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
-using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 
-namespace RaceElement.HUD.Overlay.Internal
+namespace RaceElement.HUD.Overlay.OverlayUtil
 {
     public abstract class AbstractTableOverlay : CommonAbstractOverlay
     {
         private int NextX { get; set; }
         private int NextY { get; set; }
-        
+
         private readonly int _columnGap = 5;
         // pixels between rows
         private readonly int _rowGap = 3;
@@ -34,7 +34,8 @@ namespace RaceElement.HUD.Overlay.Internal
         public static readonly SolidBrush DriversCarBackground = new(Color.FromArgb(180, Color.DarkSeaGreen));
         public static readonly SolidBrush HeaderBackground = new(Color.FromArgb(100, Color.DarkSeaGreen));
 
-        protected AbstractTableOverlay(Rectangle rectangle, string Name) : base(rectangle, Name) {            
+        protected AbstractTableOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
+        {
         }
 
         /// <summary>
@@ -78,7 +79,7 @@ namespace RaceElement.HUD.Overlay.Internal
                     fontMaxCharWidth = Math.Max(fontMaxCharWidth, (int)size.Width);
                 }
             }
-                                   
+
             DrawOveralHeaders(g);
             DrawSections(g);
         }
@@ -102,16 +103,16 @@ namespace RaceElement.HUD.Overlay.Internal
                 {
                     DrawSectionHeader(g, sectionHeader);
                     DrawRowSection(g, section++);
-                }                                
+                }
             }
         }
 
         private void DrawSectionHeader(Graphics g, HeaderLabel sectionHeader)
         {
             int maxTextwidth = sectionHeader.ColumnLength * fontMaxCharWidth;
-            
+
             g.FillRectangle(sectionHeader.BackgroundColor, NextX, NextY, maxTextwidth, DefaultFont.Height);
-            
+
             TextRenderer.DrawText(g, TruncateString(sectionHeader.Name, sectionHeader.ColumnLength), DefaultFont, new Point(NextX, NextY + TextOffset), DefaultTextColor);
 
             NextX = 0;
@@ -119,16 +120,16 @@ namespace RaceElement.HUD.Overlay.Internal
         }
 
         private void DrawRowSection(Graphics g, int section)
-        {            
+        {
             List<ColumnMetaData> columnMetaDatas = GetColumnMetaData();
             List<List<CellValue>> rows = GetCellRows(section);
 
 
-            for (int rowNum = 0; rowNum < rows.Count; rowNum++)            
+            for (int rowNum = 0; rowNum < rows.Count; rowNum++)
             {
                 List<CellValue> rowValues = rows[rowNum];
-                
-                Brush backgroundColor = OddBackground;                
+
+                Brush backgroundColor = OddBackground;
                 if (rowNum % 2 == 0)
                 {
                     backgroundColor = EvenBackground;
@@ -137,7 +138,7 @@ namespace RaceElement.HUD.Overlay.Internal
                 if (rowValues[0].Value.Equals(SessionData.Instance.PlayerCarIndex.ToString()))
                 {
                     backgroundColor = DriversCarBackground;
-                }                
+                }
 
                 for (int colNum = 0; colNum < rowValues.Count; colNum++)
                 {
@@ -148,7 +149,7 @@ namespace RaceElement.HUD.Overlay.Internal
                     {
                         TextColor = new SolidBrush(Color.FromArgb(150, (Color)rowValues[colNum].TextColor));
                     }
-                    if (rowValues[colNum].BackgroundColor !=  null)
+                    if (rowValues[colNum].BackgroundColor != null)
                     {
                         cellBackground = new SolidBrush(Color.FromArgb(150, (Color)rowValues[colNum].BackgroundColor));
                     }
@@ -161,10 +162,10 @@ namespace RaceElement.HUD.Overlay.Internal
                 }
                 NextY += DefaultFont.Height + _rowGap;
                 NextX = 0;
-            }                       
+            }
         }
 
-        
+
 
         private void DrawOveralHeaders(Graphics g)
         {
@@ -174,21 +175,24 @@ namespace RaceElement.HUD.Overlay.Internal
                 g.FillRectangle(headerLabel.BackgroundColor, NextX, NextY, maxTextwidth, DefaultFont.Height);
 
                 TextRenderer.DrawText(g, TruncateString(headerLabel.Name, headerLabel.ColumnLength), DefaultFont, new Point(NextX, NextY + TextOffset), DefaultTextColorBrush.Color);
-                
-                NextX += maxTextwidth + _columnGap; 
+
+                NextX += maxTextwidth + _columnGap;
             }
             NextY += DefaultFont.Height + _rowGap;
             NextX = 0;
         }
 
 
-        private string TruncateString(String text, int maxStringLength)
+        private string TruncateString(string text, int maxStringLength)
         {
             if (text == null) return "";
             return text.Length <= maxStringLength ? text : text.Substring(0, maxStringLength);
-        }        
+        }
     }
+}
 
+namespace RaceElement.HUD.Overlay.Internal
+{
     public class HeaderLabel
     {
         public string Name;
@@ -206,7 +210,8 @@ namespace RaceElement.HUD.Overlay.Internal
     {
         public string Name;
         public int ColumnLength;
-        public ColumnMetaData(string name, int columnLength) {
+        public ColumnMetaData(string name, int columnLength)
+        {
             Name = name;
             ColumnLength = columnLength;
         }
@@ -214,15 +219,15 @@ namespace RaceElement.HUD.Overlay.Internal
 
     public class CellValue
     {
-        public String Value;
+        public string Value;
         public Color? TextColor = null;
         public Color? BackgroundColor = null;
-        
+
         public CellValue(string v, Color? textColor, Color? backgroundColor)
         {
-            this.Value = v;
-            this.TextColor = textColor;
-            this.BackgroundColor = backgroundColor;
+            Value = v;
+            TextColor = textColor;
+            BackgroundColor = backgroundColor;
         }
-    }    
+    }
 }

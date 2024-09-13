@@ -134,12 +134,6 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
         return classes;
     }
 
-    public override Color GetColorForCarClass(string carClass)
-    {
-        // There's only one class.
-        return Color.AliceBlue;
-    }
-
     public override bool HasTelemetry()
     {
         return lastPhysicsPacketId > 0;

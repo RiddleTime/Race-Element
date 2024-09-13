@@ -4,15 +4,17 @@ using System.Drawing;
 using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
 using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.OverlayUtil;
+using DataUtil = RaceElement.Data.Common.DataUtil;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.Relative
 
-    
+
 {
     [Overlay(Name = "Relative (ALPHA)", Version = 1.00,
     Description = "Shows drivers next to player.", OverlayType = OverlayType.Drive, Authors = ["Dirk Wolf"])]
 
-    internal class RelativeOverlay : AbstractTableOverlay
+    sealed internal class RelativeOverlay : AbstractTableOverlay
     {
         private readonly RelativeConfiguration _config = new();
 

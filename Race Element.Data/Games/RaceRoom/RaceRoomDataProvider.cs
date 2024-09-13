@@ -18,11 +18,6 @@ namespace RaceElement.Data.Games.RaceRoom
             return [];
         }
 
-        public override Color GetColorForCarClass(string carClass)
-        {
-            return Color.White;
-        }        
-
         public override bool HasTelemetry()
         {
             return false;

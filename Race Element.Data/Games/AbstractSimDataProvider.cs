@@ -13,7 +13,7 @@ public abstract class AbstractSimDataProvider
     /// </summary>
     /// <param name="carClass">Name of the class. This depends on the sim.</param>
     /// <returns>Color to be used for this car class in HUDs.</returns>
-    abstract public Color GetColorForCarClass(String carClass);
+    virtual public Color GetColorForCarClass(String carClass) => Color.White;
 
     /// <summary>
     /// Get color to be used for a driver's category (Gold, A-License,..)

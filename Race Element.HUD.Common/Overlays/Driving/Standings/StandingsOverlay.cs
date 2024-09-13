@@ -10,6 +10,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Numerics;
 using static RaceElement.Data.Common.SimulatorData.CarInfo;
+using DataUtil = RaceElement.Data.Common.DataUtil;
 
 
 namespace RaceElement.HUD.Common.Overlays.Driving.Standings;
