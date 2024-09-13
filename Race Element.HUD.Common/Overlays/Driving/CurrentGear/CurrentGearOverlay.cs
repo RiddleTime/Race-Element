@@ -11,6 +11,7 @@ using System.Drawing.Text;
 using Unglide;
 using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Util.SystemExtensions;
 
 namespace RaceElement.HUD.Common.Overlays.OverlayCurrentGear;
 
@@ -63,7 +64,7 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 
     public sealed override void SetupPreviewData()
     {
-        _lastGear = 3;        
+        _lastGear = 3;
         SimDataProvider.LocalCar.Inputs.Gear = 3;
     }
 
@@ -73,7 +74,7 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
         HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
 
         Rectangle renderRectangle = new(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
-        for (int i = 0; i <= 8; i++)
+        for (int i = 0; i <= 11; i++)
         {
             string gear = i switch
             {
@@ -122,15 +123,15 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
         if (_config.Gear.Spectator)
         {
             int focusedIndex = SessionData.Instance.FocusedCarIndex;
-    
+
             // TODO: refactor to allow for non-ACC sims
             // if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
-                lock (EntryListTracker.Instance.Cars)
-                    if (EntryListTracker.Instance.Cars.Any())
-                    {
-                        var car = EntryListTracker.Instance.Cars.First(car => car.Key == focusedIndex);
-                        currentGear = car.Value.RealtimeCarUpdate.Gear + 2;
-                    }
+            lock (EntryListTracker.Instance.Cars)
+                if (EntryListTracker.Instance.Cars.Any())
+                {
+                    var car = EntryListTracker.Instance.Cars.First(car => car.Key == focusedIndex);
+                    currentGear = car.Value.RealtimeCarUpdate.Gear + 2;
+                }
         }
 
         return currentGear;
@@ -150,6 +151,7 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 
         if (_opacity < MaxOpacity)
             _gearTweener.Update(secondsElapsed: (float)DateTime.Now.Subtract(_gearTweenerStart).TotalSeconds);
+        currentGear.Clip(0, 11);
 
         CachedBitmap bitmap = _gearBitmaps[currentGear];
         bitmap.Opacity = _opacity;

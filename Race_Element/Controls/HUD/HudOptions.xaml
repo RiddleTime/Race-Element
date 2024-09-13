@@ -33,14 +33,14 @@
                     <ListBox SelectionMode="Extended" Background="Transparent" Focusable="False" HorizontalContentAlignment="Center" 
                         Style="{StaticResource MaterialDesignToolToggleFlatListBox}"  Margin="0" Padding="0">
 
-                        <ListBoxItem Width="90" Height="80" x:Name="listBoxItemToggleMovementMode" ToolTip="Toggle Movement mode | Mouse: Scroll Click | Keyboard: Control + Home)" 
+                        <ListBoxItem Width="90" Height="80" x:Name="listBoxItemToggleMovementMode" ToolTip="Toggle Movement mode | Mouse: Scroll Click | Keyboard: Control + Home" 
                             Content="{materialDesign:PackIcon Kind=ArrowAll, Size=48}" HorizontalContentAlignment="Center" Foreground="DarkGray" Padding="0"
                             Cursor="Hand" Focusable="False" Style="{StaticResource MaterialDesignNavigationListBoxItem}" />
                     </ListBox>
                     <ListBox SelectionMode="Extended" Background="Transparent" Focusable="False" HorizontalContentAlignment="Center" 
                         Style="{StaticResource MaterialDesignToolToggleFlatListBox}" Margin="0" Padding="0">
 
-                        <ListBoxItem Width="90" Height="80" x:Name="listBoxItemToggleDemoMode" ToolTip="Toggles Always Visible. (By default HUDs become visible once the engine is running)" 
+                        <ListBoxItem Width="90" Height="80" x:Name="listBoxItemToggleDemoMode" ToolTip="Toggles Always Visible. By default HUDs become visible once the engine is running( unless a HUD Setting creates different behavior)." 
                             Content="{materialDesign:PackIcon Kind=Visibility,Size=48}" HorizontalContentAlignment="Center" Foreground="DarkGray" Padding="0"
                             Cursor="Hand" Focusable="False" Style="{StaticResource MaterialDesignNavigationListBoxItem}" />
                     </ListBox>

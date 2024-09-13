@@ -47,8 +47,9 @@ public partial class HudOptions : UserControl
     private DateTime _lastMovementModeChange = DateTime.MinValue;
     private const int MovementModeDebounce = 250;
 
-    public static List<CommonAbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
+    internal static List<CommonAbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
     {
+        Game.Any => [],
         Game.AssettoCorsaCompetizione => OverlaysAcc.ActiveOverlays,
         _ => CommonHuds.ActiveOverlays
     };
@@ -86,9 +87,31 @@ public partial class HudOptions : UserControl
                 listOverlays.SelectedIndex = -1;
             };
 
-            GameManager.OnGameChanged += (s, newGame) =>
+            GameManager.OnGameChanged += (s, e) =>
             {
-                BuildOverlayPanel();
+                if (e.next != Game.Any)
+                {
+                    switch (e.previous)
+                    {
+                        case Game.Any: break;
+                        case Game.AssettoCorsaCompetizione:
+                            {
+                                OverlaysAcc.CloseAll(); break;
+                            }
+                        default:
+                            {
+                                CommonHuds.CloseAll(); break;
+                            }
+                    }
+
+                    PreviewCache._cachedPreviews.Clear();
+                    Thread.Sleep(1000);
+
+                    PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
+                    PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
+
+                    BuildOverlayPanel();
+                }
             };
 
             bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
@@ -97,7 +120,9 @@ public partial class HudOptions : UserControl
                 {
                     PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
                     PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
-                    BuildOverlayPanel();
+
+                    if (GameManager.CurrentGame != Game.Any)
+                        BuildOverlayPanel();
 
                     ToolTipService.SetInitialShowDelay(listBoxItemToggleDemoMode, 1);
                     ToolTipService.SetInitialShowDelay(listBoxItemToggleMovementMode, 1);
@@ -403,7 +428,6 @@ public partial class HudOptions : UserControl
                 listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
                 listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
                 overlay = (CommonAbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
-
                 overlay.Start();
 
                 SaveOverlaySettings(overlay, true);
@@ -435,7 +459,7 @@ public partial class HudOptions : UserControl
                 listViewItem.Background = Brushes.Transparent;
                 listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
                 CommonAbstractOverlay overlay = ActiveOverlays.Find(f => f.GetType() == type);
-
+                if (overlay == null) return;
                 SaveOverlaySettings(overlay, false);
 
 
@@ -584,12 +608,12 @@ public partial class HudOptions : UserControl
             box.Items.Add(item);
         }
 
-        box.SelectedIndex = 0;
-
         box.SelectionChanged += (s, e) =>
         {
-            BuildOverlayListView(listView, overlayType, (OverlayCategory)((ComboBoxItem)box.SelectedItem).DataContext);
+            if (box.HasItems)
+                BuildOverlayListView(listView, overlayType, (OverlayCategory)((ComboBoxItem)box.SelectedItem).DataContext);
         };
+        box.SelectedIndex = 0;
     }
 
     private void BuildOverlayListView(ListView listView, OverlayType overlayType, OverlayCategory category)
@@ -600,12 +624,10 @@ public partial class HudOptions : UserControl
 
         if (GameManager.CurrentGame != Game.AssettoCorsaCompetizione)
         {
-            OverlaysAcc.CloseAll();
             availableOverlays = CommonHuds.AbstractOverlays;
         }
-        else
+        else if (GameManager.CurrentGame != Game.Any)
         {
-            CommonHuds.CloseAll();
             availableOverlays = OverlaysAcc.AbstractOverlays;
         }
 

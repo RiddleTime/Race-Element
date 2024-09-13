@@ -9,7 +9,13 @@ using System.Drawing.Text;
 
 namespace RaceElement.HUD.Common.Overlays.Pitwall.LocalCarData;
 
-[Overlay(Name = "LocalCarData", Description = "Provides info about the common local car data.", OverlayType = OverlayType.Pitwall)]
+[Overlay(
+    Name = "LocalCarData",
+    Description = "Provides info about the common local car data.",
+    OverlayType = OverlayType.Pitwall,
+    Authors = ["Reinier Klarenberg"],
+    Game = Data.Games.Game.Any
+)]
 internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
 {
     private readonly LocalCarDataConfig _config = new();

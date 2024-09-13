@@ -130,7 +130,7 @@ public sealed class RaceSessionTracker
             CurrentSession.UtcEnd = DateTime.UtcNow;
 
             var lapData = LapDataCollection.GetForSession(CurrentSession.Id);
-            if (lapData.Any())
+            if (lapData.Count != 0)
                 RaceSessionCollection.Update(CurrentSession);
             else
                 RaceSessionCollection.Delete(CurrentSession);

@@ -2,6 +2,7 @@
 using RaceElement.Data.ACC.Core;
 using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
@@ -19,8 +20,8 @@ namespace RaceElement.HUD.Overlay.Internal;
 
 // Legacy AbstractOverlay to be used by ACC HUDs. New common HUDs use CommonAbstractOverlay.
 public abstract class AbstractOverlay : CommonAbstractOverlay
-{    
-    
+{
+
     public SPageFilePhysics pagePhysics;
     public SPageFileGraphic pageGraphics;
     public SPageFileStatic pageStatic;
@@ -34,15 +35,11 @@ public abstract class AbstractOverlay : CommonAbstractOverlay
     {
     }
 
-    public override void BeforeStart() { 
-
-    }
-
     public override bool DefaultShouldRender()
     {
         if (HudSettings.Cached.DemoMode)
             return true;
-    
+
         if (!AccProcess.IsRunning)
             return false;
 
@@ -90,7 +87,7 @@ public abstract class AbstractOverlay : CommonAbstractOverlay
 
             pageStatic = ACCSharedMemory.Instance.ReadStaticPageFile(false);
             pageGraphics = ACCSharedMemory.Instance.ReadGraphicsPageFile(false);
-            pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);          
+            pagePhysics = ACCSharedMemory.Instance.ReadPhysicsPageFile(false);
 
             base.Start(addTrackers);
         }
@@ -134,7 +131,7 @@ public abstract class AbstractOverlay : CommonAbstractOverlay
     }
 
     public void Stop()
-    {        
+    {
         PageStaticTracker.Tracker -= PageStaticChanged;
         PageGraphicsTracker.Instance.Tracker -= PageGraphicsChanged;
         PagePhysicsTracker.Instance.Tracker -= PagePhysicsChanged;
