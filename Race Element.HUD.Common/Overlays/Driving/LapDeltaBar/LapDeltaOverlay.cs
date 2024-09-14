@@ -1,21 +1,24 @@
 ﻿using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
+using RaceElement.HUD.Common.Overlays.OverlayLapDeltaBar;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
-using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Linq;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayLapDeltaBar;
+namespace RaceElement.HUD.Common.Overlays.Driving.LapDeltaBar;
 
-[Overlay(Name = "Lap Delta Bar (BETA)", Description = "A customizable Laptime Delta Bar (BETA)", OverlayType = OverlayType.Drive, Version = 1,
+[Overlay(
+    Name = "Lap Delta Bar",
+    Description = "A customizable Laptime Delta Bar",
+    Version = 1,
+    OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Lap,
-Authors = ["Reinier Klarenberg", "Dirk Wolf"])]
+    Authors = ["Reinier Klarenberg", "Dirk Wolf"])]
 internal sealed class LapDeltaOverlay : CommonAbstractOverlay
 {
     private readonly LapTimeDeltaConfiguration _config = new();
@@ -29,44 +32,44 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
 
     public LapDeltaOverlay(Rectangle rectangle) : base(rectangle, "Lap Delta Bar")
     {
-        this.Width = _config.Bar.Width + 1;
-        this.Height = _config.Bar.Height + 1;
+        Width = _config.Bar.Width + 1;
+        Height = _config.Bar.Height + 1;
 
         _font = FontUtil.FontSegoeMono(_config.Delta.FontSize);
-        this.Height += _font.Height * 1;
+        Height += _font.Height * 1;
 
-        this.RefreshRateHz = 5;
+        RefreshRateHz = 5;
     }
 
     public sealed override void SetupPreviewData()
     {
-        SessionData.Instance.LapDeltaToSessionBestLapMs = -0137;
+        
     }
 
     public sealed override void BeforeStart()
     {
         try
         {
-            int cornerRadius = (int)(_config.Bar.Roundness * this.Scale);
+            int cornerRadius = (int)(_config.Bar.Roundness * Scale);
 
-            _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
+            _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
             {
                 Color bgColor = Color.FromArgb(185, 0, 0, 0);
                 HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, bgColor, Color.FromArgb(bgColor.A - 50, bgColor));
-                g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
-                g.DrawRoundedRectangle(new Pen(Color.Black, 1 * this.Scale), new Rectangle(0, 0, (int)(_config.Bar.Width * this.Scale), (int)(_config.Bar.Height * this.Scale)), cornerRadius);
+                g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * Scale), (int)(_config.Bar.Height * Scale)), cornerRadius);
+                g.DrawRoundedRectangle(new Pen(Color.Black, 1 * Scale), new Rectangle(0, 0, (int)(_config.Bar.Width * Scale), (int)(_config.Bar.Height * Scale)), cornerRadius);
             });
 
-            _cachedPositiveDelta = new CachedBitmap((int)(_config.Bar.Width / 2 * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
+            _cachedPositiveDelta = new CachedBitmap((int)(_config.Bar.Width / 2 * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
             {
-                Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
+                Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * Scale), (int)(_config.Bar.Height * Scale));
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, cornerRadius, 0, 0, cornerRadius);
                 g.FillPath(new SolidBrush(Color.FromArgb(_config.Colors.SlowerOpacity, _config.Colors.SlowerColor)), path);
             });
 
-            _cachedNegativeDelta = new CachedBitmap((int)(_config.Bar.Width / 2 * this.Scale + 1), (int)(_config.Bar.Height * this.Scale + 1), g =>
+            _cachedNegativeDelta = new CachedBitmap((int)(_config.Bar.Width / 2 * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
             {
-                Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * this.Scale), (int)(_config.Bar.Height * this.Scale));
+                Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * Scale), (int)(_config.Bar.Height * Scale));
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, 0, cornerRadius, cornerRadius, 0);
                 g.FillPath(new SolidBrush(Color.FromArgb(_config.Colors.FasterOpacity, _config.Colors.FasterColor)), path);
             });
@@ -87,8 +90,8 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
     }
 
     public sealed override bool ShouldRender()
-    {        
-        if (_config.Delta.HideForRace && !this.IsRepositioning && SessionData.Instance.SessionType == RaceSessionType.Race)
+    {
+        if (_config.Delta.HideForRace && !IsRepositioning && SessionData.Instance.SessionType == RaceSessionType.Race)
             return false;
 
         /* TODO
@@ -109,7 +112,7 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
 
     private float GetDelta()
     {
-        float delta = (float)SessionData.Instance.LapDeltaToSessionBestLapMs;
+        float delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS).TotalSeconds;
         if (_config.Delta.Spectator)
         {
             int focusedIndex = SessionData.Instance.FocusedCarIndex;
@@ -149,7 +152,7 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
             float drawWidth = halfBarWidth * fillPercent;
             drawWidth.ClipMin(1);
 
-            g.SetClip(new Rectangle((int)(halfBarWidth), 0, (int)drawWidth, _config.Bar.Height));
+            g.SetClip(new Rectangle((int)halfBarWidth, 0, (int)drawWidth, _config.Bar.Height));
             _cachedNegativeDelta?.Draw(g, (int)halfBarWidth, 0, (int)halfBarWidth, _config.Bar.Height);
             g.ResetClip();
         }
@@ -167,17 +170,21 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
 
         int x = _config.Bar.Width / 2;
         int y = _config.Bar.Height + 2;
-        DrawTextWithOutline(g, !SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value.CurrentLap.IsInvalid || 
-            SimDataProvider.Instance.IsSpectating(SessionData.Instance.PlayerCarIndex, SessionData.Instance.FocusedCarIndex) ? Color.White : Color.Red, currentDelta, x, y);
+
+        // TODO: Refactor, either use local car or spectating car.
+        bool isValidLap = SimDataProvider.LocalCar.Timing.IsLapValid || !SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value.CurrentLap.IsInvalid ||
+                    SimDataProvider.Instance.IsSpectating(SessionData.Instance.PlayerCarIndex, SessionData.Instance.FocusedCarIndex);
+
+        DrawTextWithOutline(g, isValidLap ? Color.White : Color.Red, currentDelta, x, y);
     }
 
     private void DrawTextWithOutline(Graphics g, Color textColor, string text, int x, int y)
     {
-        Rectangle backgroundDimension = new((int)(x - _deltaStringWidth / 2), y, (int)(_deltaStringWidth), (int)(_font.Height * 0.9));
+        Rectangle backgroundDimension = new((int)(x - _deltaStringWidth / 2), y, (int)_deltaStringWidth, (int)(_font.Height * 0.9));
 
         g.SmoothingMode = SmoothingMode.AntiAlias;
         using SolidBrush backgroundBrush = new(Color.FromArgb(185, 0, 0, 0));
-        g.FillRoundedRectangle(backgroundBrush, backgroundDimension, (int)(2 * this.Scale));
+        g.FillRoundedRectangle(backgroundBrush, backgroundDimension, (int)(2 * Scale));
 
         g.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
         g.TextContrast = 1;

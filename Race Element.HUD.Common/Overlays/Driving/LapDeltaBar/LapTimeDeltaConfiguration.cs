@@ -25,7 +25,7 @@ internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
         public bool HideForRace { get; init; } = false;
 
         [ToolTip("Show the Lap Delta HUD when spectating.")]
-        public bool Spectator { get; init; } = true;
+        public bool Spectator { get; init; } = false;
     }
 
     [ConfigGrouping("Bar", "Adjust bar behavior.")]
