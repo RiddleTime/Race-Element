@@ -161,6 +161,13 @@ namespace RaceElement.Data.Common.SimulatorData
         /// </summary>
         public int LapTimeDeltaBestMS { get; set; } = 0;
 
+        /// <summary>
+        /// Current best lap, -1 is invalid.
+        /// </summary>
+        public int LapTimeBestMs { get; set; } = -1;
+
+        public bool HasLapTimeBest = false;
+
         public bool IsLapValid { get; set; } = true;
     }
 }
