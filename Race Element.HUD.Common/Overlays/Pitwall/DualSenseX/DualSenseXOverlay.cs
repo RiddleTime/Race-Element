@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Diagnostics;
@@ -14,7 +15,7 @@ namespace RaceElement.HUD.Common.Overlays.Pitwall.DualSenseX;
     Description = "Adds active triggers for the DualSense 5 controller using DSX on steam.\n See Guide in the Discord of Race Element for instructions.",
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Pitwall,
-    Game = Data.Games.Game.RaceRoom,
+    Game = Game.RaceRoom | Game.AssettoCorsa1,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class DualSenseXOverlay : CommonAbstractOverlay
