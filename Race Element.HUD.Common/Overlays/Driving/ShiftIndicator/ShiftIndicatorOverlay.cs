@@ -220,10 +220,12 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 
     private void DrawRpmText(Graphics g)
     {
-        string currentRpm = $"{SimDataProvider.LocalCar.Engine.Rpm}".FillStart(4, '0');
+        int maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
+
+        string currentRpm = $"{SimDataProvider.LocalCar.Engine.Rpm}".FillStart($"{maxRpm}".Length, ' ');
 
         if (_halfRpmStringWidth < 0)
-            _halfRpmStringWidth = g.MeasureString("9999", _font).Width / 2;
+            _halfRpmStringWidth = g.MeasureString($"{maxRpm}", _font).Width / 2;
 
         int x = (int)(_halfRpmStringWidth + 8);
         int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
@@ -291,6 +293,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         if (_lastMaxRpm != SimDataProvider.LocalCar.Engine.MaxRpm)
         {
             _lastMaxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
+            _halfRpmStringWidth = -1; // reseting this so the background for the text is correct
             _cachedRpmLines.Render();
         }
 
