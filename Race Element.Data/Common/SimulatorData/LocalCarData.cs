@@ -13,6 +13,8 @@ namespace RaceElement.Data.Common.SimulatorData
         public ElectronicsData Electronics { get; set; } = new();
 
         public RaceData Race { get; set; } = new();
+
+        public TimingData Timing { get; set; } = new();
     }
 
     public sealed record CarModelData
@@ -46,6 +48,9 @@ namespace RaceElement.Data.Common.SimulatorData
     }
     public sealed record TyresData
     {
+        /// <summary>
+        /// Velocity in kilometers per second.
+        /// </summary>
         public float[] Velocity { get; set; } = [];
         /// <summary>
         /// Tyre Pressures in Bar (FL, FR, RL, RR).
@@ -141,5 +146,21 @@ namespace RaceElement.Data.Common.SimulatorData
         public int CarNumber { get; set; }
         public int GlobalPosition { get; set; }
         public int ClassPosition { get; set; }
+    }
+
+    public sealed record TimingData
+    {
+
+        /// <summary>
+        /// Current laptime, -1 is invalid;
+        /// </summary>
+        public int CurrentLaptimeMS { get; set; } = 0;
+
+        /// <summary>
+        /// Delta to best laptime in milliseconds
+        /// </summary>
+        public int LapTimeDeltaBestMS { get; set; } = 0;
+
+        public bool IsLapValid { get; set; } = true;
     }
 }
