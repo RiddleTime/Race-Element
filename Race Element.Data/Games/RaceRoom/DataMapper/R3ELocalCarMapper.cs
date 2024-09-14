@@ -5,7 +5,7 @@ using Riok.Mapperly.Abstractions;
 namespace RaceElement.Data.Games.RaceRoom.DataMapper;
 
 [Mapper]
-internal static partial class RR3LocalCarMapper
+internal static partial class R3ELocalCarMapper
 {
     // Inputs
     [MapProperty(nameof(Shared.Throttle), nameof(@LocalCarData.Inputs.Throttle))]
@@ -50,6 +50,7 @@ internal static partial class RR3LocalCarMapper
         // Tyres Data
         localCarData.Tyres.Pressure = [sharedData.TirePressure.FrontLeft / 100, sharedData.TirePressure.FrontRight / 100, sharedData.TirePressure.RearLeft / 100, sharedData.TirePressure.RearRight / 100];
         localCarData.Tyres.Velocity = [sharedData.TireSpeed.FrontLeft * 3.6f, sharedData.TireSpeed.FrontRight * 3.6f, sharedData.TireSpeed.RearLeft * 3.6f, sharedData.TireSpeed.RearRight * 3.6f];
+
 
         // Physics Data
         localCarData.Physics.Velocity = sharedData.CarSpeed * 3.6f;
