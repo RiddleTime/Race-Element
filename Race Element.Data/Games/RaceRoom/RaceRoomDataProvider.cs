@@ -10,7 +10,7 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
     internal sealed override int PollingRate() => 400;
     private bool _isGameRunning = false;
     private DateTime _lastGameRunningCheck = DateTime.MinValue;
-    public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
+    public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         if (!_isGameRunning)
         {
