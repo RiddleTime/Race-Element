@@ -10,17 +10,18 @@ using static RaceElement.Data.Games.AssettoCorsa.SharedMemory.AcSharedMemory;
 
 namespace RaceElement.Data.Games.AssettoCorsa;
 
-internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
+internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
 {
     static int lastPhysicsPacketId = -1;
 
     // AC1 seems to have only one class. Or at least no race class info in the telemetry.
     static string dummyCarClass = "Race";
-    List<string> classes = [ dummyCarClass ];
+    List<string> classes = [dummyCarClass];
 
     public AssettoCorsa1DataProvider()
     {
     }
+    internal override int PollingRate() => 100;
 
     private static string GameName { get => Game.AssettoCorsa1.ToShortName(); }
 
@@ -69,7 +70,8 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
             if (vehicle.isCarInPit != 0)
             {
                 carInfo.CarLocation = CarInfo.CarLocationEnum.Pitlane;
-            } else if (vehicle.isCarInPitline != 0)
+            }
+            else if (vehicle.isCarInPitline != 0)
             {
                 if (vehicle.spLineLength < 0.1F)
                 {
@@ -80,7 +82,8 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
 
                     carInfo.CarLocation = CarInfo.CarLocationEnum.PitEntry;
                 }
-            } else
+            }
+            else
             {
                 carInfo.CarLocation = CarInfo.CarLocationEnum.Track;
             }
@@ -108,7 +111,7 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
             SessionData.Instance.AddOrUpdateCar(i, carInfo);
 
             // m/s -> km/h
-            carInfo.Kmh = (int) (vehicle.speedMS * 3.6F);
+            carInfo.Kmh = (int)(vehicle.speedMS * 3.6F);
             carInfo.Laps = vehicle.lapCount;
 
             carInfo.Location = new Vector3(vehicle.worldPosition.x, vehicle.worldPosition.y, vehicle.worldPosition.z);
@@ -145,7 +148,7 @@ internal class AssettoCorsa1DataProvider : AbstractSimDataProvider
         // No-op
     }
 
-    override public  bool IsSpectating(int playerCarIndex, int focusedIndex)
+    override public bool IsSpectating(int playerCarIndex, int focusedIndex)
     {
         // TODO: Can we spectate other cars in the pits in AC1?
         return false;

@@ -9,24 +9,34 @@ namespace RaceElement.Data.Games;
 public abstract class AbstractSimDataProvider
 {
     /// <summary>
+    /// Update Polling Hz
+    /// </summary>
+    /// <returns></returns>
+    internal abstract int PollingRate();
+    internal abstract void Stop();
+
+
+
+
+
+    #region Decouple
+    /// <summary>
     /// Get color to be used for a car class (GT3, GT4,..)
     /// </summary>
     /// <param name="carClass">Name of the class. This depends on the sim.</param>
     /// <returns>Color to be used for this car class in HUDs.</returns>
-    virtual public Color GetColorForCarClass(String carClass) => Color.White;
+    public virtual Color GetColorForCarClass(String carClass) => Color.White;
 
     /// <summary>
     /// Get color to be used for a driver's category (Gold, A-License,..)
     /// </summary>
     /// <param name="category">Sim dependent category name. E.g. in iRacing "A 2.7" for an A license driver, which returns blue. In ACC this could be "Gold" or an LFM license level.</param>
     /// <returns>The color to be used for this category in the HUDs.</returns>
-    virtual public Color GetColorForCategory(string category) => Color.Gray;
-    abstract public List<string> GetCarClasses();
-    abstract public void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData);
+    public virtual Color GetColorForCategory(string category) => Color.Gray;
+    public abstract List<string> GetCarClasses();
+    public abstract void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData);
 
-    abstract internal void Stop();
-
-    abstract public bool HasTelemetry();
+    public abstract bool HasTelemetry();
 
     public virtual void SetupPreviewData() { }
 
@@ -34,4 +44,6 @@ public abstract class AbstractSimDataProvider
     {
         throw new NotImplementedException();
     }
+
+    #endregion
 }

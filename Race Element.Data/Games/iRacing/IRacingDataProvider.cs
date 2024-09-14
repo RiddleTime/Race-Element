@@ -15,8 +15,11 @@ using System.Numerics;
 // https://us.v-cdn.net/6034148/uploads/8DD84H30FIC8/telemetry-11-23-15.pdf Official doc
 namespace RaceElement.Data.Games.iRacing
 {
-    public class IRacingDataProvider : AbstractSimDataProvider
+    public sealed class IRacingDataProvider : AbstractSimDataProvider
     {
+        internal sealed override int PollingRate() => 50;
+
+
         Dictionary<string, Color> carClassColor = [];
         HashSet<string> carClasses = new HashSet<string>();
 
@@ -63,7 +66,8 @@ namespace RaceElement.Data.Games.iRacing
 
         public CarLeftRight SpotterCallout { get; private set; }
 
-        public IRacingDataProvider() {
+        public IRacingDataProvider()
+        {
             if (_iRacingSDK == null)
             {
                 _iRacingSDK = new IRSDKSharper
@@ -136,19 +140,21 @@ namespace RaceElement.Data.Games.iRacing
         /// The telemetry variables are documented here: https://sajax.github.io/irsdkdocs/telemetry/
         private void OnTelemetryData()
         {
-           if (!_iRacingSDK.IsConnected && _iRacingSDK.IsStarted) {
-            return;
-           }
-           if (_iRacingSDK.Data.SessionInfo == null)
-           {
-            Debug.WriteLine("No session info");
+            if (!_iRacingSDK.IsConnected && _iRacingSDK.IsStarted)
+            {
                 return;
-           }
+            }
+            if (_iRacingSDK.Data.SessionInfo == null)
+            {
+                Debug.WriteLine("No session info");
+                return;
+            }
 
-           if (SessionData.Instance.Cars.Count == 0 || _iRacingSDK.Data.SessionInfo.DriverInfo == null) {
-            Debug.WriteLine("No SessionData.Instance.Cars or DriverInfo");
-            return;
-           };
+            if (SessionData.Instance.Cars.Count == 0 || _iRacingSDK.Data.SessionInfo.DriverInfo == null)
+            {
+                Debug.WriteLine("No SessionData.Instance.Cars or DriverInfo");
+                return;
+            };
 
             InitDatums();
 
@@ -176,12 +182,15 @@ namespace RaceElement.Data.Games.iRacing
                     // Track surface: NotInWorld, OffTrack, InPitStall, AproachingPits, OnTrack
                     // TODO: we can still distinguish between CarLocationEnum.Pitlane/PitEntry/Exit
                     TrkLoc trackSurface = (TrkLoc)_iRacingSDK.Data.GetInt(carIdxTrackSurfaceDatum, iRSDKindex);
-                    if (_iRacingSDK.Data.GetBool(carIdxOnPitRoadDatum, iRSDKindex)) {
+                    if (_iRacingSDK.Data.GetBool(carIdxOnPitRoadDatum, iRSDKindex))
+                    {
                         carInfo.CarLocation = CarInfo.CarLocationEnum.Pitlane;
-                    } else if (trackSurface == TrkLoc.NotInWorld )
+                    }
+                    else if (trackSurface == TrkLoc.NotInWorld)
                     {
                         carInfo.CarLocation = CarInfo.CarLocationEnum.NONE;
-                    } else
+                    }
+                    else
                     {
                         carInfo.CarLocation = CarInfo.CarLocationEnum.Track;
                     }
@@ -239,7 +248,7 @@ namespace RaceElement.Data.Games.iRacing
                 localCar.Engine.FuelLiters = _iRacingSDK.Data.GetFloat(fuelLevelDatum);
                 int lapIndex = playerCarInfo.LapIndex;
                 // check if we completed a lap
-                if ( lapIndex > lastLapIndex)
+                if (lapIndex > lastLapIndex)
                 {
                     lastLapFuelConsumption = lastLapFuelLevelLiters - localCar.Engine.FuelLiters;
                     lastLapFuelLevelLiters = localCar.Engine.FuelLiters;
@@ -347,7 +356,9 @@ namespace RaceElement.Data.Games.iRacing
                 SpotterCallout = (CarLeftRight)_iRacingSDK.Data.GetInt(carLeftRightDatum);
 
                 hasTelemetry = true;
-            } catch (Exception ex) {
+            }
+            catch (Exception ex)
+            {
                 Debug.WriteLine(ex.ToString);
             }
         }
@@ -564,7 +575,7 @@ namespace RaceElement.Data.Games.iRacing
 
             CarInfo car2 = new CarInfo(2);
             // 1 meter behind car1
-            car2.TrackPercentCompleted = car1.TrackPercentCompleted + (1.0F / ((float) SessionData.Instance.Track.Length));
+            car2.TrackPercentCompleted = car1.TrackPercentCompleted + (1.0F / ((float)SessionData.Instance.Track.Length));
             car2.Position = 2;
             car2.CarLocation = CarInfo.CarLocationEnum.Track;
             car2.CurrentDriverIndex = 0;
@@ -677,7 +688,7 @@ namespace RaceElement.Data.Games.iRacing
         {
             return carClassColor[carClass];
         }
-        public override List<string> GetCarClasses() { return carClasses.ToList();}
+        public override List<string> GetCarClasses() { return carClasses.ToList(); }
 
         public override bool HasTelemetry()
         {
@@ -736,10 +747,12 @@ namespace RaceElement.Data.Games.iRacing
             else if (category.StartsWith("D"))
             {
                 return Color.Orange;
-            } else if (category.StartsWith("R"))
+            }
+            else if (category.StartsWith("R"))
             {
                 return Color.Red;
-            } else
+            }
+            else
             {
                 Debug.WriteLine("Unknown license {0}", category);
                 return Color.Gray;

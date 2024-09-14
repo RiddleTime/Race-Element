@@ -6,12 +6,7 @@ namespace RaceElement.Data.Games;
 
 public static class GameManager
 {
-    private readonly static SimpleLoopJob _dataUpdaterJob = new()
-    {
-        Action = () => SimDataProvider.Update(),
-        IntervalMillis = 1000 / 50        // TODO: adjust for each game.
-    };
-
+    private static SimpleLoopJob _dataUpdaterJob;
     public static Game CurrentGame { get; private set; } = Game.Any;
 
 
@@ -25,7 +20,16 @@ public static class GameManager
         CurrentGame = nextGame;
         OnGameChanged?.Invoke(null, (previousGame, nextGame));
 
-        _dataUpdaterJob.Run();
+        SimDataProvider.Update(true);
+        if (SimDataProvider.Instance != null)
+        {
+            _dataUpdaterJob = new()
+            {
+                Action = () => SimDataProvider.Update(),
+                IntervalMillis = 1000 / SimDataProvider.Instance.PollingRate()
+            };
+            _dataUpdaterJob.Run();
+        }
     }
 
     /// <summary>
