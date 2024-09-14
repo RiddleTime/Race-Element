@@ -7,7 +7,7 @@ namespace RaceElement.Data.Games.RaceRoom;
 
 internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
 {
-    internal sealed override int PollingRate() => 400;
+    internal sealed override int PollingRate() => 200;
     private bool _isGameRunning = false;
     private DateTime _lastGameRunningCheck = DateTime.MinValue;
     public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
