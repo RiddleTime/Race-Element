@@ -40,7 +40,7 @@ internal static partial class RR3LocalCarMapper
         localCarData.Brakes.Pressure = [sharedData.BrakePressure.FrontLeft, sharedData.BrakePressure.FrontRight, sharedData.BrakePressure.RearLeft, sharedData.BrakePressure.RearRight];
         localCarData.Brakes.DiscTemperature = [sharedData.BrakeTemp.FrontLeft.CurrentTemp, sharedData.BrakeTemp.FrontRight.CurrentTemp, sharedData.BrakeTemp.RearLeft.CurrentTemp, sharedData.BrakeTemp.RearRight.CurrentTemp];
 
-        localCarData.Tyres.Pressure = [sharedData.TirePressure.FrontLeft, sharedData.TirePressure.FrontRight, sharedData.TirePressure.RearLeft, sharedData.TirePressure.RearRight];
+        localCarData.Tyres.Pressure = [sharedData.TirePressure.FrontLeft / 100, sharedData.TirePressure.FrontRight / 100, sharedData.TirePressure.RearLeft / 100, sharedData.TirePressure.RearRight / 100];
 
         localCarData.Physics.Velocity = sharedData.CarSpeed * 3.6f;
         localCarData.Physics.Acceleration = new System.Numerics.Vector3(sharedData.LocalAcceleration.X, sharedData.LocalAcceleration.Y, sharedData.LocalAcceleration.Z);
@@ -52,6 +52,5 @@ internal static partial class RR3LocalCarMapper
             var driverData = sharedData.DriverData[sharedData.Position - 1];
             localCarData.CarModel.GameId = driverData.DriverInfo.ModelId;
         }
-
     }
 }
