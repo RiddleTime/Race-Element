@@ -7,7 +7,7 @@ using System.Threading;
 
 namespace RaceElement.HUD.ACC;
 
-public class OverlaysAcc
+public sealed class OverlaysAcc
 {
     private static readonly object _lock = new();
 
