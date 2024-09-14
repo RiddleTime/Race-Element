@@ -35,6 +35,7 @@ internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
             public bool Brakes { get; init; } = true;
             public bool Electronics { get; init; } = true;
             public bool RaceData { get; init; } = true;
+            public bool TimingData { get; init; } = true;
         }
 
         [ConfigGrouping("Data", "Adjust the members visible in the debug menu")]
@@ -88,6 +89,9 @@ internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
 
         if (_config.VisibleMember.RaceData)
             currentY += DrawObject(SimDataProvider.LocalCar.Race, "Race Data", currentY, g).Height;
+
+        if (_config.VisibleMember.TimingData)
+            currentY += DrawObject(SimDataProvider.LocalCar.Timing, "Timing Data", currentY, g).Height;
 
         this.Height = (int)currentY;
     }
