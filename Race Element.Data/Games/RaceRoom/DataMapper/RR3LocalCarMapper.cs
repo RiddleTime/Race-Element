@@ -47,9 +47,11 @@ internal static partial class RR3LocalCarMapper
         localCarData.Physics.Location = new System.Numerics.Vector3(sharedData.CarCgLocation.X, sharedData.CarCgLocation.Y, sharedData.CarCgLocation.Z);
         localCarData.Physics.Rotation = System.Numerics.Quaternion.CreateFromYawPitchRoll(sharedData.CarOrientation.Yaw, sharedData.CarOrientation.Pitch, sharedData.CarOrientation.Roll);
 
-
-        var driverData = sharedData.DriverData[sharedData.Position - 1];
-        localCarData.CarModel.GameId = driverData.DriverInfo.ModelId;
+        if (sharedData.DriverData != null)
+        {
+            var driverData = sharedData.DriverData[sharedData.Position - 1];
+            localCarData.CarModel.GameId = driverData.DriverInfo.ModelId;
+        }
 
     }
 }

@@ -1,6 +1,9 @@
 ﻿using RaceElement.Data.SharedMemory;
+using System;
 using System.Diagnostics;
 using System.IO.MemoryMappedFiles;
+using System.Reflection.Metadata;
+using System.Runtime.InteropServices;
 
 namespace RaceElement.Data.Games.RaceRoom.SharedMemory
 {
@@ -8,10 +11,32 @@ namespace RaceElement.Data.Games.RaceRoom.SharedMemory
     {
         public static SharedMemory.Shared Memory;
 
+        private static MemoryMappedFile _file;
+        private static byte[] _buffer;
+
+
         public static Shared ReadSharedMemory(bool fromCache = false)
         {
             if (fromCache) return Memory;
-            return Memory = MemoryMappedFile.CreateOrOpen(Constants.SharedMemoryName, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<Shared>(Shared.Buffer);
+
+            try
+            {
+                _file = MemoryMappedFile.OpenExisting(Constants.SharedMemoryName);
+            }
+            catch (FileNotFoundException)
+            {
+                return Memory;
+            }
+
+            var _view = _file.CreateViewStream();
+            BinaryReader _stream = new(_view);
+            _buffer = _stream.ReadBytes(Marshal.SizeOf(typeof(Shared)));
+            GCHandle _handle = GCHandle.Alloc(_buffer, GCHandleType.Pinned);
+            Memory = (Shared)Marshal.PtrToStructure(_handle.AddrOfPinnedObject(), typeof(Shared));
+            _handle.Free();
+
+            return Memory;
+            //return Memory = MemoryMappedFile.CreateOrOpen(Constants.SharedMemoryName, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<Shared>(Shared.Buffer);
         }
     }
 
