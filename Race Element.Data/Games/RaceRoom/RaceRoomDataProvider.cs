@@ -7,19 +7,35 @@ namespace RaceElement.Data.Games.RaceRoom;
 
 internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
 {
-    internal sealed override int PollingRate() => 200;
-
+    internal sealed override int PollingRate() => 400;
+    private bool _isGameRunning = false;
+    private DateTime _lastGameRunningCheck = DateTime.MinValue;
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
-        try
+        if (!_isGameRunning)
         {
-            Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
-            RR3LocalCarMapper.AddR3SharedMemory(sharedMemory, localCar);
-            RR3SessionDataMapper.AddR3SharedMemory(sharedMemory, sessionData);
+            if (DateTime.UtcNow.Subtract(TimeSpan.FromSeconds(2)) > _lastGameRunningCheck)
+            {
+                if (Utilities.IsRrreRunning())
+                    _isGameRunning = true;
+                else
+                    _lastGameRunningCheck = DateTime.UtcNow;
+            }
         }
-        catch (Exception e)
+        else
         {
-            Trace.WriteLine(e);
+            try
+            {
+                Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
+                RR3LocalCarMapper.AddR3SharedMemory(sharedMemory, localCar);
+                RR3SessionDataMapper.AddR3SharedMemory(sharedMemory, sessionData);
+            }
+            catch (Exception e)
+            {
+                _isGameRunning = false;
+                _lastGameRunningCheck = DateTime.UtcNow;
+                Debug.WriteLine(e);
+            }
         }
     }
 
