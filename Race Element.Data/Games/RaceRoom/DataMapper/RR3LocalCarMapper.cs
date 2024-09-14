@@ -28,24 +28,40 @@ internal static partial class RR3LocalCarMapper
     {
         WithR3SharedMemory(sharedData, localCarData);
 
+        // Inputs Data
         localCarData.Inputs.Gear = sharedData.Gear + 1;
 
+
+        // Electronics Data
         localCarData.Electronics.AbsActivation = sharedData.AidSettings.Abs == 5 ? 1 : 0;
         localCarData.Electronics.TractionControlActivation = sharedData.AidSettings.Tc == 5 ? 1 : 0;
 
+
+        // Engine Data
         localCarData.Engine.MaxRpm = (int)Utilities.RpsToRpm(sharedData.MaxEngineRps);
         localCarData.Engine.Rpm = (int)Utilities.RpsToRpm(sharedData.EngineRps);
 
 
+        // Brakes Data
         localCarData.Brakes.Pressure = [sharedData.BrakePressure.FrontLeft, sharedData.BrakePressure.FrontRight, sharedData.BrakePressure.RearLeft, sharedData.BrakePressure.RearRight];
         localCarData.Brakes.DiscTemperature = [sharedData.BrakeTemp.FrontLeft.CurrentTemp, sharedData.BrakeTemp.FrontRight.CurrentTemp, sharedData.BrakeTemp.RearLeft.CurrentTemp, sharedData.BrakeTemp.RearRight.CurrentTemp];
 
-        localCarData.Tyres.Pressure = [sharedData.TirePressure.FrontLeft / 100, sharedData.TirePressure.FrontRight / 100, sharedData.TirePressure.RearLeft / 100, sharedData.TirePressure.RearRight / 100];
 
+        // Tyres Data
+        localCarData.Tyres.Pressure = [sharedData.TirePressure.FrontLeft / 100, sharedData.TirePressure.FrontRight / 100, sharedData.TirePressure.RearLeft / 100, sharedData.TirePressure.RearRight / 100];
+        localCarData.Tyres.Velocity = [sharedData.TireSpeed.FrontLeft * 3.6f, sharedData.TireSpeed.FrontRight * 3.6f, sharedData.TireSpeed.RearLeft * 3.6f, sharedData.TireSpeed.RearRight * 3.6f];
+
+        // Physics Data
         localCarData.Physics.Velocity = sharedData.CarSpeed * 3.6f;
         localCarData.Physics.Acceleration = new System.Numerics.Vector3(sharedData.LocalAcceleration.X, sharedData.LocalAcceleration.Y, sharedData.LocalAcceleration.Z);
         localCarData.Physics.Location = new System.Numerics.Vector3(sharedData.CarCgLocation.X, sharedData.CarCgLocation.Y, sharedData.CarCgLocation.Z);
         localCarData.Physics.Rotation = System.Numerics.Quaternion.CreateFromYawPitchRoll(sharedData.CarOrientation.Yaw, sharedData.CarOrientation.Pitch, sharedData.CarOrientation.Roll);
+
+
+        // Timing Data
+        localCarData.Timing.LapTimeDeltaBestMS = (int)(sharedData.TimeDeltaBestSelf / 1000f);
+        localCarData.Timing.CurrentLaptimeMS = (int)(sharedData.LapTimeCurrentSelf / 1000f);
+        localCarData.Timing.IsLapValid = sharedData.CurrentLapValid == 1;
 
         if (sharedData.DriverData != null)
         {
