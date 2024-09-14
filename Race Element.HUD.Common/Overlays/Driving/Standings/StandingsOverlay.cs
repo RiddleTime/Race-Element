@@ -22,7 +22,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.Standings;
     OverlayType = OverlayType.Drive,
     Game = Game.iRacing | Game.AssettoCorsa1,
     Authors = ["FG", "Dirk Wolf"])]
-public sealed class StandingsOverlay : CommonAbstractOverlay
+internal sealed class StandingsOverlay : CommonAbstractOverlay
 {
     private readonly StandingsConfiguration _config = new();
     private const int _height = 800;
