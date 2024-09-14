@@ -47,6 +47,9 @@ namespace RaceElement.Data.Common.SimulatorData
     public sealed record TyresData
     {
         public float[] Velocity { get; set; } = [];
+        /// <summary>
+        /// Tyre Pressures in Bar (FL, FR, RL, RR).
+        /// </summary>
         public float[] Pressure { get; set; } = [];
         public float[] CoreTemperature { get; set; } = [];
         public float[] SurfaceTemperature { get; set; } = [];
