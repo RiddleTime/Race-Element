@@ -43,7 +43,7 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
 
     public sealed override void SetupPreviewData()
     {
-        
+
     }
 
     public sealed override void BeforeStart()
@@ -91,8 +91,9 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
 
     public sealed override bool ShouldRender()
     {
-        if (_config.Delta.HideForRace && !IsRepositioning && SessionData.Instance.SessionType == RaceSessionType.Race)
-            return false;
+        // TODO
+        //if (_config.Delta.HideForRace && !IsRepositioning && SessionData.Instance.SessionType == RaceSessionType.Race)
+        //    return false;
 
         /* TODO
         if (_config.Delta.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
@@ -113,19 +114,22 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
     private float GetDelta()
     {
         float delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS).TotalSeconds;
-        if (_config.Delta.Spectator)
-        {
-            int focusedIndex = SessionData.Instance.FocusedCarIndex;
-            if (SimDataProvider.Instance.IsSpectating(SessionData.Instance.PlayerCarIndex, focusedIndex))
-                lock (SessionData.Instance.Cars)
-                {
-                    if (SessionData.Instance.Cars.Any())
-                    {
-                        var car = SessionData.Instance.Cars.First(car => car.Key == focusedIndex);
-                        delta = car.Value.LapDeltaToSessionBestLap;
-                    }
-                }
-        }
+
+
+        // TODO
+        //if (_config.Delta.Spectator)
+        //{
+        //    int focusedIndex = SessionData.Instance.FocusedCarIndex;
+        //    if (SimDataProvider.Instance.IsSpectating(SessionData.Instance.PlayerCarIndex, focusedIndex))
+        //        lock (SessionData.Instance.Cars)
+        //        {
+        //            if (SessionData.Instance.Cars.Any())
+        //            {
+        //                var car = SessionData.Instance.Cars.First(car => car.Key == focusedIndex);
+        //                delta = car.Value.LapDeltaToSessionBestLap;
+        //            }
+        //        }
+        //}
 
         delta.Clip(-_config.Delta.MaxDelta, _config.Delta.MaxDelta);
 
@@ -172,8 +176,10 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
         int y = _config.Bar.Height + 2;
 
         // TODO: Refactor, either use local car or spectating car.
-        bool isValidLap = SimDataProvider.LocalCar.Timing.IsLapValid || !SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value.CurrentLap.IsInvalid ||
-                    SimDataProvider.Instance.IsSpectating(SessionData.Instance.PlayerCarIndex, SessionData.Instance.FocusedCarIndex);
+        bool isValidLap = SimDataProvider.LocalCar.Timing.IsLapValid;  
+        //See above: || !SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value.CurrentLap.IsInvalid || SimDataProvider.Instance.IsSpectating(SessionData.Instance.PlayerCarIndex, SessionData.Instance.FocusedCarIndex);
+
+
 
         DrawTextWithOutline(g, isValidLap ? Color.White : Color.Red, currentDelta, x, y);
     }
