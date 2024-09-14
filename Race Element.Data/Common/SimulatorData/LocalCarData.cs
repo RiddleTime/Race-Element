@@ -94,7 +94,7 @@ namespace RaceElement.Data.Common.SimulatorData
         /// <summary>
         /// The global rotation of the car (X:yaw/heading, Y:pitch, Z:roll), in euler angles
         /// </summary>
-        public Vector3 RotationEuler => Vector3.Transform(new(), Rotation);
+        public Vector3 RotationEuler => Vector3.Transform(Vector3.Zero, Rotation);
 
         /// <summary>
         /// The speed of the car in kilometers per hour.
