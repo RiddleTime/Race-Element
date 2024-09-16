@@ -70,7 +70,10 @@ internal static partial class R3ELocalCarMapper
         localCarData.Timing.LapTimeDeltaBestMS = (int)(sharedData.TimeDeltaBestSelf * 1000f);
         localCarData.Timing.CurrentLaptimeMS = (int)(sharedData.LapTimeCurrentSelf * 1000f);
         localCarData.Timing.IsLapValid = sharedData.CurrentLapValid == 1;
-        localCarData.Timing.LapTimeBestMs = (int)(sharedData.LapTimeBestSelf * 1000f);
+
+        int lapTimeBestSelf = (int)(sharedData.LapTimeBestSelf * 1000f);
+        if (lapTimeBestSelf < -1) lapTimeBestSelf = -1;
+        localCarData.Timing.LapTimeBestMs = lapTimeBestSelf;
         localCarData.Timing.HasLapTimeBest = sharedData.LapTimeBestSelf != -1;
 
         if (sharedData.DriverData != null)

@@ -21,6 +21,7 @@ internal static partial class LocalCarMapper
     [MapProperty(nameof(PageFilePhysics.TyreCoreTemperature), nameof(@LocalCarData.Tyres.CoreTemperature))]
     [MapProperty(nameof(PageFilePhysics.WheelPressure), nameof(@LocalCarData.Tyres.Pressure))]
     [MapProperty(nameof(PageFilePhysics.Velocity), nameof(@LocalCarData.Tyres.Velocity))]
+    [MapProperty(nameof(PageFilePhysics.WheelSlip), nameof(@LocalCarData.Tyres.SlipRatio))]
     // -- Brakes Data
     [MapProperty(nameof(PageFilePhysics.BrakeTemperature), nameof(@LocalCarData.Brakes.DiscTemperature))]
     // -- Electronics activation
