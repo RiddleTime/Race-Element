@@ -4,15 +4,15 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Linq;
 
-namespace RaceElement.HUD.ACC.Overlays.OverlayAccelerometer;
+namespace RaceElement.HUD.Common.Overlays.Driving.Accellerometer;
 
-[Overlay(Name = "Accelerometer", Version = 1.00, OverlayType = OverlayType.Drive,
+[Overlay(
+    Name = "Accelerometer",
+    Version = 1.00,
+    OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Physics,
     Description = "G-meter showing lateral and longitudinal g-forces.",
     Authors = ["Kris Vickers", "Reinier Klarenberg"]
@@ -35,7 +35,7 @@ internal sealed class AccelerometerOverlay : CommonAbstractOverlay
 
         public AccelleroConfig()
         {
-            this.GenericConfiguration.AllowRescale = true;
+            GenericConfiguration.AllowRescale = true;
         }
     }
 
@@ -57,10 +57,10 @@ internal sealed class AccelerometerOverlay : CommonAbstractOverlay
 
     public sealed override void BeforeStart()
     {
-        this.RefreshRateHz = 20;
+        RefreshRateHz = 20;
 
-        this.Width = _gMeterSize;
-        this.Height = this.Width;
+        Width = _gMeterSize;
+        Height = Width;
 
         _panel = new InfoPanel(10, 62) { DrawBackground = false, DrawRowLines = false, X = _gMeterSize / 2 - 28, Y = _gMeterSize - 34 };
 
@@ -87,7 +87,7 @@ internal sealed class AccelerometerOverlay : CommonAbstractOverlay
             pthGrBrush.CenterPoint = new Point(size / 2, size / 2);
             pthGrBrush.CenterColor = Color.FromArgb(40, Color.Black);
 
-            Rectangle inner = new((int)(x + (partSize * 1.5f) - partSize / 4), (int)(y + (partSize * 1.5f) - partSize / 4), (int)(size - partSize * 2 - partSize / 2), (int)(size - partSize * 2 - partSize / 2));
+            Rectangle inner = new((int)(x + partSize * 1.5f - partSize / 4), (int)(y + partSize * 1.5f - partSize / 4), (int)(size - partSize * 2 - partSize / 2), (int)(size - partSize * 2 - partSize / 2));
             pthGrBrush.SurroundColors = [Color.FromArgb(225, 10, 10, 25)];
             g.DrawArc(new Pen(pthGrBrush, partSize / 2 + 1), inner, 0, 360);
             g.DrawArc(new Pen(Color.FromArgb(15, Color.DarkOliveGreen), partSize / 2), inner, 60, 60);
@@ -118,7 +118,7 @@ internal sealed class AccelerometerOverlay : CommonAbstractOverlay
     {
         _cachedBackground?.Draw(g, _gMeterX, _gMeterY, _gMeterSize, _gMeterSize);
 
-        if (this._config.Accelerometer.GText)
+        if (_config.Accelerometer.GText)
         {
             string x = $"{SimDataProvider.LocalCar.Physics.Acceleration[0]:F2}".FillStart(5, ' ');
             string y = $"{SimDataProvider.LocalCar.Physics.Acceleration[2]:F2}".FillStart(5, ' ');
@@ -163,8 +163,8 @@ internal sealed class AccelerometerOverlay : CommonAbstractOverlay
         horizontalPlacement.Clip(-1, 1);
 
         PointF middle = new(x + size / 2, y + size / 2);
-        int gDotPosX = (int)(middle.X + (size / 2 * horizontalPlacement) - (gDotSize / 2));
-        int gDotPosY = (int)(middle.Y + (size / 2 * verticalPlacement) - (gDotSize / 2));
+        int gDotPosX = (int)(middle.X + size / 2 * horizontalPlacement - gDotSize / 2);
+        int gDotPosY = (int)(middle.Y + size / 2 * verticalPlacement - gDotSize / 2);
 
 
         using SolidBrush backgroundBrush = new SolidBrush(Color.FromArgb(20, 255, 255, 255));
