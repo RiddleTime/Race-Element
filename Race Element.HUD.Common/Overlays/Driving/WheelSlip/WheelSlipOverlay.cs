@@ -15,7 +15,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.WheelSlip;
     Description = "Shows wheel slip angle and ratio of each tyre.",
     OverlayCategory = OverlayCategory.Physics,
     OverlayType = OverlayType.Drive,
-    Game = Game.AssettoCorsa1,
+    Game = Game.AssettoCorsa1 | Game.RaceRoom,
     Authors = ["Reinier Klarenberg"]),
 ]
 internal sealed class WheelSlipOverlay : CommonAbstractOverlay
