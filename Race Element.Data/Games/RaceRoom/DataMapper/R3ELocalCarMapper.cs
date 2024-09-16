@@ -51,6 +51,12 @@ internal static partial class R3ELocalCarMapper
         localCarData.Tyres.Pressure = [sharedData.TirePressure.FrontLeft / 100, sharedData.TirePressure.FrontRight / 100, sharedData.TirePressure.RearLeft / 100, sharedData.TirePressure.RearRight / 100];
         localCarData.Tyres.Velocity = [sharedData.TireSpeed.FrontLeft * 3.6f, sharedData.TireSpeed.FrontRight * 3.6f, sharedData.TireSpeed.RearLeft * 3.6f, sharedData.TireSpeed.RearRight * 3.6f];
 
+        localCarData.Tyres.SlipRatio = [
+            CalculateSlipRatio(localCarData.Tyres.Velocity[0],localCarData.Physics.Velocity),
+            CalculateSlipRatio(localCarData.Tyres.Velocity[1], localCarData.Physics.Velocity),
+            CalculateSlipRatio(localCarData.Tyres.Velocity[2], localCarData.Physics.Velocity),
+            CalculateSlipRatio(localCarData.Tyres.Velocity[3], localCarData.Physics.Velocity),
+        ];
 
         // Physics Data
         localCarData.Physics.Velocity = sharedData.CarSpeed * 3.6f;
@@ -71,5 +77,10 @@ internal static partial class R3ELocalCarMapper
             var driverData = sharedData.DriverData[sharedData.Position - 1];
             localCarData.CarModel.GameId = driverData.DriverInfo.ModelId;
         }
+    }
+
+    private static float CalculateSlipRatio(float tyreVelocity, float carVelocity)
+    {
+        return (tyreVelocity - carVelocity) / tyreVelocity;
     }
 }

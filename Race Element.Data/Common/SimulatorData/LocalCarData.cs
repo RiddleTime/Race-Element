@@ -58,7 +58,16 @@ namespace RaceElement.Data.Common.SimulatorData
         public float[] Pressure { get; set; } = [];
         public float[] CoreTemperature { get; set; } = [];
         public float[] SurfaceTemperature { get; set; } = [];
+
+        /// <summary>
+        /// Wheel slip angle
+        /// </summary>
         public float[] SlipAngle { get; set; } = [];
+
+        /// <summary>
+        /// Wheel Slip Ratio
+        /// </summary>
+        public float[] SlipRatio { get; set; } = [];
     }
 
     public sealed record BrakesData

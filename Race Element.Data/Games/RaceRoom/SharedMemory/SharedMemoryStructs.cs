@@ -957,11 +957,15 @@ internal struct Shared
     // Note: See the R3E.Constant.TireType enum, deprecated - use the values further down instead
     public Int32 TireType;
 
-    // Rotation speed
-    // Uint: Radians per second
+    /// <summary>
+    /// Rotation speed
+    /// Uint: Radians per second
+    /// </summary>
     public TireData<Single> TireRps;
-    // Wheel speed
-    // Uint: Meters per second
+    /// <summary>
+    /// Wheel speed
+    /// Uint: Meters per second
+    /// </summary>
     public TireData<Single> TireSpeed;
     // Range: 0.0 - 1.0 (-1.0 = N/A)
     public TireData<Single> TireGrip;
