@@ -31,6 +31,8 @@ internal static partial class LocalCarMapper
 
     internal static void AddPhysics(ref PageFilePhysics pagePhysics, ref LocalCarData commonData)
     {
+        commonData.Physics.Acceleration = new(pagePhysics.AccG[0], pagePhysics.AccG[2], pagePhysics.AccG[1]);
+
         WithPhysicsPage(pagePhysics, commonData);
     }
 
@@ -42,7 +44,6 @@ internal static partial class LocalCarMapper
     {
         var coords = pageGraphics.CarCoordinates[pageGraphics.PlayerCarID];
         commonData.Physics.Location = new Vector3(coords.X * 10f, coords.Y, coords.Z);
-
         WithGraphicsPage(pageGraphics, commonData);
     }
 
