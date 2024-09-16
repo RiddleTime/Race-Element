@@ -17,7 +17,7 @@ namespace RaceElement.Data.Games.iRacing
 {
     public sealed class IRacingDataProvider : AbstractSimDataProvider
     {
-        internal sealed override int PollingRate() => 50;
+        internal sealed override int PollingRate() => 60;
 
 
         Dictionary<string, Color> carClassColor = [];
