@@ -113,7 +113,7 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
         int wheelSize = _config.Shape.WheelSize;
         int gap = 8;
 
-        _wheelSlipModel = new(SimDataProvider.LocalCar.Tyres.SlipRatio, SimDataProvider.LocalCar.Tyres.SlipAngle);
+        if (!IsPreviewing) _wheelSlipModel = new(SimDataProvider.LocalCar.Tyres.SlipRatio, SimDataProvider.LocalCar.Tyres.SlipAngle);
 
         float slipRatioFront = (_wheelSlipModel.SlipRatios[(int)Wheel.FrontLeft] + _wheelSlipModel.SlipRatios[(int)Wheel.FrontRight]) / 2;
         float slipRatioRear = (_wheelSlipModel.SlipRatios[(int)Wheel.RearLeft] + _wheelSlipModel.SlipRatios[(int)Wheel.RearRight]) / 2;
