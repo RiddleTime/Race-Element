@@ -49,7 +49,7 @@ internal static partial class R3ELocalCarMapper
 
         // Tyres Data
         localCarData.Tyres.Pressure = [sharedData.TirePressure.FrontLeft / 100, sharedData.TirePressure.FrontRight / 100, sharedData.TirePressure.RearLeft / 100, sharedData.TirePressure.RearRight / 100];
-        localCarData.Tyres.Velocity = [sharedData.TireSpeed.FrontLeft * 3.6f, sharedData.TireSpeed.FrontRight * 3.6f, sharedData.TireSpeed.RearLeft * 3.6f, sharedData.TireSpeed.RearRight * 3.6f];
+        localCarData.Tyres.Velocity = [-sharedData.TireSpeed.FrontLeft * 3.6f, -sharedData.TireSpeed.FrontRight * 3.6f, -sharedData.TireSpeed.RearLeft * 3.6f, -sharedData.TireSpeed.RearRight * 3.6f];
 
         localCarData.Tyres.SlipRatio = [
             CalculateSlipRatio(localCarData.Tyres.Velocity[0], localCarData.Physics.Velocity),
@@ -85,6 +85,7 @@ internal static partial class R3ELocalCarMapper
 
     private static float CalculateSlipRatio(float tyreVelocity, float carVelocity)
     {
-        return (tyreVelocity - carVelocity) / tyreVelocity;
+        if (carVelocity < 1) return 0;
+        return (tyreVelocity - carVelocity) / tyreVelocity * 10;
     }
 }
