@@ -4,47 +4,47 @@ namespace RaceElement.Data.Common.SimulatorData
 {
     public sealed record LocalCarData
     {
-        public CarModelData CarModel { get; set; } = new();
-        public PhysicsData Physics { get; set; } = new();
-        public EngineData Engine { get; set; } = new();
-        public InputsData Inputs { get; set; } = new();
-        public TyresData Tyres { get; set; } = new();
-        public BrakesData Brakes { get; set; } = new();
-        public ElectronicsData Electronics { get; set; } = new();
+        public CarModelData CarModel { get; internal set; } = new();
+        public PhysicsData Physics { get; internal set; } = new();
+        public EngineData Engine { get; internal set; } = new();
+        public InputsData Inputs { get; internal set; } = new();
+        public TyresData Tyres { get; internal set; } = new();
+        public BrakesData Brakes { get; internal set; } = new();
+        public ElectronicsData Electronics { get; internal set; } = new();
 
-        public RaceData Race { get; set; } = new();
+        public RaceData Race { get; internal set; } = new();
 
-        public TimingData Timing { get; set; } = new();
+        public TimingData Timing { get; internal set; } = new();
     }
 
     public sealed record CarModelData
     {
-        public string GameName { get; set; } = string.Empty;
-        public int GameId { get; set; }
-        public string CarClass { get; set; }
+        public string GameName { get; internal set; } = string.Empty;
+        public int GameId { get; internal set; }
+        public string CarClass { get; internal set; }
     }
 
     public sealed record EngineData
     {
-        public bool IsRunning { get; set; }
-        public bool IsIgnitionOn { get; set; }
-        public bool IsPitLimiterOn { get; set; }
+        public bool IsRunning { get; internal set; }
+        public bool IsIgnitionOn { get; internal set; }
+        public bool IsPitLimiterOn { get; internal set; }
 
         /// <summary>
         /// Current revolutions per minute
         /// </summary>
-        public int Rpm { get; set; }
+        public int Rpm { get; internal set; }
 
         /// <summary>
         /// Maximum revolutions per minute
         /// </summary>
-        public int MaxRpm { get; set; }
+        public int MaxRpm { get; internal set; }
 
         // Fuel info
-        public float FuelLiters { get; set; }
-        public float MaxFuelLiters { get; set; }
-        public float FuelLitersXLap { get; set; }
-        public float FuelEstimatedLaps { get; set; }
+        public float FuelLiters { get; internal set; }
+        public float MaxFuelLiters { get; internal set; }
+        public float FuelLitersXLap { get; internal set; }
+        public float FuelEstimatedLaps { get; internal set; }
     }
     public sealed record TyresData
     {
