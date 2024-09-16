@@ -51,23 +51,23 @@ namespace RaceElement.Data.Common.SimulatorData
         /// <summary>
         /// Velocity in kilometers per second.
         /// </summary>
-        public float[] Velocity { get; set; } = [];
+        public float[] Velocity { get; internal set; } = [];
         /// <summary>
         /// Tyre Pressures in Bar (FL, FR, RL, RR).
         /// </summary>
-        public float[] Pressure { get; set; } = [];
-        public float[] CoreTemperature { get; set; } = [];
-        public float[] SurfaceTemperature { get; set; } = [];
+        public float[] Pressure { get; internal set; } = [];
+        public float[] CoreTemperature { get; internal set; } = [];
+        public float[] SurfaceTemperature { get; internal set; } = [];
 
         /// <summary>
         /// Wheel slip angle
         /// </summary>
-        public float[] SlipAngle { get; set; } = [];
+        public float[] SlipAngle { get; internal set; } = [];
 
         /// <summary>
         /// Wheel Slip Ratio
         /// </summary>
-        public float[] SlipRatio { get; set; } = [];
+        public float[] SlipRatio { get; internal set; } = [];
     }
 
     public sealed record BrakesData
@@ -75,12 +75,12 @@ namespace RaceElement.Data.Common.SimulatorData
         /// <summary>
         /// The temperature in Celsius for each of the brake discs.
         /// </summary>
-        public float[] DiscTemperature { get; set; } = [];
+        public float[] DiscTemperature { get; internal set; } = [];
 
         /// <summary>
         /// The amount of pressure applied to each of the brake pads
         /// </summary>
-        public float[] Pressure { get; set; } = [];
+        public float[] Pressure { get; internal set; } = [];
     }
 
     public sealed record PhysicsData
@@ -88,17 +88,17 @@ namespace RaceElement.Data.Common.SimulatorData
         /// <summary>
         /// The location of the local car. (X,Y,Z)
         /// </summary>
-        public Vector3 Location { get; set; } = new();
+        public Vector3 Location { get; internal set; } = new();
 
         /// <summary>
         /// The g-forces. (X,Y,Z)
         /// </summary>
-        public Vector3 Acceleration { get; set; } = new();
+        public Vector3 Acceleration { get; internal set; } = new();
 
         /// <summary>
         /// The global rotation of the car (yaw/pitch/roll)
         /// </summary>
-        public Quaternion Rotation { get; set; } = Quaternion.Zero;
+        public Quaternion Rotation { get; internal set; } = Quaternion.Zero;
 
         /// <summary>
         /// The global rotation of the car (X:yaw/heading, Y:pitch, Z:roll), in euler angles
@@ -108,57 +108,57 @@ namespace RaceElement.Data.Common.SimulatorData
         /// <summary>
         /// The speed of the car in kilometers per hour.
         /// </summary>
-        public float Velocity { get; set; }
+        public float Velocity { get; internal set; }
     }
     public sealed record InputsData
     {
-        public float Throttle { get; set; }
-        public float Brake { get; set; }
-        public float HandBrake { get; set; }
-        public float Clutch { get; set; }
+        public float Throttle { get; internal set; }
+        public float Brake { get; internal set; }
+        public float HandBrake { get; internal set; }
+        public float Clutch { get; internal set; }
 
         /// <summary>
         /// -1 to 1, 0 is centered
         /// </summary>
-        public float Steering { get; set; }
+        public float Steering { get; internal set; }
 
         /// <summary>
         /// The maximum steering angle(degrees) lock-to-lock for the current car.
         /// </summary>
-        public float MaxSteeringAngle { get; set; }
+        public float MaxSteeringAngle { get; internal set; }
 
         /// <summary>
         /// Current Gear, 0 = reverse, 1 = neutral etc.
         /// </summary>
-        public int Gear { get; set; }
+        public int Gear { get; internal set; }
     }
 
     public sealed record ElectronicsData
     {
-        public int TractionControlLevel { get; set; }
-        public int TractionControlCutLevel { get; set; }
+        public int TractionControlLevel { get; internal set; }
+        public int TractionControlCutLevel { get; internal set; }
 
         /// <summary>
         /// 0 is no activation, 1 is full activation.
         /// </summary>
-        public float TractionControlActivation { get; set; }
+        public float TractionControlActivation { get; internal set; }
 
-        public int AbsLevel { get; set; }
+        public int AbsLevel { get; internal set; }
 
         /// <summary>
         /// 0 is no activation, 1 is full activation.
         /// </summary>
-        public float AbsActivation { get; set; }
-        public float BrakeBias { get; set; }
+        public float AbsActivation { get; internal set; }
+        public float BrakeBias { get; internal set; }
     }
 
     public sealed record RaceData
     {
-        public int LapsDriven { get; set; }
-        public float LapPositionPercentage { get; set; }
-        public int CarNumber { get; set; }
-        public int GlobalPosition { get; set; }
-        public int ClassPosition { get; set; }
+        public int LapsDriven { get; internal set; }
+        public float LapPositionPercentage { get; internal set; }
+        public int CarNumber { get; internal set; }
+        public int GlobalPosition { get; internal set; }
+        public int ClassPosition { get; internal set; }
     }
 
     public sealed record TimingData
@@ -167,20 +167,20 @@ namespace RaceElement.Data.Common.SimulatorData
         /// <summary>
         /// Current laptime, -1 is invalid;
         /// </summary>
-        public int CurrentLaptimeMS { get; set; } = 0;
+        public int CurrentLaptimeMS { get; internal set; } = 0;
 
         /// <summary>
         /// Delta to best laptime in milliseconds
         /// </summary>
-        public int LapTimeDeltaBestMS { get; set; } = 0;
+        public int LapTimeDeltaBestMS { get; internal set; } = 0;
 
         /// <summary>
         /// Current best lap, -1 is invalid.
         /// </summary>
-        public int LapTimeBestMs { get; set; } = -1;
+        public int LapTimeBestMs { get; internal set; } = -1;
 
-        public bool HasLapTimeBest = false;
+        public bool HasLapTimeBest { get; internal set; } = false;
 
-        public bool IsLapValid { get; set; } = true;
+        public bool IsLapValid { get; internal set; } = true;
     }
 }

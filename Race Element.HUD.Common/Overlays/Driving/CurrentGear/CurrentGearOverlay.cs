@@ -17,7 +17,7 @@ namespace RaceElement.HUD.Common.Overlays.OverlayCurrentGear;
 
 [Overlay(Name = "Current Gear", Version = 1.00, OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Driving,
-Description = "Shows the selected gear. (BETA)",
+Description = "Shows the selected gear.",
 Authors = ["Reinier Klarenberg, Dirk Wolf"])]
 internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 {
@@ -48,6 +48,7 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
     private const int InitialHeight = 72;
     private readonly List<CachedBitmap> _gearBitmaps = [];
 
+    private int _currentGear = -1;
     private int _lastGear = -2;
     private const float MaxOpacity = 1f;
     private float _opacity = MaxOpacity;
@@ -65,7 +66,7 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
     public sealed override void SetupPreviewData()
     {
         _lastGear = 3;
-        SimDataProvider.LocalCar.Inputs.Gear = 3;
+        _currentGear = 3;
     }
 
     public sealed override void BeforeStart()
@@ -118,7 +119,10 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 
     private int GetCurrentGear()
     {
-        int currentGear = SimDataProvider.LocalCar.Inputs.Gear;
+        if (IsPreviewing)
+            return _currentGear;
+
+        _currentGear = SimDataProvider.LocalCar.Inputs.Gear;
 
         if (_config.Gear.Spectator)
         {
@@ -130,11 +134,11 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
                 if (EntryListTracker.Instance.Cars.Any())
                 {
                     var car = EntryListTracker.Instance.Cars.First(car => car.Key == focusedIndex);
-                    currentGear = car.Value.RealtimeCarUpdate.Gear + 2;
+                    _currentGear = car.Value.RealtimeCarUpdate.Gear + 2;
                 }
         }
 
-        return currentGear;
+        return _currentGear;
     }
 
     public sealed override void Render(Graphics g)
