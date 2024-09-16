@@ -62,6 +62,9 @@ namespace RaceElement.Data.Games.iRacing
         private IRacingSdkDatum brakeABSactiveDatum;
         private IRacingSdkDatum sessionNumDatum;
         private IRacingSdkDatum sessionStateDatum;
+        private IRacingSdkDatum longitudinalAccelDatum;
+        private IRacingSdkDatum lateralAccelDatum;
+        private IRacingSdkDatum vertAccelDatum;
         private bool datumsInitialized = false;
 
         public CarLeftRight SpotterCallout { get; private set; }
@@ -101,6 +104,9 @@ namespace RaceElement.Data.Games.iRacing
             fuelLevelDatum = _iRacingSDK.Data.TelemetryDataProperties["FuelLevel"];
             rPMDatum = _iRacingSDK.Data.TelemetryDataProperties["RPM"];
             speedDatum = _iRacingSDK.Data.TelemetryDataProperties["Speed"];
+            longitudinalAccelDatum = _iRacingSDK.Data.TelemetryDataProperties["LongAccel"];
+            lateralAccelDatum = _iRacingSDK.Data.TelemetryDataProperties["LatAccel"];
+            vertAccelDatum = _iRacingSDK.Data.TelemetryDataProperties["VertAccel"];
             yawNorthDatum = _iRacingSDK.Data.TelemetryDataProperties["YawNorth"];
             pitchDatum = _iRacingSDK.Data.TelemetryDataProperties["Pitch"];
             rollDatum = _iRacingSDK.Data.TelemetryDataProperties["Roll"];
@@ -119,6 +125,7 @@ namespace RaceElement.Data.Games.iRacing
             brakeABSactiveDatum = _iRacingSDK.Data.TelemetryDataProperties["BrakeABSactive"];
             sessionNumDatum = _iRacingSDK.Data.TelemetryDataProperties["SessionNum"];
             sessionStateDatum = _iRacingSDK.Data.TelemetryDataProperties["SessionState"];
+
 
             datumsInitialized = true;
         }
@@ -261,6 +268,7 @@ namespace RaceElement.Data.Games.iRacing
                 // m/s -> km/h
                 localCar.Physics.Velocity = _iRacingSDK.Data.GetFloat(speedDatum) * 3.6f;
                 localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(_iRacingSDK.Data.GetFloat(yawNorthDatum), _iRacingSDK.Data.GetFloat(pitchDatum), _iRacingSDK.Data.GetFloat(rollDatum));
+                localCar.Physics.Acceleration = new(_iRacingSDK.Data.GetFloat(lateralAccelDatum), _iRacingSDK.Data.GetFloat(vertAccelDatum), _iRacingSDK.Data.GetFloat(longitudinalAccelDatum));
 
                 localCar.Race.GlobalPosition = _iRacingSDK.Data.GetInt(playerCarPositionDatum);
 
