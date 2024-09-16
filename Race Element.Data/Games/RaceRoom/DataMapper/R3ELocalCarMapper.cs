@@ -60,16 +60,17 @@ internal static partial class R3ELocalCarMapper
 
         // Physics Data
         localCarData.Physics.Velocity = sharedData.CarSpeed * 3.6f;
-        localCarData.Physics.Acceleration = new System.Numerics.Vector3(sharedData.LocalAcceleration.X, sharedData.LocalAcceleration.Y, sharedData.LocalAcceleration.Z);
+
+        localCarData.Physics.Acceleration = new System.Numerics.Vector3(sharedData.LocalAcceleration.X / 9.80665f, sharedData.LocalAcceleration.Y / 9.80665f, -sharedData.LocalAcceleration.Z / 9.80665f);
         localCarData.Physics.Location = new System.Numerics.Vector3(sharedData.CarCgLocation.X, sharedData.CarCgLocation.Y, sharedData.CarCgLocation.Z);
         localCarData.Physics.Rotation = System.Numerics.Quaternion.CreateFromYawPitchRoll(sharedData.CarOrientation.Yaw, sharedData.CarOrientation.Pitch, sharedData.CarOrientation.Roll);
 
 
         // Timing Data
-        localCarData.Timing.LapTimeDeltaBestMS = (int)(sharedData.TimeDeltaBestSelf / 1000f);
-        localCarData.Timing.CurrentLaptimeMS = (int)(sharedData.LapTimeCurrentSelf / 1000f);
+        localCarData.Timing.LapTimeDeltaBestMS = (int)(sharedData.TimeDeltaBestSelf * 1000f);
+        localCarData.Timing.CurrentLaptimeMS = (int)(sharedData.LapTimeCurrentSelf * 1000f);
         localCarData.Timing.IsLapValid = sharedData.CurrentLapValid == 1;
-        localCarData.Timing.LapTimeBestMs = (int)(sharedData.LapTimeBestSelf / 1000f);
+        localCarData.Timing.LapTimeBestMs = (int)(sharedData.LapTimeBestSelf * 1000f);
         localCarData.Timing.HasLapTimeBest = sharedData.LapTimeBestSelf != -1;
 
         if (sharedData.DriverData != null)
