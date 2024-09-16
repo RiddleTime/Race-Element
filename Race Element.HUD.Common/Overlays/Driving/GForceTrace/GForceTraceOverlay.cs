@@ -4,12 +4,13 @@ using System.Drawing;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.GForceTrace;
 
-[Overlay(Name = "G-Force Trace",
-Description = "Live graph of lateral and longitudinal G-forces.\nLateral forces are shown in Yellow, Longitudinal forces in light grey.",
-OverlayCategory = OverlayCategory.Physics,
-OverlayType = OverlayType.Drive,
-Version = 1.00,
-Authors = ["Reinier Klarenberg"])]
+[Overlay(
+    Name = "G-Force Trace",
+    Description = "Live graph of lateral and longitudinal G-forces.\nLateral forces are shown in Yellow, Longitudinal forces in light grey.",
+    OverlayCategory = OverlayCategory.Physics,
+    OverlayType = OverlayType.Drive,
+    Version = 1.00,
+    Authors = ["Reinier Klarenberg"])]
 internal sealed class GForceTraceOverlay : CommonAbstractOverlay
 {
     internal readonly GForceTraceConfiguration _config = new();
