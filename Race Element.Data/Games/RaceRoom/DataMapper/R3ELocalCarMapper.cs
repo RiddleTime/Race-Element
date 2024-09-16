@@ -52,7 +52,7 @@ internal static partial class R3ELocalCarMapper
         localCarData.Tyres.Velocity = [sharedData.TireSpeed.FrontLeft * 3.6f, sharedData.TireSpeed.FrontRight * 3.6f, sharedData.TireSpeed.RearLeft * 3.6f, sharedData.TireSpeed.RearRight * 3.6f];
 
         localCarData.Tyres.SlipRatio = [
-            CalculateSlipRatio(localCarData.Tyres.Velocity[0],localCarData.Physics.Velocity),
+            CalculateSlipRatio(localCarData.Tyres.Velocity[0], localCarData.Physics.Velocity),
             CalculateSlipRatio(localCarData.Tyres.Velocity[1], localCarData.Physics.Velocity),
             CalculateSlipRatio(localCarData.Tyres.Velocity[2], localCarData.Physics.Velocity),
             CalculateSlipRatio(localCarData.Tyres.Velocity[3], localCarData.Physics.Velocity),
