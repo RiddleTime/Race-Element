@@ -5,7 +5,7 @@ using System.Drawing;
 namespace RaceElement.HUD.Common.Overlays.Driving.InputTrace;
 
 [Overlay(Name = "Input Trace",
-Description = "Live graph of steering, throttle and brake inputs. (BETA)",
+Description = "Live graph of steering, throttle and brake inputs.",
 Version = 1.00,
 Authors = ["Reinier Klarenberg, Dirk Wolf"],
 OverlayType = OverlayType.Drive,
