@@ -53,7 +53,7 @@ internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
         // that precentage -> delta is 345ms.
         // SessionData.Instance.LapDeltaToSessionBestLapMs
 
-        MapEntryList(CrewChiefPage, GraphicsPage);
+        MapEntryList(crewChiefPage, graphicsPage);
 
         lastPhysicsPacketId = physicsPage.PacketId;
     }
