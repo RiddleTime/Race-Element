@@ -63,8 +63,8 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         int maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
         if (maxRpm <= 0) maxRpm = 9250; // porsche 911 max rpm..
 
-        _model.CurrentRpm = (int)(maxRpm * 0.9f);
         _model.MaxRpm = maxRpm;
+        _model.CurrentRpm = (int)(maxRpm * 0.9f);
         _drawShiftRPM = true;
     }
 
