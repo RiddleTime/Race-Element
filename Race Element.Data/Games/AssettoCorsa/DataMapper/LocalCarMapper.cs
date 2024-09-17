@@ -34,6 +34,7 @@ internal static partial class LocalCarMapper
     {
         commonData.Physics.Acceleration = new(pagePhysics.AccG[0], pagePhysics.AccG[2], pagePhysics.AccG[1]);
         commonData.Engine.IsPitLimiterOn = pagePhysics.PitLimiterOn;
+        commonData.Engine.IsRunning = commonData.Engine.Rpm > 0;
 
         WithPhysicsPage(pagePhysics, commonData);
     }

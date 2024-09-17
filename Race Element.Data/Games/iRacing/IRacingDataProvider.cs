@@ -265,6 +265,7 @@ namespace RaceElement.Data.Games.iRacing
                 }
 
                 localCar.Engine.Rpm = (int)_iRacingSDK.Data.GetFloat(rPMDatum);
+                localCar.Engine.IsRunning = localCar.Engine.Rpm > 0;
                 // m/s -> km/h
                 localCar.Physics.Velocity = _iRacingSDK.Data.GetFloat(speedDatum) * 3.6f;
                 localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(_iRacingSDK.Data.GetFloat(yawNorthDatum), _iRacingSDK.Data.GetFloat(pitchDatum), _iRacingSDK.Data.GetFloat(rollDatum));
