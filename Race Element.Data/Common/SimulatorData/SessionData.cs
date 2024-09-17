@@ -6,6 +6,40 @@ namespace RaceElement.Data.Common.SimulatorData
     {
         public WeatherConditions Weather { get; set; } = new();
         public TrackData Track { get; set; } = new();
+        public sealed record TrackData
+        {
+            /// <summary>
+            /// The track name based on the way the game provides it
+            /// </summary>
+            public string GameName { get; internal set; } = string.Empty;
+
+            /// <summary>
+            /// The track temperature in celsius
+            /// </summary>
+            public float Temperature { get; internal set; }
+            public int Length { get; internal set; }
+        }
+
+        public sealed record WeatherConditions
+        {
+            /// <summary>
+            /// The air temperature in celsius
+            /// </summary>
+            public float AirTemperature { get; internal set; }
+            public float AirPressure { get; internal set; }
+
+            /// <summary>
+            /// The speed of the air in km/h
+            /// </summary>
+            public float AirVelocity { get; internal set; }
+
+            /// <summary>
+            /// The direction of the air in radians
+            /// </summary>
+            public float AirDirection { get; internal set; }
+        }
+
+        // ------------- TODO Refactor and rewrite code.
 
         // car index -> car info dictionary
         internal readonly ConcurrentDictionary<int, CarInfo> _entryListCars = [];
@@ -18,7 +52,8 @@ namespace RaceElement.Data.Common.SimulatorData
         }
 
 
-        public void AddOrUpdateCar(int carIndex, CarInfo car) {
+        public void AddOrUpdateCar(int carIndex, CarInfo car)
+        {
             _entryListCars.AddOrUpdate(carIndex, car, (key, oldCarInfo) => car);
         }
 
@@ -40,7 +75,7 @@ namespace RaceElement.Data.Common.SimulatorData
         /// <summary>
         /// Car index that is focused on. E.g. in a replay or in the pit.
         /// </summary>
-        public int FocusedCarIndex {get; set;}
+        public int FocusedCarIndex { get; set; }
         public RaceSessionType SessionType { get; set; }
         public SessionPhase Phase { get; set; }
         public float LapDeltaToSessionBestLapMs { get; set; }
@@ -49,38 +84,6 @@ namespace RaceElement.Data.Common.SimulatorData
         public double SessionTimeLeftSecs { get; set; }
     }
 
-    public sealed record TrackData
-    {
-        /// <summary>
-        /// The track name based on the way the game provides it
-        /// </summary>
-        public string GameName { get; set; } = string.Empty;
-
-        /// <summary>
-        /// The track temperature in celsius
-        /// </summary>
-        public float Temperature { get; set; }
-        public int Length { get; set; }
-    }
-
-    public sealed record WeatherConditions
-    {
-        /// <summary>
-        /// The air temperature in celsius
-        /// </summary>
-        public float AirTemperature { get; set; }
-        public float AirPressure { get; set; }
-
-        /// <summary>
-        /// The speed of the air in km/h
-        /// </summary>
-        public float AirVelocity { get; set; }
-
-        /// <summary>
-        /// The direction of the air in radians
-        /// </summary>
-        public float AirDirection { get; set; }
-    }
 
     public enum RaceSessionType
     {
