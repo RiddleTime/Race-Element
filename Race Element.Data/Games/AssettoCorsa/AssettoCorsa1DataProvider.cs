@@ -60,24 +60,24 @@ internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
 
     private void MapEntryList(PageFileCrewChief crewChiefPage, PageFileGraphics graphicsPage)
     {
-        for (int i = 0; i < crewChiefPage.numVehicles; i++)
+        for (int i = 0; i < crewChiefPage.NumVehicles; i++)
         {
-            AcsVehicleInfo vehicle = crewChiefPage.vehicle[i];
+            AcsVehicleInfo vehicle = crewChiefPage.Vehicle[i];
             CarInfo carInfo = new CarInfo(i);
-            carInfo.Position = vehicle.carLeaderboardPosition;
-            carInfo.CupPosition = vehicle.carLeaderboardPosition;
+            carInfo.Position = vehicle.CarLeaderboardPosition;
+            carInfo.CupPosition = vehicle.CarLeaderboardPosition;
 
-            if (vehicle.isCarInPit != 0)
+            if (vehicle.IsCarInPit != 0)
             {
                 carInfo.CarLocation = CarInfo.CarLocationEnum.Pitlane;
             }
-            else if (vehicle.isCarInPitline != 0)
+            else if (vehicle.IsCarInPitline != 0)
             {
-                if (vehicle.spLineLength < 0.1F)
+                if (vehicle.SpLineLength < 0.1F)
                 {
                     carInfo.CarLocation = CarInfo.CarLocationEnum.PitExit;
                 }
-                else if (vehicle.spLineLength > 0.9F)
+                else if (vehicle.SpLineLength > 0.9F)
                 {
 
                     carInfo.CarLocation = CarInfo.CarLocationEnum.PitEntry;
@@ -88,10 +88,10 @@ internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
                 carInfo.CarLocation = CarInfo.CarLocationEnum.Track;
             }
             carInfo.CarClass = dummyCarClass;
-            carInfo.RaceNumber = vehicle.carId;
+            carInfo.RaceNumber = vehicle.CarId;
 
             LapInfo fastest = new LapInfo();
-            fastest.LaptimeMS = vehicle.bestLapMS;
+            fastest.LaptimeMS = vehicle.BestLapMS;
             carInfo.FastestLap = fastest;
 
             LapInfo last = new LapInfo();
@@ -99,27 +99,27 @@ internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
             carInfo.LastLap = last;
 
             LapInfo current = new LapInfo();
-            current.LaptimeMS = vehicle.currentLapTimeMS;
+            current.LaptimeMS = vehicle.CurrentLapTimeMS;
             carInfo.CurrentLap = current;
-            carInfo.CurrentLap.IsInvalid = vehicle.currentLapInvalid != 0;
+            carInfo.CurrentLap.IsInvalid = vehicle.CurrentLapInvalid != 0;
 
-            carInfo.TrackPercentCompleted = vehicle.spLineLength;
+            carInfo.TrackPercentCompleted = vehicle.SpLineLength;
 
             DriverInfo driverInfo = new DriverInfo();
-            driverInfo.Name = Encoding.UTF8.GetString(vehicle.driverName);
+            driverInfo.Name = Encoding.UTF8.GetString(vehicle.DriverName);
             carInfo.AddDriver(driverInfo);
             SessionData.Instance.AddOrUpdateCar(i, carInfo);
 
             // m/s -> km/h
-            carInfo.Kmh = (int)(vehicle.speedMS * 3.6F);
-            carInfo.Laps = vehicle.lapCount;
+            carInfo.Kmh = (int)(vehicle.SpeedMS * 3.6F);
+            carInfo.Laps = vehicle.LapCount;
 
-            carInfo.Location = new Vector3(vehicle.worldPosition.x, vehicle.worldPosition.y, vehicle.worldPosition.z);
+            carInfo.Location = new Vector3(vehicle.WorldPosition.X, vehicle.WorldPosition.Y, vehicle.WorldPosition.z);
 
-            carInfo.GapToClassLeaderMs = vehicle.currentLapTimeMS - crewChiefPage.vehicle[0].currentLapTimeMS;
+            carInfo.GapToClassLeaderMs = vehicle.CurrentLapTimeMS - crewChiefPage.Vehicle[0].CurrentLapTimeMS;
             carInfo.GapToRaceLeaderMs = carInfo.GapToClassLeaderMs;
             // TODO: double-check
-            carInfo.GapToPlayerMs = vehicle.currentLapTimeMS - crewChiefPage.vehicle[SessionData.Instance.PlayerCarIndex].currentLapTimeMS;
+            carInfo.GapToPlayerMs = vehicle.CurrentLapTimeMS - crewChiefPage.Vehicle[SessionData.Instance.PlayerCarIndex].CurrentLapTimeMS;
         }
     }
 

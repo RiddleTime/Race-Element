@@ -1,9 +1,5 @@
-﻿using RaceElement.Data.Common.SimulatorData;
-using RaceElement.Data.SharedMemory;
-using System;
-using System.Collections.Generic;
+﻿using RaceElement.Data.SharedMemory;
 using System.IO.MemoryMappedFiles;
-using System.Linq;
 using System.Numerics;
 using System.Runtime.InteropServices;
 
@@ -459,55 +455,55 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
         [Serializable]
         public struct AcsVec3
         {
-            public float x;
-            public float y;
-            public float z;
+            public float X;
+            public float Y;
+            public float Z;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
         [Serializable]
         public struct AcsVehicleInfo
         {
-            public int carId;
+            public int CarId;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 64)]
-            public byte[] driverName;
+            public byte[] DriverName;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 64)]
-            public byte[] carModel;
-            public float speedMS;
-            public int bestLapMS;
-            public int lapCount;
-            public int currentLapInvalid;
-            public int currentLapTimeMS;
-            public int lastLapTimeMS;
-            public AcsVec3 worldPosition;
-            public int isCarInPitline;
-            public int isCarInPit;
-            public int carLeaderboardPosition;
-            public int carRealTimeLeaderboardPosition;
-            public float spLineLength;
-            public int isConnected;
+            public byte[] CarModel;
+            public float SpeedMS;
+            public int BestLapMS;
+            public int LapCount;
+            public int CurrentLapInvalid;
+            public int CurrentLapTimeMS;
+            public int LastLapTimeMS;
+            public AcsVec3 WorldPosition;
+            public int IsCarInPitline;
+            public int IsCarInPit;
+            public int CarLeaderboardPosition;
+            public int CarRealTimeLeaderboardPosition;
+            public float SpLineLength;
+            public int IsConnected;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] suspensionDamage;
-            public float engineLifeLeft;
+            public float[] SuspensionDamage;
+            public float EngineLifeLeft;
             [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-            public float[] tyreInflation;
+            public float[] TyreInflation;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
         [Serializable]
         public struct PageFileCrewChief
         {
-            public int numVehicles;
-            public int focusVehicle;
+            public int NumVehicles;
+            public int FocusVehicle;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 512)]
-            public byte[] serverName;
+            public byte[] ServerName;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 64)]
-            public AcsVehicleInfo[] vehicle;
+            public AcsVehicleInfo[] Vehicle;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 512)]
-            public byte[] acInstallPath;
-            public int isInternalMemoryModuleLoaded;
+            public byte[] AcInstallPath;
+            public int IsInternalMemoryModuleLoaded;
             [MarshalAsAttribute(UnmanagedType.ByValArray, SizeConst = 32)]
-            public byte[] pluginVersion;
+            public byte[] PluginVersion;
 
             public static readonly int Size = Marshal.SizeOf(typeof(PageFileCrewChief));
             public static readonly byte[] Buffer = new byte[Size];
