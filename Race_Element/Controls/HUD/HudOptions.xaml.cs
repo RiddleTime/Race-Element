@@ -798,7 +798,7 @@ public partial class HudOptions : UserControl
 
                 foreach (PropertyInfo subType in type.PropertyType.GetProperties())
                 {
-                    ConfigField configField = configFields.Where(x => x.Name == $"{type.Name}.{subType.Name}").FirstOrDefault();
+                    ConfigField configField = configFields.Find(x => x.Name == $"{type.Name}.{subType.Name}");
                     if (configField == null)
                     {
                         var typeValue = type.GetValue(overlayConfig);

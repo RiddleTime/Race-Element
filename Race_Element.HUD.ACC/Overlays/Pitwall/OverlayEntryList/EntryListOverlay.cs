@@ -238,7 +238,7 @@ internal sealed class EntryListOverlay : AbstractOverlay
                             }
                             else
                             {
-                                var firstPostionCar = EntryListTracker.Instance.Cars.Where(x => x.Value.RealtimeCarUpdate.Position == 1).FirstOrDefault();
+                                var firstPostionCar = EntryListTracker.Instance.Cars.Find(x => x.Value.RealtimeCarUpdate.Position == 1);
                                 if (firstPostionCar.Value != null)
                                 {
                                     int lapDiff = firstPostionCar.Value.RealtimeCarUpdate.Laps - kv.Value.RealtimeCarUpdate.Laps;
