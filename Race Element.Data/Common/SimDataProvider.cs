@@ -68,7 +68,6 @@ namespace RaceElement.Data.Common
                 case Game.AssettoCorsa1:
                     {
                         Instance?.Stop();
-                        Instance = null;
                         break;
                     }
                 case Game.AssettoCorsaCompetizione:
@@ -79,17 +78,17 @@ namespace RaceElement.Data.Common
                 case Game.iRacing:
                     {
                         Instance?.Stop();
-                        Instance = null;
                         break;
                     }
                 case Game.RaceRoom:
                     {
                         Instance?.Stop();
-                        Instance = null;
                         break;
                     }
                 default: { break; }
             }
+
+            Instance = null;
         }
 
         public static bool HasTelemetry()
