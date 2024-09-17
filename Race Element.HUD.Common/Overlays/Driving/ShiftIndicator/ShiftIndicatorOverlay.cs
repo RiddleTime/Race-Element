@@ -186,7 +186,6 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         if (_config.Bar.ShowRpmText)
             DrawRpmText(g);
 
-
         // draw calculated early and upshift rpm, this gets activated by the SetupPreviewData() override. (Used in GUI only).
         if (_drawShiftRPM)
         {
@@ -203,7 +202,6 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
             Rectangle upshiftRect = new((int)(x - upshiftWidth / 3.5), y, (int)upshiftWidth, _font.Height);
             DrawTextWithOutline(g, Color.White, upshiftRpm, x, y, upshiftRect);
         }
-
     }
 
     private void DrawPitLimiterBar(Graphics g)
@@ -231,15 +229,12 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 
     private void DrawRpmText(Graphics g)
     {
-
-        string currentRpm = $"{SimDataProvider.LocalCar.Engine.Rpm}".FillStart($"{_model.MaxRpm}".Length, ' ');
-
-        if (_halfRpmStringWidth < 0)
-            _halfRpmStringWidth = g.MeasureString($"{_model.MaxRpm}", _font).Width / 2;
+        if (_halfRpmStringWidth < 0) _halfRpmStringWidth = g.MeasureString($"{_model.MaxRpm}", _font).Width / 2;
 
         int x = (int)(_halfRpmStringWidth + 8);
         int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
         Rectangle backgroundDimension = new((int)(x - _halfRpmStringWidth), y, (int)(_halfRpmStringWidth * 2), _font.Height);
+        string currentRpm = $"{_model.CurrentRpm}".FillStart($"{_model.MaxRpm}".Length, ' ');
         DrawTextWithOutline(g, Color.White, currentRpm, x, y, backgroundDimension);
     }
 
