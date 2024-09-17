@@ -35,6 +35,8 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
                 // Game Data
                 gameData.Name = Game.RaceRoom.ToShortName();
                 gameData.Version = $"{sharedMemory.VersionMajor}.{sharedMemory.VersionMinor}";
+                gameData.IsGamePaused = sharedMemory.GamePaused == 1;
+                gameData.IsInReplay = sharedMemory.GameInReplay == 1;
             }
             catch (Exception e)
             {
