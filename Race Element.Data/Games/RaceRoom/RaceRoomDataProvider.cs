@@ -27,7 +27,14 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
             try
             {
                 Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
+
+                // Local Car Data
                 R3ELocalCarMapper.AddR3SharedMemory(sharedMemory, localCar);
+
+
+                // Game Data
+                gameData.Name = Game.RaceRoom.ToShortName();
+                gameData.Version = $"{sharedMemory.VersionMajor}.{sharedMemory.VersionMinor}";
             }
             catch (Exception e)
             {
@@ -38,7 +45,10 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
         }
     }
 
-    internal override void Stop() { }
+    internal override void Stop()
+    {
+        R3eSharedMemory.Clean();
+    }
 
     public override List<string> GetCarClasses() => [];
 

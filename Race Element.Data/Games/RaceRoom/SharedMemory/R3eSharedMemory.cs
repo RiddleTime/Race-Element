@@ -38,6 +38,13 @@ namespace RaceElement.Data.Games.RaceRoom.SharedMemory
             return Memory;
             //return Memory = MemoryMappedFile.CreateOrOpen(Constants.SharedMemoryName, sizeof(byte), MemoryMappedFileAccess.ReadWrite).ToStruct<Shared>(Shared.Buffer);
         }
+
+        public static void Clean()
+        {
+            Memory = new();
+            _file?.Dispose();
+            _buffer = [];
+        }
     }
 
     public sealed class Utilities
