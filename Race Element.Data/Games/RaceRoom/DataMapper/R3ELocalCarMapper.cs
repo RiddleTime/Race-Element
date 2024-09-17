@@ -77,7 +77,7 @@ internal static partial class R3ELocalCarMapper
         localCarData.Timing.LapTimeBestMs = lapTimeBestSelf;
         localCarData.Timing.HasLapTimeBest = sharedData.LapTimeBestSelf != -1;
 
-        if (sharedData.DriverData != null)
+        if ((sharedData.DriverData != null) && (sharedData.DriverData[0].Place != -1))
         {
             var driverData = sharedData.DriverData[sharedData.Position - 1];
             localCarData.CarModel.GameId = driverData.DriverInfo.ModelId;

@@ -62,6 +62,10 @@ public abstract class CommonAbstractOverlay : FloatingWindow
     {
     }
 
+    /// <summary>
+    /// TODO: Seal in future and decouple.
+    /// </summary>
+    /// <returns></returns>
     public virtual bool DefaultShouldRender()
     {
         if (HudSettings.Cached.DemoMode)
@@ -72,6 +76,9 @@ public abstract class CommonAbstractOverlay : FloatingWindow
 
         if (SimDataProvider.LocalCar.Engine.IsRunning)
             return true;
+
+        if (GameWhenStarted.HasFlag(Game.RaceRoom) && SimDataProvider.GameData.IsGamePaused)  // TODO: Map "IsGamePaused" for other simulators
+            return false;
 
         if (!SimDataProvider.HasTelemetry())
             return false;

@@ -2,24 +2,16 @@
 using RaceElement.Data.ACC.Core;
 using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker;
-using RaceElement.Data.Games;
-using RaceElement.HUD.Overlay.Configuration;
-using RaceElement.Util;
 using RaceElement.Util.Settings;
 using System;
 using System.Diagnostics;
 using System.Drawing;
-using System.Linq;
-using System.Reflection;
-using System.Threading;
-using System.Windows.Forms;
 using static RaceElement.ACCSharedMemory;
-using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 
 namespace RaceElement.HUD.Overlay.Internal;
 
 // Legacy AbstractOverlay to be used by ACC HUDs. New common HUDs use CommonAbstractOverlay.
-public abstract class AbstractOverlay : CommonAbstractOverlay
+public abstract class AbstractOverlay(Rectangle rectangle, string Name) : CommonAbstractOverlay(rectangle, Name)
 {
 
     public SPageFilePhysics pagePhysics;
@@ -31,11 +23,7 @@ public abstract class AbstractOverlay : CommonAbstractOverlay
 
     public bool SubscribeToACCData = true;
 
-    protected AbstractOverlay(Rectangle rectangle, string Name) : base(rectangle, Name)
-    {
-    }
-
-    public override bool DefaultShouldRender()
+    public sealed override bool DefaultShouldRender()
     {
         if (HudSettings.Cached.DemoMode)
             return true;
