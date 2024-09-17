@@ -95,7 +95,7 @@ internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
             carInfo.FastestLap = fastest;
 
             LapInfo last = new LapInfo();
-            last.LaptimeMS = vehicle.lastLapTimeMS;
+            last.LaptimeMS = vehicle.LastLapTimeMS;
             carInfo.LastLap = last;
 
             LapInfo current = new LapInfo();
@@ -114,7 +114,7 @@ internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
             carInfo.Kmh = (int)(vehicle.SpeedMS * 3.6F);
             carInfo.Laps = vehicle.LapCount;
 
-            carInfo.Location = new Vector3(vehicle.WorldPosition.X, vehicle.WorldPosition.Y, vehicle.WorldPosition.z);
+            carInfo.Location = new Vector3(vehicle.WorldPosition.X, vehicle.WorldPosition.Y, vehicle.WorldPosition.Z);
 
             carInfo.GapToClassLeaderMs = vehicle.CurrentLapTimeMS - crewChiefPage.Vehicle[0].CurrentLapTimeMS;
             carInfo.GapToRaceLeaderMs = carInfo.GapToClassLeaderMs;
@@ -148,7 +148,7 @@ internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
         // No-op
     }
 
-    override public bool IsSpectating(int playerCarIndex, int focusedIndex)
+    public override bool IsSpectating(int playerCarIndex, int focusedIndex)
     {
         // TODO: Can we spectate other cars in the pits in AC1?
         return false;

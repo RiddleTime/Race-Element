@@ -2,7 +2,7 @@
 
 namespace RaceElement.HUD.Common.Overlays.Driving.Relative
 {
-    sealed internal class RelativeConfiguration : OverlayConfiguration 
+    internal sealed class RelativeConfiguration : OverlayConfiguration
     {
         /* TODO This needs some work.
         [ConfigGrouping("Information", "Show or hide additional information in the Relative.")]
