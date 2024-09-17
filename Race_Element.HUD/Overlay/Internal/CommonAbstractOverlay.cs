@@ -70,6 +70,8 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         if (IsRepositioning)
             return true;
 
+        if (SimDataProvider.LocalCar.Engine.IsRunning)
+            return true;
 
         if (!SimDataProvider.HasTelemetry())
             return false;
@@ -80,13 +82,14 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         {
             CarInfo carInfo = SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value;
             if (carInfo.CarLocation == CarInfo.CarLocationEnum.NONE || carInfo.CarLocation == CarInfo.CarLocationEnum.Garage) return false;
-        } else
+        }
+        else
         {
             Debug.WriteLine("Telemetry initialized by no player data. PlayerIdx {0} Driver count {1}",
                 SessionData.Instance.PlayerCarIndex, SessionData.Instance.Cars.Count);
             return false;
-        }        
-        
+        }
+
         return true;
     }
 
