@@ -1,5 +1,4 @@
 ﻿using RaceElement.Data.Common;
-using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.Util;
@@ -68,38 +67,24 @@ public abstract class CommonAbstractOverlay : FloatingWindow
     /// <returns></returns>
     public virtual bool DefaultShouldRender()
     {
-        if (HudSettings.Cached.DemoMode)
-            return true;
+        // System modes
+        if (HudSettings.Cached.DemoMode) return true;
+        if (IsRepositioning) return true;
 
-        if (IsRepositioning)
-            return true;
-
+        // sim data modes
+        bool condition = false;
         if (SimDataProvider.LocalCar.Engine.IsRunning)
-            return true;
+            condition = true;
 
-        if (GameWhenStarted.HasFlag(Game.RaceRoom) && SimDataProvider.GameData.IsGamePaused)  // TODO: Map "IsGamePaused" for other simulators
-            return false;
-
-        if (!SimDataProvider.HasTelemetry())
-            return false;
-
-        // For show only HUDs when player is on track. 
-        // TODO: Distinguish in sim data providers between pit and garage and only show in pit, but not garage or make configurable.
-        if (SessionData.Instance.Cars.Count > SessionData.Instance.PlayerCarIndex)
+        if (GameWhenStarted.HasFlag(Game.RaceRoom))   // TODO: map these conditions for other simulators
         {
-            CarInfo carInfo = SessionData.Instance.Cars[SessionData.Instance.PlayerCarIndex].Value;
-            if (carInfo.CarLocation == CarInfo.CarLocationEnum.NONE || carInfo.CarLocation == CarInfo.CarLocationEnum.Garage) return false;
-        }
-        else
-        {
-            Debug.WriteLine("Telemetry initialized by no player data. PlayerIdx {0} Driver count {1}",
-                SessionData.Instance.PlayerCarIndex, SessionData.Instance.Cars.Count);
-            return false;
+            if (SimDataProvider.GameData.IsGamePaused)
+                condition = false;
         }
 
-        return true;
+        return condition;
+
     }
-
     private void LoadFieldConfig()
     {
         FieldInfo[] fields = this.GetType().GetRuntimeFields().ToArray();
@@ -107,7 +92,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         {
             if (nested.FieldType.BaseType == typeof(OverlayConfiguration))
             {
-                var overlayConfig = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, new object[] { });
+                var overlayConfig = (OverlayConfiguration)Activator.CreateInstance(nested.FieldType, []);
 
                 string name = this.GetType().GetCustomAttribute<OverlayAttribute>().Name;
                 OverlaySettingsJson savedSettings = OverlaySettings.LoadOverlaySettings(name);

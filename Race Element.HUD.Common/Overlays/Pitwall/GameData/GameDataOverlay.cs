@@ -23,19 +23,11 @@ internal sealed class GameDataOverlay : CommonAbstractOverlay
     {
         public LocalCarDataConfig() => this.GenericConfiguration.AllowRescale = false;
 
-        [ConfigGrouping("Visible Members", "Adjust the members visible in the debug menu")]
-        public VisibleMemberGrouping VisibleMember { get; init; } = new();                                                                                                          
+        //[ConfigGrouping("Visible Members", "Adjust the members visible in the debug menu")]
+        public VisibleMemberGrouping VisibleMember { get; init; } = new();
         public sealed class VisibleMemberGrouping
         {
-            //public bool CarModel { get; init; } = true;
-            //public bool Physics { get; init; } = true;
-            //public bool Engine { get; init; } = true;
-            //public bool Inputs { get; init; } = true;
-            //public bool Tyres { get; init; } = true;
-            //public bool Brakes { get; init; } = true;
-            //public bool Electronics { get; init; } = true;
-            //public bool RaceData { get; init; } = true;
-            //public bool TimingData { get; init; } = true;
+            // add members here to show if we got inner objects for the game data...
         }
 
         [ConfigGrouping("Data", "Adjust the members visible in the debug menu")]
