@@ -3,11 +3,10 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.InfoPanel;
 using RaceElement.HUD.Overlay.Util;
-using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayClock;
+namespace RaceElement.HUD.Common.Overlays.Pitwall.Clock;
 
 [Overlay(
     Name = "Clock",
@@ -16,7 +15,7 @@ namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayClock;
     OverlayCategory = OverlayCategory.All,
     Authors = ["Reinier Klarenberg"]
 )]
-internal sealed class ClockOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Clock")
+internal sealed class ClockOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Clock")
 {
     private readonly SystemTimeConfig _config = new();
     private sealed class SystemTimeConfig : OverlayConfiguration
