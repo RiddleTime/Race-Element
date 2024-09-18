@@ -27,6 +27,7 @@
 
     <ItemGroup>
         <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
+        <PackageReference Include="TwitchLib.Client" Version="3.3.1" />
         <ProjectReference Include="..\Race Element.Data\Race Element.Data.csproj" />
         <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj" />
     </ItemGroup>
