@@ -567,7 +567,9 @@ internal struct Shared
     public Int32 TrackId;
     public Int32 LayoutId;
 
-    // Layout length in meters
+    /// <summary>
+    /// Layout length in meters
+    /// </summary>
     public Single LayoutLength;
     public SectorStarts<Single> SectorStartFactors;
 
@@ -578,30 +580,39 @@ internal struct Shared
     public RaceDuration<Int32> RaceSessionLaps;
     public RaceDuration<Int32> RaceSessionMinutes;
 
-    // The current race event index, for championships with multiple events
-    // Note: 0-indexed, -1 = N/A
+    /// <summary>
+    /// The current race event index, for championships with multiple events
+    /// Note: 0-indexed, -1 = N/A
+    /// </summary>
     public Int32 EventIndex;
 
-    // Which session the player is in (practice, qualifying, race, etc.)
-    // Note: See the R3E.Constant.Session enum
+    /// <summary>
+    /// Which session the player is in (practice, qualifying, race, etc.)
+    /// <see cref="Constants.Session"/>
+    /// </summary>
     public Int32 SessionType;
 
-    // The current iteration of the current type of session (second qualifying session, etc.)
-    // Note: 1 = first, 2 = second etc, -1 = N/A
-    public Int32 SessionIteration;
-
-    // If the session is time based, lap based or time based with an extra lap at the end
+    /// <summary>
+    /// The current iteration of the current type of session (second qualifying session, etc.)
+    /// If the session is time based, lap based or time based with an extra lap at the end
+    /// </summary>
     public Int32 SessionLengthFormat;
 
-    // Unit: Meter per second (m/s)
+    /// <summary>
+    /// Unit: Meter per second (m/s)
+    /// </summary>
     public Single SessionPitSpeedLimit;
 
-    // Which phase the current session is in (gridwalk, countdown, green flag, etc.)
-    // Note: See the R3E.Constant.SessionPhase enum
+    /// <summary>
+    /// Which phase the current session is in (gridwalk, countdown, green flag, etc.)
+    /// <see cref="Constants.SessionPhase"/>
+    /// </summary>
     public Int32 SessionPhase;
 
-    // Which phase start lights are in; -1 = unavailable, 0 = off, 1-5 = redlight on and counting down, 6 = greenlight on
-    // Note: See the r3e_session_phase enum
+    /// <summary>
+    /// Which phase start lights are in; -1 = unavailable, 0 = off, 1-5 = redlight on and counting down, 6 = greenlight on
+    /// <see cref="Constants.SessionPhase"/>
+    /// </summary>
     public Int32 StartLights;
 
     // -1 = no data available
@@ -625,10 +636,18 @@ internal struct Shared
     /// </summary>
     public Int32 NumberOfLaps;
 
-    // Amount of time and time remaining for the current session
-    // Note: Only available in time-based sessions, -1.0 = N/A
-    // Units: Seconds
+    /// <summary>
+    /// Amount of time for the current session
+    /// Note: Only available in time-based sessions, -1.0 = N/A
+    /// Units: Seconds
+    /// </summary>
     public Single SessionTimeDuration;
+
+    /// <summary>
+    /// Amount of time remaining for the current session
+    /// Note: Only available in time-based sessions, -1.0 = N/A
+    /// Units: Seconds
+    /// </summary>
     public Single SessionTimeRemaining;
 
     /// <summary>
@@ -645,16 +664,22 @@ internal struct Shared
     // Pit
     //////////////////////////////////////////////////////////////////////////
 
-    // Current status of the pit stop
-    // Note: See the R3E.Constant.PitWindow enum
+    /// <summary>
+    /// Current status of the pit stop
+    /// <see cref="Constants.PitWindow"/>
+    /// </summary>
     public Int32 PitWindowStatus;
 
-    // The minute/lap from which you're obligated to pit (-1 = N/A)
-    // Unit: Minutes in time-based sessions, otherwise lap
+    /// <summary>
+    /// The minute/lap from which you're obligated to pit (-1 = N/A)
+    /// Unit: Minutes in time-based sessions, otherwise lap
+    /// </summary>
     public Int32 PitWindowStart;
 
-    // The minute/lap into which you need to have pitted (-1 = N/A)
-    // Unit: Minutes in time-based sessions, otherwise lap
+    /// <summary>
+    /// The minute/lap into which you need to have pitted (-1 = N/A)
+    /// Unit: Minutes in time-based sessions, otherwise lap
+    /// </summary>
     public Int32 PitWindowEnd;
 
     /// <summary>
@@ -662,7 +687,9 @@ internal struct Shared
     /// </summary>
     public Int32 InPitlane;
 
-    // What is currently selected in pit menu, and array of states (preset/buttons: -1 = not selectable, 1 = selectable) (actions: -1 = N/A, 0 = unmarked for fix, 1 = marked for fix)
+    /// <summary>
+    /// What is currently selected in pit menu, and array of states (preset/buttons: -1 = not selectable, 1 = selectable) (actions: -1 = N/A, 0 = unmarked for fix, 1 = marked for fix)
+    /// </summary>
     public Int32 PitMenuSelection;
     public PitMenuState PitMenuState;
 
@@ -744,30 +771,54 @@ internal struct Shared
     /// The current best lap time for the leader of the player's class in the current session (-1.0 = N/A)
     /// </summary>
     public Single LapTimeBestLeaderClass;
-    // Sector times of fastest lap by anyone in session
-    // Unit: Seconds (-1.0 = N/A)
+    /// <summary>
+    /// Sector times of fastest lap by anyone in session
+    /// Unit: Seconds (-1.0 = N/A)
+    /// </summary>
     public Sectors<Single> SectorTimesSessionBestLap;
-    // Unit: Seconds (-1.0 = none)
+    /// <summary>
+    /// Unit: Seconds (-1.0 = none)
+    /// </summary>
     public Single LapTimeBestSelf;
+    /// <summary>
+    /// Unit: Seconds (-1.0 = none)
+    /// </summary>
     public Sectors<Single> SectorTimesBestSelf;
-    // Unit: Seconds (-1.0 = none)
+    /// <summary>
+    /// Unit: Seconds (-1.0 = none)
+    /// </summary>
     public Single LapTimePreviousSelf;
+    /// <summary>
+    /// Unit: Seconds (-1.0 = none)
+    /// </summary>
     public Sectors<Single> SectorTimesPreviousSelf;
-    // Unit: Seconds (-1.0 = none)
+    /// <summary>
+    /// Unit: Seconds (-1.0 = none)
+    /// </summary>
     public Single LapTimeCurrentSelf;
     public Sectors<Single> SectorTimesCurrentSelf;
-    // The time delta between the player's time and the leader of the current session (-1.0 = N/A)
+    /// <summary>
+    /// The time delta between the player's time and the leader of the current session (-1.0 = N/A)
+    /// </summary>
     public Single LapTimeDeltaLeader;
-    // The time delta between the player's time and the leader of the player's class in the current session (-1.0 = N/A)
+    /// <summary>
+    /// The time delta between the player's time and the leader of the player's class in the current session (-1.0 = N/A)
+    /// </summary>
     public Single LapTimeDeltaLeaderClass;
-    // Time delta between the player and the car placed in front (-1.0 = N/A)
-    // Units: Seconds
+    /// <summary>
+    /// Time delta between the player and the car placed in front (-1.0 = N/A)
+    /// Units: Seconds
+    /// </summary>
     public Single TimeDeltaFront;
-    // Time delta between the player and the car placed behind (-1.0 = N/A)
-    // Units: Seconds
+    /// <summary>
+    /// Time delta between the player and the car placed behind (-1.0 = N/A)
+    /// Units: Seconds
+    /// </summary>
     public Single TimeDeltaBehind;
-    // Time delta between this car's current laptime and this car's best laptime
-    // Unit: Seconds (-1000.0 = N/A)
+    /// <summary>
+    /// Time delta between this car's current laptime and this car's best laptime
+    /// Unit: Seconds (-1000.0 = N/A)
+    /// </summary>
     public Single TimeDeltaBestSelf;
     // Best time for each individual sector no matter lap
     // Unit: Seconds (-1.0 = N/A)
@@ -776,7 +827,9 @@ internal struct Shared
     public Sectors<Single> BestIndividualSectorTimeLeaderClass;
     public Int32 IncidentPoints;
 
-    // -1 = N/A, 0 = this and next lap valid, 1 = this lap invalid, 2 = this and next lap invalid
+    /// <summary>
+    /// -1 = N/A, 0 = this and next lap valid, 1 = this lap invalid, 2 = this and next lap invalid
+    /// </summary>
     public Int32 LapValidState;
 
     /// <summary>
@@ -800,8 +853,10 @@ internal struct Shared
     // Vehicle State
     //////////////////////////////////////////////////////////////////////////
 
-    // Which controller is currently controlling the player's car (AI, player, remote, etc.)
-    // Note: See the R3E.Constant.Control enum
+    /// <summary>
+    /// Which controller is currently controlling the player's car (AI, player, remote, etc.)
+    /// Note: See the R3E.Constant.Control enum
+    /// </summary>
     public Int32 ControlType;
 
     /// <summary>
@@ -847,28 +902,53 @@ internal struct Shared
     /// </summary>
     public Vector3<Single> LocalAcceleration;
 
-    // Unit: Kilograms (kg)
-    // Note: Car + penalty weight + fuel
+    /// <summary>
+    /// Unit: Kilograms (kg)
+    /// Note: Car + penalty weight + fuel
+    /// </summary>
     public Single TotalMass;
-    // Unit: Liters (l)
-    // Note: Fuel per lap show estimation when not enough data, then max recorded fuel per lap
-    // Note: Not valid for remote players
+
+    /// <summary>
+    /// Unit: Liters (l)
+    /// Note: Fuel per lap show estimation when not enough data, then max recorded fuel per lap
+    /// Note: Not valid for remote players
+    /// </summary>
     public Single FuelLeft;
+    /// <summary>
+    /// Unit: Liters (l)
+    /// </summary>
     public Single FuelCapacity;
+    /// <summary>
+    /// Unit: Liters (l)
+    /// Note: Fuel per lap show estimation when not enough data, then max recorded fuel per lap
+    /// Note: Not valid for remote players
+    /// </summary>
     public Single FuelPerLap;
-    // Unit: Celsius (C)
-    // Note: Not valid for AI or remote players
+    /// <summary>
+    /// Unit: Celsius (C)
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public Single EngineWaterTemp;
+    /// <summary>
+    /// Unit: Celsius (C)
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public Single EngineOilTemp;
-    // Unit: Kilopascals (KPa)
-    // Note: Not valid for AI or remote players
+    /// <summary>
+    /// Unit: Kilopascals (KPa)
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public Single FuelPressure;
-    // Unit: Kilopascals (KPa)
-    // Note: Not valid for AI or remote players
+    /// <summary>
+    /// Unit: Kilopascals (KPa)
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public Single EngineOilPressure;
 
-    // Unit: (Bar)
-    // Note: Not valid for AI or remote players (-1.0 = N/A)
+    /// <summary>
+    /// Unit: (Bar)
+    /// Note: Not valid for AI or remote players (-1.0 = N/A)
+    /// </summary>
     public Single TurboPressure;
 
     // How pressed the throttle pedal is
@@ -886,15 +966,21 @@ internal struct Shared
     // Note: Not valid for AI or remote players
     public Single Clutch;
     public Single ClutchRaw;
-    // How much the steering wheel is turned
-    // Range: -1.0 - 1.0
-    // Note: Not valid for AI or remote players
+    /// <summary>
+    /// How much the steering wheel is turned
+    /// Range: -1.0 - 1.0
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public Single SteerInputRaw;
-    // How many degrees in steer lock (center to full lock)
-    // Note: Not valid for AI or remote players
+    /// <summary>
+    /// How many degrees in steer lock (center to full lock)
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public Int32 SteerLockDegrees;
-    // How many degrees in wheel range (degrees full left to rull right)
-    // Note: Not valid for AI or remote players
+    /// <summary>
+    /// How many degrees in wheel range (degrees full left to rull right)
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public Int32 SteerWheelRangeDegrees;
 
     /// <summary>
@@ -917,21 +1003,31 @@ internal struct Shared
     /// </summary>
     public PushToPass PushToPass;
 
-    // How much the vehicle's brakes are biased towards the back wheels (0.3 = 30%, etc.) (-1.0 = N/A)
-    // Note: Not valid for AI or remote players
+    /// <summary>
+    /// How much the vehicle's brakes are biased towards the back wheels (0.3 = 30%, etc.) (-1.0 = N/A)
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public Single BrakeBias;
 
-    // DRS activations available in total (-1 = N/A or endless)
+    /// <summary>
+    /// DRS activations available in total (-1 = N/A or endless)
+    /// </summary>
     public Int32 DrsNumActivationsTotal;
-    // PTP activations available in total (-1 = N/A, or there's no restriction per lap, or endless)
+    /// <summary>
+    /// PTP activations available in total (-1 = N/A, or there's no restriction per lap, or endless)
+    /// </summary>
     public Int32 PtpNumActivationsTotal;
 
-    // Battery state of charge
-    // Range: 0.0 - 100.0 (-1.0 = N/A)
+    /// <summary>
+    /// Battery state of charge
+    /// Range: 0.0 - 100.0 (-1.0 = N/A)
+    /// </summary>
     public Single BatterySoC;
 
-    // Brake water tank (-1.0 = N/A)
-    // Unit: Liters (l)
+    /// <summary>
+    /// Brake water tank (-1.0 = N/A)
+    /// Unit: Liters (l)
+    /// </summary>
     public Single WaterLeft;
 
     /// <summary>
@@ -953,8 +1049,10 @@ internal struct Shared
     // Tires
     //////////////////////////////////////////////////////////////////////////
 
-    // Which type of tires the player's car has (option, prime, etc.)
-    // Note: See the R3E.Constant.TireType enum, deprecated - use the values further down instead
+    /// <summary>
+    /// Which type of tires the player's car has (option, prime, etc.)
+    /// Note: See the R3E.Constant.TireType enum, deprecated - use the values further down instead
+    /// </summary>
     public Int32 TireType;
 
     /// <summary>
@@ -967,17 +1065,27 @@ internal struct Shared
     /// Uint: Meters per second
     /// </summary>
     public TireData<Single> TireSpeed;
-    // Range: 0.0 - 1.0 (-1.0 = N/A)
+    /// <summary>
+    /// Range: 0.0 - 1.0 (-1.0 = N/A)
+    /// </summary>
     public TireData<Single> TireGrip;
-    // Range: 0.0 - 1.0 (-1.0 = N/A)
+    /// <summary>
+    /// Range: 0.0 - 1.0 (-1.0 = N/A)
+    /// </summary>
     public TireData<Single> TireWear;
-    // (-1 = N/A, 0 = false, 1 = true)
+    /// <summary>
+    /// (-1 = N/A, 0 = false, 1 = true)
+    /// </summary>
     public TireData<Int32> TireFlatspot;
-    // Unit: Kilopascals (KPa) (-1.0 = N/A)
-    // Note: Not valid for AI or remote players
+    /// <summary>
+    /// Unit: Kilopascals (KPa) (-1.0 = N/A)
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public TireData<Single> TirePressure;
-    // Percentage of dirt on tire (-1.0 = N/A)
-    // Range: 0.0 - 1.0
+    /// <summary>
+    /// Percentage of dirt on tire (-1.0 = N/A)
+    /// Range: 0.0 - 1.0
+    /// </summary>
     public TireData<Single> TireDirt;
 
     // Current temperature of three points across the tread of the tire (-1.0 = N/A)
@@ -1046,8 +1154,10 @@ internal struct Shared
     // Damage
     //////////////////////////////////////////////////////////////////////////
 
-    // The current state of various parts of the car
-    // Note: Not valid for AI or remote players
+    /// <summary>
+    /// The current state of various parts of the car
+    /// Note: Not valid for AI or remote players
+    /// </summary>
     public CarDamage CarDamage;
 
     //////////////////////////////////////////////////////////////////////////
