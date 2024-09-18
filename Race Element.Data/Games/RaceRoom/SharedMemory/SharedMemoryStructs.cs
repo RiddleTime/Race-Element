@@ -592,6 +592,13 @@ internal struct Shared
     /// </summary>
     public Int32 SessionType;
 
+
+    /// <summary>
+    /// The current iteration of the current type of session (second qualifying session, etc.)
+    /// Note: 1 = first, 2 = second etc, -1 = N/A
+    /// </summary>
+    public Int32 SessionIteration;
+
     /// <summary>
     /// The current iteration of the current type of session (second qualifying session, etc.)
     /// If the session is time based, lap based or time based with an extra lap at the end
