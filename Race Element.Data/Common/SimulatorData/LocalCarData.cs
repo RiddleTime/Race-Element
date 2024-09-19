@@ -66,6 +66,12 @@ public sealed record EngineData
     /// </summary>
     public int MaxRpm { get; internal set; }
 
+
+    /// <summary>
+    /// The revolutions per minute at which to shift up at
+    /// </summary>
+    public int ShiftUpRpm { get; internal set; }
+
     // Fuel info
     public float FuelLiters { get; internal set; }
     public float MaxFuelLiters { get; internal set; }

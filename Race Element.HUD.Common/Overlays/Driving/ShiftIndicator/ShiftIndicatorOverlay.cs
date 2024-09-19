@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -152,6 +153,32 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         _tweenStart = DateTime.Now;
     }
 
+
+    /// <summary>
+    /// Updates the <see cref="_colors"/> and 
+    /// </summary>
+    private void UpdateColorDictionary()
+    {
+        // configured percentages (0-100%)
+        float earlyPercentage = _config.Upshift.Early;
+        float upshiftPercentage = _config.Upshift.Upshift;
+
+        if (GameWhenStarted.HasFlag(Game.RaceRoom))
+        {
+            float maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
+            float upshiftRpm = SimDataProvider.LocalCar.Engine.ShiftUpRpm;
+            upshiftPercentage = upshiftRpm * 100 / maxRpm;
+            earlyPercentage = upshiftPercentage * 0.96f;
+        }
+
+        _colors =
+          [
+              (0.7f, Color.FromArgb(_config.Colors.NormalOpacity, _config.Colors.NormalColor)),
+                (earlyPercentage / 100f, Color.FromArgb(_config.Colors.EarlyOpacity, _config.Colors.EarlyColor)),
+                (upshiftPercentage / 100f, Color.FromArgb(_config.Colors.UpshiftOpacity, _config.Colors.UpshiftColor))
+          ];
+    }
+
     public sealed override void BeforeStop()
     {
         _cachedBackground?.Dispose();
@@ -298,6 +325,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
             _lastMaxRpm = _model.MaxRpm;
             _halfRpmStringWidth = -1; // reseting this so the background for the text is correct
             _cachedRpmLines.Render();
+            UpdateColorDictionary();
         }
 
         _cachedRpmLines.Draw(g, _config.Bar.Width, _config.Bar.Height);
