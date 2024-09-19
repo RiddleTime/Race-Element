@@ -8,6 +8,8 @@ internal sealed class InputDataJob : AbstractLoopJob
     public InputTraceOverlay Overlay { get; private init; }
     public int DataCount { get; private init; }
 
+    internal readonly object _lock = new();
+
     /// <summary>
     /// Stores Steering, 50 % is center 
     /// </summary>
@@ -48,21 +50,16 @@ internal sealed class InputDataJob : AbstractLoopJob
         if (!Overlay.ShouldRender())
             return;
 
-        lock (Throttle)
+        lock (_lock)
         {
             Throttle.Insert(0, (int)(SimDataProvider.LocalCar.Inputs.Throttle * 100));
             if (Throttle.Count > DataCount)
                 Throttle.RemoveAt(Throttle.Count - 1);
-        }
-        lock (Brake)
-        {
+
             Brake.Insert(0, (int)(SimDataProvider.LocalCar.Inputs.Brake * 100));
             if (Brake.Count > DataCount)
                 Brake.RemoveAt(Brake.Count - 1);
-        }
 
-        lock (Steering)
-        {
             Steering.Insert(0, (int)((SimDataProvider.LocalCar.Inputs.Steering + 1.0) / 2 * 100));
             if (Steering.Count > DataCount)
                 Steering.RemoveAt(Steering.Count - 1);

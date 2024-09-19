@@ -66,14 +66,14 @@ internal class InputGraph : IDisposable
 
             if (_config.Chart.SteeringInput)
             {
-                lock (_dataJob.Steering) data = new(_dataJob.Steering);
+                lock (_dataJob._lock) data = new(_dataJob.Steering);
                 DrawData(g, data, _steeringPen);
             }
 
-            lock (_dataJob.Throttle) data = new(_dataJob.Throttle);
+            lock (_dataJob._lock) data = new(_dataJob.Throttle);
             DrawData(g, data, _throttlePen);
 
-            lock (_dataJob.Brake) data = new(_dataJob.Brake);
+            lock (_dataJob._lock) data = new(_dataJob.Brake);
             DrawData(g, data, _brakePen);
         }
     }
