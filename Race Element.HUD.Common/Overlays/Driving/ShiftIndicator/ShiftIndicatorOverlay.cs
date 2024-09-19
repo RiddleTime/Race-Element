@@ -79,13 +79,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         }
         int cornerRadius = (int)(10 * Scale);
 
-        _colors =
-            [
-                (0.7f, Color.FromArgb(_config.Colors.NormalOpacity, _config.Colors.NormalColor)),
-                (_config.Upshift.Early / 100f, Color.FromArgb(_config.Colors.EarlyOpacity, _config.Colors.EarlyColor)),
-                (_config.Upshift.Upshift / 100f, Color.FromArgb(_config.Colors.UpshiftOpacity, _config.Colors.UpshiftColor))
-            ];
-
+        UpdateColorDictionary();
 
         _cachedColorBars = [];
         foreach (var color in _colors.Select(x => x.Item2))
