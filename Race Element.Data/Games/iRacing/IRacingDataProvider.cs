@@ -687,7 +687,7 @@ namespace RaceElement.Data.Games.iRacing
         }
 
 
-        public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
+        public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
             gameData.Name = Game.iRacing.ToShortName();
             // Updates for iRacing are done with event handlers and don't need to be driven by Race Element with this Update method
@@ -729,7 +729,7 @@ namespace RaceElement.Data.Games.iRacing
             return SpotterCallout;
         }
 
-        override public bool IsSpectating(int playerCarIndex, int focusedIndex)
+        public override bool IsSpectating(int playerCarIndex, int focusedIndex)
         {
             // TODO We need to test how spotting team mates works in a multi-driver team race.
             // E.g. what telemetry is available
@@ -766,6 +766,10 @@ namespace RaceElement.Data.Games.iRacing
                 Debug.WriteLine("Unknown license {0}", category);
                 return Color.Gray;
             }
+        }
+
+        internal sealed override void Start()
+        {
         }
     }
 

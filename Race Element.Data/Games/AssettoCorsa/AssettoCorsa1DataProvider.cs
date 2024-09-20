@@ -18,14 +18,11 @@ internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
     static string dummyCarClass = "Race";
     List<string> classes = [dummyCarClass];
 
-    public AssettoCorsa1DataProvider()
-    {
-    }
     internal override int PollingRate() => 100;
 
     private static string GameName { get => Game.AssettoCorsa1.ToShortName(); }
 
-    public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
+    public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         var physicsPage = AcSharedMemory.ReadPhysicsPageFile();
         if (lastPhysicsPacketId == physicsPage.PacketId) // no need to remap the physics page if packet is the same
@@ -157,5 +154,9 @@ internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
     public override Color GetColorForCategory(string category)
     {
         return Color.White;
+    }
+
+    internal sealed override void Start()
+    {
     }
 }

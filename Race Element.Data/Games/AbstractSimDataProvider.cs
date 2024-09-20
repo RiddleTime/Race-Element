@@ -8,15 +8,13 @@ namespace RaceElement.Data.Games;
 
 public abstract class AbstractSimDataProvider
 {
+    internal abstract void Start();
     /// <summary>
     /// Update Polling Hz
     /// </summary>
     /// <returns></returns>
     internal abstract int PollingRate();
     internal abstract void Stop();
-
-
-
 
 
     #region Decouple

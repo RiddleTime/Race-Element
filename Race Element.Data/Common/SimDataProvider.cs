@@ -10,8 +10,14 @@ namespace RaceElement.Data.Common
     public static class SimDataProvider
     {
         public static AbstractSimDataProvider? Instance { get; internal set; }
+
         private static LocalCarData _localCarData = new();
         public static LocalCarData LocalCar { get => _localCarData; }
+
+
+        private static LocalCarEvents _localCarEvents = new();
+        public static LocalCarEvents LocalCarEvents { get => _localCarEvents; }
+
 
         private static SessionData _session = new();
         public static SessionData Session { get => _session; }
@@ -28,7 +34,7 @@ namespace RaceElement.Data.Common
                 case Game.AssettoCorsa1:
                     {
                         Instance ??= new AssettoCorsa1DataProvider();
-
+                        Instance.Start();
                         Instance.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
@@ -41,12 +47,14 @@ namespace RaceElement.Data.Common
                 case Game.iRacing:
                     {
                         Instance ??= new IRacingDataProvider();
+                        Instance.Start();
                         Instance.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
                 case Game.RaceRoom:
                     {
                         Instance ??= new RaceRoomDataProvider();
+                        Instance.Start();
                         Instance.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
