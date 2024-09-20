@@ -1,6 +1,5 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games.RaceRoom.DataMapper;
-using RaceElement.Data.Games.RaceRoom.Events;
 using RaceElement.Data.Games.RaceRoom.SharedMemory;
 using System.Diagnostics;
 
@@ -8,8 +7,6 @@ namespace RaceElement.Data.Games.RaceRoom;
 
 internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
 {
-    private readonly LocalCarEventLoop _localCarEventLoop = new();
-
     private bool _isGameRunning = false;
     private DateTime _lastGameRunningCheck = DateTime.MinValue;
 
@@ -17,12 +14,10 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
 
     internal sealed override void Start()
     {
-        _localCarEventLoop.Run();
     }
 
     internal sealed override void Stop()
     {
-        _localCarEventLoop.CancelJoin();
     }
 
     public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)

@@ -14,9 +14,9 @@ namespace RaceElement.Data.Common
         private static LocalCarData _localCarData = new();
         public static LocalCarData LocalCar { get => _localCarData; }
 
-
-        private static LocalCarEvents _localCarEvents = new();
-        public static LocalCarEvents LocalCarEvents { get => _localCarEvents; }
+        internal static LocalCarEvents localCarEvents = new();
+        public static LocalCarEvents LocalCarEvents { get => localCarEvents; }
+        private static readonly LocalCarEventLoop _localCarEventLoop = new();
 
 
         private static SessionData _session = new();
@@ -34,8 +34,8 @@ namespace RaceElement.Data.Common
                 case Game.AssettoCorsa1:
                     {
                         Instance ??= new AssettoCorsa1DataProvider();
-                        Instance.Start();
                         Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                        _localCarEventLoop.Run();
                         break;
                     }
                 case Game.AssettoCorsaCompetizione:
@@ -47,15 +47,15 @@ namespace RaceElement.Data.Common
                 case Game.iRacing:
                     {
                         Instance ??= new IRacingDataProvider();
-                        Instance.Start();
                         Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                        _localCarEventLoop.Run();
                         break;
                     }
                 case Game.RaceRoom:
                     {
                         Instance ??= new RaceRoomDataProvider();
-                        Instance.Start();
                         Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                        _localCarEventLoop.Run();
                         break;
                     }
                 default: { break; }
@@ -71,6 +71,8 @@ namespace RaceElement.Data.Common
 
         internal static void Stop()
         {
+            _localCarEventLoop?.CancelJoin();
+
             switch (GameManager.CurrentGame)
             {
                 case Game.AssettoCorsa1:
