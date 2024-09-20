@@ -1,4 +1,5 @@
-﻿using RaceElement.Core.Jobs.LoopJob;
+﻿using DeepCopy;
+using RaceElement.Core.Jobs.LoopJob;
 
 namespace RaceElement.Data.Common.SimulatorData;
 internal sealed class LocalCarEventLoop : AbstractLoopJob
@@ -8,6 +9,12 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
 
     public LocalCarEventLoop() => IntervalMillis = 50;
 
+    public override void AfterCancel()
+    {
+        _previous = new();
+        _current = new();
+    }
+
     public sealed override void RunAction()
     {
         _current = SimDataProvider.LocalCar;
@@ -16,7 +23,7 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
         CheckGearChange();
         CheckGlobalPositionChange();
 
-        _previous = _current;
+        _previous = DeepCopier.Copy(_current);
     }
 
     private void CheckGlobalPositionChange()
@@ -37,3 +44,4 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
             SimDataProvider.localCarEvents.GearChanged(new() { Previous = _previous.Inputs.Gear, Next = _current.Inputs.Gear, });
     }
 }
+

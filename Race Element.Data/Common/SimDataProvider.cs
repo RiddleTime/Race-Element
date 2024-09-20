@@ -16,6 +16,7 @@ namespace RaceElement.Data.Common
 
         internal static LocalCarEvents localCarEvents = new();
         public static LocalCarEvents LocalCarEvents { get => localCarEvents; }
+
         private static readonly LocalCarEventLoop _localCarEventLoop = new();
 
 
