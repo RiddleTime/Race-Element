@@ -26,6 +26,6 @@ public sealed class LocalCarEvents
     /// <summary>
     /// Kicks of when the global position for the local car is changed.
     /// </summary>
-    public event EventHandler<IntChangeEvent> OnGlobalPositionChanged;
+    public event EventHandler<IntChangeEvent>? OnGlobalPositionChanged;
     internal void GlobalPositionChanged(IntChangeEvent globalPositionChangedEvent) => OnGlobalPositionChanged?.Invoke(this, globalPositionChangedEvent);
 }
