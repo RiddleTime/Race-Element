@@ -19,9 +19,11 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
     {
         _current = SimDataProvider.LocalCar;
 
-        CheckLapGained();
         CheckGearChange();
+
+        CheckLapGained();
         CheckGlobalPositionChange();
+        CheckClassPositionChange();
 
         _previous = DeepCopier.Copy(_current);
     }
@@ -32,9 +34,15 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
             SimDataProvider.localCarEvents.GlobalPositionChanged(new() { Previous = _previous.Race.GlobalPosition, Next = _current.Race.GlobalPosition });
     }
 
+    private void CheckClassPositionChange()
+    {
+        if (_previous.Race.ClassPosition != _current.Race.ClassPosition)
+            SimDataProvider.localCarEvents.ClassPositionChanged(new() { Previous = _previous.Race.ClassPosition, Next = _current.Race.ClassPosition });
+    }
+
     private void CheckLapGained()
     {
-        if (_previous.Race.LapsDriven < _current.Race.LapsDriven)
+        if (_previous.Race.LapsDriven != _current.Race.LapsDriven)
             SimDataProvider.localCarEvents.GainLap(_current.Race.LapsDriven);
     }
 
