@@ -1,10 +1,12 @@
 ﻿namespace RaceElement.Data.Common.SimulatorData;
 
 /// <summary>
-/// Contains a collection of events to listen in on for the local car.
+/// Contains a collection of events related to changes in <see cref="SimDataProvider.LocalCar"/>.
 /// </summary>
 public sealed class LocalCarEvents
 {
+    internal LocalCarEvents() { }
+
     /// <summary>
     /// See <see cref="LocalCarData.CarModel"/> for live data.
     /// </summary>
@@ -20,9 +22,8 @@ public sealed class LocalCarEvents
     /// </summary>
     public readonly RaceEvents Race = new();
 
-    internal LocalCarEvents() { }
 
-    #region EventHandlers
+    #region Event Handlers
 
     /// <summary>
     /// Used to describe the changes between a previous and a next of this <typeparamref name="T"/>.
@@ -63,10 +64,10 @@ public sealed class LocalCarEvents
         internal RaceEvents() { }
 
         /// <summary>
-        /// Kicks off when the lap count increases
+        /// Kicks off when the driven lap count is changed.
         /// </summary>
-        public event EventHandler<int>? OnLapGained;
-        internal void GainLap(int lapsCompleted) => OnLapGained?.Invoke(this, lapsCompleted);
+        public event EventHandler<ChangeEvent<int>>? OnLapsCompletedChanged;
+        internal void LapsDrivenChanged(ChangeEvent<int> lapsCompleted) => OnLapsCompletedChanged?.Invoke(this, lapsCompleted);
 
         /// <summary>
         /// Kicks of when the global position for the local car is changed.
