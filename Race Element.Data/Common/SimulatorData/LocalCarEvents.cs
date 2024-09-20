@@ -32,6 +32,7 @@ public sealed class LocalCarEvents
     /// <param name="Next">Next state</param>
     public readonly record struct ChangeEvent<T>(T Previous, T Next);
 
+
     /// <see cref="LocalCarData.CarModel"/>
     public sealed class CarModelEvents
     {

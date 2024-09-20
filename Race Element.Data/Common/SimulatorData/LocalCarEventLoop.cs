@@ -17,13 +17,15 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
 
     public sealed override void RunAction()
     {
-        _current = SimDataProvider.LocalCar;
+        _current = DeepCopier.Copy(SimDataProvider.LocalCar);
 
         CheckGearChange();
 
         CheckLapGained();
         CheckGlobalPositionChange();
         CheckClassPositionChange();
+
+        CheckCarModelGameNameChange();
 
         _previous = DeepCopier.Copy(_current);
     }
@@ -49,7 +51,13 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
     private void CheckGearChange()
     {
         if (_previous.Inputs.Gear != _current.Inputs.Gear)
-            SimDataProvider.localCarEvents.Inputs.GearChanged(new() { Previous = _previous.Inputs.Gear, Next = _current.Inputs.Gear, });
+            SimDataProvider.localCarEvents.Inputs.GearChanged(new() { Previous = _previous.Inputs.Gear, Next = _current.Inputs.Gear });
+    }
+
+    private void CheckCarModelGameNameChange()
+    {
+        if (_previous.CarModel.GameName != _current.CarModel.GameName)
+            SimDataProvider.localCarEvents.CarModel.GameNameChanged(new() { Previous = _previous.CarModel.GameName, Next = _current.CarModel.GameName });
     }
 }
 
