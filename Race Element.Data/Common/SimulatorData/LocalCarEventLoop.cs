@@ -14,8 +14,15 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
 
         CheckLapGained();
         CheckGearChange();
+        CheckGlobalPositionChange();
 
         _previous = _current;
+    }
+
+    private void CheckGlobalPositionChange()
+    {
+        if (_previous.Race.GlobalPosition != _current.Race.GlobalPosition)
+            SimDataProvider.localCarEvents.GlobalPositionChanged(new() { Previous = _previous.Race.GlobalPosition, Next = _current.Race.GlobalPosition });
     }
 
     private void CheckLapGained()
@@ -27,10 +34,6 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
     private void CheckGearChange()
     {
         if (_previous.Inputs.Gear != _current.Inputs.Gear)
-            SimDataProvider.localCarEvents.GearChanged(new()
-            {
-                Previous = _previous.Inputs.Gear,
-                Next = _current.Inputs.Gear,
-            });
+            SimDataProvider.localCarEvents.GearChanged(new() { Previous = _previous.Inputs.Gear, Next = _current.Inputs.Gear, });
     }
 }

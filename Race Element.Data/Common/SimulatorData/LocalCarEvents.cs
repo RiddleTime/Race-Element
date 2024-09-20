@@ -7,6 +7,9 @@ public sealed class LocalCarEvents
 {
     internal LocalCarEvents() { }
 
+    public readonly record struct IntChangeEvent(int Previous, int Next);
+
+
     /// <summary>
     /// Kicks off when the lap count increases
     /// </summary>
@@ -16,7 +19,13 @@ public sealed class LocalCarEvents
     /// <summary>
     /// Kicks off when the gear is changed
     /// </summary>
-    public event EventHandler<GearChangeEvent>? OnGearChanged;
-    public readonly record struct GearChangeEvent(int Previous, int Next);
-    internal void GearChanged(GearChangeEvent gearChangedEvent) => OnGearChanged?.Invoke(this, gearChangedEvent);
+    public event EventHandler<IntChangeEvent>? OnGearChanged;
+    internal void GearChanged(IntChangeEvent gearChangedEvent) => OnGearChanged?.Invoke(this, gearChangedEvent);
+
+
+    /// <summary>
+    /// Kicks of when the global position for the local car is changed.
+    /// </summary>
+    public event EventHandler<IntChangeEvent> OnGlobalPositionChanged;
+    internal void GlobalPositionChanged(IntChangeEvent globalPositionChangedEvent) => OnGlobalPositionChanged?.Invoke(this, globalPositionChangedEvent);
 }
