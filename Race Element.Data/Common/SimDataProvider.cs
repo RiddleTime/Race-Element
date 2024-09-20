@@ -4,6 +4,7 @@ using RaceElement.Data.Games;
 using RaceElement.Data.Games.AssettoCorsa;
 using RaceElement.Data.Games.iRacing;
 using RaceElement.Data.Games.RaceRoom;
+using RaceElement.Data.Common.SimulatorData.LocalCar;
 
 namespace RaceElement.Data.Common
 {

@@ -1,7 +1,7 @@
 ﻿using DeepCopy;
 using RaceElement.Core.Jobs.LoopJob;
 
-namespace RaceElement.Data.Common.SimulatorData;
+namespace RaceElement.Data.Common.SimulatorData.LocalCar;
 internal sealed class LocalCarEventLoop : AbstractLoopJob
 {
     private LocalCarData _previous = new();

@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace RaceElement.Data.Common.SimulatorData;
+namespace RaceElement.Data.Common.SimulatorData.LocalCar;
 public sealed record LocalCarData
 {
     public CarModelData CarModel { get; internal set; } = new();

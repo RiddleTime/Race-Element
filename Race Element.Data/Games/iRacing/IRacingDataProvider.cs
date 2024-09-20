@@ -8,6 +8,7 @@ using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkEnum;
 using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkSessionInfo.SessionInfoModel.SessionModel;
 using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkSessionInfo.SessionInfoModel;
 using System.Numerics;
+using RaceElement.Data.Common.SimulatorData.LocalCar;
 
 // https://github.com/mherbold/IRSDKSharper
 // https://sajax.github.io/irsdkdocs/telemetry/

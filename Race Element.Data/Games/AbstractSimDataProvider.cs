@@ -2,6 +2,7 @@
 using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.iRacing;
 
 namespace RaceElement.Data.Games;

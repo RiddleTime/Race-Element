@@ -1,4 +1,4 @@
-﻿namespace RaceElement.Data.Common.SimulatorData;
+﻿namespace RaceElement.Data.Common.SimulatorData.LocalCar;
 
 /// <summary>
 /// Contains a collection of events related to changes in <see cref="SimDataProvider.LocalCar"/>.

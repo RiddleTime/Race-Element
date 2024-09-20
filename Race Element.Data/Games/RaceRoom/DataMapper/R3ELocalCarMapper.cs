@@ -1,4 +1,4 @@
-﻿using RaceElement.Data.Common.SimulatorData;
+﻿using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.RaceRoom.SharedMemory;
 using Riok.Mapperly.Abstractions;
 

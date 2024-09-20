@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.AssettoCorsa.DataMapper;
 using RaceElement.Data.Games.AssettoCorsa.DataMapper.LocalCar;
 using RaceElement.Data.Games.AssettoCorsa.SharedMemory;
