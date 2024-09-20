@@ -83,23 +83,23 @@ public sealed record TyresData
     /// <summary>
     /// Velocity in kilometers per second.
     /// </summary>
-    public float[] Velocity { get; internal set; } = [];
+    public float[] Velocity { get; internal set; } = new float[4];
     /// <summary>
     /// Tyre Pressures in Bar (FL, FR, RL, RR).
     /// </summary>
-    public float[] Pressure { get; internal set; } = [];
-    public float[] CoreTemperature { get; internal set; } = [];
-    public float[] SurfaceTemperature { get; internal set; } = [];
+    public float[] Pressure { get; internal set; } = new float[4];
+    public float[] CoreTemperature { get; internal set; } = new float[4];
+    public float[] SurfaceTemperature { get; internal set; } = new float[4];
 
     /// <summary>
     /// Wheel slip angle
     /// </summary>
-    public float[] SlipAngle { get; internal set; } = [];
+    public float[] SlipAngle { get; internal set; } = new float[4];
 
     /// <summary>
     /// Wheel Slip Ratio
     /// </summary>
-    public float[] SlipRatio { get; internal set; } = [];
+    public float[] SlipRatio { get; internal set; } = new float[4];
 }
 
 public sealed record BrakesData
@@ -107,12 +107,12 @@ public sealed record BrakesData
     /// <summary>
     /// The temperature in Celsius for each of the brake discs.
     /// </summary>
-    public float[] DiscTemperature { get; internal set; } = [];
+    public float[] DiscTemperature { get; internal set; } = new float[4];
 
     /// <summary>
     /// The amount of pressure applied to each of the brake pads
     /// </summary>
-    public float[] Pressure { get; internal set; } = [];
+    public float[] Pressure { get; internal set; } = new float[4];
 }
 
 public sealed record PhysicsData
