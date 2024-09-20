@@ -115,6 +115,8 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 
         if (!IsPreviewing) _wheelSlipModel = new(SimDataProvider.LocalCar.Tyres.SlipRatio, SimDataProvider.LocalCar.Tyres.SlipAngle);
 
+        if (_wheelSlipModel.SlipRatios.Length != 4) return;
+
         float slipRatioFront = (_wheelSlipModel.SlipRatios[(int)Wheel.FrontLeft] + _wheelSlipModel.SlipRatios[(int)Wheel.FrontRight]) / 2;
         float slipRatioRear = (_wheelSlipModel.SlipRatios[(int)Wheel.RearLeft] + _wheelSlipModel.SlipRatios[(int)Wheel.RearRight]) / 2;
 
@@ -137,6 +139,8 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 
         // draw outline
         _cachedCircleBackground?.Draw(g, x, y, size, size);
+
+        if (_wheelSlipModel.SlipRatios.Length != 4) return;
 
         g.SmoothingMode = SmoothingMode.AntiAlias;
 
