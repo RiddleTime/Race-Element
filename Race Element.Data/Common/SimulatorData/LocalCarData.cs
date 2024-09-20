@@ -34,8 +34,10 @@ public sealed record LocalCarData
     /// </summary>
     public ElectronicsData Electronics { get; internal set; } = new();
 
+    /// <summary>
+    /// Contains data about the race for the current car, like position and laps driven.
+    /// </summary>
     public RaceData Race { get; internal set; } = new();
-
 
     /// <summary>
     /// Contains Timing data, like: lap time, lap invalidation
