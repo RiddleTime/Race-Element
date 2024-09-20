@@ -11,7 +11,7 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
     private bool _isGameRunning = false;
     private DateTime _lastGameRunningCheck = DateTime.MinValue;
 
-    internal sealed override int PollingRate() => 200;
+    internal sealed override int PollingRate() => 300;
 
     internal sealed override void Start()
     {
