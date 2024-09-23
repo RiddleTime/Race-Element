@@ -24,7 +24,7 @@ public sealed class DrawableTextCell : AbstractDrawableCell
 
     public bool UpdateText(string text, bool forced = false)
     {
-        if (Text == text && !forced)
+        if (!forced && Text == text)
             return false;
 
         Text = text;

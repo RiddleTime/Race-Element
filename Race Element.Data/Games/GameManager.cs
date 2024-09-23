@@ -1,22 +1,36 @@
-﻿using RaceElement.Data.Common;
+﻿using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Data.Common;
 using RaceElement.Data.Games.iRacing;
 
 namespace RaceElement.Data.Games;
 
 public static class GameManager
 {
-    public static Game CurrentGame { get; private set; } = Game.AssettoCorsaCompetizione;
+    private static SimpleLoopJob _dataUpdaterJob;
+    public static Game CurrentGame { get; private set; } = Game.Any;
 
-    public static event EventHandler<Game>? OnGameChanged;
-    public static void SetCurrentGame(Game game)
+
+    public static event EventHandler<(Game previous, Game next)>? OnGameChanged;
+    public static void SetCurrentGame(Game nextGame)
     {
         ExitGameData(CurrentGame);
 
-        CurrentGame = game;
         SimDataProvider.Clear();
-        OnGameChanged?.Invoke(null, game);
-    }
+        Game previousGame = CurrentGame;
+        CurrentGame = nextGame;
+        OnGameChanged?.Invoke(null, (previousGame, nextGame));
 
+        SimDataProvider.Update(true);
+        if (SimDataProvider.Instance != null)
+        {
+            _dataUpdaterJob = new()
+            {
+                Action = () => SimDataProvider.Update(),
+                IntervalMillis = 1000 / SimDataProvider.Instance.PollingRate()
+            };
+            _dataUpdaterJob.Run();
+        }
+    }
 
     /// <summary>
     /// Gracefully disposes and stops all mechanisms that are required for a game so they do not interfere with other games.
@@ -24,14 +38,7 @@ public static class GameManager
     /// <param name="game"></param>
     private static void ExitGameData(Game game)
     {
-        switch (game)
-        {
-            case Game.iRacing:
-                {
-                    IRacingDataProvider.Stop();
-                    break;
-                }
-        }
-
+        SimDataProvider.Stop();
+        _dataUpdaterJob?.CancelJoin();
     }
 }

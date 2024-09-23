@@ -1,6 +1,8 @@
 ﻿using Octokit;
 using RaceElement.Controls.Util.Updater;
 using RaceElement.Data.Games;
+using RaceElement.Util.Settings;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Diagnostics;
 using System.Threading;
@@ -75,6 +77,11 @@ public partial class TitleBar : UserControl
             {
                 Game currentGame = (Game)item.DataContext;
                 GameManager.SetCurrentGame(currentGame);
+
+                var uiSettings = new UiSettings();
+                var settings = uiSettings.Get();
+                settings.SelectedGame = currentGame;
+                uiSettings.Save(settings);
             }
         };
 
@@ -118,10 +125,11 @@ public partial class TitleBar : UserControl
         comboBoxCurrentGame.Items.Clear();
         foreach (Game game in Enum.GetValues(typeof(Game)))
         {
-            string friendlyName = game.ToShortName();
-            if (friendlyName.Length > 0)
+            if (game == Game.Any) continue;
+            string shortName = game.ToShortName();
+            if (shortName.Length > 0)
             {
-                ComboBoxItem comboBoxItem = new() { Content = friendlyName, DataContext = game };
+                ComboBoxItem comboBoxItem = new() { Content = shortName, DataContext = game, ToolTip = game.ToFriendlyName() };
                 comboBoxCurrentGame.Items.Add(comboBoxItem);
             }
             else
@@ -130,8 +138,18 @@ public partial class TitleBar : UserControl
             }
         }
 
-        comboBoxCurrentGame.SelectedIndex = (int)GameManager.CurrentGame;
-
+        var uiSettings = new UiSettings();
+        Game selectedGame = uiSettings.Get().SelectedGame;
+        if (selectedGame == Game.Any) selectedGame = uiSettings.Default().SelectedGame;
+        int index = -1;
+        for (int i = 0; i < comboBoxCurrentGame.Items.Count; i++)
+        {
+            var itemObject = comboBoxCurrentGame.Items.GetItemAt(i);
+            if (itemObject is ComboBoxItem item && item.DataContext != null && item.DataContext is Game game)
+                if (game == selectedGame)
+                    index = i;
+        }
+        if (index != -1) comboBoxCurrentGame.SelectedIndex = index;
     }
 
     private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)

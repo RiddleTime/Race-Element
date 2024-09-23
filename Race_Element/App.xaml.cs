@@ -1,6 +1,7 @@
 ﻿using ACCManager.Data.ACC.Core.Game;
 using RaceElement.Controls;
 using RaceElement.Controls.Util;
+using RaceElement.Data.Games;
 using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
@@ -177,6 +178,7 @@ public partial class App : Application
     private void HandleCustomUriScheme(string arg)
     {
         if (string.IsNullOrEmpty(arg)) return;
+        if (GameManager.CurrentGame != Game.AssettoCorsaCompetizione) return;
 
         arg = arg.Replace(@"raceelement://", "");
         string command = arg.Split("=")[0];

@@ -46,7 +46,7 @@ internal class ConfigurationControls
                 return false;
             }
 
-            settings.Config = new();
+            settings.Config = [];
         }
 
         SaveOverlaySettings(overlayName, settings);

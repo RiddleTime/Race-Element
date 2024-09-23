@@ -12,6 +12,9 @@ internal sealed class WatkinsGlen : AbstractTrackData
     public override string FullName => "Watkins Glen International";
     public override int TrackLength => 5552;
 
+    public override float FactorScale => 0.21f;
+    public override float PitLaneTime => 27f;
+
     public override List<float> Sectors => new() { 0.3185f, 0.632f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

@@ -27,6 +27,60 @@
     <IsAotCompatible>True</IsAotCompatible>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\barcelona.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\brands_hatch.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\cota.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\donington.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\hungaroring.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\imola.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\indianapolis.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\kyalami.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\laguna_seca.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\misano.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\monza.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\mount_panorama.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\nurburgring.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\nurburgring_24h.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\oulton_park.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\paul_ricard.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\red_bull_ring.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\silverstone.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\snetterton.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\spa.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\suzuka.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\valencia.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\watkins_glen.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\zandvoort.bin" />
+    <None Remove="Overlays\Driving\TrackMap\Data\ACC\zolder.bin" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\barcelona.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\brands_hatch.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\cota.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\donington.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\hungaroring.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\imola.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\indianapolis.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\kyalami.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\laguna_seca.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\misano.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\monza.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\mount_panorama.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\nurburgring.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\nurburgring_24h.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\oulton_park.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\paul_ricard.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\red_bull_ring.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\silverstone.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\snetterton.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\spa.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\suzuka.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\valencia.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\watkins_glen.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\zandvoort.bin" />
+    <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\zolder.bin" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
     <PackageReference Include="MouseKeyHook" Version="5.7.1" />
     <PackageReference Include="ProcessMemoryUtilities.Net" Version="1.3.4" />

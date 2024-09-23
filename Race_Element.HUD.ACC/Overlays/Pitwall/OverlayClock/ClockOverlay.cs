@@ -9,15 +9,20 @@ using System.Drawing.Drawing2D;
 
 namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayClock;
 
-[Overlay(Name = "Clock",
+[Overlay(
+    Name = "Clock",
     Description = "Displays the system time of your operation system.",
     OverlayType = OverlayType.Pitwall,
-    OverlayCategory = OverlayCategory.All)]
-internal sealed class ClockOverlay : AbstractOverlay
+    OverlayCategory = OverlayCategory.All,
+    Authors = ["Reinier Klarenberg"]
+)]
+internal sealed class ClockOverlay(Rectangle rectangle) : AbstractOverlay(rectangle, "Clock")
 {
     private readonly SystemTimeConfig _config = new();
     private sealed class SystemTimeConfig : OverlayConfiguration
     {
+        public SystemTimeConfig() => GenericConfiguration.AllowRescale = true;
+
         public enum TimeFormat
         {
             Full,
@@ -25,17 +30,15 @@ internal sealed class ClockOverlay : AbstractOverlay
         }
 
         [ConfigGrouping("Clock", "Change settings that alter the presentation of the time.")]
-        public InfoPanelGrouping InfoPanel { get; set; } = new InfoPanelGrouping();
-        public class InfoPanelGrouping
+        public InfoPanelGrouping InfoPanel { get; init; } = new();
+        public sealed class InfoPanelGrouping
         {
             [ToolTip("Change between Full(24h) and AM/PM notation of time.")]
-            public TimeFormat Format { get; set; } = TimeFormat.Full;
+            public TimeFormat Format { get; init; } = TimeFormat.Full;
 
             [ToolTip("Renders this HUD regardless of the whether the engine is running or not.")]
-            public bool AlwaysShow { get; set; } = true;
+            public bool AlwaysShow { get; init; } = true;
         }
-
-        public SystemTimeConfig() => this.GenericConfiguration.AllowRescale = true;
     }
 
     private Font _font;
@@ -43,14 +46,21 @@ internal sealed class ClockOverlay : AbstractOverlay
     private PanelText _timeHeader;
     private PanelText _timeValue;
 
-    public ClockOverlay(Rectangle rectangle) : base(rectangle, "Clock")
-    {
-        RefreshRateHz = 1;
-    }
+    private string _timeFormat = FullTimeFormat;
+    private const string FullTimeFormat = "HH\\:mm\\:ss";
+    private const string AmpPmTimeFormat = "hh\\:mm\\:ss tt";
 
     public override void BeforeStart()
     {
-        _font = FontUtil.FontSegoeMono(10f * this.Scale);
+        _timeFormat = _config.InfoPanel.Format switch
+        {
+            SystemTimeConfig.TimeFormat.Full => FullTimeFormat,
+            SystemTimeConfig.TimeFormat.AmPm => AmpPmTimeFormat,
+            _ => FullTimeFormat,
+        };
+
+
+        _font = FontUtil.FontSegoeMono(10f * Scale);
 
         int lineHeight = _font.Height;
 
@@ -59,9 +69,9 @@ internal sealed class ClockOverlay : AbstractOverlay
         if (_config.InfoPanel.Format == SystemTimeConfig.TimeFormat.AmPm)
             unscaledValueWidth += 24;
 
-        int headerWidth = (int)(unscaledHeaderWidth * this.Scale);
-        int valueWidth = (int)(unscaledValueWidth * this.Scale);
-        int roundingRadius = (int)(6 * this.Scale);
+        int headerWidth = (int)(unscaledHeaderWidth * Scale);
+        int valueWidth = (int)(unscaledValueWidth * Scale);
+        int roundingRadius = (int)(6 * Scale);
 
         RectangleF headerRect = new(0, 0, headerWidth, lineHeight);
         RectangleF valueRect = new(headerWidth, 0, valueWidth, lineHeight);
@@ -90,14 +100,14 @@ internal sealed class ClockOverlay : AbstractOverlay
         headerRect.Offset(0, lineHeight);
         valueRect.Offset(0, lineHeight);
 
-        this.Width = unscaledHeaderWidth + unscaledValueWidth;
-        this.Height = (int)(headerRect.Top / this.Scale);
+        Width = unscaledHeaderWidth + unscaledValueWidth;
+        Height = (int)(headerRect.Top / Scale);
+        RefreshRateHz = 1;
     }
 
     public override void BeforeStop()
     {
         _font?.Dispose();
-
         _timeHeader?.Dispose();
         _timeValue?.Dispose();
     }
@@ -112,22 +122,7 @@ internal sealed class ClockOverlay : AbstractOverlay
 
     public override void Render(Graphics g)
     {
-        _timeHeader.Draw(g, "Clock", this.Scale);
-        string format = string.Empty;
-        switch (_config.InfoPanel.Format)
-        {
-            case SystemTimeConfig.TimeFormat.Full:
-                {
-                    format = "HH\\:mm\\:ss";
-                    break;
-                }
-            case SystemTimeConfig.TimeFormat.AmPm:
-                {
-                    format = "hh\\:mm\\:ss tt";
-                    break;
-                }
-        }
-        _timeValue.Draw(g, $"{DateTime.Now.ToString(format)}", this.Scale);
-
+        _timeHeader.Draw(g, "Clock", Scale);
+        _timeValue.Draw(g, $"{DateTime.Now.ToString(_timeFormat)}", Scale);
     }
 }

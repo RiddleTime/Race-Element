@@ -35,6 +35,7 @@ public sealed class StandingsOverlay : AbstractOverlay
 
     private readonly Dictionary<CarClasses, SolidBrush> _carClassToBrush = new()
     {
+        {CarClasses.GT2, new SolidBrush(Color.FromArgb(150, Color.Yellow))},
         {CarClasses.GT3, new SolidBrush(Color.FromArgb(150, Color.Yellow))},
         {CarClasses.GT4, new SolidBrush(Color.FromArgb(150, Color.LightBlue))},
         {CarClasses.CUP, new SolidBrush(Color.FromArgb(150, Color.Cyan))},

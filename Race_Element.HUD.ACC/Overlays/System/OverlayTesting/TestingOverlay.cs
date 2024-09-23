@@ -8,10 +8,9 @@ using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
 {
-    [Overlay(Name = "Testing", Description = "some testing ", OverlayType = OverlayType.Pitwall)]
+    //[Overlay(Name = "Testing", Description = "some testing ", OverlayType = OverlayType.Pitwall)]
     internal class TestingOverlay : AbstractOverlay
     {
-        private readonly AbstractLoopJob _job;
         private readonly InfoPanel _panel;
 
         public TestingOverlay(Rectangle rectangle) : base(rectangle, "Testing")
@@ -22,17 +21,14 @@ namespace RaceElement.HUD.ACC.Overlays.System.OverlayTesting
             SubscribeToACCData = false;
 
             _panel = new InfoPanel(10, 500);
-            _job = new SimpleLoopJob() { Action = () => SimDataProvider.Update(), IntervalMillis = 1000 / 50 };
         }
 
         public override void BeforeStart()
         {
-            _job.Run();
         }
 
         public override void BeforeStop()
         {
-            _job.CancelJoin();
         }
 
         public override bool ShouldRender() => true;// SimDataProvider.LocalCar.Engine.RPM > 0;

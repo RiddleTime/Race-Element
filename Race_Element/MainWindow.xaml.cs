@@ -6,6 +6,7 @@ using RaceElement.Hardware.ACC.SteeringLock;
 using RaceElement.HUD.ACC;
 using RaceElement.HUD.ACC.Data.Tracker;
 using RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayDebugOutput;
+using RaceElement.HUD.Common;
 using RaceElement.Util;
 using RaceElement.Util.Settings;
 using RaceElement.Util.SystemExtensions;
@@ -147,11 +148,11 @@ public partial class MainWindow : Window
 
 
     private bool initialChange = true;
-    private void GameManager_OnGameChanged(object sender, Game selectedGame)
+    private void GameManager_OnGameChanged(object sender, (Game previous, Game next) e)
     {
-        tabSetups.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
-        tabLiveries.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
-        tabTelemetry.Visibility = selectedGame == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
+        tabSetups.Visibility = e.next == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
+        tabLiveries.Visibility = e.next == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
+        tabTelemetry.Visibility = e.next == Game.AssettoCorsaCompetizione ? Visibility.Visible : Visibility.Collapsed;
 
 
         if (!initialChange)
@@ -162,6 +163,8 @@ public partial class MainWindow : Window
 
     private void MainWindow_Drop(object sender, DragEventArgs e)
     {
+        if (GameManager.CurrentGame != Game.AssettoCorsaCompetizione) return;
+
         if (e.Data is DataObject)
         {
             DataObject data = (DataObject)e.Data;
@@ -268,17 +271,21 @@ public partial class MainWindow : Window
 
     private void UpdateUsage()
     {
-#if DEBUG
-        return;
-#endif
-        try
-        {
-            string hitCounter = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FRace-Element";
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hitCounter);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-            response.Close();
-        }
-        catch (Exception) { }
+        // prevent beta versions from increasing real life usage
+        bool runningBeta = false;
+        if (int.TryParse(FileVersionInfo.GetVersionInfo(Environment.ProcessPath).FileVersion.Last().ToString(), out int versionLast))
+            if (versionLast % 2 != 0)
+                runningBeta = true;
+
+        if (!runningBeta)
+            try
+            {
+                string hitCounter = "https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FRace-Element";
+                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(hitCounter);
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                response.Close();
+            }
+            catch (Exception) { }
     }
 
     private void MainWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
@@ -291,6 +298,7 @@ public partial class MainWindow : Window
         _notifyIcon?.Dispose();
 
         OverlaysAcc.CloseAll();
+        CommonHuds.CloseAll();
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
@@ -313,6 +321,7 @@ public partial class MainWindow : Window
 
         _notifyIcon?.Dispose();
         OverlaysAcc.CloseAll();
+        CommonHuds.CloseAll();
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();

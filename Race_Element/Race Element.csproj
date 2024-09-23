@@ -12,9 +12,9 @@
         <SuiteName>Race Element</SuiteName>
         <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
         <DisallowUrlActivation>true</DisallowUrlActivation>
-        <ApplicationVersion>1.1.1.2</ApplicationVersion>
-        <AssemblyVersion>1.1.1.2</AssemblyVersion>
-        <Version>1.1.1.2</Version>
+        <ApplicationVersion>2.0.0.0</ApplicationVersion>
+        <AssemblyVersion>2.0.0.0</AssemblyVersion>
+        <Version>2.0.0.0</Version>
         <UseApplicationTrust>true</UseApplicationTrust>
         <CreateDesktopShortcut>true</CreateDesktopShortcut>
         <PublishWizardCompleted>true</PublishWizardCompleted>
@@ -157,6 +157,7 @@
         <Resource Include="Resources\race element icon 2.ico" />
     </ItemGroup>
     <ItemGroup>
+        <ProjectReference Include="..\Race Element.HUD.Common\Race Element.HUD.Common.csproj" />
         <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj" />
         <ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj" />
         <ProjectReference Include="..\Race_Element.Hardware\Race Element.Hardware.csproj" />

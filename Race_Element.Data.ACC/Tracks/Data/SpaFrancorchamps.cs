@@ -12,6 +12,9 @@ internal sealed class SpaFrancorchamps : AbstractTrackData
     public override string FullName => "Circuit de Spa-Francorchamps";
     public override int TrackLength => 7004;
 
+    public override float FactorScale => 0.19f;
+    public override float PitLaneTime => 57f;
+
     public override List<float> Sectors => new() { 0.330f, 0.716f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

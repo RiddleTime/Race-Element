@@ -12,6 +12,9 @@ internal sealed class Imola : AbstractTrackData
     public override string FullName => "Autodromo Enzo e Dino Ferrari";
     public override int TrackLength => 4959;
 
+    public override float FactorScale => 0.2f;
+    public override float PitLaneTime => 38f;
+
     public override List<float> Sectors => new() { 0.247f, 0.552f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

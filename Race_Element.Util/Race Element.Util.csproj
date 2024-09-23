@@ -19,6 +19,7 @@
     <OutputPath>bin\Debug Minimized\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Race Element.Data\Race Element.Data.csproj" />
     <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -1,4 +1,4 @@
-﻿using RaceElement.Data.Common.SimulatorData;
+﻿using RaceElement.Data.Common.SimulatorData.LocalCar;
 using Riok.Mapperly.Abstractions;
 using System.Numerics;
 using static RaceElement.Data.Games.AssettoCorsa.SharedMemory.AcSharedMemory;

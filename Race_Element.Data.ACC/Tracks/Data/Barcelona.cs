@@ -12,6 +12,9 @@ internal sealed class Barcelona : AbstractTrackData
     public override string FullName => "Circuit de Barcelona-Catalunya";
     public override int TrackLength => 4655;
 
+    public override float FactorScale => 0.31f;
+    public override float PitLaneTime => 30f;
+
     public override List<float> Sectors => new() { 0.348f, 0.730f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

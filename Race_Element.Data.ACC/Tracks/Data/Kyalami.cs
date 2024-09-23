@@ -12,6 +12,9 @@ internal sealed class Kyalami : AbstractTrackData
     public override string FullName => "Kyalami Grand Prix Circuit";
     public override int TrackLength => 4522;
 
+    public override float FactorScale => 0.2f;
+    public override float PitLaneTime => 18f;
+
     public override List<float> Sectors => new() { 0.316f, 0.710f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

@@ -1,4 +1,4 @@
-﻿using RaceElement.Data.Common.SimulatorData;
+﻿using RaceElement.Data.Common.SimulatorData.LocalCar;
 using Riok.Mapperly.Abstractions;
 using System.Numerics;
 using static RaceElement.Data.Games.AssettoCorsaCompetizione.SharedMemory.AccSharedMemory;
@@ -12,6 +12,7 @@ internal static partial class LocalCarMapper
     [MapProperty(nameof(PageFilePhysics.Rpms), nameof(@LocalCarData.Engine.Rpm))]
     [MapProperty(nameof(PageFilePhysics.IsEngineRunning), nameof(@LocalCarData.Engine.IsRunning))]
     [MapProperty(nameof(PageFilePhysics.IgnitionOn), nameof(@LocalCarData.Engine.IsIgnitionOn))]
+    [MapProperty(nameof(PageFilePhysics.PitLimiterOn), nameof(@LocalCarData.Engine.IsPitLimiterOn))]
     // -- Inputs Data
     [MapProperty(nameof(PageFilePhysics.Gas), nameof(@LocalCarData.Inputs.Throttle))]
     [MapProperty(nameof(PageFilePhysics.Brake), nameof(@LocalCarData.Inputs.Brake))]
@@ -50,9 +51,11 @@ internal static partial class LocalCarMapper
 
     internal static void AddAccGraphics(PageFileGraphics pageGraphics, LocalCarData commonData)
     {
-        commonData.Physics.Location = pageGraphics.CarCoordinates[pageGraphics.PlayerCarID];
 
         WithGraphicsPage(pageGraphics, commonData);
+        int playerArrayIndex = Array.IndexOf(pageGraphics.CarIds, pageGraphics.PlayerCarID);
+        if (playerArrayIndex != -1)
+            commonData.Physics.Location = pageGraphics.CarCoordinates[playerArrayIndex];
     }
     // Engine Data
     [MapProperty(nameof(PageFileStatic.MaxRpm), nameof(@LocalCarData.Engine.MaxRpm))]

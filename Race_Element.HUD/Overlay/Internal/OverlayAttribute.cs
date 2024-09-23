@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RaceElement.Data.Games;
+using System;
 
 namespace RaceElement.HUD.Overlay.Internal;
 
@@ -7,6 +8,10 @@ public class OverlayAttribute : Attribute
 {
     public required string Name { get; set; }
     public OverlayType OverlayType { get; set; }
+
+
+
+    public Game Game { get; set; } = Game.Any;
     public OverlayCategory OverlayCategory { get; set; } = OverlayCategory.All;
 
     public double Version { get; set; }

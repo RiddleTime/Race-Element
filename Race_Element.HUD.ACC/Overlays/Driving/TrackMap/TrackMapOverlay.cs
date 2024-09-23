@@ -13,17 +13,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using RaceElement.Data;
+using RaceElement.Data.ACC.Tracks;
+using System;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
-#if DEBUG
+//#if DEBUG
 [Overlay(Name = "Track Map",
     Description = "Shows a track map",
     OverlayCategory = OverlayCategory.Track,
     OverlayType = OverlayType.Drive,
     Authors = ["Andrei Jianu"]
 )]
-#endif
+//#endif
 internal sealed class TrackMapOverlay : AbstractOverlay
 {
     private readonly TrackMapConfiguration _config = new();
@@ -36,7 +38,6 @@ internal sealed class TrackMapOverlay : AbstractOverlay
     private BoundingBox _trackOriginalBoundingBox;
     private BoundingBox _trackBoundingBox;
 
-    private readonly float _outLineBorder = 2.0f;
     private readonly float _margin = 64.0f;
     private float _scale = 0.15f;
 
@@ -45,19 +46,10 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         RefreshRateHz = _config.Others.RefreshInterval;
 
         _mapCache.Map = null;
-        _mapCache.YellowFlag = TrackMapDrawer.CreateCircleWithOutline(Color.Yellow, _config.Others.CarSize, _outLineBorder);
+        _mapCache.CarPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.MapColors.Player, _config.Others.CarSize + 3, _config.Others.OutCircleSize, Color.Black);
 
-        _mapCache.OthersLappedPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.OthersLappedPlayer, _config.Others.CarSize, _outLineBorder);
-        _mapCache.PlayerLapperOthers = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PlayerLappedOthers, _config.Others.CarSize, _outLineBorder);
-
-        _mapCache.PitStopWithDamage = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PitStopWithDamage, _config.Others.CarSize, _outLineBorder);
-        _mapCache.PitStop = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.PitStop, _config.Others.CarSize, _outLineBorder);
-
-        _mapCache.CarDefault = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Default, _config.Others.CarSize, _outLineBorder);
-        _mapCache.CarPlayer = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Player, _config.Others.CarSize + 3, _outLineBorder);
-
-        _mapCache.ValidForBest = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.ImprovingLap, _config.Others.CarSize, _outLineBorder);
-        _mapCache.Leader = TrackMapDrawer.CreateCircleWithOutline(_config.Colors.Leader, _config.Others.CarSize, _outLineBorder);
+        _mapCache.PitStopWithDamage = TrackMapDrawer.CreateCircleWithOutline(_config.MapColors.PitStopWithDamage, _config.Others.CarSize, _config.Others.OutCircleSize, Color.Black);
+        _mapCache.PitStop = TrackMapDrawer.CreateCircleWithOutline(_config.MapColors.PitStop, _config.Others.CarSize, _config.Others.OutCircleSize, Color.Black);
     }
 
     public override void BeforeStart()
@@ -169,36 +161,86 @@ internal sealed class TrackMapOverlay : AbstractOverlay
 
     private void OnMapPositionsCallback(object sender, List<TrackPoint> positions)
     {
-        var trackInfo = TrackInfo.Data.GetValueOrDefault(pageStatic.Track.ToLower(), new TrackInfo(0, 0));
-        _scale = trackInfo.Scale * _config.General.ScaleFactor;
-
-        _miniMapCreationJob.Cancel();
-        _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
-
-        var track = TrackMapTransform.ScaleAndRotate(positions, _trackOriginalBoundingBox, _scale, _config.General.Rotation);
-        var boundaries = TrackMapTransform.GetBoundingBox(track);
-
-        for (var i = 0; i < track.Count; ++i)
+        try
         {
-            var y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
-            var x = track[i].X - boundaries.Left + _margin * 0.5f;
+            var trackData = TrackData.GetCurrentTrack(pageStatic.Track);
+            _scale = trackData.FactorScale * _config.General.ScaleFactor;
 
-            track[i] = new TrackPoint(track[i]) { X = x, Y = y };
+            _miniMapCreationJob.Cancel();
+            _trackOriginalBoundingBox = TrackMapTransform.GetBoundingBox(positions);
+
+            var track = TrackMapTransform.ScaleAndRotate(positions, _trackOriginalBoundingBox, _scale, _config.General.Rotation);
+            var boundaries = TrackMapTransform.GetBoundingBox(track);
+
+            for (var i = 0; i < track.Count; ++i)
+            {
+                var y = track[i].Y - boundaries.Bottom + _margin * 0.5f;
+                var x = track[i].X - boundaries.Left + _margin * 0.5f;
+
+                track[i] = new TrackPoint(track[i]) { X = x, Y = y };
+            }
+
+            List<TrackPoint> sector1 = new(), sector2 = new(), sector3 = new();
+            _trackBoundingBox = boundaries;
+            _trackPositions = track;
+
+            int idx = 0, fromSectorOne = 0;
+            while (_trackPositions[idx].Spline > 0.9f && _trackPositions[idx].Spline < _trackPositions[idx + 1].Spline)
+            {
+                ++idx;
+                ++fromSectorOne;
+            }
+
+            if (1.0f - _trackPositions[idx].Spline < float.Epsilon)
+            {
+                ++idx;
+                ++fromSectorOne;
+            }
+
+            while (idx < _trackPositions.Count && _trackPositions[idx].Spline < trackData.Sectors[0])
+            {
+                sector1.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            while (idx < _trackPositions.Count && _trackPositions[idx].Spline < trackData.Sectors[1])
+            {
+                sector2.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            while (idx < _trackPositions.Count)
+            {
+                sector3.Add(_trackPositions[idx]);
+                ++idx;
+            }
+
+            for (var i = 0; i < fromSectorOne; ++i)
+            {
+                if (i < _trackPositions.Count)
+                    sector3.Add(_trackPositions[i]);
+            }
+
+            var s1 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector1, _config.General.Thickness, _margin, sector1, _trackBoundingBox);
+            var s2 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector2, _config.General.Thickness, _margin, sector2, _trackBoundingBox);
+            var s3 = TrackMapDrawer.CreateLineFromPoints(_config.MapColors.MapSector3, _config.General.Thickness, _margin, sector3, _trackBoundingBox);
+            _mapCache.Map = TrackMapDrawer.MixImages(s1, s2, s3, s1.Width, s1.Height);
+
+            Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
+
+            if (!_config.Others.SavePreview || pageStatic.Track.Length == 0)
+            {
+                return;
+            }
+
+            var path = FileUtil.RaceElementTracks + pageStatic.Track.ToLower() + ".jpg";
+            _mapCache.Map.Save(path);
         }
-
-        _trackBoundingBox = boundaries;
-        _trackPositions = track;
-
-        _mapCache.Map = TrackMapDrawer.CreateLineFromPoints(_config.Colors.Map, _config.General.Thickness, _margin, _trackPositions, _trackBoundingBox);
-        Debug.WriteLine($"[MAP] {broadCastTrackData.TrackName} ({pageStatic.Track}) -> [S: {_scale:F3}] [L: {broadCastTrackData.TrackMeters:F3}] [P: {_trackPositions.Count}]");
-
-        if (!_config.Others.SavePreview || pageStatic.Track.Length == 0)
+        catch (Exception ex)
         {
-            return;
+            Debug.WriteLine(ex);
+            LogWriter.WriteToLog(ex);
         }
-
-        var path = FileUtil.RaceElementTracks + pageStatic.Track.ToLower() + ".jpg";
-        _mapCache.Map.Save(path);
     }
 
     #endregion
@@ -224,7 +266,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
             if (it.Value.CarInfo != null)
             {
                 car.RaceNumber = it.Value.CarInfo.RaceNumber.ToString();
-;
+
                 var carModel = ConversionFactory.GetCarModels(it.Value.CarInfo.CarModelType);
                 car.CarClass = ConversionFactory.GetConversion(carModel).CarClass;
             }

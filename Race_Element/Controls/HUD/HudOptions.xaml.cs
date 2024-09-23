@@ -2,8 +2,10 @@
 using RaceElement.Controls.HUD;
 using RaceElement.Controls.HUD.Controls;
 using RaceElement.Controls.Util.SetupImage;
+using RaceElement.Data.Games;
 using RaceElement.HUD.ACC;
 using RaceElement.HUD.ACC.Overlays.OverlayMousePosition;
+using RaceElement.HUD.Common;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util;
@@ -45,6 +47,13 @@ public partial class HudOptions : UserControl
     private DateTime _lastMovementModeChange = DateTime.MinValue;
     private const int MovementModeDebounce = 250;
 
+    internal static List<CommonAbstractOverlay> ActiveOverlays => GameManager.CurrentGame switch
+    {
+        Game.Any => [],
+        Game.AssettoCorsaCompetizione => OverlaysAcc.ActiveOverlays,
+        _ => CommonHuds.ActiveOverlays
+    };
+
     public HudOptions()
     {
         InitializeComponent();
@@ -78,13 +87,42 @@ public partial class HudOptions : UserControl
                 listOverlays.SelectedIndex = -1;
             };
 
+            GameManager.OnGameChanged += (s, e) =>
+            {
+                if (e.next != Game.Any)
+                {
+                    switch (e.previous)
+                    {
+                        case Game.Any: break;
+                        case Game.AssettoCorsaCompetizione:
+                            {
+                                OverlaysAcc.CloseAll(); break;
+                            }
+                        default:
+                            {
+                                CommonHuds.CloseAll(); break;
+                            }
+                    }
+
+                    PreviewCache._cachedPreviews.Clear();
+                    Thread.Sleep(1000);
+
+                    PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
+                    PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
+
+                    BuildOverlayPanel();
+                }
+            };
+
             bool designTime = System.ComponentModel.DesignerProperties.GetIsInDesignMode(new DependencyObject());
             if (!designTime)
                 try
                 {
                     PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
                     PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
-                    BuildOverlayPanel();
+
+                    if (GameManager.CurrentGame != Game.Any)
+                        BuildOverlayPanel();
 
                     ToolTipService.SetInitialShowDelay(listBoxItemToggleDemoMode, 1);
                     ToolTipService.SetInitialShowDelay(listBoxItemToggleMovementMode, 1);
@@ -372,26 +410,39 @@ public partial class HudOptions : UserControl
             stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
             overlayNameLabel.Foreground = Brushes.LimeGreen;
 
-            lock (OverlaysAcc.ActiveOverlays)
+
+            CommonAbstractOverlay overlay = null;
+            if (GameManager.CurrentGame == Game.AssettoCorsaCompetizione)
             {
-                AbstractOverlay overlay = OverlaysAcc.ActiveOverlays.Find(f => f.GetType() == type);
+                overlay = ActiveOverlays.Find(f => f.GetType() == type);
+            }
+            else
+            {
+                overlay = CommonHuds.ActiveOverlays.Find(f => f.GetType() == type);
+            }
 
-                if (overlay == null)
+            if (overlay == null)
+            {
+
+                overlayNameLabel.BorderBrush = Brushes.Green;
+                listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+                listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
+                overlay = (CommonAbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
+                overlay.Start();
+
+                SaveOverlaySettings(overlay, true);
+
+                configStacker.IsEnabled = false;
+
+                if (GameManager.CurrentGame == Game.AssettoCorsaCompetizione)
                 {
-
-                    overlayNameLabel.BorderBrush = Brushes.Green;
-                    listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-                    listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
-                    overlay = (AbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
-
-                    overlay.Start();
-
-                    SaveOverlaySettings(overlay, true);
-
-                    configStacker.IsEnabled = false;
-
-                    if (OverlaysAcc.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
-                        OverlaysAcc.ActiveOverlays.Add(overlay);
+                    if (ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
+                        ActiveOverlays.Add(overlay);
+                }
+                else
+                {
+                    if (CommonHuds.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
+                        CommonHuds.ActiveOverlays.Add(overlay);
                 }
             }
         };
@@ -403,19 +454,19 @@ public partial class HudOptions : UserControl
             overlayNameLabel.BorderBrush = Brushes.OrangeRed;
             overlayNameLabel.Foreground = Brushes.White;
 
-            lock (OverlaysAcc.ActiveOverlays)
+            lock (ActiveOverlays)
             {
                 listViewItem.Background = Brushes.Transparent;
                 listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
-                AbstractOverlay overlay = OverlaysAcc.ActiveOverlays.Find(f => f.GetType() == type);
-
+                CommonAbstractOverlay overlay = ActiveOverlays.Find(f => f.GetType() == type);
+                if (overlay == null) return;
                 SaveOverlaySettings(overlay, false);
 
 
 
-                int index = OverlaysAcc.ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
+                int index = ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
                 if (index != -1)
-                    OverlaysAcc.ActiveOverlays.RemoveAt(index);
+                    ActiveOverlays.RemoveAt(index);
                 Task.Run(() =>
                 {
                     overlay?.Stop();
@@ -529,14 +580,14 @@ public partial class HudOptions : UserControl
                 mousePositionOverlay.Stop();
         }
 
-        lock (OverlaysAcc.ActiveOverlays)
-            foreach (AbstractOverlay overlay in OverlaysAcc.ActiveOverlays)
-                overlay.EnableReposition(enabled);
+        foreach (CommonAbstractOverlay overlay in ActiveOverlays)
+            overlay.EnableReposition(enabled);
     }
 
     private void BuildOverlayPanel()
     {
         OverlaysAcc.GenerateDictionary();
+        CommonHuds.GenerateDictionary();
 
         BuildOverlayListView(listOverlays, OverlayType.Drive, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
         BuildOverlayListView(listDebugOverlays, OverlayType.Pitwall, (OverlayCategory)((ComboBoxItem)comboOverlays.SelectedItem).DataContext);
@@ -557,21 +608,32 @@ public partial class HudOptions : UserControl
             box.Items.Add(item);
         }
 
-        box.SelectedIndex = 0;
-
         box.SelectionChanged += (s, e) =>
         {
-            BuildOverlayListView(listView, overlayType, (OverlayCategory)((ComboBoxItem)box.SelectedItem).DataContext);
+            if (box.HasItems)
+                BuildOverlayListView(listView, overlayType, (OverlayCategory)((ComboBoxItem)box.SelectedItem).DataContext);
         };
+        box.SelectedIndex = 0;
     }
 
     private void BuildOverlayListView(ListView listView, OverlayType overlayType, OverlayCategory category)
     {
         listView.Items.Clear();
 
-        foreach (KeyValuePair<string, Type> x in OverlaysAcc.AbstractOverlays)
+        SortedDictionary<string, Type> availableOverlays = [];
+
+        if (GameManager.CurrentGame != Game.AssettoCorsaCompetizione)
         {
-            AbstractOverlay tempAbstractOverlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
+            availableOverlays = CommonHuds.AbstractOverlays;
+        }
+        else if (GameManager.CurrentGame != Game.Any)
+        {
+            availableOverlays = OverlaysAcc.AbstractOverlays;
+        }
+
+        foreach (KeyValuePair<string, Type> x in availableOverlays)
+        {
+            CommonAbstractOverlay tempAbstractOverlay = (CommonAbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
             var overlayAttribute = GetOverlayAttribute(x.Value);
             if (overlayAttribute.OverlayCategory != category && category != OverlayCategory.All)
                 continue;
@@ -625,13 +687,13 @@ public partial class HudOptions : UserControl
                     listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
                     listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
 
-                    lock (OverlaysAcc.ActiveOverlays)
+                    lock (ActiveOverlays)
                     {
-                        AbstractOverlay overlay = (AbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
-                        if (OverlaysAcc.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
+                        CommonAbstractOverlay overlay = (CommonAbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
+                        if (ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
                         {
                             SaveOverlaySettings(overlay, true);
-                            OverlaysAcc.ActiveOverlays.Add(overlay);
+                            ActiveOverlays.Add(overlay);
                             overlay.Start();
                         }
                         else
@@ -736,7 +798,7 @@ public partial class HudOptions : UserControl
 
                 foreach (PropertyInfo subType in type.PropertyType.GetProperties())
                 {
-                    ConfigField configField = configFields.Where(x => x.Name == $"{type.Name}.{subType.Name}").FirstOrDefault();
+                    ConfigField configField = configFields.Find(x => x.Name == $"{type.Name}.{subType.Name}");
                     if (configField == null)
                     {
                         var typeValue = type.GetValue(overlayConfig);
@@ -763,7 +825,7 @@ public partial class HudOptions : UserControl
         return stacker;
     }
 
-    private void SaveOverlaySettings(AbstractOverlay overlay, bool isEnabled)
+    private void SaveOverlaySettings(CommonAbstractOverlay overlay, bool isEnabled)
     {
         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlay.Name);
         settings ??= new OverlaySettingsJson() { X = overlay.X, Y = overlay.Y };
@@ -776,12 +838,12 @@ public partial class HudOptions : UserControl
     private void SaveOverlayConfig(Type overlay, OverlayConfiguration overlayConfiguration)
     {
         object[] args = [new System.Drawing.Rectangle(0, 0, 300, 150)];
-        AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+        CommonAbstractOverlay tempOverlay = (CommonAbstractOverlay)Activator.CreateInstance(overlay, args);
         SaveOverlayConfig(tempOverlay, overlayConfiguration);
         tempOverlay.Dispose();
     }
 
-    private void SaveOverlayConfig(AbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
+    private void SaveOverlayConfig(CommonAbstractOverlay overlay, OverlayConfiguration overlayConfiguration)
     {
         OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(overlay.Name);
         settings ??= new OverlaySettingsJson() { X = overlay.X, Y = overlay.Y };
@@ -817,7 +879,7 @@ public partial class HudOptions : UserControl
     private OverlayConfiguration GetOverlayConfig(Type overlay)
     {
         object[] args = [new System.Drawing.Rectangle(0, 0, 300, 150)];
-        AbstractOverlay tempOverlay = (AbstractOverlay)Activator.CreateInstance(overlay, args);
+        CommonAbstractOverlay tempOverlay = (CommonAbstractOverlay)Activator.CreateInstance(overlay, args);
 
         OverlayConfiguration temp = null;
 

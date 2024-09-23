@@ -78,13 +78,13 @@ internal sealed class CachedBitmapBenchmarkOverlay : AbstractOverlay
 
     private static string GetStats(List<double> data)
     {
-        var metrics = CalculateMetrics(data);
+        var (min, max, mean, median, std) = CalculateMetrics(data);
         StringBuilder sb = new();
-        sb.Append($"Min: {metrics.min:F4}");
-        sb.Append($", Avg: {metrics.mean:F4}");
-        sb.Append($", Max: {metrics.max:F4}");
-        sb.Append($", Median: {metrics.median:F4}");
-        sb.Append($", StDev: {metrics.std:F4}");
+        sb.Append($"Min: {min:F4}");
+        sb.Append($", Avg: {mean:F4}");
+        sb.Append($", Max: {max:F4}");
+        sb.Append($", Median: {median:F4}");
+        sb.Append($", StDev: {std:F4}");
         return sb.ToString();
     }
 

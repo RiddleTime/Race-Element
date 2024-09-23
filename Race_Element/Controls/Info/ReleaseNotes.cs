@@ -4,8 +4,19 @@ namespace RaceElement.Controls;
 
 public static class ReleaseNotes
 {
-    internal readonly static Dictionary<string, string> Notes = new()
+    internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.0.0.0", "To Restore your ACC HUD Settings, Open the main Settings tab and Click the Migrate Button, it will start a new instance and then shuts down the already running instance."+
+                    "\n\n Multi-Sim Support for HUDS:" +
+                    "\n  - Supported added for Assetto Corsa 1, iRacing and RaceRoom."+
+                    "\n  - To switch simulators, select one in the top-right of the app. This will reload the HUD Tab, this may take a few seconds."+
+                    "\n  - Some HUDs only work on specific simulators, so you will see the HUD list change as you change to a different simulator."+
+                    "\n  - Report any feedback in the Race Element discord server."+
+                    "\n\n HUD Tab:"+
+                    "\n  - Checked Checkboxes and their labels are now highlighted in a more visible color."+
+                    "\n\n ACC HUDs:"+
+                    "\n  - Added Track Map HUD(BETA) by Andrei Jianu."+
+                    "\n  - Added Track Distance HUD: Shows the current percentual distance and the stint distance in meters." },
         {"1.1.1.2", "- Input Trace, Oversteer Trace, G Force Trace HUDs: Lower cpu usage by roughly 20%."+
                     "\n- Added new Tyre Temp History HUD: showing minimum, average and maximum tyre temps for the last lap."},
         {"1.1.1.0", "- Corner Data HUD: Fixed collection of data on tracks that had straights."+

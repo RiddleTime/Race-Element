@@ -70,7 +70,7 @@ internal sealed class SaveReplayReminderOverlay : AbstractOverlay
         RaceSessionTracker.Instance.OnNewSessionStarted -= Instance_OnNewSessionStarted;
     }
 
-    public override sealed void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         if (_nextManualSaveUTC != DateTime.MinValue)
             _panel.AddLine("Save replay before", $"{_nextManualSaveUTC.Subtract(DateTime.UtcNow):hh\\:mm\\:ss}");

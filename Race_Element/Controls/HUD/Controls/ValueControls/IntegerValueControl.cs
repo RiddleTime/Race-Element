@@ -1,4 +1,5 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.Data.Games;
+using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.Util.SystemExtensions;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,8 +45,8 @@ internal sealed class IntegerValueControl : IValueControl<int>, IControl
 
         _slider = new Slider()
         {
-            Minimum = intRange.Min,
-            Maximum = intRange.Max,
+            Minimum = intRange.GetMin(GameManager.CurrentGame),
+            Maximum = intRange.GetMax(GameManager.CurrentGame),
             TickFrequency = intRange.Increment,
             IsSnapToTickEnabled = true,
             Width = 220,
@@ -56,7 +57,7 @@ internal sealed class IntegerValueControl : IValueControl<int>, IControl
             _label.Content = _field.Value;
         };
         int value = int.Parse(_field.Value.ToString());
-        value.Clip(intRange.Min, intRange.Max);
+        value.Clip(intRange.GetMin(GameManager.CurrentGame), intRange.GetMax(GameManager.CurrentGame));
         _slider.Value = value;
         _grid.Children.Add(_slider);
         _slider.HorizontalAlignment = HorizontalAlignment.Right;

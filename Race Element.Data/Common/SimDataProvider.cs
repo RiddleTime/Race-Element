@@ -3,13 +3,23 @@ using RaceElement.Data.Games.AssettoCorsaCompetizione;
 using RaceElement.Data.Games;
 using RaceElement.Data.Games.AssettoCorsa;
 using RaceElement.Data.Games.iRacing;
+using RaceElement.Data.Games.RaceRoom;
+using RaceElement.Data.Common.SimulatorData.LocalCar;
 
 namespace RaceElement.Data.Common
 {
     public static class SimDataProvider
     {
+        public static AbstractSimDataProvider? Instance { get; internal set; }
+
         private static LocalCarData _localCarData = new();
         public static LocalCarData LocalCar { get => _localCarData; }
+
+        internal static LocalCarEvents localCarEvents = new();
+        public static LocalCarEvents LocalCarEvents { get => localCarEvents; }
+
+        private static readonly LocalCarEventLoop _localCarEventLoop = new();
+
 
         private static SessionData _session = new();
         public static SessionData Session { get => _session; }
@@ -25,17 +35,29 @@ namespace RaceElement.Data.Common
             {
                 case Game.AssettoCorsa1:
                     {
-                        AssettoCorsa1DataProvider.Update(ref _localCarData, ref _session, ref _gameData);
+                        Instance ??= new AssettoCorsa1DataProvider();
+                        Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                        _localCarEventLoop.Run();
                         break;
                     }
                 case Game.AssettoCorsaCompetizione:
                     {
-                        AssettoCorsaCompetizioneDataProvider.Update(ref _localCarData, ref _session, ref _gameData);
+                        //  -- ACC is currently still running it's own data updater mechanisms, so this is for commented for the time being.
+                        //  AssettoCorsaCompetizioneDataProvider.Update(ref _localCarData, ref _session, ref _gameData);
                         break;
                     }
                 case Game.iRacing:
                     {
-                        IRacingDataProvider.Update(ref _localCarData, ref _session, ref _gameData);
+                        Instance ??= new IRacingDataProvider();
+                        Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                        _localCarEventLoop.Run();
+                        break;
+                    }
+                case Game.RaceRoom:
+                    {
+                        Instance ??= new RaceRoomDataProvider();
+                        Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                        _localCarEventLoop.Run();
                         break;
                     }
                 default: { break; }
@@ -47,6 +69,57 @@ namespace RaceElement.Data.Common
             _localCarData = new LocalCarData();
             _session = new SessionData();
             _gameData = new GameData();
+        }
+
+        internal static void Stop()
+        {
+            _localCarEventLoop?.CancelJoin();
+
+            switch (GameManager.CurrentGame)
+            {
+                case Game.AssettoCorsa1:
+                    {
+                        Instance?.Stop();
+                        break;
+                    }
+                case Game.AssettoCorsaCompetizione:
+                    {
+                        // TODO
+                        break;
+                    }
+                case Game.iRacing:
+                    {
+                        Instance?.Stop();
+                        break;
+                    }
+                case Game.RaceRoom:
+                    {
+                        Instance?.Stop();
+                        break;
+                    }
+                default: { break; }
+            }
+
+            Instance = null;
+        }
+
+        public static bool HasTelemetry()
+        {
+            return (Instance != null && Instance.HasTelemetry());
+        }
+
+        public static event EventHandler<RaceSessionType> OnSessionTypeChanged;
+        public static event EventHandler<SessionPhase> OnSessionPhaseChanged;
+        public static event EventHandler<Status> OnStatusChanged;
+
+        internal static void CallSessionTypeChanged(AbstractSimDataProvider simDataProvider, RaceSessionType sessionType)
+        {
+            OnSessionTypeChanged?.Invoke(simDataProvider, SessionData.Instance.SessionType);
+        }
+
+        internal static void CallSessionPhaseChanged(AbstractSimDataProvider simDataProvider, SessionPhase sessionPhase)
+        {
+            OnSessionPhaseChanged?.Invoke(simDataProvider, SessionData.Instance.Phase);
         }
     }
 }

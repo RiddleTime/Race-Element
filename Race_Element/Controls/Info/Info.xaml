@@ -53,7 +53,7 @@
                         <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}" 
                                     Foreground="#CFFFFFFF" 
                                    HorizontalAlignment="Center" Margin="0,-7,0,0" VerticalAlignment="Bottom" FontSize="12"  FontFamily="{StaticResource Conthrax}">
-                             Contributors: KrisV147, goeflo, iFuSiiOnzZ, rs-blade, Pelice, Mominon, Fbalazs, andreasmaier, mreininger23 and Jubka
+                             Contributors: KrisV147, dirkaw, goeflo, iFuSiiOnzZ, rs-blade, Pelice, Mominon, Fbalazs, andreasmaier, mreininger23 and Jubka
                         </TextBlock>
                     </StackPanel>
 

@@ -12,6 +12,9 @@ internal sealed class LagunaSeca : AbstractTrackData
     public override string FullName => "WeatherTech Raceway Laguna Seca";
     public override int TrackLength => 3602;
 
+    public override float FactorScale => 0.36f;
+    public override float PitLaneTime => 21f;
+
     public override List<float> Sectors => new() { 0.25f, 0.63f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

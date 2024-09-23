@@ -12,6 +12,9 @@ internal sealed class MountPanorama : AbstractTrackData
     public override string FullName => "Mount Panorama Circuit";
     public override int TrackLength => 6213;
 
+    public override float FactorScale => 0.17f;
+    public override float PitLaneTime => 25f;
+
     public override List<float> Sectors => new() { 0.313f, 0.760f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

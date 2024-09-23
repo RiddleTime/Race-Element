@@ -1,4 +1,4 @@
-﻿using RaceElement.Data.Common.SimulatorData;
+﻿using RaceElement.Data.Common.SimulatorData.LocalCar;
 using Riok.Mapperly.Abstractions;
 using System.Numerics;
 using static RaceElement.Data.Games.AssettoCorsa.SharedMemory.AcSharedMemory;
@@ -21,15 +21,21 @@ internal static partial class LocalCarMapper
     [MapProperty(nameof(PageFilePhysics.TyreCoreTemperature), nameof(@LocalCarData.Tyres.CoreTemperature))]
     [MapProperty(nameof(PageFilePhysics.WheelPressure), nameof(@LocalCarData.Tyres.Pressure))]
     [MapProperty(nameof(PageFilePhysics.Velocity), nameof(@LocalCarData.Tyres.Velocity))]
+    [MapProperty(nameof(PageFilePhysics.WheelSlip), nameof(@LocalCarData.Tyres.SlipRatio))]
     // -- Brakes Data
     [MapProperty(nameof(PageFilePhysics.BrakeTemperature), nameof(@LocalCarData.Brakes.DiscTemperature))]
     // -- Electronics activation
     [MapProperty(nameof(PageFilePhysics.TC), nameof(@LocalCarData.Electronics.TractionControlActivation))]
     [MapProperty(nameof(PageFilePhysics.Abs), nameof(@LocalCarData.Electronics.AbsActivation))]
+    [MapProperty(nameof(PageFilePhysics.Fuel), nameof(@LocalCarData.Engine.FuelLiters))]
     private static partial void WithPhysicsPage(PageFilePhysics pagePhysics, LocalCarData commonData);
 
     internal static void AddPhysics(ref PageFilePhysics pagePhysics, ref LocalCarData commonData)
     {
+        commonData.Physics.Acceleration = new(pagePhysics.AccG[0], pagePhysics.AccG[2], pagePhysics.AccG[1]);
+        commonData.Engine.IsPitLimiterOn = pagePhysics.PitLimiterOn;
+        commonData.Engine.IsRunning = commonData.Engine.Rpm > 0;
+
         WithPhysicsPage(pagePhysics, commonData);
     }
 
@@ -41,12 +47,12 @@ internal static partial class LocalCarMapper
     {
         var coords = pageGraphics.CarCoordinates[pageGraphics.PlayerCarID];
         commonData.Physics.Location = new Vector3(coords.X * 10f, coords.Y, coords.Z);
-
         WithGraphicsPage(pageGraphics, commonData);
     }
 
     // Engine Data
     [MapProperty(nameof(PageFileStatic.MaxRpm), nameof(@LocalCarData.Engine.MaxRpm))]
+    [MapProperty(nameof(PageFileStatic.MaxFuel), nameof(@LocalCarData.Engine.MaxFuelLiters))]
     // Model Data
     [MapProperty(nameof(PageFileStatic.CarModel), nameof(@LocalCarData.CarModel.GameName))]
     internal static partial void WithStaticPage(PageFileStatic pageStatic, LocalCarData commonData);

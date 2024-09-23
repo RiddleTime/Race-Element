@@ -12,6 +12,9 @@ internal sealed class OultonPark : AbstractTrackData
     public override string FullName => "Oulton Park";
     public override int TrackLength => 4307;
 
+    public override float FactorScale => 0.23f;
+    public override float PitLaneTime => 14f;
+
     public override List<float> Sectors => new() { 0.264f, 0.693f };
 
     public override Dictionary<FloatRangeStruct, (int, string)> CornerNames => new()

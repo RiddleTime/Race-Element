@@ -8,6 +8,7 @@ using System;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Broadcast;
+
 using static RaceElement.Data.SetupConverter;
 using static RaceElement.HUD.ACC.Overlays.Driving.TrackMap.TrackMapConfiguration;
 
@@ -15,7 +16,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 
 public static class TrackMapDrawer
 {
-    public static Bitmap CreateCircleWithOutline(Color color, float diameter, float outLineSize)
+    public static Bitmap CreateCircleWithOutline(Color color, float diameter, float outLineSize, Color outline)
     {
         var w = diameter + outLineSize + 1.5f;
         var h = diameter + outLineSize + 1.5f;
@@ -31,7 +32,8 @@ public static class TrackMapDrawer
 
         using SolidBrush backgroundBrush = new(color);
         g.FillEllipse(backgroundBrush, outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
-        using SolidBrush outlineBrush = new(Color.FromArgb(200, 0, 0, 0));
+
+        using SolidBrush outlineBrush = new(Color.FromArgb(200, outline));
         using Pen outlinePen = new(outlineBrush, outLineSize);
         g.DrawEllipse(outlinePen, outLineSize * 0.5f, outLineSize * 0.5f, diameter, diameter);
 
@@ -60,6 +62,24 @@ public static class TrackMapDrawer
         return bitmap;
     }
 
+    public static Bitmap MixImages(Bitmap bmp1, Bitmap bmp2, Bitmap bmp3, int w, int h)
+    {
+        var bitmap = new Bitmap(w, h, PixelFormat.Format32bppPArgb);
+        bitmap.MakeTransparent();
+
+        using var g = Graphics.FromImage(bitmap);
+        g.SmoothingMode = SmoothingMode.AntiAlias;
+        g.CompositingMode = CompositingMode.SourceOver;
+        g.TextRenderingHint = TextRenderingHint.AntiAlias;
+        g.CompositingQuality = CompositingQuality.HighQuality;
+
+        g.DrawImage(bmp1, Point.Empty);
+        g.DrawImage(bmp2, Point.Empty);
+        g.DrawImage(bmp3, Point.Empty);
+
+        return bitmap;
+    }
+
     public static Bitmap Draw(List<TrackPoint> track, CarRenderData cars, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
     {
         // TODO: prevent NullReferenceException when cache.Map is null
@@ -76,17 +96,18 @@ public static class TrackMapDrawer
 
         foreach (var it in cars.Cars)
         {
-            Bitmap bitmap;
+            Color outlineColor = Color.Black;
 
             if (sessionType == ACCSharedMemory.AcSessionType.AC_RACE)
             {
-                bitmap = GetRaceCarBitmap(cars.Player, it, cache, conf, trackMeters);
+                outlineColor = GetRaceCarOutlineColor(cars.Player, it, conf, trackMeters);
             }
             else
             {
-                bitmap = GetOtherSessionCarBitmap(it, cache, conf);
+                outlineColor = GetOtherSessionCarOutlineColor(it, conf);
             }
 
+            var bitmap = CreateCircleWithOutline(GetCarBitmap(it.CarClass, conf), conf.Others.CarSize, conf.Others.OutCircleSize, outlineColor);
             DrawCarOnMap(it, bitmap, conf, g, font);
         }
 
@@ -106,6 +127,21 @@ public static class TrackMapDrawer
         return result;
     }
 
+    private static Color GetCarBitmap(CarClasses cls, TrackMapConfiguration conf)
+    {
+        return cls switch
+        {
+            CarClasses.GT2 => conf.CarColors.GT2,
+            CarClasses.GT3 => conf.CarColors.GT2,
+            CarClasses.GT4 => conf.CarColors.GT3,
+            CarClasses.CUP => conf.CarColors.CUP,
+            CarClasses.TCX => conf.CarColors.TCX,
+            CarClasses.CHL => conf.CarColors.CHL,
+            CarClasses.ST  => conf.CarColors.ST,
+            _ => conf.MapColors.Default
+        };
+    }
+
     private static void DrawCarOnMap(CarOnTrack car, Bitmap bitmap, TrackMapConfiguration conf, Graphics g, Font font)
     {
         {
@@ -117,55 +153,45 @@ public static class TrackMapDrawer
             g.DrawImage(bitmap, pos);
         }
 
-        if (conf.General.CarLabel != TrackMapLabelText.None)
+        if (conf.General.CarLabel == TrackMapLabelText.None)
         {
+            return;
+        }
 
-            string label = string.Empty;
+        string label = string.Empty;
 
-            switch (conf.General.CarLabel)
+        switch (conf.General.CarLabel)
+        {
+            case TrackMapLabelText.CarNumber:
             {
-                case TrackMapLabelText.CarNumber:
-                    {
-                        if (car.RaceNumber != null) label = car.RaceNumber;
-                        break;
-                    }
-                case TrackMapLabelText.Position:
-                    {
-                        if (car.RacePosition != null) label = car.RacePosition;
-                        break;
-                    }
+                label = car.RaceNumber;
+            } break;
 
-            }
+            case TrackMapLabelText.Position:
+            {
+                label = car.RacePosition;
+            } break;
+        }
 
-            if (label == string.Empty) return;
+        if (label == string.Empty)
+        {
+            return;
+        }
 
-            using SolidBrush pen = new(Color.FromArgb(130, Color.Black));
+        {
+            using SolidBrush pen = new(Color.FromArgb(120, 0, 0, 0));
+
             var size = g.MeasureString(label, font);
             PointF pos = car.Pos.ToPointF();
 
             pos.Y -= bitmap.Height * 0.5f + size.Height;
             pos.X -= size.Width * 0.5f;
 
+            var clr = Color.FromArgb(255, 255 - pen.Color.R, 255 - pen.Color.G, 255 - pen.Color.B);
             g.FillRectangle(pen, pos.X, pos.Y, size.Width, size.Height);
 
-            using SolidBrush textBrush = new(Color.WhiteSmoke);
-
+            using SolidBrush textBrush = new(clr);
             g.DrawStringWithShadow(label, font, textBrush, pos);
-
-            int defaultAlpha = 220;
-            using SolidBrush lineBrush = new(car.CarClass switch
-            {
-                CarClasses.GT2 => Color.FromArgb(defaultAlpha, 255, 0, 0),
-                CarClasses.GT3 => Color.FromArgb(0, 0, 0, 0),
-                CarClasses.GT4 => Color.FromArgb(defaultAlpha, 24, 24, 72),
-                CarClasses.CUP => Color.FromArgb(defaultAlpha, 30, 61, 26),
-                CarClasses.TCX => Color.FromArgb(defaultAlpha, 0, 96, 136),
-                CarClasses.CHL => Color.FromArgb(defaultAlpha, 112, 110, 0),
-                CarClasses.ST => Color.FromArgb(defaultAlpha, 0, 96, 136),
-                _ => Color.WhiteSmoke,
-            });
-            using Pen linePen = new(lineBrush, 2f);
-            g.DrawLine(linePen, new PointF(pos.X + 1, pos.Y + size.Height - 2), new(pos.X - 1 + size.Width, pos.Y + size.Height - 2));
         }
     }
 
@@ -214,21 +240,21 @@ public static class TrackMapDrawer
         }
     }
 
-    private static Bitmap GetRaceCarBitmap(CarOnTrack player, CarOnTrack other, TrackMapCache cache, TrackMapConfiguration conf, float trackMeters)
+    private static Color GetRaceCarOutlineColor(CarOnTrack player, CarOnTrack other, TrackMapConfiguration conf, float trackMeters)
     {
         if (player == null || other == null)
         {
-            return cache.CarDefault;
+            return conf.MapColors.Default;
         }
 
         if (other.Kmh < conf.General.KmhThreshold)
         {
-            return cache.YellowFlag;
+            return Color.Yellow;
         }
 
         if (other.Position == 1)
         {
-            return cache.Leader;
+            return conf.MapColors.Leader;
         }
 
         var playerTrackMeters = player.Laps * trackMeters + player.Spline * trackMeters;
@@ -239,39 +265,39 @@ public static class TrackMapDrawer
 
         if (distanceDiff >= trackThreshold)
         {
-            return cache.PlayerLapperOthers;
+            return conf.MapColors.PlayerLappedOthers;
         }
 
         if (Math.Abs(distanceDiff) >= trackThreshold)
         {
-            return cache.OthersLappedPlayer;
+            return conf.MapColors.OthersLappedPlayer;
         }
 
-        return cache.CarDefault;
+        return Color.Black;
     }
 
-    private static Bitmap GetOtherSessionCarBitmap(CarOnTrack car, TrackMapCache cache, TrackMapConfiguration config)
+    private static Color GetOtherSessionCarOutlineColor(CarOnTrack car, TrackMapConfiguration config)
     {
         if (car.Location != CarLocationEnum.Track)
         {
-            return cache.CarDefault;
+            return config.MapColors.Default;
         }
 
         if (car.Kmh <= config.General.KmhThreshold)
         {
-            return cache.YellowFlag;
+            return Color.Yellow;
         }
 
         if (!car.IsValid)
         {
-            return cache.PlayerLapperOthers;
+            return config.MapColors.PlayerLappedOthers;
         }
 
         if (car.Delta < 0 && car.IsValidForBest)
         {
-            return cache.ValidForBest;
+            return config.MapColors.ImprovingLap;
         }
 
-        return cache.CarDefault;
+        return Color.Black;
     }
 }

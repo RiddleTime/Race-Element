@@ -19,6 +19,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="DeepCopy" Version="1.0.3" />
         <PackageReference Include="Riok.Mapperly" Version="3.6.0" />
         <PackageReference Include="YamlDotNet" Version="15.1.1" />
     </ItemGroup>

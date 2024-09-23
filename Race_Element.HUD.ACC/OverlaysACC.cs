@@ -3,13 +3,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
+using System.Windows.Input;
 
 namespace RaceElement.HUD.ACC;
 
-public class OverlaysAcc
+public sealed class OverlaysAcc
 {
+    private static readonly object _lock = new();
+
     public static readonly SortedDictionary<string, Type> AbstractOverlays = [];
-    public static readonly List<AbstractOverlay> ActiveOverlays = [];
+    public static readonly List<CommonAbstractOverlay> ActiveOverlays = [];
 
     protected OverlaysAcc() { }
 
@@ -27,14 +31,21 @@ public class OverlaysAcc
 
     public static void CloseAll()
     {
-        lock (ActiveOverlays) // yep someone fix? pls? xD
-        {
+        Mouse.SetCursor(Cursors.Wait);
+
+        int activeCount = AbstractOverlays.Count;
+
+        lock (_lock)
             while (ActiveOverlays.Count > 0)
             {
                 ActiveOverlays[0].EnableReposition(false);
                 ActiveOverlays[0].Stop();
                 ActiveOverlays.Remove(ActiveOverlays[0]);
             }
-        }
+
+        if (activeCount > 0)
+            Thread.Sleep(2000);
+
+        Mouse.SetCursor(Cursors.Arrow);
     }
 }
