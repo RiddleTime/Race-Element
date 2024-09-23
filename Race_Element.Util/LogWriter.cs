@@ -171,28 +171,16 @@ public sealed class LogWriter
 /// <summary>
 /// Log container object
 /// </summary>
-public sealed class Log
+/// <remarks>
+/// Constructor
+/// </remarks>
+/// <param name="message">Logged message</param>
+public sealed class Log(string message)
 {
-
-    /// <summary>
-    /// Content of log
-    /// </summary>
-    private string LogMessage;
-
     /// <summary>
     /// Log timestamp
     /// </summary>
-    private DateTime LogTime;
-
-    /// <summary>
-    /// Constructor
-    /// </summary>
-    /// <param name="message">Logged message</param>
-    public Log(string message)
-    {
-        LogMessage = message;
-        LogTime = DateTime.Now;
-    }
+    private DateTime LogTime = DateTime.Now;
 
     /// <summary>
     /// Log message accessor
@@ -200,7 +188,7 @@ public sealed class Log
     /// <returns>Log message</returns>
     public string GetMessage()
     {
-        return LogMessage;
+        return message;
     }
 
     /// <summary>

@@ -1,6 +1,6 @@
 ﻿namespace RaceElement.Util.Settings;
 
-public class AccManagerSettingsJson : IGenericSettingsJson
+public sealed class AccManagerSettingsJson : IGenericSettingsJson
 {
     public bool MinimizeToSystemTray { get; set; }
     public bool TelemetryRecordDetailed { get; set; }
@@ -8,7 +8,7 @@ public class AccManagerSettingsJson : IGenericSettingsJson
     public bool Generate4kDDS { get; set; }
 }
 
-public class AccManagerSettings : AbstractSettingsJson<AccManagerSettingsJson>
+public sealed class AccManagerSettings : AbstractSettingsJson<AccManagerSettingsJson>
 {
     public override string Path => FileUtil.RaceElementSettingsPath;
 

@@ -2,12 +2,12 @@
 
 namespace RaceElement.Util.Settings;
 
-public class AccSettingsJson : IGenericSettingsJson
+public sealed class AccSettingsJson : IGenericSettingsJson
 {
     public Guid UnlistedAccServer { get; set; }
 }
 
-public class AccSettings : AbstractSettingsJson<AccSettingsJson>
+public sealed class AccSettings : AbstractSettingsJson<AccSettingsJson>
 {
     public override string Path => FileUtil.RaceElementSettingsPath;
     public override string FileName => "ACC.json";

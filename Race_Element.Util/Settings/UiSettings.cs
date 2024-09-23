@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace RaceElement.Util.Settings;
 
-public class UiSettingsJson : IGenericSettingsJson
+public sealed class UiSettingsJson : IGenericSettingsJson
 {
     public int SelectedTabIndex;
     public int X;
@@ -11,7 +11,7 @@ public class UiSettingsJson : IGenericSettingsJson
     public Game SelectedGame;
 }
 
-public class UiSettings : AbstractSettingsJson<UiSettingsJson>
+public sealed class UiSettings : AbstractSettingsJson<UiSettingsJson>
 {
     public override string Path => FileUtil.RaceElementSettingsPath;
 
