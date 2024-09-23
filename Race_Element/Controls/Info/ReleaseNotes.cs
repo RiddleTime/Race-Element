@@ -8,7 +8,7 @@ public static class ReleaseNotes
     {
         {"2.0.0.0", "To Restore your ACC HUD Settings, Open the main Settings tab and Click the Migrate Button, it will start a new instance and then shuts down the already running instance."+
                     "\n\n Multi-Sim Support for HUDS:" +
-                    "\n  - Supported added for Assetto Corsa 1, iRacing and RaceRoom. Certain HUDs will only work with certain games."+
+                    "\n  - Supported added for Assetto Corsa 1, iRacing and RaceRoom."+
                     "\n  - To switch simulators, select one in the top-right of the app. This will reload the HUD Tab, this may take a few seconds."+
                     "\n  - Some HUDs only work on specific simulators, so you will see the HUD list change as you change to a different simulator."+
                     "\n  - Report any feedback in the Race Element discord server."+
