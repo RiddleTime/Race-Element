@@ -1,4 +1,5 @@
-﻿using RaceElement.Util;
+﻿using RaceElement.Data.Games;
+using RaceElement.Util;
 using RaceElement.Util.Settings;
 using System;
 using System.Diagnostics;
@@ -35,7 +36,54 @@ public partial class AccManagerSettingsTab : UserControl
             sliderTelemetryHerz.ValueChanged += (s, e) => SaveSettings();
 
             buttonOpenAccManagerFolder.Click += ButtonOpenAccManagerFolder_Click;
+            buttonMigrateAccHudsToV2.Click += ButtonMigrateAccHudsToV2_Click;
         }));
+    }
+
+    private void ButtonMigrateAccHudsToV2_Click(object sender, System.Windows.RoutedEventArgs e)
+    {
+        DirectoryInfo oldHudDir = new(FileUtil.RaceElementOverlayPath);
+        DirectoryInfo accHudDir = new(FileUtil.RaceElementOverlayPath + Game.AssettoCorsaCompetizione.ToFriendlyName());
+        if (!accHudDir.Exists) accHudDir.Create();
+
+        int filesCopied = 0;
+        foreach (var item in oldHudDir.EnumerateFiles("*.json"))
+        {
+            try
+            {
+                item.CopyTo(accHudDir.FullName + Path.DirectorySeparatorChar + item.Name);
+            }
+            catch (Exception)
+            {
+                continue;
+            }
+            filesCopied++;
+        };
+
+        RunRaceElement(FileUtil.AppFullName + ".exe");
+    }
+
+    private bool RunRaceElement(string targetFile)
+    {
+        FileInfo newVersion = new(targetFile);
+
+        if (!newVersion.Exists)
+            return false;
+
+        string fullName = newVersion.FullName.Replace('\\', '/');
+        ProcessStartInfo startInfo = new()
+        {
+            FileName = "cmd",
+            Arguments = $"/c start \"RaceElement.exe\" \"{fullName}\"",
+            WindowStyle = ProcessWindowStyle.Hidden,
+        };
+        LogWriter.WriteToLog(startInfo.Arguments);
+
+        Process.Start(startInfo);
+
+        Environment.Exit(0);
+
+        return false;
     }
 
     private void LoadSettings()

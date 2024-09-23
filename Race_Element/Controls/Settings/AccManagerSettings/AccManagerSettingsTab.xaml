@@ -20,6 +20,8 @@
             <Label VerticalAlignment="Center">DDS Generator: generate 4K dds_1 files.</Label>
         </StackPanel>
 
+        <Button x:Name="buttonMigrateAccHudsToV2" ToolTip="If you updated the app from version 1.X to 2 or higher, you will need to migrate the HUD settings for ACC. This Button automatically does it for you and restarts the app.">Migrate ACC HUD settings(pre 2.0) to Race Element 2.0</Button>
+
         <StackPanel Orientation="Vertical" HorizontalAlignment="Center">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                 <ToggleButton x:Name="toggleRecordLapTelemetry" Width="50" Height="35" VerticalAlignment="Center" Cursor="Hand" IsChecked="False"/>
