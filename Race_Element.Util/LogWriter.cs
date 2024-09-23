@@ -7,7 +7,7 @@ namespace RaceElement.Util;
 /// <summary>
 /// Simple thread safe logging helper
 /// </summary>
-public class LogWriter
+public sealed class LogWriter
 {
 
 #pragma warning disable IDE1006 // Naming Styles
@@ -38,12 +38,12 @@ public class LogWriter
     /// <summary>
     /// Path to save log files
     /// </summary>
-    private static string LogPath = FileUtil.RaceElementLogPath;
+    private static readonly string LogPath = FileUtil.RaceElementLogPath;
 
     /// <summary>
     /// Lof file name
     /// </summary>
-    private static string LogFile = "Race_Element_Log.txt";
+    private static readonly string LogFile = "Race_Element_Log.txt";
 
     /// <summary>
     /// Flush log when time reached
@@ -171,7 +171,7 @@ public class LogWriter
 /// <summary>
 /// Log container object
 /// </summary>
-public class Log
+public sealed class Log
 {
 
     /// <summary>
