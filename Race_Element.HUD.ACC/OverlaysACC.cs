@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
+using System.Windows.Input;
 
 namespace RaceElement.HUD.ACC;
 
@@ -30,6 +31,10 @@ public sealed class OverlaysAcc
 
     public static void CloseAll()
     {
+        Mouse.SetCursor(Cursors.Wait);
+
+        int activeCount = AbstractOverlays.Count;
+
         lock (_lock)
             while (ActiveOverlays.Count > 0)
             {
@@ -38,6 +43,9 @@ public sealed class OverlaysAcc
                 ActiveOverlays.Remove(ActiveOverlays[0]);
             }
 
-        Thread.Sleep(2000);
+        if (activeCount > 0)
+            Thread.Sleep(2000);
+
+        Mouse.SetCursor(Cursors.Arrow);
     }
 }

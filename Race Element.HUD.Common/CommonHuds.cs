@@ -1,6 +1,7 @@
 ﻿using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using System.Reflection;
+using System.Windows.Input;
 
 namespace RaceElement.HUD.Common;
 public static class CommonHuds
@@ -20,7 +21,7 @@ public static class CommonHuds
             if (overlayType != null && !AbstractOverlays.ContainsKey(overlayType.Name))
             {
                 // extra filter for game specific overlays
-                if (overlayType.Game != 0)
+                if (overlayType.Game != Game.Any)
                 {
                     if (!overlayType.Game.HasFlag(GameManager.CurrentGame))
                     {
@@ -35,6 +36,10 @@ public static class CommonHuds
 
     public static void CloseAll()
     {
+        Mouse.SetCursor(Cursors.Wait);
+
+        int activeCount = AbstractOverlays.Count;
+
         lock (_lock)
             while (ActiveOverlays.Count > 0)
             {
@@ -42,6 +47,10 @@ public static class CommonHuds
                 ActiveOverlays[0].Stop();
                 ActiveOverlays.Remove(ActiveOverlays[0]);
             }
-        Thread.Sleep(2000);
+
+        if (activeCount > 0)
+            Thread.Sleep(2000);
+
+        Mouse.SetCursor(Cursors.Arrow);
     }
 }
