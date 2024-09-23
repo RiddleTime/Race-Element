@@ -2,7 +2,7 @@
 
 namespace RaceElement.Util.Settings;
 
-public class StreamingSettingsJson : IGenericSettingsJson
+public sealed class StreamingSettingsJson : IGenericSettingsJson
 {
     public string StreamingSoftware { get; set; }
     public string StreamingWebSocketIP { get; set; }
@@ -12,7 +12,7 @@ public class StreamingSettingsJson : IGenericSettingsJson
     public bool SetupHider { get; set; }
 }
 
-public class StreamSettings : AbstractSettingsJson<StreamingSettingsJson>
+public sealed class StreamSettings : AbstractSettingsJson<StreamingSettingsJson>
 {
     public override string Path => FileUtil.RaceElementSettingsPath;
     public override string FileName => "Streaming.json";

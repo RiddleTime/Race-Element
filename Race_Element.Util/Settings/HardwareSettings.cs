@@ -1,11 +1,11 @@
 ﻿namespace RaceElement.Util.Settings;
 
-public class HardwareSettingsJson : IGenericSettingsJson
+public sealed class HardwareSettingsJson : IGenericSettingsJson
 {
     public bool UseHardwareSteeringLock = false;
 }
 
-public class HardwareSettings : AbstractSettingsJson<HardwareSettingsJson>
+public sealed class HardwareSettings : AbstractSettingsJson<HardwareSettingsJson>
 {
     public override string Path => FileUtil.RaceElementSettingsPath;
 

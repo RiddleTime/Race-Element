@@ -1,11 +1,11 @@
 ﻿namespace RaceElement.Util.Settings;
 
-public class HudSettingsJson : IGenericSettingsJson
+public sealed class HudSettingsJson : IGenericSettingsJson
 {
     public bool DemoMode { get; set; }
 }
 
-public class HudSettings : AbstractSettingsJson<HudSettingsJson>
+public sealed class HudSettings : AbstractSettingsJson<HudSettingsJson>
 {
     public override string Path => FileUtil.RaceElementSettingsPath;
 
