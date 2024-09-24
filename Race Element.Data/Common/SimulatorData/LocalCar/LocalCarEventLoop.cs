@@ -68,5 +68,14 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
                 SimDataProvider.localCarEvents.CarModel.GameNameChanged(new() { Previous = previous.CarModel.GameName, Next = current.CarModel.GameName });
         }
     }
+
+    private static class Timing
+    {
+        public static void CheckHasBestLaptimeChanged(LocalCarData previous, LocalCarData current)
+        {
+            if (previous.Timing.HasLapTimeBest != current.Timing.HasLapTimeBest)
+                SimDataProvider.localCarEvents.Timing.HasBestLaptimeChanged(new() { Previous = previous.Timing.HasLapTimeBest, Next = current.Timing.HasLapTimeBest });
+        }
+    }
 }
 
