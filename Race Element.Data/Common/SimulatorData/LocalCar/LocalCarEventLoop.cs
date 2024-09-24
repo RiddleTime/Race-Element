@@ -27,6 +27,8 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
 
         CarModel.CheckCarModelGameNameChange(_previous, _current);
 
+        Timing.CheckHasBestLaptimeChanged(_previous, _current);
+
         _previous = DeepCopier.Copy(_current);
     }
 
