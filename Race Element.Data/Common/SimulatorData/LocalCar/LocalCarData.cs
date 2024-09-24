@@ -3,46 +3,46 @@
 namespace RaceElement.Data.Common.SimulatorData.LocalCar;
 public sealed record LocalCarData
 {
-    public CarModelData CarModel { get; internal init; } = new();
+    public CarModelData CarModel { get; internal set; } = new();
     /// <summary>
     /// Contains all data related to the car's physics, like velocity, acceleration, location, rotation..
     /// </summary>
-    public PhysicsData Physics { get; internal init; } = new();
+    public PhysicsData Physics { get; internal set; } = new();
 
     /// <summary>
     /// Contains all data related to the engine, like RPM
     /// </summary>
-    public EngineData Engine { get; internal init; } = new();
+    public EngineData Engine { get; internal set; } = new();
 
     /// <summary>
     /// Contains all data related to Pedal and steering inputs
     /// </summary>
-    public InputsData Inputs { get; internal init; } = new();
+    public InputsData Inputs { get; internal set; } = new();
 
     /// <summary>
     /// Contains all data related to the tires of the car
     /// </summary>
-    public TyresData Tyres { get; internal init; } = new();
+    public TyresData Tyres { get; internal set; } = new();
 
     /// <summary>
     /// Contains all data related to the brakes of the car.
     /// </summary>
-    public BrakesData Brakes { get; internal init; } = new();
+    public BrakesData Brakes { get; internal set; } = new();
 
     /// <summary>
     /// Contains all data related to electronical systems in the car, like Traction control or ABS.
     /// </summary>
-    public ElectronicsData Electronics { get; internal init; } = new();
+    public ElectronicsData Electronics { get; internal set; } = new();
 
     /// <summary>
     /// Contains data about the race for the current car, like position and laps driven.
     /// </summary>
-    public RaceData Race { get; internal init; } = new();
+    public RaceData Race { get; internal set; } = new();
 
     /// <summary>
     /// Contains Timing data, like: lap time, lap invalidation
     /// </summary>
-    public TimingData Timing { get; internal init; } = new();
+    public TimingData Timing { get; internal set; } = new();
 }
 
 public sealed record CarModelData
