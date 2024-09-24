@@ -1,5 +1,6 @@
 ﻿using RaceElement.Core.Jobs.LoopJob;
 using RaceElement.Data.Common;
+using System.Diagnostics;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.InputTrace;
 
@@ -47,8 +48,7 @@ internal sealed class InputDataJob : AbstractLoopJob
 
     public sealed override void RunAction()
     {
-        if (!Overlay.ShouldRender())
-            return;
+        if (!Overlay.ShouldRender()) return;
 
         lock (_lock)
         {

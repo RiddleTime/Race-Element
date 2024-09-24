@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.InputTrace;
 
-internal class InputGraph : IDisposable
+internal sealed class InputGraph : IDisposable
 {
     private readonly int _x, _y;
     private readonly int _width, _height;
@@ -16,6 +16,8 @@ internal class InputGraph : IDisposable
     private readonly Pen _throttlePen;
     private readonly Pen _brakePen;
     private readonly Pen _steeringPen;
+
+    private List<int> _drawingData = [];
 
     public InputGraph(int x, int y, int width, int height, InputDataJob dataJob, InputTraceConfiguration config)
     {
@@ -62,19 +64,17 @@ internal class InputGraph : IDisposable
 
         if (_dataJob != null)
         {
-            List<int> data;
-
             if (_config.Chart.SteeringInput)
             {
-                lock (_dataJob._lock) data = new(_dataJob.Steering);
-                DrawData(g, data, _steeringPen);
+                lock (_dataJob._lock) _drawingData = new(_dataJob.Steering);
+                DrawData(g, _drawingData, _steeringPen);
             }
 
-            lock (_dataJob._lock) data = new(_dataJob.Throttle);
-            DrawData(g, data, _throttlePen);
+            lock (_dataJob._lock) _drawingData = new(_dataJob.Throttle);
+            DrawData(g, _drawingData, _throttlePen);
 
-            lock (_dataJob._lock) data = new(_dataJob.Brake);
-            DrawData(g, data, _brakePen);
+            lock (_dataJob._lock) _drawingData = new(_dataJob.Brake);
+            DrawData(g, _drawingData, _brakePen);
         }
     }
 
@@ -83,7 +83,7 @@ internal class InputGraph : IDisposable
         if (data.Count > 0)
         {
             List<Point> points = [];
-            var spanData = CollectionsMarshal.AsSpan<int>(data);
+            ReadOnlySpan<int> spanData = CollectionsMarshal.AsSpan<int>(data);
             for (int i = 0; i < spanData.Length - 1; i++)
             {
                 int x = _x + _width - i * (_width / spanData.Length);
@@ -110,7 +110,7 @@ internal class InputGraph : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    protected virtual void Dispose(bool disposing)
+    protected void Dispose(bool disposing)
     {
         _cachedBackground?.Dispose();
         _throttlePen?.Dispose();

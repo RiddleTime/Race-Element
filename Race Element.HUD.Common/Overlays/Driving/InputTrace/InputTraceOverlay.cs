@@ -26,7 +26,7 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
         this.RefreshRateHz = _config.Chart.HudRefreshRate;
         this.RefreshRateHz.ClipMax(_config.Data.Herz);
 
-        _dataJob = new(this, _config.Chart.Width - 1) { IntervalMillis = 1000 / _config.Data.Herz };
+        _dataJob = new(this, _config.Chart.Width - 1) { IntervalMillis = (int)(1000f / _config.Data.Herz) };
         _graph = new InputGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _dataJob, this._config);
 
         if (!IsPreviewing)
