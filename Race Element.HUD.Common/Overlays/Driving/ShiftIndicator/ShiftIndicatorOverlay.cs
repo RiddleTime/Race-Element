@@ -270,7 +270,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
     {
         double percent = 0;
 
-        if (_model.MaxRpm > 0 && _model.CurrentRpm > 0)
+        if (_model is { MaxRpm: > 0, CurrentRpm: > 0 })
             percent = (double)_model.CurrentRpm / _model.MaxRpm;
 
         if (percent > 0)
