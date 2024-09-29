@@ -118,17 +118,17 @@ internal sealed class TaxiOverlay(Rectangle rectangle) : AbstractOverlay(rectang
 
             // get heading to next point and press arrow left or arrow right to correct the cars heading
             Debug.WriteLine($"{nextPoint.X}, {nextPoint.Y} - {player.X}, {player.Y}");
-            var degreeToNextPoint = DegreeBearing(player.X, player.Y, nextPoint.X, nextPoint.Y);
+            var degreeToNextPoint = DegreesBetween2Points(player.X, player.Y, nextPoint.X, nextPoint.Y);
 
             Vector2 a = new();
             Vector2 b = new();
 
             Debug.WriteLine($"Bearing to Next: {degreeToNextPoint}");
-            float carDirection = (float)(90 + (overlay.pagePhysics.Heading * -180d / Math.PI));
+            float carDirection = (float)(Single.RadiansToDegrees((float)(overlay.pagePhysics.Heading) - 90));
             //if (carDirection < 0) carDirection *= -1;
-            Debug.WriteLine($"Car Heading: {carDirection:F2} - {overlay.pagePhysics.Heading:F5}");
+            Debug.WriteLine($"Car Heading: {carDirection:F2} - {Single.RadiansToDegrees(overlay.pagePhysics.Heading):F5}");
             var diff = degreeToNextPoint - carDirection;
-            diff = (diff) % 360;
+            diff = (diff) % 180;
             diff *= -1;
             Debug.WriteLine($"Diff to Next: {diff}");
             if (diff < -10)
@@ -140,7 +140,7 @@ internal sealed class TaxiOverlay(Rectangle rectangle) : AbstractOverlay(rectang
                     Thread.Sleep(75);
                     kb.KeyUp(InputSimulatorStandard.Native.VirtualKeyCode.RIGHT);
                 }
-                else if (diff > -355)
+                else if (diff <= -50)
                 {
                     Debug.WriteLine("long R");
                     kb.KeyDown(InputSimulatorStandard.Native.VirtualKeyCode.RIGHT);
@@ -150,14 +150,14 @@ internal sealed class TaxiOverlay(Rectangle rectangle) : AbstractOverlay(rectang
             }
             else if (diff > 10)
             {
-                if (diff < 35)
+                if (diff >= 35)
                 {
                     Debug.WriteLine("short L");
                     kb.KeyDown(InputSimulatorStandard.Native.VirtualKeyCode.LEFT);
                     Thread.Sleep(75);
                     kb.KeyUp(InputSimulatorStandard.Native.VirtualKeyCode.LEFT);
                 }
-                else if (diff < 355)
+                else if (diff < 50)
                 {
                     Debug.WriteLine("long L");
                     kb.KeyDown(InputSimulatorStandard.Native.VirtualKeyCode.LEFT);
@@ -194,14 +194,14 @@ internal sealed class TaxiOverlay(Rectangle rectangle) : AbstractOverlay(rectang
             //Debug.WriteLine($"offset:{offset}");
             var next = trackMap._trackedPositions.Find(x =>
             {
+                if (x.Spline < pageGraphics.NormalizedCarPosition + offset) return false;
+
                 float distance = Vector2.Distance(new Vector2(x.X, x.Y), player);
+                //Debug.WriteLine($"dist {distance}");
 
-                if (x.Spline < pageGraphics.NormalizedCarPosition) return false;
-
-                return ((x.Spline > pageGraphics.NormalizedCarPosition + offset / 2 && x.Spline < pageGraphics.NormalizedCarPosition + offset * 2f));
+                return distance < 30 && (x.Spline > pageGraphics.NormalizedCarPosition + offset && x.Spline < pageGraphics.NormalizedCarPosition + offset * 5f);
                 //    return distance > 3 && distance < 50;
 
-                //Debug.WriteLine($"dist {distance}");
                 //return distance < 50 && x.Spline > pageGraphics.NormalizedCarPosition + offset / 2;
             });
             return next;
