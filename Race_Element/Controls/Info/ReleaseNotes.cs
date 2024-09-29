@@ -6,6 +6,8 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.0.0.2", "iRacing:"+
+                    "\n- HUDs should now only show once you're actually driving the car."},
         {"2.0.0.0", "To Restore your ACC HUD Settings, Open the main Settings tab and Click the Migrate Button, it will start a new instance and then shuts down the already running instance."+
                     "\n\n Multi-Sim Support for HUDS:" +
                     "\n  - Supported added for Assetto Corsa 1, iRacing and RaceRoom."+
