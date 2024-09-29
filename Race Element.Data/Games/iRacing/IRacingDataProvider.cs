@@ -52,6 +52,7 @@ namespace RaceElement.Data.Games.iRacing
         private IRacingSdkDatum brakeDatum;
         private IRacingSdkDatum throttleDatum;
         private IRacingSdkDatum steeringWheelAngleDatum;
+        private IRacingSdkDatum steeringWheelAngleMaxDatum;
         private IRacingSdkDatum lapDeltaToSessionBestLapDatum;
         private IRacingSdkDatum airTempDatum;
         private IRacingSdkDatum windVelDatum;
@@ -66,6 +67,8 @@ namespace RaceElement.Data.Games.iRacing
         private IRacingSdkDatum longitudinalAccelDatum;
         private IRacingSdkDatum lateralAccelDatum;
         private IRacingSdkDatum vertAccelDatum;
+        private IRacingSdkDatum isOnTrackCar;
+        private IRacingSdkDatum isInGarage;
         private bool datumsInitialized = false;
 
         public CarLeftRight SpotterCallout { get; private set; }
@@ -115,6 +118,7 @@ namespace RaceElement.Data.Games.iRacing
             brakeDatum = _iRacingSDK.Data.TelemetryDataProperties["Brake"];
             throttleDatum = _iRacingSDK.Data.TelemetryDataProperties["Throttle"];
             steeringWheelAngleDatum = _iRacingSDK.Data.TelemetryDataProperties["SteeringWheelAngle"];
+            steeringWheelAngleMaxDatum = _iRacingSDK.Data.TelemetryDataProperties["SteeringWheelAngleMax"];
             lapDeltaToSessionBestLapDatum = _iRacingSDK.Data.TelemetryDataProperties["LapDeltaToSessionBestLap"];
             airTempDatum = _iRacingSDK.Data.TelemetryDataProperties["AirTemp"];
             windVelDatum = _iRacingSDK.Data.TelemetryDataProperties["WindVel"];
@@ -126,7 +130,8 @@ namespace RaceElement.Data.Games.iRacing
             brakeABSactiveDatum = _iRacingSDK.Data.TelemetryDataProperties["BrakeABSactive"];
             sessionNumDatum = _iRacingSDK.Data.TelemetryDataProperties["SessionNum"];
             sessionStateDatum = _iRacingSDK.Data.TelemetryDataProperties["SessionState"];
-
+            isOnTrackCar = _iRacingSDK.Data.TelemetryDataProperties["IsOnTrackCar"];
+            isInGarage = _iRacingSDK.Data.TelemetryDataProperties["IsInGarage"];
 
             datumsInitialized = true;
         }
@@ -266,7 +271,7 @@ namespace RaceElement.Data.Games.iRacing
                 }
 
                 localCar.Engine.Rpm = (int)_iRacingSDK.Data.GetFloat(rPMDatum);
-                localCar.Engine.IsRunning = localCar.Engine.Rpm > 0;
+                localCar.Engine.IsRunning = localCar.Engine.Rpm > 0 && _iRacingSDK.Data.GetBool(isOnTrackCar) & !_iRacingSDK.Data.GetBool(isInGarage);
                 // m/s -> km/h
                 localCar.Physics.Velocity = _iRacingSDK.Data.GetFloat(speedDatum) * 3.6f;
                 localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(_iRacingSDK.Data.GetFloat(yawNorthDatum), _iRacingSDK.Data.GetFloat(pitchDatum), _iRacingSDK.Data.GetFloat(rollDatum));
@@ -277,7 +282,8 @@ namespace RaceElement.Data.Games.iRacing
                 localCar.Inputs.Gear = _iRacingSDK.Data.GetInt(gearDatum) + 1;
                 localCar.Inputs.Brake = _iRacingSDK.Data.GetFloat(brakeDatum);
                 localCar.Inputs.Throttle = _iRacingSDK.Data.GetFloat(throttleDatum);
-                localCar.Inputs.Steering = _iRacingSDK.Data.GetFloat(steeringWheelAngleDatum);
+                localCar.Inputs.MaxSteeringAngle = Single.RadiansToDegrees(_iRacingSDK.Data.GetFloat(steeringWheelAngleMaxDatum));
+                localCar.Inputs.Steering = (float)(_iRacingSDK.Data.GetFloat(steeringWheelAngleDatum) / (Math.PI * 2));
 
 
                 SessionData.Instance.LapDeltaToSessionBestLapMs = _iRacingSDK.Data.GetFloat(lapDeltaToSessionBestLapDatum);
