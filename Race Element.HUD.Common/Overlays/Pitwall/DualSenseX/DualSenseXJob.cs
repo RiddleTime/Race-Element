@@ -1,4 +1,4 @@
-﻿using RaceElement.Core.Jobs.LoopJob;
+﻿using RaceElement.Core.Jobs.Loop;
 using System;
 using static RaceElement.HUD.Common.Overlays.Pitwall.DualSenseX.DualSenseXResources;
 

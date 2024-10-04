@@ -1,4 +1,4 @@
-﻿using RaceElement.Core.Jobs.LoopJob;
+﻿using RaceElement.Core.Jobs.Loop;
 using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Internal;

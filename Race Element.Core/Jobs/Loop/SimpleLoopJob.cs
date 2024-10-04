@@ -1,4 +1,4 @@
-﻿namespace RaceElement.Core.Jobs.LoopJob;
+﻿namespace RaceElement.Core.Jobs.Loop;
 
 public sealed class SimpleLoopJob : AbstractLoopJob
 {

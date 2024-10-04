@@ -1,4 +1,4 @@
-﻿using Race_Element.Core.Jobs.LoopJob;
+﻿using Race_Element.Core.Jobs.Loop;
 using RaceElement.Data.Common;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util.SystemExtensions;
@@ -18,11 +18,9 @@ namespace RaceElement.HUD.Common.Overlays.Driving.InputTrace;
 internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Input Trace")
 {
     private readonly InputTraceConfiguration _config = new();
-
-    private InputGraph? _graph;
-    private DataCollector _dataCollector;
-
     private readonly ConcurrentQueue<InputsData> _dataQueue = [];
+    private DataCollector _dataCollector;
+    private InputGraph? _graph;
 
     public sealed override void BeforeStart()
     {
@@ -45,7 +43,7 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
 
     private void OnDataCollected(object? sender, InputsData e)
     {
-        if (_dataQueue.Count > _config.Chart.Width - 2)
+        if (_dataQueue.Count >= _config.Chart.Width - 1)
             _dataQueue.TryDequeue(out InputsData _);
 
         _dataQueue.Enqueue(e);
@@ -68,7 +66,7 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
 internal readonly record struct InputsData(int Throttle, int Brake, int Steering);
 internal sealed class DataCollector : AbstractDataJob<InputsData>
 {
-    public sealed override InputsData Collect() => new()
+    public sealed override InputsData Collect => new()
     {
         Throttle = (int)(SimDataProvider.LocalCar.Inputs.Throttle * 100f),
         Brake = (int)(SimDataProvider.LocalCar.Inputs.Brake * 100),

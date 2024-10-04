@@ -1,4 +1,4 @@
-﻿using RaceElement.Core.Jobs.LoopJob;
+﻿using RaceElement.Core.Jobs.Loop;
 using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracks;
 using RaceElement.HUD.ACC.Overlays.Driving.TrackMap;

@@ -1,4 +1,4 @@
-using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Core.Jobs.Loop;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System;

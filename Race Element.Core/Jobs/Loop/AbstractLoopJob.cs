@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using System.Threading;
 
-namespace RaceElement.Core.Jobs.LoopJob;
+namespace RaceElement.Core.Jobs.Loop;
 
 public abstract class AbstractLoopJob : IJob
 {
