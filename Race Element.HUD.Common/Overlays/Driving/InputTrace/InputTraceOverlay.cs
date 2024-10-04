@@ -72,6 +72,6 @@ internal sealed class DataCollector : AbstractDataJob<InputsData>
     {
         Throttle = (int)(SimDataProvider.LocalCar.Inputs.Throttle * 100f),
         Brake = (int)(SimDataProvider.LocalCar.Inputs.Brake * 100),
-        Steering = (int)((SimDataProvider.LocalCar.Inputs.Steering + 1.0) / 2 * 100),
+        Steering = (int)((SimDataProvider.LocalCar.Inputs.Steering + 1.0f) / (2 * 100)),
     };
 }

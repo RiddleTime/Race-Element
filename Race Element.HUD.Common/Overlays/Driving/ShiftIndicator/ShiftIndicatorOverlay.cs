@@ -211,7 +211,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         if (_drawShiftRPM)
         {
             int x = (int)(_halfRpmStringWidth + 8 + _halfRpmStringWidth * 2 + 5);
-            int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
+            int y = (int)(_config.Bar.Height / 2 - _font?.Height / 2.05);
             string earlyShiftRpm = $"Early:{_config.Upshift.Early / 100f * _model.MaxRpm:F0}";
             float earlyWidth = g.MeasureString(earlyShiftRpm, _font).Width;
             Rectangle earlyRect = new((int)(x - earlyWidth / 5), y, (int)earlyWidth, _font.Height);
