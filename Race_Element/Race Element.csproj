@@ -15,10 +15,6 @@
         <ApplicationVersion>2.0.0.1</ApplicationVersion>
         <AssemblyVersion>2.0.0.1</AssemblyVersion>
         <Version>2.0.0.1</Version>
-        <UseApplicationTrust>true</UseApplicationTrust>
-        <CreateDesktopShortcut>true</CreateDesktopShortcut>
-        <PublishWizardCompleted>true</PublishWizardCompleted>
-        <BootstrapperEnabled>true</BootstrapperEnabled>
         <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
         <UseWindowsForms>true</UseWindowsForms>
         <UseWPF>true</UseWPF>

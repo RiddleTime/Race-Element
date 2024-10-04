@@ -467,10 +467,11 @@ public partial class HudOptions : UserControl
                 int index = ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
                 if (index != -1)
                     ActiveOverlays.RemoveAt(index);
-                Task.Run(() =>
-                {
-                    overlay?.Stop();
-                });
+                new Thread(() =>
+                 {
+                     overlay?.Stop();
+                 })
+                { IsBackground = true }.Start();
                 configStacker.IsEnabled = true;
             }
         };

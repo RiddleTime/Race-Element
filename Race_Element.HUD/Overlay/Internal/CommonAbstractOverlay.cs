@@ -42,7 +42,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
 
     public Game GameWhenStarted { get; private set; } = Game.Any;
 
-    private bool Draw = false;
+    private volatile bool Draw = false;
 
     public bool IsRepositioning { get; internal set; }
 
@@ -199,6 +199,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
                       }
 
                   });
+                renderThread.IsBackground = true;
                 renderThread.SetApartmentState(ApartmentState.MTA);
                 renderThread.Start();
             }

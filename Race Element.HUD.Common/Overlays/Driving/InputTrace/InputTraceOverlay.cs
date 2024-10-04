@@ -1,5 +1,8 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using Race_Element.Core.Jobs.LoopJob;
+using RaceElement.Data.Common;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util.SystemExtensions;
+using System.Collections.Concurrent;
 using System.Drawing;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.InputTrace;
@@ -17,7 +20,9 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
     private readonly InputTraceConfiguration _config = new();
 
     private InputGraph? _graph;
-    private InputDataJob? _dataJob;
+    private DataCollector _dataCollector;
+
+    private readonly ConcurrentQueue<InputsData> _dataQueue = [];
 
     public sealed override void BeforeStart()
     {
@@ -26,20 +31,47 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
         this.RefreshRateHz = _config.Chart.HudRefreshRate;
         this.RefreshRateHz.ClipMax(_config.Data.Herz);
 
-        _dataJob = new(this, _config.Chart.Width - 1) { IntervalMillis = (int)(1000f / _config.Data.Herz) };
-        _graph = new InputGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _dataJob, this._config);
+        _graph = new InputGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, this._config);
+
+        for (int i = 0; i < _config.Chart.Width - 1; i++) _dataQueue.Enqueue(new(0, 0, 50));
 
         if (!IsPreviewing)
-            _dataJob.Run();
+        {
+            _dataCollector = new() { IntervalMillis = (int)(1000f / _config.Data.Herz) };
+            _dataCollector.OnCollected += OnDataCollected;
+            _dataCollector.Run();
+        }
+    }
+
+    private void OnDataCollected(object? sender, InputsData e)
+    {
+        if (_dataQueue.Count > _config.Chart.Width - 2)
+            _dataQueue.TryDequeue(out InputsData _);
+
+        _dataQueue.Enqueue(e);
     }
 
     public sealed override void BeforeStop()
     {
-        _graph?.Dispose();
-
         if (!IsPreviewing)
-            _dataJob?.CancelJoin();
+        {
+            _dataCollector.OnCollected -= OnDataCollected;
+            _dataCollector.CancelJoin();
+        }
+
+        _graph?.Dispose();
     }
 
-    public sealed override void Render(Graphics g) => _graph?.Draw(g);
+    public sealed override void Render(Graphics g) => _graph?.Draw(g, _dataQueue);
+}
+
+internal readonly record struct InputsData(int Throttle, int Brake, int Steering);
+internal sealed class DataCollector : AbstractDataJob<InputsData>
+{
+    public sealed override InputsData Collect() => new()
+    {
+        Throttle = (int)(SimDataProvider.LocalCar.Inputs.Throttle * 100f),
+        Brake = (int)(SimDataProvider.LocalCar.Inputs.Brake * 100),
+        Steering = (int)((SimDataProvider.LocalCar.Inputs.Steering + 1.0) / 2 * 100),
+    };
 }

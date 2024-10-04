@@ -383,7 +383,7 @@ public partial class MainWindow : Window
     {
         try
         {
-            Dispatcher.CurrentDispatcher.Invoke(() =>
+            Dispatcher.CurrentDispatcher.BeginInvoke(() =>
             {
                 switch (this.WindowState)
                 {
@@ -446,7 +446,7 @@ public partial class MainWindow : Window
 
     internal void EnqueueSnackbarMessage(string message)
     {
-        Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+        Instance.snackbar.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(
            delegate ()
            {
                if (Instance.WindowState != WindowState.Minimized)
@@ -456,7 +456,7 @@ public partial class MainWindow : Window
 
     internal void ClearSnackbar()
     {
-        Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+        Instance.snackbar.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(
            delegate ()
            {
                if (Instance.WindowState != WindowState.Minimized)
@@ -466,7 +466,7 @@ public partial class MainWindow : Window
 
     internal void EnqueueSnackbarMessage(string message, string action, Action actionDelegate)
     {
-        Instance.snackbar.Dispatcher.Invoke(DispatcherPriority.Normal, new Action(
+        Instance.snackbar.Dispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(
            delegate ()
            {
                if (Instance.WindowState != WindowState.Minimized)
@@ -502,7 +502,7 @@ public partial class MainWindow : Window
             {
                 if (_stopDecreaseOpacty)
                 {
-                    Dispatcher.Invoke(new Action(() =>
+                    Dispatcher.BeginInvoke(new Action(() =>
                     {
                         this.Opacity = MaxOpacity;
                     }));
@@ -510,7 +510,7 @@ public partial class MainWindow : Window
                 }
 
                 Thread.Sleep(3);
-                Dispatcher.Invoke(new Action(() =>
+                Dispatcher.BeginInvoke(new Action(() =>
                 {
                     this.Opacity -= steps;
 
