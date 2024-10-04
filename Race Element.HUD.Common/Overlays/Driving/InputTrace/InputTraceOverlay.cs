@@ -19,7 +19,7 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
 {
     private readonly InputTraceConfiguration _config = new();
     private readonly ConcurrentQueue<InputsData> _dataQueue = [];
-    private DataCollector _dataCollector;
+    private DataCollector? _dataCollector;
     private InputGraph? _graph;
 
     public sealed override void BeforeStart()
@@ -51,7 +51,7 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
 
     public sealed override void BeforeStop()
     {
-        if (!IsPreviewing)
+        if (!IsPreviewing && _dataCollector != null)
         {
             _dataCollector.OnCollected -= OnDataCollected;
             _dataCollector.CancelJoin();
@@ -64,7 +64,7 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
 }
 
 internal readonly record struct InputsData(int Throttle, int Brake, int Steering);
-internal sealed class DataCollector : AbstractDataJob<InputsData>
+internal sealed class DataCollector : AbstractCollectionJob<InputsData>
 {
     public sealed override InputsData Collect => new()
     {
