@@ -67,9 +67,8 @@ public abstract class CommonAbstractOverlay : FloatingWindow
     /// <returns></returns>
     public virtual bool DefaultShouldRender()
     {
-        // System modes
-        if (HudSettings.Cached.DemoMode) return true;
-        if (IsRepositioning) return true;
+        // always visible or repositioning mode
+        if (HudSettings.Cached.DemoMode || IsRepositioning) return true;
 
         // sim data modes
         bool condition = false;
