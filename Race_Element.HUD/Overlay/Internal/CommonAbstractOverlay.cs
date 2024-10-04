@@ -82,8 +82,8 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         }
 
         return condition;
-
     }
+
     private void LoadFieldConfig()
     {
         FieldInfo[] fields = this.GetType().GetRuntimeFields().ToArray();
@@ -135,7 +135,10 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         }
     }
 
-    public bool hasClosed = true;
+    /// <summary>
+    /// TODO refactor?? what the heck was this?
+    /// </summary>
+    private bool hasClosed = true;
     public virtual void Start(bool addTrackers = true)
     {
         try
