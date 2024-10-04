@@ -36,12 +36,12 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
         if (!IsPreviewing)
         {
             _dataCollector = new() { IntervalMillis = (int)(1000f / _config.Data.Herz) };
-            _dataCollector.OnCollected += OnDataCollected;
+            _dataCollector.OnCollected += OnNewData;
             _dataCollector.Run();
         }
     }
 
-    private void OnDataCollected(object? sender, InputsData e)
+    private void OnNewData(object? sender, InputsData e)
     {
         if (_dataQueue.Count >= _config.Chart.Width - 1)
             _dataQueue.TryDequeue(out InputsData _);
@@ -53,7 +53,7 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
     {
         if (!IsPreviewing && _dataCollector != null)
         {
-            _dataCollector.OnCollected -= OnDataCollected;
+            _dataCollector.OnCollected -= OnNewData;
             _dataCollector.CancelJoin();
         }
 
