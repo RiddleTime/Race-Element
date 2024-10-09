@@ -11,22 +11,37 @@ internal static partial class Ams2LocalCarMapper
     public static void ToLocalCar(Shared sharedData, LocalCarData localCarData)
     {
         // Is running as long as current session is something valid.
-        localCarData.Engine.IsRunning = sharedData.mSessionState != (int)Constants.GameSession.SESSION_INVALID;
+        localCarData.Engine.IsRunning = sharedData.mPitMode != (int)Constants.PitMode.PIT_MODE_IN_GARAGE;
 
         // Player info
-        localCarData.Race.GlobalPosition = (int)sharedData.mParticipantInfo[0].mRacePosition;
-        localCarData.CarModel.CarClass = sharedData.mCarClassName.ToString();
+        localCarData.Race.LapPositionPercentage = sharedData.mTrackLength / sharedData.mParticipantInfo[sharedData.mViewedParticipantIndex].mCurrentLapDistance;
+        localCarData.Race.GlobalPosition = (int)sharedData.mParticipantInfo[sharedData.mViewedParticipantIndex].mRacePosition;
+        localCarData.Race.ClassPosition = (int)sharedData.mParticipantInfo[sharedData.mViewedParticipantIndex].mRacePosition;
+
+        // Car model
+        localCarData.CarModel.CarClass = sharedData.mCarClassName.Data;
 
         // Car physics
-        localCarData.Physics.Location = sharedData.mParticipantInfo[0].mWorldPosition.ToVector3();
-        localCarData.Physics.Acceleration = sharedData.mWorldAcceleration.ToVector3();
+        localCarData.Physics.Rotation = System.Numerics.Quaternion.CreateFromYawPitchRoll(sharedData.mOrientation.Y, sharedData.mOrientation.X, sharedData.mOrientation.Z);
+        localCarData.Physics.Location = sharedData.mParticipantInfo[sharedData.mViewedParticipantIndex].mWorldPosition.ToVector3();
+        localCarData.Physics.Acceleration = sharedData.mLocalAcceleration.ToVector3();
         localCarData.Physics.Velocity = sharedData.mOdometerKM;
 
         // Car engine
-        localCarData.Engine.MaxFuelLiters = sharedData.mFuelCapacity;
         localCarData.Engine.FuelLiters = sharedData.mFuelLevel * sharedData.mFuelCapacity;
+        localCarData.Engine.MaxFuelLiters = sharedData.mFuelCapacity;
+        localCarData.Engine.MaxRpm = (int)sharedData.mMaxRPM;
+        localCarData.Engine.Rpm = (int)sharedData.mRpm;
+
+        // Car electronics
+        localCarData.Electronics.TractionControlLevel = sharedData.mTractionControlSetting;
+        localCarData.Electronics.BrakeBias = sharedData.mBrakeBias * 100.0f;
+
+        localCarData.Electronics.AbsActivation = sharedData.mAntiLockActive ? 1.0f : 0.0f;
+        localCarData.Electronics.AbsLevel = sharedData.mAntiLockSetting;
 
         // Car inputs
+        localCarData.Inputs.HandBrake = sharedData.mHandBrake * 100.0f;
         localCarData.Inputs.Steering = sharedData.mSteering;
         localCarData.Inputs.Throttle = sharedData.mThrottle;
         localCarData.Inputs.Clutch = sharedData.mClutch;
@@ -45,10 +60,21 @@ internal static partial class Ams2LocalCarMapper
         localCarData.Tyres.SurfaceTemperature[2] = sharedData.mTyreCarcassTemp.RL - 273.15f;
         localCarData.Tyres.SurfaceTemperature[3] = sharedData.mTyreCarcassTemp.RR - 273.15f;
 
+        // Tyre pressure
+        localCarData.Tyres.Pressure[0] = sharedData.mAirPressure.FL;
+        localCarData.Tyres.Pressure[1] = sharedData.mAirPressure.FR;
+        localCarData.Tyres.Pressure[2] = sharedData.mAirPressure.RL;
+        localCarData.Tyres.Pressure[3] = sharedData.mAirPressure.RR;
+
         // Brake temp
         localCarData.Brakes.DiscTemperature[0] = sharedData.mBrakeTempCelsius.FL;
         localCarData.Brakes.DiscTemperature[1] = sharedData.mBrakeTempCelsius.FR;
         localCarData.Brakes.DiscTemperature[2] = sharedData.mBrakeTempCelsius.RL;
         localCarData.Brakes.DiscTemperature[3] = sharedData.mBrakeTempCelsius.RR;
+
+        // Lap info
+        localCarData.Timing.CurrentLaptimeMS = (int)sharedData.mCurrentTime;
+        localCarData.Timing.LapTimeBestMs = (int)sharedData.mBestLapTime;
+        localCarData.Timing.IsLapValid = !sharedData.mLapInvalidated;
     }
 }
