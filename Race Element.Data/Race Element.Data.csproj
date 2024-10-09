@@ -28,8 +28,4 @@
       <ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Games\Automobilista 2\" />
-    </ItemGroup>
-
 </Project>

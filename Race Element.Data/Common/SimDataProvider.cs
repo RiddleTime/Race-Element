@@ -1,10 +1,10 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
-using RaceElement.Data.Games.AssettoCorsaCompetizione;
 using RaceElement.Data.Games;
 using RaceElement.Data.Games.AssettoCorsa;
 using RaceElement.Data.Games.iRacing;
 using RaceElement.Data.Games.RaceRoom;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
+using RaceElement.Data.Games.Automobilista2;
 
 namespace RaceElement.Data.Common
 {
@@ -56,6 +56,13 @@ namespace RaceElement.Data.Common
                 case Game.RaceRoom:
                     {
                         Instance ??= new RaceRoomDataProvider();
+                        Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                        _localCarEventLoop.Run();
+                        break;
+                    }
+                case Game.Automobilista2:
+                    {
+                        Instance ??= new Automobilista2DataProvider();
                         Instance.Update(ref _localCarData, ref _session, ref _gameData);
                         _localCarEventLoop.Run();
                         break;
