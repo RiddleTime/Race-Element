@@ -1,4 +1,5 @@
-﻿using RaceElement.Data.Games.Automobilista2.SharedMemory;
+﻿using System.Runtime.CompilerServices;
+using RaceElement.Data.Games.Automobilista2.SharedMemory;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
 using Riok.Mapperly.Abstractions;
 
@@ -14,7 +15,7 @@ internal static partial class Ams2LocalCarMapper
 
         // Player info
         localCarData.Race.GlobalPosition = (int)sharedData.mParticipantInfo[0].mRacePosition;
-        localCarData.CarModel.CarClass = new string(sharedData.mCarClassName.Data);
+        localCarData.CarModel.CarClass = sharedData.mCarClassName.ToString();
 
         // Car physics
         localCarData.Physics.Location = sharedData.mParticipantInfo[0].mWorldPosition.ToVector3();
