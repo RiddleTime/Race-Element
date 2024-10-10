@@ -60,11 +60,11 @@ internal static partial class Ams2LocalCarMapper
         localCarData.Tyres.SurfaceTemperature[2] = sharedData.mTyreCarcassTemp.RL - 273.15f;
         localCarData.Tyres.SurfaceTemperature[3] = sharedData.mTyreCarcassTemp.RR - 273.15f;
 
-        // Tyre pressure
-        localCarData.Tyres.Pressure[0] = sharedData.mAirPressure.FL;
-        localCarData.Tyres.Pressure[1] = sharedData.mAirPressure.FR;
-        localCarData.Tyres.Pressure[2] = sharedData.mAirPressure.RL;
-        localCarData.Tyres.Pressure[3] = sharedData.mAirPressure.RR;
+        // Tyre pressure (from bar to psi).
+        localCarData.Tyres.Pressure[0] = (sharedData.mAirPressure.FL / 100.0f) * 14.504f;
+        localCarData.Tyres.Pressure[1] = (sharedData.mAirPressure.FR / 100.0f) * 14.504f;
+        localCarData.Tyres.Pressure[2] = (sharedData.mAirPressure.RL / 100.0f) * 14.504f;
+        localCarData.Tyres.Pressure[3] = (sharedData.mAirPressure.RR / 100.0f) * 14.504f;
 
         // Brake temp
         localCarData.Brakes.DiscTemperature[0] = sharedData.mBrakeTempCelsius.FL;
