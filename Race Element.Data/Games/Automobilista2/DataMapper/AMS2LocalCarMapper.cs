@@ -10,8 +10,8 @@ internal static partial class Ams2LocalCarMapper
 {
     public static void ToLocalCar(Shared sharedData, LocalCarData localCarData)
     {
-        // Is running as long as current session is something valid.
-        localCarData.Engine.IsRunning = sharedData.mPitMode != (int)Constants.PitMode.PIT_MODE_IN_GARAGE;
+        // Is running as long as engine RPM > 0.
+        localCarData.Engine.IsRunning = sharedData.mRpm > 0;
 
         // Player info
         localCarData.Race.LapPositionPercentage = sharedData.mTrackLength / sharedData.mParticipantInfo[sharedData.mViewedParticipantIndex].mCurrentLapDistance;
