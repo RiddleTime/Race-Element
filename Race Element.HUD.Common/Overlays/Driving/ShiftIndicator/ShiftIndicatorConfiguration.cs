@@ -1,4 +1,5 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.Data.Games;
+using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.ShiftIndicator;
@@ -39,6 +40,7 @@ internal sealed class ShiftIndicatorConfiguration : OverlayConfiguration
     [ConfigGrouping("Upshift Percentages", "Adjust the Early and Upshift percentages.\n" +
         "The displayed early and upshift RPM texts only show in the GUI.\n" +
         "These RPMs will update if you are currently in a lobby, once you adjust any of the settings.")]
+    [HideForGame(Game.RaceRoom)]
     public UpshiftGrouping Upshift { get; init; } = new UpshiftGrouping();
     public sealed class UpshiftGrouping
     {
