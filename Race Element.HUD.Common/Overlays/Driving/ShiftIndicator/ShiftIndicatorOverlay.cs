@@ -66,7 +66,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 
         _model.MaxRpm = maxRpm;
         _model.CurrentRpm = (int)(maxRpm * 0.9f);
-        _drawShiftRPM = true;
+        _drawShiftRPM = GameWhenStarted != Game.RaceRoom;
     }
 
     public sealed override void BeforeStart()
