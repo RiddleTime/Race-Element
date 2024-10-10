@@ -60,7 +60,7 @@ internal sealed class Constants
         GAME_MAX
     }
 
-    public enum GameSession // (Type#2) Session state (to be used with 'mSessionState')
+    public enum RaceSession // (Type#2) Session state (to be used with 'mSessionState')
     {
         SESSION_INVALID = 0,
         SESSION_PRACTICE,
