@@ -755,6 +755,12 @@ public partial class HudOptions : UserControl
             {
                 //Debug.WriteLine($"{type.Name} -  {type.ReflectedType.FullName} - {type.PropertyType.Name}");
 
+                HideForGameAttribute hfga = null;
+                foreach (Attribute attribute in Attribute.GetCustomAttributes(type))
+                    if (attribute is HideForGameAttribute hideForGameAttribute)
+                        hfga = hideForGameAttribute;
+                if (hfga != null && GameManager.CurrentGame.HasFlag(hfga.Game)) continue;
+
                 ListView listView = new()
                 {
                     Width = 550,
