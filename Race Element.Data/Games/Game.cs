@@ -3,14 +3,14 @@
 [Flags]
 public enum Game : int
 {
-    Any = 0,
-    AssettoCorsa1 = 1,
-    AssettoCorsaCompetizione = 2,
-    iRacing = 4,
-    RaceRoom = 8,
+    Any = (1 << 0),
+    AssettoCorsa1 = (1 << 1),
+    AssettoCorsaCompetizione = (1 << 2),
+    iRacing = (1 << 3),
+    RaceRoom = (1 << 4),
+    Automobilista2 = (1 << 5),
     //rFactor2,
     // LMU,
-    //Automobilista2
 }
 
 public static class GameExtensions
@@ -21,6 +21,7 @@ public static class GameExtensions
         public const string AssettoCorsa = "Assetto Corsa";
         public const string IRacing = "iRacing";
         public const string RaceRoom = "RaceRoom Racing Experience";
+        public const string Automobilista2 = "Automobilista2";
     }
 
     private static class ShortNames
@@ -29,6 +30,7 @@ public static class GameExtensions
         public const string AssettoCorsa = "AC";
         public const string IRacing = "iRacing";
         public const string RaceRoom = "RaceRoom";
+        public const string Automobilista2 = "AMS2";
     }
 
     public static string ToFriendlyName(this Game game) => game switch
@@ -37,6 +39,7 @@ public static class GameExtensions
         Game.AssettoCorsaCompetizione => FriendlyNames.AssettoCorsaCompetizione,
         Game.iRacing => FriendlyNames.IRacing,
         Game.RaceRoom => FriendlyNames.RaceRoom,
+        Game.Automobilista2 => FriendlyNames.Automobilista2,
         _ => string.Empty
     };
 
@@ -46,6 +49,7 @@ public static class GameExtensions
         Game.AssettoCorsaCompetizione => ShortNames.AssettoCorsaCompetizione,
         Game.iRacing => ShortNames.IRacing,
         Game.RaceRoom => ShortNames.RaceRoom,
+        Game.Automobilista2 => ShortNames.Automobilista2,
         _ => string.Empty
     };
 
@@ -55,6 +59,7 @@ public static class GameExtensions
         FriendlyNames.AssettoCorsaCompetizione => Game.AssettoCorsaCompetizione,
         FriendlyNames.IRacing => Game.iRacing,
         FriendlyNames.RaceRoom => Game.RaceRoom,
+        FriendlyNames.Automobilista2 => Game.Automobilista2,
         _ => Game.AssettoCorsaCompetizione,
     };
 
@@ -64,6 +69,7 @@ public static class GameExtensions
         Game.AssettoCorsaCompetizione => 805550,
         Game.iRacing => 266410,
         Game.RaceRoom => 211500,
+        Game.Automobilista2 => 1066890,
         _ => -1
     };
 }
