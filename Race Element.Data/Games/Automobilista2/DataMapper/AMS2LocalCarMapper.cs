@@ -26,6 +26,8 @@ internal static partial class Ams2LocalCarMapper
         localCarData.Physics.Location = sharedData.mParticipantInfo[sharedData.mViewedParticipantIndex].mWorldPosition.ToVector3();
         localCarData.Physics.Acceleration = sharedData.mLocalAcceleration.ToVector3();
         localCarData.Physics.Velocity = sharedData.mOdometerKM;
+        localCarData.Physics.Location = sharedData.mParticipantInfo[sharedData.mViewedParticipantIndex].mWorldPosition;
+        localCarData.Physics.Acceleration = sharedData.mLocalAcceleration;
 
         // Car engine
         localCarData.Engine.FuelLiters = sharedData.mFuelLevel * sharedData.mFuelCapacity;

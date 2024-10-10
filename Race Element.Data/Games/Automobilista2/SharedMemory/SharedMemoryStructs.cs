@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices;
+﻿using System.Numerics;
+using System.Runtime.InteropServices;
 namespace RaceElement.Data.Games.Automobilista2.SharedMemory;
 
 [StructLayout(LayoutKind.Sequential)]
@@ -13,19 +14,6 @@ internal struct CompoundName
 {
     [MarshalAs(UnmanagedType.ByValTStr, SizeConst = (int)Constants.Restrictions.TYRE_COMPOUND_NAME_LENGTH_MAX)]
     public string Data;
-}
-
-[StructLayout(LayoutKind.Sequential)]
-internal struct Vector3
-{
-    public float X;
-    public float Y;
-    public float Z;
-
-    public System.Numerics.Vector3 ToVector3()
-    {
-        return new System.Numerics.Vector3(X, Y, Z);
-    }
 }
 
 [StructLayout(LayoutKind.Sequential)]
