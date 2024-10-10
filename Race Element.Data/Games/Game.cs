@@ -21,7 +21,7 @@ public static class GameExtensions
         public const string AssettoCorsa = "Assetto Corsa";
         public const string IRacing = "iRacing";
         public const string RaceRoom = "RaceRoom Racing Experience";
-        public const string Automobilista2 = "Automobilista2";
+        public const string Automobilista2 = "Automobilista 2";
     }
 
     private static class ShortNames
