@@ -23,11 +23,9 @@ internal static partial class Ams2LocalCarMapper
 
         // Car physics
         localCarData.Physics.Rotation = System.Numerics.Quaternion.CreateFromYawPitchRoll(sharedData.mOrientation.Y, sharedData.mOrientation.X, sharedData.mOrientation.Z);
-        localCarData.Physics.Location = sharedData.mParticipantInfo[sharedData.mViewedParticipantIndex].mWorldPosition.ToVector3();
-        localCarData.Physics.Acceleration = sharedData.mLocalAcceleration.ToVector3();
-        localCarData.Physics.Velocity = sharedData.mOdometerKM;
         localCarData.Physics.Location = sharedData.mParticipantInfo[sharedData.mViewedParticipantIndex].mWorldPosition;
         localCarData.Physics.Acceleration = sharedData.mLocalAcceleration;
+        localCarData.Physics.Velocity = sharedData.mSpeed;
 
         // Car engine
         localCarData.Engine.FuelLiters = sharedData.mFuelLevel * sharedData.mFuelCapacity;
