@@ -35,13 +35,13 @@ internal static partial class Ams2LocalCarMapper
 
         // Car electronics
         localCarData.Electronics.TractionControlLevel = sharedData.mTractionControlSetting;
-        localCarData.Electronics.BrakeBias = sharedData.mBrakeBias * 100.0f;
+        localCarData.Electronics.BrakeBias = sharedData.mBrakeBias;
 
         localCarData.Electronics.AbsActivation = sharedData.mAntiLockActive ? 1.0f : 0.0f;
         localCarData.Electronics.AbsLevel = sharedData.mAntiLockSetting;
 
         // Car inputs
-        localCarData.Inputs.HandBrake = sharedData.mHandBrake * 100.0f;
+        localCarData.Inputs.HandBrake = sharedData.mHandBrake;
         localCarData.Inputs.Steering = sharedData.mSteering;
         localCarData.Inputs.Throttle = sharedData.mThrottle;
         localCarData.Inputs.Clutch = sharedData.mClutch;
