@@ -29,6 +29,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         this.Width = rectangle.Width;
         this.Height = rectangle.Height;
         this.Name = Name;
+        GameWhenStarted = GameManager.CurrentGame;
 
         try
         {
@@ -143,7 +144,6 @@ public abstract class CommonAbstractOverlay : FloatingWindow
     {
         try
         {
-            GameWhenStarted = GameManager.CurrentGame;
             try
             {
                 BeforeStart();
