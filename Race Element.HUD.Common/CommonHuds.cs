@@ -49,7 +49,7 @@ public static class CommonHuds
             }
 
         if (activeCount > 0)
-            Thread.Sleep(2000);
+            Thread.Sleep(500);
 
         Mouse.SetCursor(Cursors.Arrow);
     }

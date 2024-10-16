@@ -4,7 +4,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Collections.Generic;
 
-using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Core.Jobs.Loop;
 using RaceElement.Data.ACC.Core;
 using RaceElement.Util;
 using System.Reflection;

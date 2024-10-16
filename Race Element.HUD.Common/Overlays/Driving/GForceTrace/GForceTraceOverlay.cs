@@ -11,23 +11,20 @@ namespace RaceElement.HUD.Common.Overlays.Driving.GForceTrace;
     OverlayType = OverlayType.Drive,
     Version = 1.00,
     Authors = ["Reinier Klarenberg"])]
-internal sealed class GForceTraceOverlay : CommonAbstractOverlay
+internal sealed class GForceTraceOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "G-Force Trace")
 {
     internal readonly GForceTraceConfiguration _config = new();
     private GForceDataJob _dataJob;
     private GForceGraph _graph;
 
-    public GForceTraceOverlay(Rectangle rectangle) : base(rectangle, "G-Force Trace")
+    public sealed override void BeforeStart()
     {
         RefreshRateHz = _config.Chart.HudRefreshRate;
         RefreshRateHz.ClipMax(_config.Data.Herz);
         Width = _config.Chart.Width;
         Height = _config.Chart.Height;
-    }
 
-    public sealed override void BeforeStart()
-    {
-        _dataJob = new GForceDataJob(this, _config.Chart.Width - 1) { IntervalMillis = 1000 / _config.Data.Herz };
+        _dataJob = new GForceDataJob(this, _config.Chart.Width - 1) { IntervalMillis = (int)(1000f / _config.Data.Herz) };
         _graph = new GForceGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _dataJob, _config);
 
         if (!IsPreviewing)

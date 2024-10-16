@@ -1,4 +1,4 @@
-﻿using RaceElement.Core.Jobs.LoopJob;
+﻿using RaceElement.Core.Jobs.Loop;
 using RaceElement.Data.Common;
 using RaceElement.Util.SystemExtensions;
 using System.Numerics;
@@ -12,6 +12,8 @@ internal sealed class GForceDataJob : AbstractLoopJob
 
     public readonly List<int> Lateral = [];
     public readonly List<int> Longitudinal = [];
+
+    internal readonly object _lock = new();
 
     public GForceDataJob(GForceTraceOverlay overlay, int dataCount)
     {
@@ -44,7 +46,7 @@ internal sealed class GForceDataJob : AbstractLoopJob
         latG += maxLatG;
 
         int latData = (int)(latG * 100 / (maxLatG * 2));
-        lock (Lateral)
+        lock (_lock)
         {
             Lateral.Insert(0, latData);
 
@@ -58,7 +60,7 @@ internal sealed class GForceDataJob : AbstractLoopJob
         longG += maxLongG;
 
         int longData = (int)(longG * 100 / (maxLongG * 2));
-        lock (Longitudinal)
+        lock (_lock)
         {
             Longitudinal.Insert(0, longData);
 

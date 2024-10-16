@@ -7,7 +7,7 @@ using System.Net;
 
 namespace RaceElement.Controls.Util.Updater;
 
-internal class AppUpdater
+internal sealed class AppUpdater
 {
     internal void Update(ReleaseAsset asset)
     {

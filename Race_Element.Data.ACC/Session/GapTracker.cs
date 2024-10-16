@@ -1,4 +1,4 @@
-﻿using RaceElement.Core.Jobs.LoopJob;
+﻿using RaceElement.Core.Jobs.Loop;
 using RaceElement.Data.ACC.Core;
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Tracker;

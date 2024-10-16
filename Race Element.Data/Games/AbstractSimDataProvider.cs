@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Core.Jobs.Loop;
 using RaceElement.Data.Common;
 using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Common.SimulatorData.LocalCar;

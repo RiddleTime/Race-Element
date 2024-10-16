@@ -66,7 +66,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 
         _model.MaxRpm = maxRpm;
         _model.CurrentRpm = (int)(maxRpm * 0.9f);
-        _drawShiftRPM = true;
+        _drawShiftRPM = GameWhenStarted != Game.RaceRoom;
     }
 
     public sealed override void BeforeStart()
@@ -211,7 +211,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
         if (_drawShiftRPM)
         {
             int x = (int)(_halfRpmStringWidth + 8 + _halfRpmStringWidth * 2 + 5);
-            int y = (int)(_config.Bar.Height / 2 - _font.Height / 2.05);
+            int y = (int)(_config.Bar.Height / 2 - _font?.Height / 2.05);
             string earlyShiftRpm = $"Early:{_config.Upshift.Early / 100f * _model.MaxRpm:F0}";
             float earlyWidth = g.MeasureString(earlyShiftRpm, _font).Width;
             Rectangle earlyRect = new((int)(x - earlyWidth / 5), y, (int)earlyWidth, _font.Height);
@@ -270,7 +270,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
     {
         double percent = 0;
 
-        if (_model.MaxRpm > 0 && _model.CurrentRpm > 0)
+        if (_model is { MaxRpm: > 0, CurrentRpm: > 0 })
             percent = (double)_model.CurrentRpm / _model.MaxRpm;
 
         if (percent > 0)

@@ -1,4 +1,4 @@
-﻿using RaceElement.Core.Jobs.LoopJob;
+﻿using RaceElement.Core.Jobs.Loop;
 using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Session;
 using System;

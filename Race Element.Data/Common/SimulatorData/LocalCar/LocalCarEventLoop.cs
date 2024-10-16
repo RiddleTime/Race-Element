@@ -1,5 +1,5 @@
 ﻿using DeepCopy;
-using RaceElement.Core.Jobs.LoopJob;
+using RaceElement.Core.Jobs.Loop;
 
 namespace RaceElement.Data.Common.SimulatorData.LocalCar;
 internal sealed class LocalCarEventLoop : AbstractLoopJob
@@ -19,45 +19,65 @@ internal sealed class LocalCarEventLoop : AbstractLoopJob
     {
         _current = DeepCopier.Copy(SimDataProvider.LocalCar);
 
-        CheckGearChange();
+        Inputs.CheckGearChange(_previous, _current);
 
-        CheckLapDrivenChange();
-        CheckGlobalPositionChange();
-        CheckClassPositionChange();
+        Race.CheckLapDrivenChange(_previous, _current);
+        Race.CheckGlobalPositionChange(_previous, _current);
+        Race.CheckClassPositionChange(_previous, _current);
 
-        CheckCarModelGameNameChange();
+        CarModel.CheckCarModelGameNameChange(_previous, _current);
+
+        Timing.CheckHasBestLaptimeChanged(_previous, _current);
 
         _previous = DeepCopier.Copy(_current);
     }
 
-    private void CheckGlobalPositionChange()
+    private static class Inputs
     {
-        if (_previous.Race.GlobalPosition != _current.Race.GlobalPosition)
-            SimDataProvider.localCarEvents.Race.GlobalPositionChanged(new() { Previous = _previous.Race.GlobalPosition, Next = _current.Race.GlobalPosition });
+        public static void CheckGearChange(LocalCarData previous, LocalCarData current)
+        {
+            if (previous.Inputs.Gear != current.Inputs.Gear)
+                SimDataProvider.localCarEvents.Inputs.GearChanged(new() { Previous = previous.Inputs.Gear, Next = current.Inputs.Gear });
+        }
     }
 
-    private void CheckClassPositionChange()
+    private static class Race
     {
-        if (_previous.Race.ClassPosition != _current.Race.ClassPosition)
-            SimDataProvider.localCarEvents.Race.ClassPositionChanged(new() { Previous = _previous.Race.ClassPosition, Next = _current.Race.ClassPosition });
+        public static void CheckGlobalPositionChange(LocalCarData previous, LocalCarData current)
+        {
+            if (previous.Race.GlobalPosition != current.Race.GlobalPosition)
+                SimDataProvider.localCarEvents.Race.GlobalPositionChanged(new() { Previous = previous.Race.GlobalPosition, Next = current.Race.GlobalPosition });
+        }
+
+        public static void CheckClassPositionChange(LocalCarData previous, LocalCarData current)
+        {
+            if (previous.Race.ClassPosition != current.Race.ClassPosition)
+                SimDataProvider.localCarEvents.Race.ClassPositionChanged(new() { Previous = previous.Race.ClassPosition, Next = current.Race.ClassPosition });
+        }
+
+        public static void CheckLapDrivenChange(LocalCarData previous, LocalCarData current)
+        {
+            if (previous.Race.LapsDriven != current.Race.LapsDriven)
+                SimDataProvider.localCarEvents.Race.LapsDrivenChanged(new() { Previous = previous.Race.LapsDriven, Next = current.Race.LapsDriven });
+        }
     }
 
-    private void CheckLapDrivenChange()
+    private static class CarModel
     {
-        if (_previous.Race.LapsDriven != _current.Race.LapsDriven)
-            SimDataProvider.localCarEvents.Race.LapsDrivenChanged(new() { Previous = _previous.Race.LapsDriven, Next = _current.Race.LapsDriven });
+        public static void CheckCarModelGameNameChange(LocalCarData previous, LocalCarData current)
+        {
+            if (previous.CarModel.GameName != current.CarModel.GameName)
+                SimDataProvider.localCarEvents.CarModel.GameNameChanged(new() { Previous = previous.CarModel.GameName, Next = current.CarModel.GameName });
+        }
     }
 
-    private void CheckGearChange()
+    private static class Timing
     {
-        if (_previous.Inputs.Gear != _current.Inputs.Gear)
-            SimDataProvider.localCarEvents.Inputs.GearChanged(new() { Previous = _previous.Inputs.Gear, Next = _current.Inputs.Gear });
-    }
-
-    private void CheckCarModelGameNameChange()
-    {
-        if (_previous.CarModel.GameName != _current.CarModel.GameName)
-            SimDataProvider.localCarEvents.CarModel.GameNameChanged(new() { Previous = _previous.CarModel.GameName, Next = _current.CarModel.GameName });
+        public static void CheckHasBestLaptimeChanged(LocalCarData previous, LocalCarData current)
+        {
+            if (previous.Timing.HasLapTimeBest != current.Timing.HasLapTimeBest)
+                SimDataProvider.localCarEvents.Timing.HasBestLaptimeChanged(new() { Previous = previous.Timing.HasLapTimeBest, Next = current.Timing.HasLapTimeBest });
+        }
     }
 }
 

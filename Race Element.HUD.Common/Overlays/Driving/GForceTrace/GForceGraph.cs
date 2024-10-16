@@ -1,13 +1,11 @@
 ﻿using RaceElement.HUD.Overlay.OverlayUtil;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.GForceTrace;
 
-internal class GForceGraph : IDisposable
+internal sealed class GForceGraph : IDisposable
 {
     private readonly int _x, _y;
     private readonly int _width, _height;
@@ -16,6 +14,8 @@ internal class GForceGraph : IDisposable
     private readonly CachedBitmap _cachedBackground;
     private readonly Pen _longPen;
     private readonly Pen _latPen;
+
+    private List<int> _drawingData = [];
 
     public GForceGraph(int x, int y, int width, int height, GForceDataJob dataJob, GForceTraceConfiguration config)
     {
@@ -62,13 +62,11 @@ internal class GForceGraph : IDisposable
 
         if (_dataJob != null)
         {
-            List<int> data;
+            lock (_dataJob._lock) _drawingData = new(_dataJob.Longitudinal);
+            DrawData(g, _drawingData, _longPen);
 
-            lock (_dataJob.Longitudinal) data = new(_dataJob.Longitudinal);
-            DrawData(g, data, _longPen);
-
-            lock (_dataJob.Lateral) data = new(_dataJob.Lateral);
-            DrawData(g, data, _latPen);
+            lock (_dataJob._lock) _drawingData = new(_dataJob.Lateral);
+            DrawData(g, _drawingData, _latPen);
         }
     }
 
@@ -77,9 +75,7 @@ internal class GForceGraph : IDisposable
         if (data.Count > 0)
         {
             List<Point> points = [];
-
-            var spanData = CollectionsMarshal.AsSpan(data);
-
+            ReadOnlySpan<int> spanData = CollectionsMarshal.AsSpan(data);
             for (int i = 0; i < spanData.Length - 1; i++)
             {
                 int x = _x + _width - i * (_width / spanData.Length);
@@ -106,7 +102,7 @@ internal class GForceGraph : IDisposable
         GC.SuppressFinalize(this);
     }
 
-    protected virtual void Dispose(bool disposing)
+    protected void Dispose(bool disposing)
     {
         _cachedBackground?.Dispose();
         _longPen?.Dispose();

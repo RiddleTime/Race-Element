@@ -467,10 +467,11 @@ public partial class HudOptions : UserControl
                 int index = ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
                 if (index != -1)
                     ActiveOverlays.RemoveAt(index);
-                Task.Run(() =>
-                {
-                    overlay?.Stop();
-                });
+                new Thread(() =>
+                 {
+                     overlay?.Stop();
+                 })
+                { IsBackground = true }.Start();
                 configStacker.IsEnabled = true;
             }
         };
@@ -753,6 +754,12 @@ public partial class HudOptions : UserControl
             if (cga != null)
             {
                 //Debug.WriteLine($"{type.Name} -  {type.ReflectedType.FullName} - {type.PropertyType.Name}");
+
+                HideForGameAttribute hfga = null;
+                foreach (Attribute attribute in Attribute.GetCustomAttributes(type))
+                    if (attribute is HideForGameAttribute hideForGameAttribute)
+                        hfga = hideForGameAttribute;
+                if (hfga != null && GameManager.CurrentGame.HasFlag(hfga.Game)) continue;
 
                 ListView listView = new()
                 {

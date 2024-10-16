@@ -1,4 +1,4 @@
-﻿using RaceElement.Core.Jobs.LoopJob;
+﻿using RaceElement.Core.Jobs.Loop;
 using System.Collections.Generic;
 using static RaceElement.ACCSharedMemory;
 

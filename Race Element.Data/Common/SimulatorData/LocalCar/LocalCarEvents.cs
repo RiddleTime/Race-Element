@@ -23,6 +23,12 @@ public sealed class LocalCarEvents
     public readonly RaceEvents Race = new();
 
 
+    /// <summary>
+    /// See <see cref="LocalCarData.Timing"/> for live data.
+    /// </summary>
+    public readonly TimingEvents Timing = new();
+
+
     #region Event Handlers
 
     /// <summary>
@@ -82,6 +88,16 @@ public sealed class LocalCarEvents
         internal void ClassPositionChanged(Change<int> classPositionChangedEvent) => OnClassPositionChanged?.Invoke(this, classPositionChangedEvent);
     }
 
-    #endregion
+    public sealed class TimingEvents
+    {
+        internal TimingEvents() { }
 
+        /// <summary>
+        /// Kicks of when "has best lap time" is changed.
+        /// </summary>
+        public event EventHandler<Change<bool>>? OnHasSetBestLaptimeChanged;
+        internal void HasBestLaptimeChanged(Change<bool> hasSetBestLaptimeChangedEvent) => OnHasSetBestLaptimeChanged?.Invoke(this, hasSetBestLaptimeChangedEvent);
+
+    }
 }
+#endregion

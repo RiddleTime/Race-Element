@@ -29,6 +29,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         this.Width = rectangle.Width;
         this.Height = rectangle.Height;
         this.Name = Name;
+        GameWhenStarted = GameManager.CurrentGame;
 
         try
         {
@@ -42,7 +43,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
 
     public Game GameWhenStarted { get; private set; } = Game.Any;
 
-    private bool Draw = false;
+    private volatile bool Draw = false;
 
     public bool IsRepositioning { get; internal set; }
 
@@ -67,9 +68,8 @@ public abstract class CommonAbstractOverlay : FloatingWindow
     /// <returns></returns>
     public virtual bool DefaultShouldRender()
     {
-        // System modes
-        if (HudSettings.Cached.DemoMode) return true;
-        if (IsRepositioning) return true;
+        // always visible or repositioning mode
+        if (HudSettings.Cached.DemoMode || IsRepositioning) return true;
 
         // sim data modes
         bool condition = false;
@@ -83,8 +83,8 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         }
 
         return condition;
-
     }
+
     private void LoadFieldConfig()
     {
         FieldInfo[] fields = this.GetType().GetRuntimeFields().ToArray();
@@ -136,12 +136,14 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         }
     }
 
-    public bool hasClosed = true;
+    /// <summary>
+    /// TODO refactor?? what the heck was this?
+    /// </summary>
+    private bool hasClosed = true;
     public virtual void Start(bool addTrackers = true)
     {
         try
         {
-            GameWhenStarted = GameManager.CurrentGame;
             try
             {
                 BeforeStart();
@@ -199,6 +201,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
                       }
 
                   });
+                renderThread.IsBackground = true;
                 renderThread.SetApartmentState(ApartmentState.MTA);
                 renderThread.Start();
             }
