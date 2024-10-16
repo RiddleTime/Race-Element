@@ -8,7 +8,7 @@ public static class ReleaseNotes
     {
         {"2.0.0.2", "Multi-Sim:"+
                     "\n- Improved speed of switching between simulators."+
-                    "\n- You might have to select the current simulator."+
+                    "\n- You might have to select the current simulator after the update."+
                     "\n- Support added for Automobilista 2 (By Andrei Jianu)."+
                     "\n\niRacing:"+
                     "\n- HUDs should now only show once you're actually driving the car." +
