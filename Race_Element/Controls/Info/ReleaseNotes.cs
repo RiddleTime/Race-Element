@@ -10,7 +10,8 @@ public static class ReleaseNotes
                     "\n  - Improved speed of switching between simulators."+
                     "\n  - Support added for Automobilista 2 (By Andrei Jianu)."+
                     "\n iRacing:"+
-                    "\n   - HUDs should now only show once you're actually driving the car."
+                    "\n   - HUDs should now only show once you're actually driving the car." +
+                    "\n\n- Updated System.Net.Json package due to vulnerability."
                     },
         {"2.0.0.0", "To Restore your ACC HUD Settings, Open the main Settings tab and Click the Migrate Button, it will start a new instance and then shuts down the already running instance."+
                     "\n\n Multi-Sim Support for HUDS:" +
