@@ -173,6 +173,7 @@ internal sealed class TaxiOverlay(Rectangle rectangle) : AbstractOverlay(rectang
         if (trackMap._trackedPositions.Count > 0)
         {
             var trackData = TrackData.GetCurrentTrack(pageStatic.Track);
+            if (trackData == null) return null;
             float meterSpline = (float)trackData.TrackLength / trackMap._trackedPositions.Count / 100f;
             var offset = meterSpline * 5;
 
