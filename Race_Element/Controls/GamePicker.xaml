@@ -30,7 +30,7 @@
 
             <ControlTemplate x:Key="SelectedTemplate">
                 <StackPanel VerticalAlignment="Top">
-                    <Image Source="{Binding Icon}" ToolTip="{Binding Name}" Width="48" Height="48"></Image>
+                    <Image Source="{Binding Icon}" ToolTip="{Binding Name}" Margin="13,0,0,0" Width="48" Height="48"></Image>
                 </StackPanel>
             </ControlTemplate>
             <ControlTemplate x:Key="DropDownTemplate">
