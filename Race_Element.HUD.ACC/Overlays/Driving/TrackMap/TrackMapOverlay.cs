@@ -164,6 +164,7 @@ internal sealed class TrackMapOverlay : AbstractOverlay
         try
         {
             var trackData = TrackData.GetCurrentTrack(pageStatic.Track);
+            if (trackData == null) return;
             _scale = trackData.FactorScale * _config.General.ScaleFactor;
 
             _miniMapCreationJob.Cancel();
