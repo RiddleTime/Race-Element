@@ -17,6 +17,18 @@
       <IsAotCompatible>False</IsAotCompatible>
       <IsTrimmable>False</IsTrimmable>
     </PropertyGroup>
+    <ItemGroup>
+      <None Remove="Games\Resources\Icons\AC.ico" />
+      <None Remove="Games\Resources\Icons\ACC.ico" />
+      <None Remove="Games\Resources\Icons\AMS2.ico" />
+      <None Remove="Games\Resources\Icons\iRacing.ico" />
+      <None Remove="Games\Resources\Icons\RaceRoom.ico" />
+      <None Remove="Games\Resources\Logos\AC.jpg" />
+      <None Remove="Games\Resources\Logos\ACC.jpg" />
+      <None Remove="Games\Resources\Logos\AMS2.jpg" />
+      <None Remove="Games\Resources\Logos\iRacing.jpg" />
+      <None Remove="Games\Resources\Logos\RaceRoom.jpg" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="DeepCopy" Version="1.0.3" />
@@ -26,6 +38,19 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Include="Games\Resources\Icons\AC.ico" />
+      <EmbeddedResource Include="Games\Resources\Icons\ACC.ico" />
+      <EmbeddedResource Include="Games\Resources\Icons\AMS2.ico" />
+      <EmbeddedResource Include="Games\Resources\Icons\iRacing.ico" />
+      <EmbeddedResource Include="Games\Resources\Icons\RaceRoom.ico" />
+      <EmbeddedResource Include="Games\Resources\Logos\AC.jpg" />
+      <EmbeddedResource Include="Games\Resources\Logos\ACC.jpg" />
+      <EmbeddedResource Include="Games\Resources\Logos\AMS2.jpg" />
+      <EmbeddedResource Include="Games\Resources\Logos\iRacing.jpg" />
+      <EmbeddedResource Include="Games\Resources\Logos\RaceRoom.jpg" />
     </ItemGroup>
 
 </Project>

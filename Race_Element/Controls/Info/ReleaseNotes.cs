@@ -7,8 +7,7 @@ public static class ReleaseNotes
     internal static readonly Dictionary<string, string> Notes = new()
     {
         {"2.0.0.4", "Race Element:"+
-                    "\n- Minimum height of the app is now 720p."+
-                    "\nMulti-Sim:"+
+                    "\n- Minimum height of the app is now smaller at 720p."+
                     "\n- Added New Game selector! It's located at the left-bottom of the app."+
                     "\n\nACC HUDs:"+
                     "\n  - Fixed a crash in track map hud."},

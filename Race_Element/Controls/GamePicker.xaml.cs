@@ -2,6 +2,7 @@
 using RaceElement.Util.Settings;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -58,13 +59,43 @@ public partial class GamePicker : UserControl
         {
             if (game == Game.Any) continue;
 
+            var logStream = game.GetSteamLogo();
+            BitmapImage logo = new();
+            if (logStream != null)
+            {
+                var bitmap = new BitmapImage();
+                logo.BeginInit();
+                logo.StreamSource = logStream;
+                logo.CacheOption = BitmapCacheOption.OnLoad;
+                logo.EndInit();
+                logo.Freeze();
+
+                logStream.Close();
+                logStream.Dispose();
+            }
+
+            var iconStream = game.GetGameClientIcon();
+            BitmapImage icon = new();
+            if (iconStream != null)
+            {
+                var bitmap = new BitmapImage();
+                icon.BeginInit();
+                icon.StreamSource = iconStream;
+                icon.CacheOption = BitmapCacheOption.OnLoad;
+                icon.EndInit();
+                icon.Freeze();
+
+                iconStream.Close();
+                iconStream.Dispose();
+            }
+
             availableGames.Add(new GamePickerModel()
             {
                 Name = game.ToShortName(),
                 FriendlyName = game.ToFriendlyName(),
                 Game = game,
-                Logo = new BitmapImage(new Uri(game.GetSteamLogo())),
-                Icon = new BitmapImage(new Uri(game.GetGameClientIcon()))
+                Logo = logo,
+                Icon = icon,
             });
         }
         availableGames.Sort((a, b) => a.FriendlyName.CompareTo(b.FriendlyName));
@@ -73,7 +104,7 @@ public partial class GamePicker : UserControl
 
         var uiSettings = new UiSettings();
         Game selectedGame = uiSettings.Get().SelectedGame;
-
+        var all = Resources.Values;
         var model = availableGames.FirstOrDefault(x => x.Game == selectedGame);
         model ??= availableGames.FirstOrDefault(x => x.Game == Game.AssettoCorsaCompetizione);
         SetToolTip(model.Game);
