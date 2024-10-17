@@ -10,7 +10,7 @@ public static class ReleaseNotes
                     "\n- Minimum height of the app is now smaller at 720p."+
                     "\n- Added New Game selector! It's located at the left-bottom of the app."+
                     "\n\nACC HUDs:"+
-                    "\n  - Fixed a crash in track map hud."},
+                    "\n- Fixed a crash in track map hud."},
         {"2.0.0.2", "Multi-Sim:"+
                     "\n- Improved speed of switching between simulators."+
                     "\n- You might have to select the current simulator after the update."+
