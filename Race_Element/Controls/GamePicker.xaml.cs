@@ -40,7 +40,7 @@ public partial class GamePicker : UserControl
             SetToolTip(currentGame);
         };
         ToolTipService.SetInitialShowDelay(this, 0);
-
+        ToolTipService.SetPlacement(this, System.Windows.Controls.Primitives.PlacementMode.Right);
     }
 
     private void SetToolTip(Game game)
