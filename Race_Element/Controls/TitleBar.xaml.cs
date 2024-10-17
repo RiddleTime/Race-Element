@@ -28,7 +28,6 @@ public partial class TitleBar : UserControl
         this.Loaded += (s, e) =>
         {
             SetAppTitle();
-            PopulateGames();
         };
         buttonExit.Click += ButtonExit_Click;
 
@@ -70,21 +69,6 @@ public partial class TitleBar : UserControl
             SettingsTab.Instance.tabAccSettings.Focus();
         };
 
-        comboBoxCurrentGame.SelectionChanged += (s, e) =>
-        {
-            var item = comboBoxCurrentGame.SelectedItem as ComboBoxItem;
-            if (item != null && item.DataContext != null)
-            {
-                Game currentGame = (Game)item.DataContext;
-                GameManager.SetCurrentGame(currentGame);
-
-                var uiSettings = new UiSettings();
-                var settings = uiSettings.Get();
-                settings.SelectedGame = currentGame;
-                uiSettings.Save(settings);
-            }
-        };
-
 
         //// used for collecting corner numbers in data.acc.tracks
         //#if DEBUG
@@ -118,38 +102,6 @@ public partial class TitleBar : UserControl
 
             Dispatcher.BeginInvoke(new Action(() => this.Title.Text = text));
         });
-    }
-
-    private void PopulateGames()
-    {
-        comboBoxCurrentGame.Items.Clear();
-        foreach (Game game in Enum.GetValues(typeof(Game)))
-        {
-            if (game == Game.Any) continue;
-            string shortName = game.ToShortName();
-            if (shortName.Length > 0)
-            {
-                ComboBoxItem comboBoxItem = new() { Content = shortName, DataContext = game, ToolTip = game.ToFriendlyName() };
-                comboBoxCurrentGame.Items.Add(comboBoxItem);
-            }
-            else
-            {
-                comboBoxCurrentGame.Items.Add(string.Empty);
-            }
-        }
-
-        var uiSettings = new UiSettings();
-        Game selectedGame = uiSettings.Get().SelectedGame;
-        if (selectedGame == Game.Any) selectedGame = uiSettings.Default().SelectedGame;
-        int index = -1;
-        for (int i = 0; i < comboBoxCurrentGame.Items.Count; i++)
-        {
-            var itemObject = comboBoxCurrentGame.Items.GetItemAt(i);
-            if (itemObject is ComboBoxItem item && item.DataContext != null && item.DataContext is Game game)
-                if (game == selectedGame)
-                    index = i;
-        }
-        if (index != -1) comboBoxCurrentGame.SelectedIndex = index;
     }
 
     private void TitleBar_MouseDoubleClick(object sender, MouseButtonEventArgs e)

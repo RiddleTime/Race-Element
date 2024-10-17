@@ -239,7 +239,7 @@ public partial class MainWindow : Window
             LogWriter.WriteToLog(loadString);
 
             Thread.Sleep(2000);
-            GC.Collect(GC.MaxGeneration, GCCollectionMode.Forced, false, true);
+            GC.Collect(GC.MaxGeneration, GCCollectionMode.Optimized, false, false);
             UpdateUsage();
         });
 
