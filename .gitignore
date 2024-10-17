@@ -141,3 +141,4 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+/.nx
