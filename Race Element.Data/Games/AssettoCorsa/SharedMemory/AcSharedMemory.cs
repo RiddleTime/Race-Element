@@ -148,7 +148,7 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-        public class PageFileGraphics
+        public sealed class PageFileGraphics
         {
             public int PacketId;
             public AcStatus Status;
@@ -224,11 +224,11 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
             public float Y;
             public float Z;
 
-            public readonly override string ToString() => $"X: {X}, Y: {Y}, Z: {Z}";
+            public override readonly string ToString() => $"X: {X}, Y: {Y}, Z: {Z}";
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-        public class PageFilePhysics
+        public sealed class PageFilePhysics
         {
             public int PacketId;
             public float Gas;
@@ -362,7 +362,7 @@ namespace RaceElement.Data.Games.AssettoCorsa.SharedMemory
         };
 
         [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-        public class PageFileStatic
+        public sealed class PageFileStatic
         {
             [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
             public string SharedMemoryVersion;

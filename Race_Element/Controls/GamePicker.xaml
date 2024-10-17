@@ -1,0 +1,83 @@
+﻿<UserControl x:Class="RaceElement.Controls.GamePicker"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:local="clr-namespace:RaceElement.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="105" d:DesignWidth="92"
+                MinHeight="80"
+             ToolTip="Select a different game. This might take a few seconds.">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <materialDesign:BundledTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="DeepOrange" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Snackbar.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Button.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBlock.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TabControl.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Label.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Card.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Slider.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DataGrid.xaml"/>
+
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Overrides.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+
+            <ControlTemplate x:Key="SelectedTemplate">
+                <StackPanel VerticalAlignment="Top">
+                    <Image Source="{Binding Icon}" ToolTip="{Binding Name}" Margin="13,0,0,0" Width="48" Height="48"></Image>
+                </StackPanel>
+            </ControlTemplate>
+            <ControlTemplate x:Key="DropDownTemplate">
+                <materialDesign:Card>
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock Text="{Binding FriendlyName}" FontWeight="Bold" TextAlignment="Center"></TextBlock>
+                        <Image Source="{Binding Logo}" ToolTip="{Binding FriendlyName}" Width="184" Height="69"></Image>
+                    </StackPanel>
+                </materialDesign:Card>
+            </ControlTemplate>
+            <DataTemplate x:Key="GamePickerContentsTemplate">
+                <Control x:Name="theControl" Focusable="False" Template="{StaticResource DropDownTemplate}" />
+                <DataTemplate.Triggers>
+                    <DataTrigger Binding="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type ComboBoxItem}}, Path=IsSelected}" Value="{x:Null}">
+                        <Setter TargetName="theControl" Property="Template" Value="{StaticResource SelectedTemplate}" />
+                    </DataTrigger>
+                </DataTemplate.Triggers>
+            </DataTemplate>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <Grid HorizontalAlignment="Stretch" Height="90">
+        <Grid.Style>
+            <Style BasedOn="{StaticResource HoverGrid}" TargetType="{x:Type Grid}">
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter Property="Cursor" Value="Hand"/>
+                        <Setter Property="Background">
+                            <Setter.Value>
+                                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                                    <GradientStop Color="#20FF4500" Offset="0.0"/>
+                                    <GradientStop Color="#80000000" Offset="0.8"/>
+                                </LinearGradientBrush>
+                            </Setter.Value>
+                        </Setter>
+                        <Setter Property="Opacity" Value="1"/>
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+        </Grid.Style>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="60"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Game" TextAlignment="Center"  FontFamily="{StaticResource Conthrax}" FontSize="16" Margin="0,0,0,0"  Grid.Row="0" ></TextBlock>
+        <ComboBox x:Name="comboGamePicker"  Margin="2,0,2,0" MaxDropDownHeight="600"  MaxWidth="600" ItemTemplate="{StaticResource GamePickerContentsTemplate}" 
+            Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" />
+    </Grid>
+</UserControl>

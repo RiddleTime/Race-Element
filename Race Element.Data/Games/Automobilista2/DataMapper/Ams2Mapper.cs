@@ -7,8 +7,8 @@ namespace RaceElement.Data.Games.Automobilista2.DataMapper;
 
 internal static class Ams2Mapper
 {
-    static private float _prevLapFuel;
-    static private uint _prevLapCount;
+    private static float _prevLapFuel;
+    private static uint _prevLapCount;
 
     public static void ToLocalSession(Shared shared, SessionData session)
     {

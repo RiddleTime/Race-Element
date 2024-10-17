@@ -72,4 +72,26 @@ public static class GameExtensions
         Game.Automobilista2 => 1066890,
         _ => -1
     };
+
+    public static Stream? GetSteamLogo(this Game game)
+    {
+        var enumAssembly = typeof(Game).Assembly;
+
+        var resourceNames = enumAssembly.GetManifestResourceNames();
+        var found = resourceNames.FirstOrDefault(x => x.EndsWith($"Logos.{game.ToShortName()}.jpg"));
+        if (found == null) return null;
+
+        return enumAssembly.GetManifestResourceStream(found);
+    }
+
+    public static Stream? GetGameClientIcon(this Game game)
+    {
+        var enumAssembly = typeof(Game).Assembly;
+
+        var resourceNames = enumAssembly.GetManifestResourceNames();
+        var found = resourceNames.FirstOrDefault(x => x.EndsWith($"Icons.{game.ToShortName()}.ico"));
+        if (found == null) return null;
+
+        return enumAssembly.GetManifestResourceStream(found);
+    }
 }
