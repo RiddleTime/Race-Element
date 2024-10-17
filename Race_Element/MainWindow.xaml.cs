@@ -108,13 +108,18 @@ public partial class MainWindow : Window
         tabControl.SelectionChanged += (s, se) =>
         {
             UiSettingsJson tempSettings = _uiSettings.Get();
-            tempSettings.SelectedTabIndex = tabControl.SelectedIndex;
-            _uiSettings.Save(tempSettings);
+            if (tempSettings.SelectedGame == Game.AssettoCorsaCompetizione)
+            {
+                tempSettings.SelectedTabIndex = tabControl.SelectedIndex;
+                _uiSettings.Save(tempSettings);
+            }
         };
 
-        tabControl.SelectedIndex = _uiSettings.Get().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
 
         UiSettingsJson uiSettings = _uiSettings.Get();
+        if (uiSettings.SelectedGame == Game.AssettoCorsaCompetizione)
+            tabControl.SelectedIndex = _uiSettings.Get().SelectedTabIndex.Clip(0, tabControl.Items.Count - 1);
+        else tabControl.SelectedIndex = 0;
 
         this.Left = uiSettings.X.Clip(0, (int)SystemParameters.PrimaryScreenHeight - 1);
         this.Top = uiSettings.Y.Clip(0, (int)SystemParameters.PrimaryScreenHeight - 1);
