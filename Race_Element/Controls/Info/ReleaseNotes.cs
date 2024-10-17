@@ -6,6 +6,8 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.0.0.4", "Multi-Sim"+
+                    "\n- Game selector is now at the left bottom of the app."},
         {"2.0.0.2", "Multi-Sim:"+
                     "\n- Improved speed of switching between simulators."+
                     "\n- You might have to select the current simulator after the update."+
