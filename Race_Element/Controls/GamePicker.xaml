@@ -76,7 +76,7 @@
             <RowDefinition Height="60"/>
         </Grid.RowDefinitions>
 
-        <TextBlock Text="Game" TextAlignment="Center"  FontFamily="{StaticResource Conthrax}" Margin="0,0,0,0"  Grid.Row="0" ></TextBlock>
+        <TextBlock Text="Game" TextAlignment="Center"  FontFamily="{StaticResource Conthrax}" FontSize="16" Margin="0,0,0,0"  Grid.Row="0" ></TextBlock>
         <ComboBox x:Name="comboGamePicker"  Margin="2,0,2,0" MaxDropDownHeight="600"  MaxWidth="600" ItemTemplate="{StaticResource GamePickerContentsTemplate}" 
             Grid.Row="1" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" VerticalAlignment="Top" />
     </Grid>

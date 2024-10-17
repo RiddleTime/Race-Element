@@ -37,7 +37,15 @@ public partial class GamePicker : UserControl
             var settings = uiSettings.Get();
             settings.SelectedGame = currentGame;
             uiSettings.Save(settings);
+            SetToolTip(currentGame);
         };
+        ToolTipService.SetInitialShowDelay(this, 0);
+
+    }
+
+    private void SetToolTip(Game game)
+    {
+        this.ToolTip = $"Game: {game.ToFriendlyName()}\n\nClick here select a different game. This might take a few seconds.";
     }
 
     private void GamePicker_Loaded(object sender, RoutedEventArgs e)
@@ -68,7 +76,7 @@ public partial class GamePicker : UserControl
 
         var model = availableGames.FirstOrDefault(x => x.Game == selectedGame);
         model ??= availableGames.FirstOrDefault(x => x.Game == Game.AssettoCorsaCompetizione);
-
+        SetToolTip(model.Game);
         comboGamePicker.SelectedItem = model;
     }
 }
