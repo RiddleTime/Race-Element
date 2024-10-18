@@ -90,7 +90,7 @@ public partial class MainWindow : Window
             Process.Start(new ProcessStartInfo()
             {
                 FileName = "cmd",
-                Arguments = $"/c start steam://rungameid/{steamID}",
+                Arguments = $"/c start steam://run/{steamID}",
                 WindowStyle = ProcessWindowStyle.Hidden,
             });
         };
@@ -517,10 +517,15 @@ public partial class MainWindow : Window
                 Thread.Sleep(3);
                 Dispatcher.BeginInvoke(new Action(() =>
                 {
+
+                    if (this.Opacity - steps < target)
+                    {
+                        finalValueReached = true;
+                        return;
+                    }
                     this.Opacity -= steps;
 
-                    if (this.Opacity < target)
-                        finalValueReached = true;
+
                 }));
 
             }
