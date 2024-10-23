@@ -28,8 +28,8 @@ internal class _3dOverlay : AbstractOverlay
         public class AnimationGrouping
         {
             [ToolTip("Refreshrate in Hz.")]
-            [IntRange(1, 100, 1)]
-            public int RefreshRate { get; set; } = 30;
+            [IntRange(10, 500, 10)]
+            public int RefreshRate { get; set; } = 200;
 
             [IntRange(8, 18, 2)]
             public int CubeSize { get; set; } = 10;
