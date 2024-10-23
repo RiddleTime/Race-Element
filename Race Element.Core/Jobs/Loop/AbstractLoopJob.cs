@@ -23,13 +23,15 @@ public abstract partial class AbstractLoopJob : IJob
     /// <summary>Set at what interval <see cref="RunAction"/> is executed. If the execution
     /// time is less than the interval it will wait until the next interval,
     /// otherwise it will be executed immediately.
+    /// 
+    /// Throws <see cref="ArgumentOutOfRangeException"/> when set at less than 2.
     /// </summary>
     public int IntervalMillis
     {
         get { return _intervalMillis; }
         set
         {
-            ArgumentOutOfRangeException.ThrowIfLessThan(value, 1);
+            ArgumentOutOfRangeException.ThrowIfLessThan(value, 2);
             _intervalMillis = value;
         }
     }
@@ -95,21 +97,19 @@ public abstract partial class AbstractLoopJob : IJob
     {
         Stopwatch sw = Stopwatch.StartNew();
 
-        _ = TimeBeginPeriod(1);
-
         while (IsRunning)
         {
             RunAction();
             int waitTime = (int)(IntervalMillis - sw.ElapsedMilliseconds);
             if (waitTime > 0)
             {
+                _ = TimeBeginPeriod(2);
                 _jobSleepEvent.WaitOne(waitTime);
+                _ = TimeEndPeriod(2);
             }
             else if (waitTime < 0) ExecutionIntervalOverflow(-waitTime);
             sw.Restart();
         }
-
-        _ = TimeEndPeriod(1);
 
         AfterCancel();
         _workerExitEvent.Set();
