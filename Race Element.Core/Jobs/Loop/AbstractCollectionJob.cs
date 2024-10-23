@@ -7,5 +7,5 @@ public abstract class AbstractCollectionJob<T> : AbstractLoopJob where T : struc
     public event EventHandler<T> OnCollected;
     public abstract T Collect { get; }
 
-    public sealed override void RunAction() => OnCollected.Invoke(this, Collect);
+    public sealed override void RunAction() => OnCollected?.Invoke(null, Collect);
 }

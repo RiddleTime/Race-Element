@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Threading;
 
 namespace RaceElement.Core.Jobs.Loop;
 
-public abstract class AbstractLoopJob : IJob
+public abstract partial class AbstractLoopJob : IJob
 {
     /// <summary>Used by the cancel method to wait until job finish.</summary>
     private readonly ManualResetEvent _workerExitEvent = new(false);
@@ -13,7 +14,7 @@ public abstract class AbstractLoopJob : IJob
     private readonly ManualResetEvent _jobSleepEvent = new(false);
 
     /// <summary>Tick interval. At what pace "RunAction" is executed.</summary>
-    private int _intervalMillis = 1;
+    private volatile int _intervalMillis = 1;
 
     /// <summary>Test if the job is running. A job is running when it has been started and has not been canceled yet.</summary>
     /// <returns>true if the job is active, false otherwise</returns>
@@ -93,18 +94,30 @@ public abstract class AbstractLoopJob : IJob
     private void WorkerThread()
     {
         Stopwatch sw = Stopwatch.StartNew();
+
+        _ = TimeBeginPeriod(1);
+
         while (IsRunning)
         {
             RunAction();
             int waitTime = (int)(IntervalMillis - sw.ElapsedMilliseconds);
-
-            if (waitTime > 0) _jobSleepEvent.WaitOne(waitTime);
+            if (waitTime > 0)
+            {
+                _jobSleepEvent.WaitOne(waitTime);
+            }
             else if (waitTime < 0) ExecutionIntervalOverflow(-waitTime);
-
             sw.Restart();
         }
+
+        _ = TimeEndPeriod(1);
 
         AfterCancel();
         _workerExitEvent.Set();
     }
+
+    [LibraryImport("winmm.dll", EntryPoint = "timeBeginPeriod", SetLastError = true)]
+    private static partial uint TimeBeginPeriod(uint uMilliseconds);
+
+    [LibraryImport("winmm.dll", EntryPoint = "timeEndPeriod", SetLastError = true)]
+    private static partial uint TimeEndPeriod(uint uMilliseconds);
 }
