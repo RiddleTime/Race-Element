@@ -195,9 +195,11 @@ public abstract class CommonAbstractOverlay : FloatingWindow
                               }
                           }
 
-                          int millisToWait = (int)Math.Floor(tickRefreshRate - stopwatch.ElapsedMilliseconds - 0.05);
+                          Timers.TimeBeginPeriod(2);
+                          int millisToWait = (int)Math.Floor(tickRefreshRate - stopwatch.ElapsedMilliseconds);
                           if (millisToWait > 0)
                               Thread.Sleep(millisToWait);
+                          Timers.TimeEndPeriod(2);
                       }
 
                   });
