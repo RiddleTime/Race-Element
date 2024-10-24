@@ -28,7 +28,7 @@ internal class _3dOverlay : AbstractOverlay
         public class AnimationGrouping
         {
             [ToolTip("Refreshrate in Hz.")]
-            [IntRange(10, 500, 10)]
+            [IntRange(10, 1000, 10)]
             public int RefreshRate { get; set; } = 200;
 
             [IntRange(8, 18, 2)]
@@ -88,7 +88,7 @@ internal class _3dOverlay : AbstractOverlay
         DrawCube(plotter3d, cubeSize);
         plotter3d.PenUp();
 
-        float zAdd = .25f;
+        float zAdd = .35f;
         float maxZoom = 25;
         if (zoomIn)
         {
