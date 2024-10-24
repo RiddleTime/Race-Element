@@ -11,11 +11,11 @@ internal sealed class GForceTraceConfiguration : OverlayConfiguration
     public sealed class DataGrouping
     {
         [ToolTip("Sets the maximum lateral g-force displayed.")]
-        [FloatRange(1, 3, 0.1f, 1)]
+        [FloatRange(1, 6, 0.1f, 1)]
         public float MaxLatG { get; init; } = 3f;
 
         [ToolTip("Sets the maximum longitudinal g-force displayed.")]
-        [FloatRange(1, 3, 0.1f, 1)]
+        [FloatRange(1, 6, 0.1f, 1)]
         public float MaxLongG { get; init; } = 2.5f;
 
         [ToolTip("Sets the data collection rate.")]
