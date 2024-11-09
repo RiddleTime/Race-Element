@@ -1,7 +1,7 @@
 const e=`---
 title: Highspeed Rendering
 slug: highspeed-rendering
-description: Rendering at 200 Hz with minimal CPU usage
+description: Rendering Overlays at 200 Hz with minimal CPU usage
 date: 2024-11-09
 type: news
 ---
