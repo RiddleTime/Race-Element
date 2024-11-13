@@ -16,6 +16,6 @@ AC 1 needs the Crew Chief plugin installed. It will provide more telemetry on op
 3. Start AC1. Select the "Crew Chief" app on the right border where all the apps are listed. At this point Crew Chief does not have to be running anymore.
 
 ## American Truck Simulator & Euro Truck Simulator 2
-For both simulators Download the Latest Plugin Release and Follow the instructions here:
+Both simulators require a plugin to be installed before any data can be read from the game.
 1. For both simulators you will need to "Install" a plugin: *scs-telemetry.dll*
 2. Download the latest release and Follow the installation instructions here: **<a href="https://github.com/RenCloud/scs-sdk-plugin?tab=readme-ov-file#installation" target="_blank">https://github.com/RenCloud/scs-sdk-plugin?tab=readme-ov-file#installation</a>**
