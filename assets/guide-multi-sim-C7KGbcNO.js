@@ -15,7 +15,7 @@ type: guide
 <li>Start AC1. Select the &quot;Crew Chief&quot; app on the right border where all the apps are listed. At this point Crew Chief does not have to be running anymore.</li>
 </ol>
 <h2 id="american-truck-simulator--euro-truck-simulator-2">American Truck Simulator &amp; Euro Truck Simulator 2</h2>
-<p>For both simulators Download the Latest Plugin Release and Follow the instructions here:</p>
+<p>Both simulators require a plugin to be installed before any data can be read from the game.</p>
 <ol>
 <li>For both simulators you will need to &quot;Install&quot; a plugin: <em>scs-telemetry.dll</em></li>
 <li>Download the latest release and Follow the installation instructions here: <strong><a href="https://github.com/RenCloud/scs-sdk-plugin?tab=readme-ov-file#installation" target="_blank">https://github.com/RenCloud/scs-sdk-plugin?tab=readme-ov-file#installation</a></strong></li>
