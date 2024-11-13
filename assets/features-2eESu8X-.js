@@ -11,9 +11,11 @@ description: General features
 <ul>
 <li>Assetto Corsa Competizione</li>
 <li>Assetto Corsa</li>
+<li>American Truck Simulator</li>
+<li>Automobilista 2</li>
+<li>Euro Truck Simulator 2</li>
 <li>iRacing</li>
 <li>RaceRoom</li>
-<li>Automobilista 2</li>
 </ul>
 <h1 id="huds-40">HUDs (40+)</h1>
 <p>HUDs(Head-up displays) are 2D graphics that can be used to provide you data whilst driving. There are a various amount of HUDs that each provides you useful information in a minimalistic manner whilst being highly configurable.</p>
