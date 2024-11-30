@@ -20,4 +20,10 @@ type: guide
 <li>For both simulators you will need to &quot;Install&quot; a plugin: <em>scs-telemetry.dll</em></li>
 <li>Download the latest release and Follow the installation instructions here: <strong><a href="https://github.com/RenCloud/scs-sdk-plugin?tab=readme-ov-file#installation" target="_blank">https://github.com/RenCloud/scs-sdk-plugin?tab=readme-ov-file#installation</a></strong></li>
 </ol>
+<h2 id="automobilista-2">Automobilista 2</h2>
+<ol>
+<li>Go to Options</li>
+<li>Go to System Options</li>
+<li>Enable Telemetry</li>
+</ol>
 `;export{e as default};
