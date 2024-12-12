@@ -15,7 +15,7 @@ export class SocialsComponent implements OnInit {
       { Text: "GitHub", Href: "https://github.com/RiddleTime/Race-Element" },
       { Text: "Discord", Href: "https://discord.gg/26AAEW5mUq" },
       { Text: "X", Href: "https://x.com/Race_Element" },
-      { Text: "Sponsor", Href: "https://paypal.me/CompetizioneManager" },
+      { Text: "Donate", Href: "/guide/sponsor" },
     ];
   }
 
