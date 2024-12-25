@@ -31,7 +31,7 @@ export const routeMeta: RouteMeta = {
         <a href="/" class="self-center drop-shadow-[0_35px_35px_rgba(1,1,1,0.25)] text-center font-['Conthrax'] text-4xl md:text-7xl text-[orangered] hover:text-[orangered] ">
           <div class="-skew-x-12 ">Race Element</div>
         </a>
-        <p class="text-center font-['Conthrax']">Solutions for Sim Racing</p>
+        <p class="text-center font-['Conthrax']">Solutions for Simulators</p>
       </div>
 
       <div class="border-t-2 border-[grey] mb-2 container mx-auto md:max-w-2xl" ></div>
