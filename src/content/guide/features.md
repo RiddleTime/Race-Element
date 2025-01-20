@@ -12,6 +12,7 @@ Get started and download the app: **[Download](/guide/how-to-get-started)**
 # Supported Simulators
 - Assetto Corsa Competizione
 - Assetto Corsa
+- Assetto Corsa EVO
 - American Truck Simulator
 - Automobilista 2
 - Euro Truck Simulator 2
