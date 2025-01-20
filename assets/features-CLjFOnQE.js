@@ -11,6 +11,7 @@ description: General features
 <ul>
 <li>Assetto Corsa Competizione</li>
 <li>Assetto Corsa</li>
+<li>Assetto Corsa EVO</li>
 <li>American Truck Simulator</li>
 <li>Automobilista 2</li>
 <li>Euro Truck Simulator 2</li>
