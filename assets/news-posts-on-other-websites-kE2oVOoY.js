@@ -13,6 +13,10 @@ type: news
 <li>Official RaceRoom Forums: <strong><a href="https://forum.kw-studios.com/index.php?threads/race-element-solutions-for-simracing.19690/" target="_blank">https://forum.kw-studios.com/index.php?threads/race-element-solutions-for-simracing.19690/</a></strong></li>
 <li>Overtake.GG: <strong><a href="https://www.overtake.gg/downloads/race-element.50578/" target="_blank">https://www.overtake.gg/downloads/race-element.50578/</a></strong></li>
 <li>Steam Guide: <strong><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2811480721">https://steamcommunity.com/sharedfiles/filedetails/?id=2811480721</a></strong></li>
-<li>NexusMods: <strong><a href="https://www.nexusmods.com/assettocorsacompetizione/mods/1">https://www.nexusmods.com/assettocorsacompetizione/mods/1</a></strong></li>
+</ul>
+<h3 id="nexusmods-listed-for-different-games-as-the-app-suports-both">NexusMods (listed for different games as the app suports both):</h3>
+<ul>
+<li>ACC: <strong><a href="https://www.nexusmods.com/assettocorsacompetizione/mods/1">https://www.nexusmods.com/assettocorsacompetizione/mods/1</a></strong></li>
+<li>AC EVO: <strong><a href="https://www.nexusmods.com/assettocorsaevo/mods/2">https://www.nexusmods.com/assettocorsaevo/mods/2</a></strong></li>
 </ul>
 `;export{s as default};
