@@ -11,5 +11,6 @@ To prevent confusion what is not and what is, here is a list of websites with of
 - Official RaceRoom Forums: **<a href="https://forum.kw-studios.com/index.php?threads/race-element-solutions-for-simracing.19690/" target="_blank">https://forum.kw-studios.com/index.php?threads/race-element-solutions-for-simracing.19690/</a>**
 - Overtake.GG: **<a href="https://www.overtake.gg/downloads/race-element.50578/" target="_blank">https://www.overtake.gg/downloads/race-element.50578/</a>**
 - Steam Guide: **<a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2811480721">https://steamcommunity.com/sharedfiles/filedetails/?id=2811480721</a>**
-- NexusMods: **<a href="https://www.nexusmods.com/assettocorsacompetizione/mods/1">https://www.nexusmods.com/assettocorsacompetizione/mods/1</a>**
-
+### NexusMods (listed for different games as the app suports both):
+- ACC: **<a href="https://www.nexusmods.com/assettocorsacompetizione/mods/1">https://www.nexusmods.com/assettocorsacompetizione/mods/1</a>**
+- AC EVO: **<a href="https://www.nexusmods.com/assettocorsaevo/mods/2">https://www.nexusmods.com/assettocorsaevo/mods/2</a>**
