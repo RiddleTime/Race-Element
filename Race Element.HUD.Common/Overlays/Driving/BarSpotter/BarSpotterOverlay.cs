@@ -6,7 +6,7 @@ using RaceElement.HUD.Overlay.Internal;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkEnum;
+using static IRSDKSharper.IRacingSdkEnum;
 using CarInfo = RaceElement.Data.Common.SimulatorData.CarInfo;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.BarSpotter;

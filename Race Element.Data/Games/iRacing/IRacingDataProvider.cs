@@ -1,14 +1,14 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
-using RaceElement.Data.Games.iRacing.SDK;
 using System.Diagnostics;
-using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkSessionInfo.DriverInfoModel;
+using static IRSDKSharper.IRacingSdkSessionInfo.DriverInfoModel;
 using RaceElement.Data.Common;
 using System.Drawing;
-using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkEnum;
-using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkSessionInfo.SessionInfoModel.SessionModel;
-using static RaceElement.Data.Games.iRacing.SDK.IRacingSdkSessionInfo.SessionInfoModel;
+using static IRSDKSharper.IRacingSdkEnum;
+using static IRSDKSharper.IRacingSdkSessionInfo.SessionInfoModel.SessionModel;
+using static IRSDKSharper.IRacingSdkSessionInfo.SessionInfoModel;
 using System.Numerics;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
+using IRSDKSharper;
 
 // https://github.com/mherbold/IRSDKSharper
 // https://sajax.github.io/irsdkdocs/telemetry/
@@ -26,7 +26,7 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
 
     bool hasTelemetry = false;
 
-    private IRSDKSharper _iRacingSDK;
+    private IRSDKSharper.IRacingSdk _iRacingSDK;
     private int lastSessionNumber = -1;
 
     private int lastLapIndex = 0;
@@ -77,7 +77,7 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
     {
         if (_iRacingSDK == null)
         {
-            _iRacingSDK = new IRSDKSharper
+            _iRacingSDK = new IRSDKSharper.IRacingSdk
             {
                 UpdateInterval = 1, // update every 1/60 second
             };
@@ -156,13 +156,12 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
         if (!_iRacingSDK.IsConnected && _iRacingSDK.IsStarted)
         {
             return;
-        }
+        }        
         if (_iRacingSDK.Data.SessionInfo == null)
         {
             Debug.WriteLine("No session info");
             return;
-        }
-
+        }        
         if (SessionData.Instance.Cars.Count == 0 || _iRacingSDK.Data.SessionInfo.DriverInfo == null)
         {
             Debug.WriteLine("No SessionData.Instance.Cars or DriverInfo");
@@ -249,7 +248,7 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
                     carInfo.GapToClassLeaderMs = (int)((classLeaderTrackPositionTimeDict[carInfo.CarClass] - f2Time) * 1000.0);
                 }
             }
-
+        
             // DEBUG PrintAllCarInfo();
 
             // fill player's car from telemetry

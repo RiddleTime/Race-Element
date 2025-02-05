@@ -1,0 +1,3 @@
+[submodule "Race Element.Data/Games/iRacing/IRSDKSharper"]
+	path = Race Element.Data/Games/iRacing/IRSDKSharper
+	url = https://github.com/mherbold/IRSDKSharper.git
