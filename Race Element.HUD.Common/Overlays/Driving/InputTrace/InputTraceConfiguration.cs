@@ -12,7 +12,7 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
     public sealed class DataGrouping
     {
         [ToolTip("Sets the data collection rate.\n70 Hz and higher will affect cpu usage, don't blame us for your cpu.")]
-        [IntRange(Min = 10, Max = 150, Increment = 2, GameMaxs = [60], MaxGames = [Game.iRacing])]
+        [IntRange(Min = 10, Max = 150, Increment = 2, GameMaxs = [120], MaxGames = [Game.iRacing])]
         public int Herz { get; init; } = 60;
     }
 

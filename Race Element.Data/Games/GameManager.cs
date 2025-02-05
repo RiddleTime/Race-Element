@@ -27,6 +27,7 @@ public static class GameManager
                 Action = () => SimDataProvider.Update(),
                 IntervalMillis = 1000 / SimDataProvider.Instance.PollingRate()
             };
+            SimDataProvider.Instance.Start();
             _dataUpdaterJob.Run();
         }
     }

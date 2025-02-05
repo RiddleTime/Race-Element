@@ -10,5 +10,5 @@ public sealed record GameData
     public bool IsInReplay { get; internal set; } = false;
 
     public bool IsCarSetupScreenVisible { get; internal set; } = false;
-
+    public bool IsRunning { get; internal set; } = false;
 }

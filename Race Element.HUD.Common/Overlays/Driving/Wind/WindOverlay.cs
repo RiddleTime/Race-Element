@@ -1,24 +1,20 @@
 ﻿using RaceElement.Data.Common;
-using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
 using RaceElement.HUD.Overlay.Util;
-using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Numerics;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayWind;
+namespace RaceElement.HUD.Common.Overlays.Driving.Wind;
 
-[Overlay(Name = "Wind Direction (BETA)", Description = "Shows wind direction relative to car heading. For iRacing the wind direction is on the pit straight - not at the player's location.",
+[Overlay(Name = "Wind Direction", Description = "Shows wind speed and direction relative to car heading.\niRacing: wind direction is on the pit straight - not at the player's location.",
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Track,
     Version = 1.00,
-    Game = Game.iRacing | Game.AssettoCorsa1,
+    Game = Game.iRacing,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class WindDirectionOverlay : CommonAbstractOverlay
 {
@@ -39,7 +35,7 @@ internal sealed class WindDirectionOverlay : CommonAbstractOverlay
         public sealed class ShapeGrouping
         {
             [IntRange(100, 200, 1)]
-            public int Size { get; init; } = 120;
+            public int Size { get; init; } = 110;
         }
 
         public WindDirectionConfiguration() => GenericConfiguration.AllowRescale = true;
@@ -62,13 +58,13 @@ internal sealed class WindDirectionOverlay : CommonAbstractOverlay
     {
         int scaledSize = (int)(_config.Shape.Size * Scale);
 
-        int scaledPadding = (int)(padding * this.Scale);
+        int scaledPadding = (int)(padding * Scale);
         _background = new CachedBitmap(scaledSize + 1, scaledSize + 1, g =>
         {
             Rectangle rect = new(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding);
             using SolidBrush brush = new(Color.FromArgb(90, 0, 0, 0));
             g.FillEllipse(brush, rect);
-            using Pen outlinePen = new(Color.FromArgb(165, 0, 0, 0), 18 * this.Scale);
+            using Pen outlinePen = new(Color.FromArgb(165, 0, 0, 0), 18 * Scale);
             g.DrawEllipse(outlinePen, new Rectangle(scaledPadding / 2, scaledPadding / 2, scaledSize - scaledPadding, scaledSize - scaledPadding));
         });
 
@@ -85,7 +81,7 @@ internal sealed class WindDirectionOverlay : CommonAbstractOverlay
 
     public sealed override bool ShouldRender()
     {
-        if (_config.Wind.ShowThreshold > SessionData.Instance.Weather.AirVelocity && !this.IsRepositioning)
+        if (_config.Wind.ShowThreshold > SimDataProvider.Session.Weather.AirVelocity && !IsRepositioning)
             return false;
 
         return base.ShouldRender();
@@ -95,13 +91,13 @@ internal sealed class WindDirectionOverlay : CommonAbstractOverlay
     {
         _background?.Draw(g, 0, 0, _config.Shape.Size, _config.Shape.Size);
 
-        double vaneAngle = SessionData.Instance.Weather.AirDirection;
+        double vaneAngle = SimDataProvider.Session.Weather.AirDirection;
 
-        double carDirection = 90 + (SimDataProvider.LocalCar.Physics.Rotation.Y * -180d) / Math.PI;
+        double carDirection = 90 + SimDataProvider.LocalCar.Physics.Rotation.Y * -180d / Math.PI;
         double relativeAngle = vaneAngle + carDirection;
 
         if (GameManager.CurrentGame == Game.iRacing)
-            relativeAngle = (2 * Math.PI) - SimDataProvider.LocalCar.Physics.RotationEuler.Y - SimDataProvider.Session.Weather.AirDirection;
+            relativeAngle = 2 * Math.PI - SimDataProvider.LocalCar.Physics.RotationEuler.Y - SimDataProvider.Session.Weather.AirDirection;
 
         g.SmoothingMode = SmoothingMode.AntiAlias;
         Rectangle rect = new(padding / 2, padding / 2, _config.Shape.Size - padding, _config.Shape.Size - padding);
@@ -114,7 +110,7 @@ internal sealed class WindDirectionOverlay : CommonAbstractOverlay
         using Pen redPen = new(Brushes.Red, 8);
         g.DrawArc(redPen, rect, (float)relativeAngle - 180 - 35, 70);
 
-        _textCell?.UpdateText($"{SessionData.Instance.Weather.AirVelocity:F1}");
+        _textCell?.UpdateText($"{SimDataProvider.Session.Weather.AirVelocity:F1}");
         _textCell?.Draw(g, 1f / Scale);
     }
 }

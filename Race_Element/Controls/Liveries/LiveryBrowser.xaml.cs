@@ -173,6 +173,7 @@ public partial class LiveryBrowser : UserControl
                 liveriesTreeViewTags.Items.Clear();
 
                 DirectoryInfo customsCarsDirectory = new(FileUtil.CarsPath);
+                if (!customsCarsDirectory.Exists) return;
 
                 List<LiveryTreeCar> liveryTreeCars = [];
 

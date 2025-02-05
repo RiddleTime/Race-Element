@@ -32,6 +32,7 @@
         <PackageReference Include="System.Speech" Version="9.0.1" />
         <PackageReference Include="TwitchLib.Client" Version="3.3.1" />
         <ProjectReference Include="..\Race Element.Data\Race Element.Data.csproj" />
+        <ProjectReference Include="..\Race_Element.Hardware\Race Element.Hardware.csproj" />
         <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj" />
     </ItemGroup>
 

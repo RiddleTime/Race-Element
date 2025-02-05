@@ -41,7 +41,7 @@ internal sealed class ShiftBarConfiguration : OverlayConfiguration
     }
 
     [ConfigGrouping("Upshift Percentages", "Adjust the Early and Upshift percentages.\n" + "The Early is always checked first, so if the Redline is lower than the early.. it won't be hit.")]
-    [HideForGame(Game.RaceRoom)]
+    [HideForGame(Game.RaceRoom | Game.iRacing)]
     public UpshiftGrouping Upshift { get; init; } = new();
     public sealed class UpshiftGrouping
     {

@@ -1,10 +1,10 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 
-namespace RaceElement.HUD.Common.Overlays.Pitwall.DSX;
+namespace RaceElement.HUD.Common.Overlays.Pitwall.DualSenseInternal;
 
-internal sealed class DsxConfiguration : OverlayConfiguration
+internal sealed class DsiConfiguration : OverlayConfiguration
 {
-    public DsxConfiguration()
+    public DsiConfiguration()
     {
         GenericConfiguration.AlwaysOnTop = false;
         GenericConfiguration.Window = false;
@@ -31,7 +31,7 @@ internal sealed class DsxConfiguration : OverlayConfiguration
         public float RearSlipThreshold { get; init; } = 0.25f;
 
         [ToolTip("Higher is stronger dynamic feedback.")]
-        [IntRange(1, 8, 1)]
+        [IntRange(5, 8, 1)]
         public int FeedbackStrength { get; init; } = 7;
 
         [ToolTip("Sets the min frequency of the vibration effect in the trigger.")]
@@ -43,7 +43,7 @@ internal sealed class DsxConfiguration : OverlayConfiguration
         public int MaxFrequency { get; init; } = 85;
 
         [ToolTip("Change the amplitude(strength) of the vibration effect in the trigger.")]
-        [IntRange(1, 8, 1)]
+        [IntRange(5, 8, 1)]
         public int Amplitude { get; init; } = 8;
     }
 
@@ -67,7 +67,7 @@ internal sealed class DsxConfiguration : OverlayConfiguration
         public float RearSlipThreshold { get; init; } = 0.25f;
 
         [ToolTip("Higher is stronger dynamic feedback.")]
-        [IntRange(1, 8, 1)]
+        [IntRange(5, 8, 1)]
         public int FeedbackStrength { get; init; } = 8;
 
         [ToolTip("Sets the min frequency of the vibration effect in the trigger.")]
@@ -79,7 +79,7 @@ internal sealed class DsxConfiguration : OverlayConfiguration
         public int MaxFrequency { get; init; } = 96;
 
         [ToolTip("Change the amplitude(strength) of the vibration effect in the trigger.")]
-        [IntRange(1, 8, 1)]
+        [IntRange(5, 8, 1)]
         public int Amplitude { get; init; } = 7;
     }
 
