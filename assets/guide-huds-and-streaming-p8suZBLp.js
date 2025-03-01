@@ -1,7 +1,7 @@
 const e=`---
 title: "HUDs and Streaming"
 slug: huds-and-streaming
-description: Settings up the HUDs with OBS or Streamlabs
+description: Setting up the HUDs with OBS or Streamlabs
 type: guide
 ---
 
