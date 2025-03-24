@@ -21,7 +21,7 @@ export default class AnalyticsComponent implements OnInit {
     this.route.queryParams.subscribe((params: { [x: string]: any; }) => {
       let version = params['version'];
       if (version !== undefined) {
-        this.title.setTitle("Race Element " + version)
+        this.title.setTitle("Race Element Startup " + version)
       }
     });
   }
