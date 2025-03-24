@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Title } from '@angular/platform-browser';
 
 @Component({
   standalone: true,
@@ -10,5 +11,19 @@ import { Component } from '@angular/core';
   `,
   imports: []
 })
-export default class AnalyticsComponent {
+export default class AnalyticsComponent implements OnInit {
+
+  constructor(private route: ActivatedRoute, private title: Title) {
+
+  }
+
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params: { [x: string]: any; }) => {
+      let version = params['version'];
+      if (version !== undefined) {
+        this.title.setTitle("Race Element " + version)
+      }
+    });
+  }
+
 }
