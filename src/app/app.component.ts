@@ -52,7 +52,6 @@ export const routeMeta: RouteMeta = {
       <router-outlet class="mt-4 md:mt-4"></router-outlet>
 
       <footer class="text-sm select-none mx-auto mt-2">
-        <img class="mx-auto" src="https://hits.seeyoufarm.com/api/count/keep/badge.svg?url=https%3A%2F%2Fgithub.com%2FRiddleTime%2FRace-Element&amp;count_bg=%23FF4500&amp;title_bg=%23555555&amp;icon=&amp;icon_color=%23E7E7E7&amp;title=Usage%3A+Today+%2F+All-time&amp;edge_flat=false">
         <p class="text-center">© 2022 - {{ThisYear}} Reinier Klarenberg</p>
       </footer>
     </div>
