@@ -52,6 +52,7 @@ export const routeMeta: RouteMeta = {
       <router-outlet class="mt-4 md:mt-4"></router-outlet>
 
       <footer class="text-sm select-none mx-auto mt-2">
+        <img alt="GitHub Downloads (specific asset, all releases)" src="https://img.shields.io/github/downloads/riddletime/race-element/RaceElement.exe?style=flat&label=Downloads&color=%23FF4500">
         <p class="text-center">© 2022 - {{ThisYear}} Reinier Klarenberg</p>
       </footer>
     </div>
