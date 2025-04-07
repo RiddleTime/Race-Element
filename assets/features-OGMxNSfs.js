@@ -4,9 +4,9 @@ slug: features
 description: General features
 ---
 
+<h2 id="open-download-and-installation-guide"><strong><a href="/guide/how-to-get-started">Open Download and Installation Guide</a></strong></h2>
 <img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="Main Menu of Race Element" />
 
-<h2 id="open-download-and-installation-guide"><strong><a href="/guide/how-to-get-started">Open Download and Installation Guide</a></strong></h2>
 <h1 id="race-element">Race Element</h1>
 <p>Race Element is a lightweight application for racing simulators which is designed to run with minimum system requirements.
 In the world of sim racing, where precision and immersion are paramount, tools that enhance user experience are invaluable. Race Element is such a tool with a versatile and powerful HUD and plugin system.</p>
