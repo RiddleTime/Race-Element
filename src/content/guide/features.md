@@ -6,10 +6,10 @@ description: General features
 
 <img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="Main Menu of Race Element" />
 
+## **[Download and Installation](/guide/how-to-get-started)**
+
 # Race Element
 Race Element is a lightweight application for sim racing that is designed to run with minimum system requirements. The question I asked myself when trying other HUD applications is: Why are all these apps abusing my cpu, ram and graphics card to a point where the lost performance is enough to buy another step up in graphics cards. That ends now!
-
-Get started and download the app: **[Download](/guide/how-to-get-started)**
 
 # Supported Simulators
 - Assetto Corsa Competizione
