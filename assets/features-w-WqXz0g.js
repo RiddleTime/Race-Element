@@ -10,7 +10,7 @@ description: General features
 <h1 id="race-element">Race Element</h1>
 <p>Race Element is a lightweight application for racing simulators which is designed to run with minimum system requirements.
 In the world of sim racing, where precision and immersion are paramount, tools that enhance user experience are invaluable. Race Element is such a tool with a versatile and powerful HUD and plugin system.</p>
-<h1 id="racing-simulators">Racing Simulators</h1>
+<h1 id="supported-racing-simulators">Supported Racing Simulators</h1>
 <ul>
 <li>Assetto Corsa Competizione</li>
 <li>Assetto Corsa</li>
