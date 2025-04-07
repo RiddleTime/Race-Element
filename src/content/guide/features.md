@@ -3,9 +3,8 @@ title: Features
 slug: features
 description: General features
 ---
-<img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="Main Menu of Race Element" />
-
 ## **[Open Download and Installation Guide](/guide/how-to-get-started)**
+<img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="Main Menu of Race Element" />
 
 # Race Element
 Race Element is a lightweight application for racing simulators which is designed to run with minimum system requirements.
