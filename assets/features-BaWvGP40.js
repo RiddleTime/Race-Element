@@ -4,6 +4,8 @@ slug: features
 description: General features
 ---
 
+<img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="drawing" width="500"/>
+
 <h1 id="race-element">Race Element</h1>
 <p>Race Element is a lightweight application for sim racing that is designed to run with minimum system requirements. The question I asked myself when trying other HUD applications is: Why are all these apps abusing my cpu, ram and graphics card to a point where the lost performance is enough to buy another step up in graphics cards. That ends now!</p>
 <p>Get started and download the app: <strong><a href="/guide/how-to-get-started">Download</a></strong></p>
