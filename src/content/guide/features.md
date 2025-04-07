@@ -11,7 +11,7 @@ description: General features
 Race Element is a lightweight application for racing simulators which is designed to run with minimum system requirements.
 In the world of sim racing, where precision and immersion are paramount, tools that enhance user experience are invaluable. Race Element is such a tool with a versatile and powerful HUD and plugin system.
 
-# Racing Simulators
+# Supported Racing Simulators
 - Assetto Corsa Competizione
 - Assetto Corsa
 - Assetto Corsa EVO
