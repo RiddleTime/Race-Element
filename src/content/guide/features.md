@@ -3,15 +3,15 @@ title: Features
 slug: features
 description: General features
 ---
-
 <img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="Main Menu of Race Element" />
 
-## **[Download and Installation](/guide/how-to-get-started)**
+## **[Open Download and Installation Guide](/guide/how-to-get-started)**
 
 # Race Element
-Race Element is a lightweight application for sim racing that is designed to run with minimum system requirements. The question I asked myself when trying other HUD applications is: Why are all these apps abusing my cpu, ram and graphics card to a point where the lost performance is enough to buy another step up in graphics cards. That ends now!
+Race Element is a lightweight application for racing simulators which is designed to run with minimum system requirements.
+In the world of sim racing, where precision and immersion are paramount, tools that enhance user experience are invaluable. Race Element is such a tool with a versatile and powerful HUD and plugin system.
 
-# Supported Simulators
+# Racing Simulators
 - Assetto Corsa Competizione
 - Assetto Corsa
 - Assetto Corsa EVO
@@ -20,7 +20,6 @@ Race Element is a lightweight application for sim racing that is designed to run
 - Euro Truck Simulator 2
 - iRacing
 - RaceRoom
-
 
 # HUDs (40+)
 HUDs(Head-up displays) are 2D graphics that can be used to provide you data whilst driving. There are a various amount of HUDs that each provides you useful information in a minimalistic manner whilst being highly configurable.
