@@ -8,8 +8,7 @@ description: General features
 <img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="Main Menu of Race Element" />
 
 <h1 id="race-element">Race Element</h1>
-<p>Race Element is a lightweight application for racing simulators which is designed to run with minimum system requirements.
-In the world of sim racing, where precision and immersion are paramount, tools that enhance user experience are invaluable. Race Element is such a tool with a versatile and powerful HUD and plugin system.</p>
+<p>Race Element is a lightweight application for racing simulators which is designed to run with minimum system requirements. This application is completely free and open source(GPL-3).</p>
 <h1 id="supported-racing-simulators">Supported Racing Simulators</h1>
 <ul>
 <li>Assetto Corsa Competizione</li>
@@ -29,6 +28,7 @@ In the world of sim racing, where precision and immersion are paramount, tools t
 <li>Custom Configuration</li>
 <li>Very Low performance hit as the app doesn&#39;t use your gpu to render the HUDs.</li>
 <li>Can be used for stream only</li>
+<li>Render up to 200 Hz</li>
 </ul>
 <h1 id="data">Data</h1>
 <p>The app represents data recorded during driving into so called Race Weekend Databases(RWDB files). These Race Weekends can be viewed in the Data tab of the application and provide you essential information such as lap- and sectortimes, fuel usage and the conditions of each lap.</p>
