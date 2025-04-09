@@ -49,10 +49,18 @@ public partial class Info : UserControl
             Arguments = $"/c start https://race.elementfuture.com/guide/sponsor",
             WindowStyle = ProcessWindowStyle.Hidden,
         });
+        buttonGuidesWebsite.Click += (sender, e) => Process.Start(new ProcessStartInfo()
+        {
+            FileName = "cmd",
+            Arguments = $"/c start https://race.elementfuture.com/guide",
+            WindowStyle = ProcessWindowStyle.Hidden,
+        });
+
         ToolTipService.SetInitialShowDelay(buttonWebsite, 1);
         ToolTipService.SetInitialShowDelay(buttonDiscord, 1);
         ToolTipService.SetInitialShowDelay(buttonGithub, 1);
         ToolTipService.SetInitialShowDelay(buttonDonate, 1);
+        ToolTipService.SetInitialShowDelay(buttonGuidesWebsite, 1);
 
         new Thread(() => CheckNewestVersion()).Start();
 

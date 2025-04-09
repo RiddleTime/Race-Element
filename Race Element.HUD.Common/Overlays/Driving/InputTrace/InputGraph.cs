@@ -24,9 +24,9 @@ internal sealed class InputGraph : IDisposable
         _height = height;
         _config = config;
 
-        _throttlePen = new Pen(Color.ForestGreen, _config.Chart.LineThickness);
-        _brakePen = new Pen(Color.Red, _config.Chart.LineThickness);
-        _steeringPen = new Pen(Color.FromArgb(190, Color.White), _config.Chart.LineThickness);
+        _throttlePen = new Pen(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor), _config.Chart.LineThickness);
+        _brakePen = new Pen(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor), _config.Chart.LineThickness);
+        _steeringPen = new Pen(Color.FromArgb(_config.Colors.SteeringOpacity, _config.Colors.SteeringColor), _config.Chart.LineThickness);
 
         _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
         {

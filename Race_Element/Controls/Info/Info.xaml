@@ -122,6 +122,24 @@
                         </Button>
                     </StackPanel>
 
+                    <StackPanel Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="102,42,0,0" >
+                        <Button x:Name="buttonGuidesWebsite" Margin="0,10,0,10" Height="58" Width="88" Padding="0" Background="Black" BorderBrush="Black" ToolTip="Guides/Tutorials on the website">
+                            <Grid HorizontalAlignment="Center" Style="{DynamicResource HoverGrid}">
+                                <Label HorizontalAlignment="Center" Margin="0,36,0,0">Guides</Label>
+                                <materialDesign:PackIcon
+                                         Grid.Column="0"
+                                         Kind="School"
+                                         VerticalAlignment="Stretch"
+                                         HorizontalAlignment="Stretch"
+                                         Width="24"
+                                         Height="24"
+                                         Margin="0,-16,0,0"
+                                         Foreground="White"    
+                                         />
+                            </Grid>
+                        </Button>
+                    </StackPanel>
+
 
                     <StackPanel x:Name="ReleaseStackPanel" Orientation="Vertical" HorizontalAlignment="Right" Width="250" VerticalAlignment="Top" Margin="10,5,5,0">
                     </StackPanel>
@@ -159,6 +177,9 @@
                 <ScrollViewer Style="{StaticResource MaterialDesignScrollViewer}" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Visible">
                     <materialDesign:Card Margin="0,0,3,0">
                         <StackPanel Orientation="Vertical" Margin="5,0,0,0" >
+
+
+
                             <TextBlock Style="{StaticResource MaterialDesignBody1TextBlock}"
                                    HorizontalAlignment="Center" TextWrapping="Wrap" FontSize="16" FontWeight="ExtraBold">Start Race Element before you join a session.</TextBlock>
 

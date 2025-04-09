@@ -97,10 +97,11 @@ internal class TelemetryRecorder
             return;
         }
 
-        LogWriter.WriteToLog("TelemetryRecorder: Record()");
-
         if (!new AccManagerSettings().Get().TelemetryRecordDetailed)
             return;
+
+        LogWriter.WriteToLog("TelemetryRecorder: Record()");
+       
 
         _isRunning = true;
         new Thread(x =>

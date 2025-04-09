@@ -1,4 +1,5 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
+using System.Drawing;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.InputTrace;
 
@@ -40,5 +41,22 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         [ToolTip("Sets the drawing refresh rate.")]
         [IntRange(12, 30, 6)]
         public int HudRefreshRate { get; init; } = 24;
+    }
+
+    [ConfigGrouping("Colors", "Customize the colors of the throttle, brake and steering traces.")]
+    public ColorsGrouping Colors { get; init; } = new();
+    public sealed class ColorsGrouping
+    {
+        public Color ThrottleColor { get; init; } = Color.FromArgb(34, 139, 34);
+        [IntRange(70, 255, 1)]
+        public int ThrottleOpacity { get; init; } = 255;
+
+        public Color BrakeColor { get; init; } = Color.FromArgb(255, 0, 0);
+        [IntRange(70, 255, 1)]
+        public int BrakeOpacity { get; init; } = 255;
+
+        public Color SteeringColor { get; init; } = Color.FromArgb(255, 255, 255);
+        [IntRange(70, 255, 1)]
+        public int SteeringOpacity { get; init; } = 190;
     }
 }

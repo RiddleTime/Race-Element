@@ -186,7 +186,7 @@ internal sealed class PressureHistoryOverlay : AbstractOverlay
         }
     }
 
-    public override bool ShouldRender()
+    public sealed override bool ShouldRender()
     {
         if (_config.Behavior.HideInRace && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE)
             return false;

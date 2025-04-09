@@ -8,6 +8,7 @@ using RaceElement.Data.ACC.Database.RaceWeekend;
 using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Database.Telemetry;
 using RaceElement.Data.ACC.Tracker;
+using RaceElement.Util.Settings;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -117,7 +118,8 @@ public sealed class RaceSessionTracker
             RaceSessionCollection.Insert(CurrentSession);
             OnNewSessionStarted?.Invoke(this, CurrentSession);
 
-            TelemetryRecorder.Instance.Record();
+            if (new AccManagerSettings().Get().TelemetryRecordDetailed)
+                TelemetryRecorder.Instance.Record();
         }
     }
 
