@@ -31,6 +31,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Race Element.HUD.Common", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Race Element.Graph", "Race Element.Graph\Race Element.Graph.csproj", "{E3205DD5-EF7D-427F-916C-E95531877AD6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RaceElement.UI", "Race Element.UI\RaceElement.UI.csproj", "{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug Minimized|Any CPU = Debug Minimized|Any CPU
@@ -260,6 +262,24 @@ Global
 		{E3205DD5-EF7D-427F-916C-E95531877AD6}.Release|x64.Build.0 = Release|Any CPU
 		{E3205DD5-EF7D-427F-916C-E95531877AD6}.Release|x86.ActiveCfg = Release|Any CPU
 		{E3205DD5-EF7D-427F-916C-E95531877AD6}.Release|x86.Build.0 = Release|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug Minimized|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug Minimized|Any CPU.Build.0 = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug Minimized|x64.ActiveCfg = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug Minimized|x64.Build.0 = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug Minimized|x86.ActiveCfg = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug Minimized|x86.Build.0 = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug|x64.Build.0 = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Debug|x86.Build.0 = Debug|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Release|x64.ActiveCfg = Release|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Release|x64.Build.0 = Release|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Release|x86.ActiveCfg = Release|Any CPU
+		{FEF1EAFA-80D0-928B-79B0-879F7FE25C67}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

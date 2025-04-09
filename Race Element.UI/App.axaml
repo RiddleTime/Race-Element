@@ -1,0 +1,18 @@
+<Application xmlns="https://github.com/avaloniaui"
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:themes="clr-namespace:Avalonia.Themes.Neumorphism;assembly=Avalonia.Themes.Neumorphism"
+  xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+  x:Class="RaceElement.UI.App"
+  xmlns:local="using:RaceElement.UI"
+  RequestedThemeVariant="Dark">
+
+  <Application.DataTemplates>
+    <local:ViewLocator/>
+  </Application.DataTemplates>
+
+
+
+  <Application.Styles>
+    <themes:NeumorphismTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime" />
+  </Application.Styles>
+</Application>

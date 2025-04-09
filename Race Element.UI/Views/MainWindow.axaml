@@ -1,0 +1,55 @@
+<Window  xmlns="https://github.com/avaloniaui"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:controls="clr-namespace:Avalonia.Themes.Neumorphism.Controls;assembly=Avalonia.Themes.Neumorphism"
+ xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+ xmlns:assist="clr-namespace:Avalonia.Themes.Neumorphism.Assist;assembly=Avalonia.Themes.Neumorphism"
+ Icon="avares://RaceElement.UI/Assets/raceelement.ico"
+ mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="768"
+ xmlns:views="using:RaceElement.UI.Views"
+ xmlns:pages="using:RaceElement.UI.Views.Pages"
+ xmlns:vm="using:RaceElement.UI.ViewModels"
+ x:Class="RaceElement.UI.Views.MainWindow"
+ x:DataType="vm:MainWindowViewModel"
+ Title="RaceElement.UI">
+
+  <Design.DataContext>
+    <vm:MainWindowViewModel/>
+  </Design.DataContext>
+
+  <Window.DataTemplates>
+    <DataTemplate DataType="{x:Type vm:OverlaysViewModel}">
+      <pages:OverlaysPageView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:SetupsViewModel}">
+      <pages:SetupsPageView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:LiveriesViewModel}">
+      <pages:LiveriesPageView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:ToolsViewModel}">
+      <pages:ToolsPageView />
+    </DataTemplate>
+
+    <DataTemplate DataType="{x:Type vm:DataViewModel}">
+      <pages:DataPageView />
+    </DataTemplate>
+  </Window.DataTemplates>
+
+  <Border CornerRadius="20" Background="#F7F7F7">
+
+    <Grid RowDefinitions="80, *">
+      <views:MainTopMenuView Grid.Row="0" Margin="0,-16,0,0" HorizontalAlignment="Stretch"
+        x:Name="TopMenuBar"
+        DataContext="{Binding MainTopMenu}"/>
+
+      <Grid Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <ContentControl Content="{Binding CurrentPage}" />
+      </Grid>
+    </Grid>
+  </Border>
+</Window>
