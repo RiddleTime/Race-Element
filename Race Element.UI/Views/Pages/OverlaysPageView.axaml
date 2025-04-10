@@ -5,7 +5,7 @@ xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 xmlns:controls="clr-namespace:Avalonia.Themes.Neumorphism.Controls;assembly=Avalonia.Themes.Neumorphism"
 xmlns:assist="clr-namespace:Avalonia.Themes.Neumorphism.Assist;assembly=Avalonia.Themes.Neumorphism"
-xmlns:material="using:Material.Icons.Avalonia"
+xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 xmlns:vm="using:RaceElement.UI.ViewModels"
 x:DataType="vm:OverlaysViewModel"
 mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="688"
@@ -13,11 +13,76 @@ x:Class="RaceElement.UI.Views.Pages.OverlaysPageView"
 xmlns:stylers="using:RaceElement.UI.Views.Stylers">
 
   <Grid>
-    <TextBlock Text="Welcome to Overlays!"
-               HorizontalAlignment="Center"
-               VerticalAlignment="Center"
-               FontSize="24"
-               Foreground="Orange" />
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="210" />
+      <ColumnDefinition Width="*" />
+    </Grid.ColumnDefinitions>
+
+    <!-- Left Drawer Menu -->
+    <controls:Card Grid.Column="0" Margin="3,1,1,5" CornerRadius="12"
+                  assist:ShadowAssist.ShadowDepth="Depth3" Padding="0">
+      <Grid RowDefinitions="Auto,*">
+        <!-- Banner -->
+        <Border Grid.Row="0" Height="80" Background="LightSteelBlue" CornerRadius="12, 12, 0, 0">
+          <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Image Source="/Assets/Banner.png" HorizontalAlignment="Center" Stretch="Uniform" MaxHeight="60" />
+            <ToggleSwitch Name="toggleSwitchTheme" Margin="7,0" Content="Fav" HorizontalAlignment="Left" IsChecked="False" OnContent="Favorites" OffContent="All"/>
+          </StackPanel>
+        </Border>
+
+        <!-- Scrollable Menu Items -->
+        <ListBox Grid.Row="1" Name="OverlayItemsList" Focusable="True">
+          <ListBox.Styles>
+            <Style Selector="ListBoxItem">
+              <Setter Property="Height" Value="40" />
+              <Setter Property="Padding" Value="16,0" />
+              <Setter Property="VerticalContentAlignment" Value="Center" />
+              <Setter Property="HorizontalContentAlignment" Value="Left" />
+              <Setter Property="IsEnabled" Value="{Binding $self.IsEnabled}" />
+            </Style>
+          </ListBox.Styles>
+
+          <!-- Menu Items -->
+          <ListBoxItem IsEnabled="True">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="Speedometer" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Accelerometer" VerticalAlignment="Center" Margin="8,0,0,0" />
+            </StackPanel>
+          </ListBoxItem>
+
+          <ListBoxItem IsEnabled="True">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="TimeOfDay" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Average Laptime" VerticalAlignment="Center" Margin="8,0,0,0" />
+            </StackPanel>
+          </ListBoxItem>
+
+          <ListBoxItem IsEnabled="True">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="PowerMeter" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Boost Gauge" VerticalAlignment="Center" Margin="8,0,0,0" />
+            </StackPanel>
+          </ListBoxItem>
+
+          <ListBoxItem IsEnabled="True">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="StopPause" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Brake Pressure" VerticalAlignment="Center" Margin="8,0,0,0" />
+            </StackPanel>
+          </ListBoxItem>
+
+        </ListBox>
+      </Grid>
+    </controls:Card>
+
+    <!-- Main Content Area -->
+    <Grid Grid.Column="1" Margin="10">
+      <TextBlock Text="Select an overlay type from the menu on the left"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"
+                 FontSize="16"
+                 Foreground="Gray"/>
+    </Grid>
   </Grid>
 
 </UserControl>

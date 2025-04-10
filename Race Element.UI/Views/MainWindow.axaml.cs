@@ -5,6 +5,7 @@ using Avalonia.Input;
 using Avalonia.Interactivity;
 
 using RaceElement.UI.Views.Stylers;
+using Avalonia.Styling;
 
 namespace RaceElement.UI.Views;
 
@@ -16,5 +17,6 @@ public partial class MainWindow : Window
 
     // Style the main window and set the default size
     MainWindowStyler.Decorate(this);
-  }
+        Application.Current.SetValue(ThemeVariantScope.ActualThemeVariantProperty, ThemeVariant.Dark);
+    }
 }

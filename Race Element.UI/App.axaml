@@ -10,9 +10,8 @@
     <local:ViewLocator/>
   </Application.DataTemplates>
 
-
-
   <Application.Styles>
-    <themes:NeumorphismTheme BaseTheme="Dark" PrimaryColor="Purple" SecondaryColor="Lime" />
+    <themes:NeumorphismTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Lime" />
+    <StyleInclude Source="avares://Material.Icons.Avalonia/MaterialIconStyles.axaml" />
   </Application.Styles>
 </Application>
