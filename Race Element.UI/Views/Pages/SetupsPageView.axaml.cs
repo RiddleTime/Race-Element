@@ -1,10 +1,13 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using ReactiveUI;
+using RaceElement.UI.ViewModels;
 
 namespace RaceElement.UI.Views.Pages;
 
-public partial class SetupsPageView : UserControl
+public partial class SetupsPageView : ReactiveUserControl<SetupsViewModel>
 {
   public SetupsPageView()
   {

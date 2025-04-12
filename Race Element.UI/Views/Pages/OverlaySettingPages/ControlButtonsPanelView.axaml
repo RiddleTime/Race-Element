@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Avalonia.Themes.Neumorphism.Controls;assembly=Avalonia.Themes.Neumorphism"
+             xmlns:assist="clr-namespace:Avalonia.Themes.Neumorphism.Assist;assembly=Avalonia.Themes.Neumorphism"
+             xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             xmlns:vm="clr-namespace:RaceElement.UI.ViewModels.OverlaySettingViewModels"
+             mc:Ignorable="d" d:DesignWidth="80" d:DesignHeight="400"
+             x:Class="RaceElement.UI.Views.OverlaySettingsPages.ControlButtonsPanelView"
+             x:DataType="vm:ControlButtonsPanelViewModel">
+
+  <StackPanel Name="ControlButtons" VerticalAlignment="Center" HorizontalAlignment="Right"
+              Margin="10,10,10,0" Spacing="15" Width="65">
+    <controls:FloatingButton Width="45" Height="45" assist:ShadowAssist.ShadowDepth="Depth3"
+      Background="LightSteelBlue" BorderBrush="White" BorderThickness="3" ToolTip.Tip="Activate"
+      Command="{Binding ActivateCommand}">
+      <icons:MaterialIcon Kind="Play" Width="24" Height="24"/>
+    </controls:FloatingButton>
+    <controls:FloatingButton Width="45" Height="45" assist:ShadowAssist.ShadowDepth="Depth3"
+      Background="LightSteelBlue" BorderBrush="White" BorderThickness="3" ToolTip.Tip="Preview Now"
+      Command="{Binding PreviewNowCommand}">
+      <icons:MaterialIcon Kind="Eye" Width="24" Height="24"/>
+    </controls:FloatingButton>
+    <controls:FloatingButton Width="45" Height="45" assist:ShadowAssist.ShadowDepth="Depth3"
+      Background="LightSteelBlue" BorderBrush="White" BorderThickness="3" ToolTip.Tip="Add Favorite"
+      Command="{Binding AddFavoriteCommand}">
+      <icons:MaterialIcon Kind="Heart" Width="24" Height="24" Foreground="{Binding FavoriteIconColor}"/>
+    </controls:FloatingButton>
+    <controls:FloatingButton Width="45" Height="45" assist:ShadowAssist.ShadowDepth="Depth3"
+      Background="LightSteelBlue" BorderBrush="White" BorderThickness="3" ToolTip.Tip="Reset to Default"
+      Command="{Binding ResetToDefaultCommand}">
+      <icons:MaterialIcon Kind="Refresh" Width="24" Height="24"/>
+    </controls:FloatingButton>
+    <controls:FloatingButton Width="45" Height="45" assist:ShadowAssist.ShadowDepth="Depth3"
+      Background="LightSteelBlue" BorderBrush="White" BorderThickness="3" ToolTip.Tip="Move or Resize"
+      Command="{Binding MoveResizeCommand}">
+      <icons:MaterialIcon Kind="MoveResize" Width="24" Height="24"/>
+    </controls:FloatingButton>
+    <controls:FloatingButton Width="45" Height="45" assist:ShadowAssist.ShadowDepth="Depth3"
+      Background="LightSteelBlue" BorderBrush="White" BorderThickness="3" ToolTip.Tip="Save Changes"
+      Command="{Binding SaveChangesCommand}">
+      <icons:MaterialIcon Kind="ContentSave" Width="24" Height="24"/>
+    </controls:FloatingButton>
+  </StackPanel>
+</UserControl>

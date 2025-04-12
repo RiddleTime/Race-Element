@@ -1,0 +1,111 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:Avalonia.Themes.Neumorphism.Controls;assembly=Avalonia.Themes.Neumorphism"
+             xmlns:assist="clr-namespace:Avalonia.Themes.Neumorphism.Assist;assembly=Avalonia.Themes.Neumorphism"
+             xmlns:icons="using:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             xmlns:controlbuttons="using:RaceElement.UI.Views.OverlaySettingsPages"
+             x:Class="RaceElement.UI.Views.Pages.OverlaySettingPages.AccelerometerView"
+             xmlns:vm="using:RaceElement.UI.ViewModels.OverlaySettingViewModels"
+             x:DataType="vm:AccelerometerViewModel">
+
+  <!-- Use DockPanel as the root layout to anchor the floating buttons -->
+  <DockPanel LastChildFill="True">
+    <!-- Right side buttons that will stay fixed -->
+    <controlbuttons:ControlButtonsPanelView Name="ControlButtons" DockPanel.Dock="Right" />
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+      <StackPanel Margin="20">
+        <!-- Preview Section -->
+        <controls:Card Margin="0,0,0,20" CornerRadius="8" assist:ShadowAssist.ShadowDepth="Depth3">
+          <Grid RowDefinitions="Auto,*" Margin="15">
+            <TextBlock Grid.Row="0" Text="Preview" FontSize="18" FontWeight="SemiBold" Margin="0,0,0,10"/>
+            <Border Grid.Row="1" Background="#20808080" CornerRadius="5" Height="200" Width="200">
+              <Grid>
+                <!-- The accelerometer circle -->
+                <Ellipse Width="150" Height="150" Fill="Transparent" Stroke="Gray" StrokeThickness="2"/>
+
+                <!-- Cross hairs -->
+                <Line StartPoint="100,25" EndPoint="100,175" Stroke="Gray" StrokeThickness="1"/>
+                <Line StartPoint="25,100" EndPoint="175,100" Stroke="Gray" StrokeThickness="1"/>
+
+                <!-- The accelerometer dot (position would be bound to actual values) -->
+                <Ellipse Width="20" Height="20" Fill="Red" Canvas.Left="90" Canvas.Top="90" Margin="0,0,0,0"/>
+              </Grid>
+            </Border>
+          </Grid>
+        </controls:Card>
+
+        <!-- Settings Sections -->
+        <Expander Header="Display Settings" IsExpanded="True" Margin="0,0,0,10">
+          <StackPanel Margin="10">
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" Margin="0,5">
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="Enable Overlay" VerticalAlignment="Center"/>
+              <ToggleSwitch Grid.Row="0" Grid.Column="1" IsChecked="True" HorizontalAlignment="Right"/>
+
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="Size" VerticalAlignment="Center" Margin="0,10,0,0"/>
+              <Slider Grid.Row="1" Grid.Column="1" Minimum="50" Maximum="300" Value="150" Margin="10,10,0,0"/>
+
+              <TextBlock Grid.Row="2" Grid.Column="0" Text="Opacity" VerticalAlignment="Center" Margin="0,10,0,0"/>
+              <Slider Grid.Row="2" Grid.Column="1" Minimum="0.1" Maximum="1.0" Value="0.8" Margin="10,10,0,0"/>
+            </Grid>
+          </StackPanel>
+        </Expander>
+
+        <Expander Header="Behavior Settings" IsExpanded="True" Margin="0,0,0,10">
+          <StackPanel Margin="10">
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto" Margin="0,5">
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="Sensitivity" VerticalAlignment="Center"/>
+              <Slider Grid.Row="0" Grid.Column="1" Minimum="0.1" Maximum="2.0" Value="1.0" Margin="10,0,0,0"/>
+
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="Smoothing" VerticalAlignment="Center" Margin="0,10,0,0"/>
+              <Slider Grid.Row="1" Grid.Column="1" Minimum="0" Maximum="10" Value="3" Margin="10,10,0,0"/>
+            </Grid>
+          </StackPanel>
+        </Expander>
+
+        <Expander Header="Position Settings" IsExpanded="True" Margin="0,0,0,10">
+          <StackPanel Margin="10">
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" Margin="0,5">
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="Position Preset" VerticalAlignment="Center"/>
+              <ComboBox Grid.Row="0" Grid.Column="1" HorizontalAlignment="Stretch" Margin="10,0,0,0">
+                <ComboBoxItem Content="Center" IsSelected="True"/>
+                <ComboBoxItem Content="Top Left"/>
+                <ComboBoxItem Content="Top Right"/>
+                <ComboBoxItem Content="Bottom Left"/>
+                <ComboBoxItem Content="Bottom Right"/>
+                <ComboBoxItem Content="Custom"/>
+              </ComboBox>
+
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="X Position" VerticalAlignment="Center" Margin="0,10,0,0"/>
+              <NumericUpDown Grid.Row="1" Grid.Column="1" Value="50" Minimum="0" Maximum="100" Margin="10,10,0,0"/>
+
+              <TextBlock Grid.Row="2" Grid.Column="0" Text="Y Position" VerticalAlignment="Center" Margin="0,10,0,0"/>
+              <NumericUpDown Grid.Row="2" Grid.Column="1" Value="50" Minimum="0" Maximum="100" Margin="10,10,0,0"/>
+
+              <TextBlock Grid.Row="3" Grid.Column="0" Text="Always on Top" VerticalAlignment="Center" Margin="0,10,0,0"/>
+              <ToggleSwitch Grid.Row="3" Grid.Column="1" IsChecked="True" HorizontalAlignment="Right" Margin="0,10,0,0"/>
+            </Grid>
+          </StackPanel>
+        </Expander>
+
+        <Expander Header="Appearance" IsExpanded="True" Margin="0,0,0,10">
+          <StackPanel Margin="10">
+            <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto" Margin="0,5">
+              <TextBlock Grid.Row="0" Grid.Column="0" Text="Background Color" VerticalAlignment="Center"/>
+              <ColorPicker Grid.Row="0" Grid.Column="1" Margin="10,0,0,0"/>
+
+              <TextBlock Grid.Row="1" Grid.Column="0" Text="Indicator Color" VerticalAlignment="Center" Margin="0,10,0,0"/>
+              <ColorPicker Grid.Row="1" Grid.Column="1" Margin="10,10,0,0"/>
+
+              <TextBlock Grid.Row="2" Grid.Column="0" Text="Show Grid Lines" VerticalAlignment="Center" Margin="0,10,0,0"/>
+              <ToggleSwitch Grid.Row="2" Grid.Column="1" IsChecked="True" HorizontalAlignment="Right" Margin="0,10,0,0"/>
+            </Grid>
+          </StackPanel>
+        </Expander>
+      </StackPanel>
+    </ScrollViewer>
+  </DockPanel>
+</UserControl>

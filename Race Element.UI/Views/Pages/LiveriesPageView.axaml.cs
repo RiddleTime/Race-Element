@@ -1,10 +1,12 @@
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using RaceElement.UI.ViewModels;
 
 namespace RaceElement.UI.Views.Pages;
 
-public partial class LiveriesPageView : UserControl
+public partial class LiveriesPageView : ReactiveUserControl<LiveriesViewModel>
 {
   public LiveriesPageView()
   {

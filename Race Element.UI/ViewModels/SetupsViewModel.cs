@@ -1,5 +1,7 @@
-﻿namespace RaceElement.UI.ViewModels;
+﻿using ReactiveUI;
 
-internal class SetupsViewModel : ViewModelBase
+namespace RaceElement.UI.ViewModels;
+
+public class SetupsViewModel : ViewModelBase
 {
 }

@@ -11,12 +11,14 @@ namespace RaceElement.UI.Views;
 
 public partial class MainWindow : Window
 {
-  public MainWindow()
-  {
-    InitializeComponent();
+    public MainWindow()
+    {
+        InitializeComponent();
 
-    // Style the main window and set the default size
-    MainWindowStyler.Decorate(this);
-        Application.Current.SetValue(ThemeVariantScope.ActualThemeVariantProperty, ThemeVariant.Dark);
+        // Style the main window and set the default size
+        MainWindowStyler.Decorate(this);
+        Application.Current.SetValue(
+            ThemeVariantScope.ActualThemeVariantProperty,
+            ThemeVariant.Light);
     }
 }

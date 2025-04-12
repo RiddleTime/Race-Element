@@ -1,5 +1,7 @@
-﻿namespace RaceElement.UI.ViewModels;
+﻿using ReactiveUI;
 
-internal class ToolsViewModel : ViewModelBase
+namespace RaceElement.UI.ViewModels;
+
+public class ToolsViewModel : ViewModelBase
 {
 }

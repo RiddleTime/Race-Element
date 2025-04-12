@@ -1,18 +1,31 @@
 using Avalonia;
 using Avalonia.Controls;
+using Avalonia.Input;
+using Avalonia.Interactivity;
 using Avalonia.Markup.Xaml;
+using Avalonia.ReactiveUI;
+using RaceElement.UI.ViewModels;
+using ReactiveUI;
 
 namespace RaceElement.UI.Views.Pages;
 
-public partial class OverlaysPageView : UserControl
+public partial class OverlaysPageView : ReactiveUserControl<OverlaysViewModel>
 {
-  public OverlaysPageView()
-  {
-    InitializeComponent();
-  }
+    private ListBox OverlaysList => this.GetControl<ListBox>("OverlayItemsList");
 
-  private void InitializeComponent()
-  {
-    AvaloniaXamlLoader.Load(this);
-  }
+    public OverlaysPageView()
+    {
+        InitializeComponent();
+
+        // Set up additional bindings or event handlers in the WhenActivated method
+        this.WhenActivated(disposables =>
+        {
+            // todo : Favorites can be checked
+        });
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
 }

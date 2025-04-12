@@ -36,5 +36,8 @@
     <Compile Update="Views\MainTopMenuView.axaml.cs">
       <DependentUpon>MainTopMenuView.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\Pages\OverlaySettingPages\ControlButtonsPanelView.axaml.cs">
+      <DependentUpon>ControlButtonsPanelView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>

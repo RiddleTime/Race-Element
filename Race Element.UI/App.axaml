@@ -4,14 +4,14 @@
   xmlns:materialIcons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
   x:Class="RaceElement.UI.App"
   xmlns:local="using:RaceElement.UI"
-  RequestedThemeVariant="Dark">
+  RequestedThemeVariant="Light">
 
   <Application.DataTemplates>
     <local:ViewLocator/>
   </Application.DataTemplates>
 
   <Application.Styles>
-    <themes:NeumorphismTheme BaseTheme="Dark" PrimaryColor="Red" SecondaryColor="Lime" />
+    <themes:NeumorphismTheme BaseTheme="Light" PrimaryColor="LightBlue" SecondaryColor="Lime" />
     <StyleInclude Source="avares://Material.Icons.Avalonia/MaterialIconStyles.axaml" />
   </Application.Styles>
 </Application>

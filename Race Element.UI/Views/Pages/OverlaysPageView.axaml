@@ -7,10 +7,16 @@ xmlns:controls="clr-namespace:Avalonia.Themes.Neumorphism.Controls;assembly=Aval
 xmlns:assist="clr-namespace:Avalonia.Themes.Neumorphism.Assist;assembly=Avalonia.Themes.Neumorphism"
 xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
 xmlns:vm="using:RaceElement.UI.ViewModels"
+xmlns:overlayvm="using:RaceElement.UI.ViewModels.OverlaySettingViewModels"
+xmlns:overlay="using:RaceElement.UI.Views.Pages.OverlaySettingPages"
 x:DataType="vm:OverlaysViewModel"
 mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="688"
 x:Class="RaceElement.UI.Views.Pages.OverlaysPageView"
 xmlns:stylers="using:RaceElement.UI.Views.Stylers">
+
+  <Design.DataContext>
+    <vm:OverlaysViewModel />
+  </Design.DataContext>
 
   <Grid>
     <Grid.ColumnDefinitions>
@@ -31,7 +37,8 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
         </Border>
 
         <!-- Scrollable Menu Items -->
-        <ListBox Grid.Row="1" Name="OverlayItemsList" Focusable="True">
+        <ListBox Grid.Row="1" Name="OverlayItemsList" Focusable="True"
+          SelectedIndex="{Binding SelectedOverlayIndex, Mode=TwoWay}">
           <ListBox.Styles>
             <Style Selector="ListBoxItem">
               <Setter Property="Height" Value="40" />
@@ -39,35 +46,85 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
               <Setter Property="VerticalContentAlignment" Value="Center" />
               <Setter Property="HorizontalContentAlignment" Value="Left" />
               <Setter Property="IsEnabled" Value="{Binding $self.IsEnabled}" />
+              <Setter Property="Background" Value="Transparent" />
             </Style>
           </ListBox.Styles>
 
           <!-- Menu Items -->
-          <ListBoxItem IsEnabled="True">
+          <ListBoxItem IsEnabled="True" Name="Inputs">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="GraphBar" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Inputs" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
+            </StackPanel>
+          </ListBoxItem>
+
+          <ListBoxItem IsEnabled="True" Name="Standings">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="ListBox" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Standings" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
+            </StackPanel>
+          </ListBoxItem>
+
+          <ListBoxItem IsEnabled="True" Name="Relatives">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="TimelineClock" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Relatives" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
+            </StackPanel>
+          </ListBoxItem>
+
+          <ListBoxItem IsEnabled="True" Name="Laptimes">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="Timelapse" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Laptime" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
+            </StackPanel>
+          </ListBoxItem>
+
+          <ListBoxItem IsEnabled="True" Name="Fuel">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="Fuel" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Fuel" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
+            </StackPanel>
+          </ListBoxItem>
+
+          <ListBoxItem IsEnabled="True" Name="TrackMap">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="Map" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Track Map" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
+            </StackPanel>
+          </ListBoxItem>
+
+          <ListBoxItem IsEnabled="True" Name="Spotter">
+            <StackPanel Orientation="Horizontal">
+              <icons:MaterialIcon Kind="ViewCarousel" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
+              <TextBlock Text="Spotter" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
+            </StackPanel>
+          </ListBoxItem>
+
+          <ListBoxItem IsEnabled="True" Name="Accelerometer">
             <StackPanel Orientation="Horizontal">
               <icons:MaterialIcon Kind="Speedometer" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Accelerometer" VerticalAlignment="Center" Margin="8,0,0,0" />
+              <TextBlock Text="Accelerometer" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
             </StackPanel>
           </ListBoxItem>
 
-          <ListBoxItem IsEnabled="True">
+          <ListBoxItem IsEnabled="True" Name="AverageLaptime">
             <StackPanel Orientation="Horizontal">
               <icons:MaterialIcon Kind="TimeOfDay" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Average Laptime" VerticalAlignment="Center" Margin="8,0,0,0" />
+              <TextBlock Text="Average Laptime" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
             </StackPanel>
           </ListBoxItem>
 
-          <ListBoxItem IsEnabled="True">
+          <ListBoxItem IsEnabled="True" Name="BoostGauge">
             <StackPanel Orientation="Horizontal">
               <icons:MaterialIcon Kind="PowerMeter" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Boost Gauge" VerticalAlignment="Center" Margin="8,0,0,0" />
+              <TextBlock Text="Boost Gauge" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
             </StackPanel>
           </ListBoxItem>
 
-          <ListBoxItem IsEnabled="True">
+          <ListBoxItem IsEnabled="True" Name="BrakePressure">
             <StackPanel Orientation="Horizontal">
               <icons:MaterialIcon Kind="StopPause" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Brake Pressure" VerticalAlignment="Center" Margin="8,0,0,0" />
+              <TextBlock Text="Brake Pressure" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
             </StackPanel>
           </ListBoxItem>
 
@@ -77,11 +134,39 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
 
     <!-- Main Content Area -->
     <Grid Grid.Column="1" Margin="10">
-      <TextBlock Text="Select an overlay type from the menu on the left"
-                 HorizontalAlignment="Center"
-                 VerticalAlignment="Center"
-                 FontSize="16"
-                 Foreground="Gray"/>
+      <Border HorizontalAlignment="Stretch"
+          VerticalAlignment="Stretch">
+        <Carousel Name="OverlayItemSettingPage"
+          SelectedIndex="{Binding SelectedOverlayIndex, Mode=TwoWay}"
+          HorizontalAlignment="Stretch">
+          <Carousel.Styles>
+            <Style Selector="Carousel#OverlayItemSettingPage:not(.no-transitions)">
+              <Setter Property="PageTransition">
+                <PageSlide Duration="0.45" SlideOutEasing="CircularEaseOut" SlideInEasing="CircularEaseOut" />
+              </Setter>
+            </Style>
+          </Carousel.Styles>
+
+          <!-- Inputs Settings Page -->
+          <overlay:InputsOverlayView />
+          <!-- Standings Settings Page -->
+          <overlay:StandingsOverlayView />
+          <!-- Relatives Settings Page -->
+          <overlay:RelativesOverlayView />
+          <!-- Lapt ime Settings Page -->
+          <overlay:LaptimeOverlayView />
+          <!-- Fuel Settings Page -->
+          <overlay:FuelOverlayView />
+          <!-- Track map Settings Page -->
+          <overlay:TrackMapOverlayView />
+          <!-- Spotter Settings Page -->
+          <overlay:SpotterOverlayView />
+          <!-- Accelerometer Settings Page -->
+          <overlay:AccelerometerView />
+          <!-- AverageLapTime Settings Page -->
+          <overlay:AverageLaptimeView />
+        </Carousel>
+      </Border>
     </Grid>
   </Grid>
 

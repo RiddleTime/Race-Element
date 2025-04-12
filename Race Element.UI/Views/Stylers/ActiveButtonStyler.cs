@@ -22,10 +22,10 @@ public sealed class ActiveButtonStyler : IValueConverter
 
     // Return appropriate value based on property type
     if (targetType == typeof(Thickness))
-      return isSelected ? new Thickness(2) : new Thickness(1);
+      return isSelected ? new Thickness(4) : new Thickness(1);
 
     if (targetType == typeof(IBrush))
-      return isSelected ? new SolidColorBrush(Colors.DarkOrange) : new SolidColorBrush(Colors.Transparent);
+      return isSelected ? new SolidColorBrush(Colors.LightSteelBlue) : new SolidColorBrush(Colors.Transparent);
 
     return null;
   }
