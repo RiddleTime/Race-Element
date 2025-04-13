@@ -1,0 +1,86 @@
+<Window
+ xmlns="https://github.com/avaloniaui"
+ xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+ xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+ xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+ xmlns:controls="clr-namespace:Avalonia.Themes.Neumorphism.Controls;assembly=Avalonia.Themes.Neumorphism"
+ xmlns:assist="clr-namespace:Avalonia.Themes.Neumorphism.Assist;assembly=Avalonia.Themes.Neumorphism"
+ xmlns:dialogcontrols="clr-namespace:Avalonia.Themes.Neumorphism.Dialogs.Controls;assembly=Avalonia.Themes.Neumorphism"
+ xmlns:vm="clr-namespace:RaceElement.UI.ViewModels"
+ mc:Ignorable="d" d:DesignWidth="500" d:DesignHeight="450"
+ SystemDecorations="None"
+ ExtendClientAreaToDecorationsHint="True"
+ ExtendClientAreaChromeHints="NoChrome"
+ TransparencyLevelHint="AcrylicBlur"
+ Background="Transparent"
+ x:Class="RaceElement.UI.Views.SettingsMenuView"
+ x:DataType="vm:SettingsMenuViewModel">
+
+  <Window.Styles>
+    <StyleInclude Source="avares://Avalonia.Themes.Neumorphism/Dialogs/Styles/DialogWindow.axaml"/>
+    <StyleInclude Source="avares://Avalonia.Themes.Neumorphism/Dialogs/Styles/StyleInclude.axaml"/>
+  </Window.Styles>
+
+    <Border Background="{DynamicResource MaterialDesignPaper}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="20">
+      <Grid RowDefinitions="*,Auto" Margin="10">
+
+        <TabControl>
+          <TabItem Header="General">
+            <StackPanel Spacing="10" Margin="10">
+              <TextBlock Text="General Settings" FontWeight="Bold" />
+              <CheckBox Content="Enable logging" />
+              <CheckBox Content="Start with Windows" />
+            </StackPanel>
+          </TabItem>
+
+          <TabItem Header="Game Settings">
+            <StackPanel Spacing="10" Margin="10">
+              <TextBlock Text="Game Settings" FontWeight="Bold" />
+              <StackPanel Orientation="Horizontal" Spacing="10">
+                <TextBlock Text="Default Game:" VerticalAlignment="Center" />
+                <ComboBox Width="200">
+                  <ComboBoxItem Content="iRacing" />
+                  <ComboBoxItem Content="ACC" IsSelected="True" />
+                  <ComboBoxItem Content="AC Evo" />
+                  <ComboBoxItem Content="LMU" />
+                </ComboBox>
+              </StackPanel>
+            </StackPanel>
+          </TabItem>
+
+          <TabItem Header="Interface">
+            <StackPanel Spacing="10" Margin="10">
+              <TextBlock Text="Interface Settings" FontWeight="Bold" />
+              <CheckBox Content="Dark mode" />
+              <CheckBox Content="Show tooltips" IsChecked="True" />
+            </StackPanel>
+          </TabItem>
+        </TabControl>
+
+        <StackPanel Grid.Row="2" DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,20,0,0">
+
+          <Button Width="96" Height="48" Foreground="Gray" Content="Cancel" BorderThickness="1" Margin="0,0,10,0"
+            BorderBrush="{DynamicResource MaterialDesignShadowLight}" ToolTip.Tip="Cancel"
+            DataContext="{CompiledBinding ButtonCancel}" Command="{CompiledBinding Command}" CommandParameter="{CompiledBinding}">
+            <Button.Background>
+              <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                <GradientStop Offset="0" Color="Transparent" />
+                <GradientStop Offset="1" Color="#55666666" />
+              </LinearGradientBrush>
+            </Button.Background>
+          </Button>
+
+          <Button Theme="{StaticResource ButtonOutline}" Width="96" Height="48" Content="Save" Foreground="Gray" BorderThickness="1" 
+            BorderBrush="{DynamicResource MaterialDesignShadowLight}" ToolTip.Tip="Save"
+            DataContext="{CompiledBinding ButtonOk}" Command="{CompiledBinding Command}" CommandParameter="{CompiledBinding}" >
+            <Button.Background>
+              <LinearGradientBrush StartPoint="0%,0%" EndPoint="0%,100%">
+                <GradientStop Offset="0" Color="Transparent" />
+                <GradientStop Offset="1" Color="#CCBBBBBB" />
+              </LinearGradientBrush>
+            </Button.Background>
+          </Button>
+        </StackPanel>
+      </Grid>
+    </Border>
+</Window>

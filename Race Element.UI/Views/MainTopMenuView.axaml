@@ -163,7 +163,8 @@
           </Menu>
 
           <controls:FloatingButton Margin="4,4,4,4" ToolTip.Tip="Settings"
-                                   Background="LightSteelBlue" BorderBrush="White" BorderThickness="3">
+                                   Background="LightSteelBlue" BorderBrush="White" BorderThickness="3"
+                                   Command="{Binding OpenSettingsDialog}">
             <Image UseLayoutRounding="False">
               <Image.Source>
                 <DrawingImage Drawing="{DynamicResource SettingsIcon}" />

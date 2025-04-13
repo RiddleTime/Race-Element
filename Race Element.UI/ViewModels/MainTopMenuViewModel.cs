@@ -3,8 +3,13 @@ using Avalonia.Controls;
 using ReactiveUI;
 using System;
 using System.Reactive;
-using System.Diagnostics;
 using RaceElement.UI.Services;
+using Avalonia.Themes.Neumorphism.Dialogs.Interfaces;
+using System.Threading.Tasks;
+using Avalonia.Themes.Neumorphism.Dialogs;
+using Avalonia.Themes.Neumorphism.Dialogs.Bases;
+using RaceElement.UI.Views;
+using Avalonia.Themes.Neumorphism.Dialogs.Enums;
 
 namespace RaceElement.UI.ViewModels;
 public class MainTopMenuViewModel : ViewModelBase
@@ -15,8 +20,6 @@ public class MainTopMenuViewModel : ViewModelBase
     private MainWindowViewModel? _mainWindowViewModel;
     // Default page
     private string _currentPageName = "Overlays";
-    // Track the current game icon source 
-    private string _currentGameIconSource;
     #endregion
 
     #region CONSTRUCTORS
@@ -31,6 +34,14 @@ public class MainTopMenuViewModel : ViewModelBase
 
         // Initialize GameSelectionCommand
         GameSelectionCommand = ReactiveCommand.Create<string>(HandleGameSelection);
+
+        // Pop up settings dialog
+        OpenSettingsDialog = ReactiveCommand.CreateFromTask(async () =>
+        {
+            await ShowSettingsDialogAsync();
+        });
+
+
     }
     #endregion
 
@@ -66,6 +77,9 @@ public class MainTopMenuViewModel : ViewModelBase
     // Command for game selection from dropdown
     public ReactiveCommand<string, Unit> GameSelectionCommand { get; }
 
+    // Command open settings dialog
+    public ReactiveCommand<Unit, Unit> OpenSettingsDialog { get; }
+
     // Command to close the application
     public static ReactiveCommand<Unit, Unit> CloseApplicationCommand => ReactiveCommand.Create(() => { Environment.Exit(0); });
 
@@ -100,5 +114,30 @@ public class MainTopMenuViewModel : ViewModelBase
             this.RaisePropertyChanged(nameof(CurrentGameIconSource));
         }
     }
+
+    private async Task ShowSettingsDialogAsync()
+    {
+        // Get the main window from the application
+        if (Avalonia.Application.Current?.ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop &&
+            desktop.MainWindow is Window mainWindow)
+        {
+            // Initialize the settings view and view model if they don't exist yet
+            var settingsMenuView = new SettingsMenuView();
+            var settingsViewModel = new SettingsMenuViewModel(settingsMenuView);
+
+            settingsMenuView.DataContext = settingsViewModel;
+
+            var dialog = new DialogWindowBase<SettingsMenuView, DialogResult>(settingsMenuView);
+
+            // This makes it modal - the main window will be disabled until this dialog is closed
+            DialogResult result = await dialog.ShowDialog(mainWindow);
+
+            // Dialog is about to close
+            if (result != null && result.GetResult == "ok") 
+            {
+            }
+        }
+    }
     #endregion
+
 }
