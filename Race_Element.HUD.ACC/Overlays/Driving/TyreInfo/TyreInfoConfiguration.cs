@@ -5,10 +5,18 @@ internal sealed class TyreInfoConfiguration : OverlayConfiguration
 {
     public TyreInfoConfiguration() => GenericConfiguration.AllowRescale = true;
 
+    public enum TyreTempPositionOption
+    {
+        ClampedToMiddle,
+        CenterOfTyre,
+    }
+
     [ConfigGrouping("Info", "Show additional information about the condition of the tyres.")]
     public InfoGrouping Information { get; init; } = new InfoGrouping();
     public sealed class InfoGrouping
     {
+        public TyreTempPositionOption TyreTempPosition { get; init; } = TyreTempPositionOption.CenterOfTyre;
+
         [ToolTip("Displays the percentage of brake pad life above the brake pads.")]
         public bool PadLife { get; init; } = true;
 

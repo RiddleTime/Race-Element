@@ -99,10 +99,13 @@ internal sealed class TyreInfoOverlay : AbstractOverlay
             DrawTyrePressureLoss(g, 110, 206, Wheel.RearRight);
         }
 
-        DrawTyreTemp(g, 27, 80, Wheel.FrontLeft);
-        DrawTyreTemp(g, 106, 80, Wheel.FrontRight);
-        DrawTyreTemp(g, 27, 122, Wheel.RearLeft);
-        DrawTyreTemp(g, 106, 122, Wheel.RearRight);
+
+        int yFronts = _config.Information.TyreTempPosition == TyreInfoConfiguration.TyreTempPositionOption.ClampedToMiddle ? 80 : 46;
+        int yRears = _config.Information.TyreTempPosition == TyreInfoConfiguration.TyreTempPositionOption.ClampedToMiddle ? 122 : 160;  
+        DrawTyreTemp(g, 27, yFronts, Wheel.FrontLeft);
+        DrawTyreTemp(g, 106, yFronts, Wheel.FrontRight);
+        DrawTyreTemp(g, 27, yRears, Wheel.RearLeft);
+        DrawTyreTemp(g, 106, yRears, Wheel.RearRight);
     }
 
     private void DrawTyrePressures(Graphics g)
