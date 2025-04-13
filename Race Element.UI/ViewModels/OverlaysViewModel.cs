@@ -22,20 +22,7 @@ public class OverlaysViewModel : ViewModelBase
     private readonly Dictionary<string, Dictionary<OverlayType, ViewModelBase>> _gameSpecificViewModels = [];
 
     // The current game selected in the application
-    private string _currentGame;
-
-    // Properties to expose overlay availability status
-    public bool IsInputsAvailable => IsOverlayAvailable(OverlayType.Inputs);
-    public bool IsStandingsAvailable => IsOverlayAvailable(OverlayType.Standings);
-    public bool IsRelativesAvailable => IsOverlayAvailable(OverlayType.Relatives);
-    public bool IsLaptimesAvailable => IsOverlayAvailable(OverlayType.Laptimes);
-    public bool IsFuelAvailable => IsOverlayAvailable(OverlayType.Fuel);
-    public bool IsTrackMapAvailable => IsOverlayAvailable(OverlayType.TrackMap);
-    public bool IsSpotterAvailable => IsOverlayAvailable(OverlayType.Spotter);
-    public bool IsAccelerometerAvailable => IsOverlayAvailable(OverlayType.Accelerometer);
-    public bool IsAverageLaptimeAvailable => IsOverlayAvailable(OverlayType.AverageLaptime);
-    public bool IsBoostGaugeAvailable => IsOverlayAvailable(OverlayType.BoostGauge);
-    public bool IsBrakePressureAvailable => IsOverlayAvailable(OverlayType.BrakePressure);
+    private string _currentGame = "acc";
     #endregion
 
     public OverlaysViewModel()
@@ -53,16 +40,13 @@ public class OverlaysViewModel : ViewModelBase
         UpdateAvailableOverlays();
 
         // Initialize the selected item
-        if (AvailableOverlays.Count > 0)
-        {
-            _selectedOverlayItem = AvailableOverlays.First();
-            _selectedOverlayType = _selectedOverlayItem.Type;
-        }
+        _selectedOverlayItem = AvailableOverlays.First();
+        _selectedOverlayType = _selectedOverlayItem.Type;
 
         // Subscribe to game changes
         GameSelectionService.Instance.GameChanged += OnGameChanged;
 
-        // When the selected index changes, notify the CurrentOverlayViewModel property
+        // When the selected overlay menu changes, notify the CurrentOverlayViewModel property
         this.WhenAnyValue(x => x._selectedOverlayType)
             .Subscribe(_ => this.RaisePropertyChanged(nameof(CurrentOverlayViewModel)));
     }
@@ -156,13 +140,13 @@ public class OverlaysViewModel : ViewModelBase
 
             // Find the corresponding item in the available overlays
             SelectedOverlayItem = AvailableOverlays.FirstOrDefault(o => o.Type == firstAvailable) ??
-                                 (AvailableOverlays.Count > 0 ? AvailableOverlays[0] : null);
+                                 (AvailableOverlays.Count > 0 ? AvailableOverlays[0] : null)!;
         }
         else
         {
             // If still available, find the item in the new collection
             SelectedOverlayItem = AvailableOverlays.FirstOrDefault(o => o.Type == _selectedOverlayType) ??
-                                 (AvailableOverlays.Count > 0 ? AvailableOverlays[0] : null);
+                                 (AvailableOverlays.Count > 0 ? AvailableOverlays[0] : null)!;
         }
     }
 
@@ -197,8 +181,8 @@ public class OverlaysViewModel : ViewModelBase
             OverlayType.Spotter => new SpotterOverlayViewModel(),
             OverlayType.Accelerometer => new AccelerometerViewModel(),
             OverlayType.AverageLaptime => new AverageLaptimeViewModel(),
-            //OverlayType.BoostGauge => new BoostGaugeViewModel(),
-            //OverlayType.BrakePressure => new BrakePressureViewModel(),
+            OverlayType.BoostGauge => new BoostGaugeViewModel(),
+            OverlayType.BrakePressure => new BrakePressureViewModel(),
         };
     }
     #endregion

@@ -8,22 +8,20 @@ using RaceElement.UI.Services;
 namespace RaceElement.UI.ViewModels.OverlaySettingViewModels;
 public class OverlaySettingViewModelBase : ViewModelBase
 {
-    private bool _isFavorite;
-    private OverlayType _type;
-    private string _name;
-    private MaterialIconKind _iconKind;
+    private bool _isFavorite = false;
+    private OverlayType _type = OverlayType.Inputs;
+    private string _name = "";
+    private MaterialIconKind _iconKind = MaterialIconKind.QuestionMark;
 
     public OverlaySettingViewModelBase()
     {
-        // Subscribe to game changes to update availability
-        GameSelectionService.Instance.GameChanged += OnGameChanged;
     }
-
 
     /// <summary>
     /// Indicates if this overlay is available for the currently selected game
     /// </summary>
-    public bool IsAvailable => OverlaySelectionService.Instance.IsOverlayAvailableForGame(Type, GameSelectionService.Instance.SelectedGame);
+    public bool IsAvailable => OverlaySelectionService.Instance.IsOverlayAvailableForGame(
+        Type, GameSelectionService.Instance.SelectedGame);
 
     /// <summary>
     /// Indicates if this overlay is a favorite
@@ -67,17 +65,5 @@ public class OverlaySettingViewModelBase : ViewModelBase
     {
         get => _isEnabled;
         set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
-    }
-
-    private void OnGameChanged(string newGame)
-    {
-        // Notify UI that IsAvailable property might have changed
-        this.RaisePropertyChanged(nameof(IsAvailable));
-    }
-
-    // Clean up event subscriptions
-    public void Dispose()
-    {
-        GameSelectionService.Instance.GameChanged -= OnGameChanged;
     }
 }

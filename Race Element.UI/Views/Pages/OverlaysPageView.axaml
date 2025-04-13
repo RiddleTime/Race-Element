@@ -123,10 +123,10 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
           <overlay:AccelerometerView />
           <!-- AverageLapTime Settings Page -->
           <overlay:AverageLaptimeView />
-          <!-- BoostGauge Settings Page --><!--
+          <!-- BoostGauge Settings Page -->
           <overlay:BoostGaugeView />
-          --><!-- BrakePressure Settings Page --><!--
-          <overlay:BrakePressureView />-->
+          <!-- BrakePressure Settings Page -->
+          <overlay:BrakePressureView />
         </Carousel>
       </Border>
     </Grid>
