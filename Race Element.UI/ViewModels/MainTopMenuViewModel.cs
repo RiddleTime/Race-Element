@@ -33,7 +33,7 @@ public class MainTopMenuViewModel : ViewModelBase
         NavigateToToolsPageCommand = ReactiveCommand.Create(() => { _mainWindowViewModel?.NavigateTo(new ToolsViewModel()); CurrentPageName = "Tools"; });
 
         // Initialize GameSelectionCommand
-        GameSelectionCommand = ReactiveCommand.Create<string>(HandleGameSelection);
+        GameSelectionCommand = ReactiveCommand.Create<SupportedGame>(HandleGameSelection);
 
         // Pop up settings dialog
         OpenSettingsDialog = ReactiveCommand.CreateFromTask(async () =>
@@ -50,13 +50,13 @@ public class MainTopMenuViewModel : ViewModelBase
         private set => this.RaiseAndSetIfChanged(ref _currentPageName, value);
     }
 
-    public string SelectedGame
+    public SupportedGame SelectedGame
     {
         get => GameSelectionService.Instance.SelectedGame;
         private set => GameSelectionService.Instance.UpdateSelectedGame(value);
     }
 
-    public string CurrentGameIconSource => $"avares://RaceElement.UI/Assets/{SelectedGame}.ico";
+    public string CurrentGameIconSource => $"avares://RaceElement.UI/Assets/{SelectedGame.ToString().ToLower()}.ico";
     #endregion
 
     #region PUBLIC COMMANDS/METHODS
@@ -73,7 +73,7 @@ public class MainTopMenuViewModel : ViewModelBase
     public ReactiveCommand<Unit, Unit> NavigateToToolsPageCommand { get; }
 
     // Command for game selection from dropdown
-    public ReactiveCommand<string, Unit> GameSelectionCommand { get; }
+    public ReactiveCommand<SupportedGame, Unit> GameSelectionCommand { get; }
 
     // Command open settings dialog
     public ReactiveCommand<Unit, Unit> OpenSettingsDialog { get; }
@@ -103,7 +103,7 @@ public class MainTopMenuViewModel : ViewModelBase
     /// Handles the game selection from the dropdown menu.
     /// </summary>
     /// <param name="selection"></param>
-    private void HandleGameSelection(string selection)
+    private void HandleGameSelection(SupportedGame selection)
     {
         // Let the service handle game selection and initialization
         if (GameSelectionService.Instance.SelectGame(selection))

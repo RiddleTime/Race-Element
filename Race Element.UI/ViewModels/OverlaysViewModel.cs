@@ -19,19 +19,19 @@ public class OverlaysViewModel : ViewModelBase
     private OverlaySettingViewModelBase _selectedOverlayItem;
 
     // Dictionary to hold game-specific view models
-    private readonly Dictionary<string, Dictionary<OverlayType, ViewModelBase>> _gameSpecificViewModels = [];
+    private readonly Dictionary<SupportedGame, Dictionary<OverlayType, ViewModelBase>> _gameSpecificViewModels = [];
 
     // The current game selected in the application
-    private string _currentGame = "acc";
+    private SupportedGame _currentGame = GameSelectionService.Instance.SelectedGame;
     #endregion
 
     public OverlaysViewModel()
     {
         // Initialize empty view model collections for each supported game
-        _gameSpecificViewModels["iracing"] = new Dictionary<OverlayType, ViewModelBase>();
-        _gameSpecificViewModels["acc"] = new Dictionary<OverlayType, ViewModelBase>();
-        _gameSpecificViewModels["acevo"] = new Dictionary<OverlayType, ViewModelBase>();
-        _gameSpecificViewModels["lmu"] = new Dictionary<OverlayType, ViewModelBase>();
+        _gameSpecificViewModels[SupportedGame.IRacing] = new Dictionary<OverlayType, ViewModelBase>();
+        _gameSpecificViewModels[SupportedGame.ACC] = new Dictionary<OverlayType, ViewModelBase>();
+        _gameSpecificViewModels[SupportedGame.ACEvo] = new Dictionary<OverlayType, ViewModelBase>();
+        _gameSpecificViewModels[SupportedGame.LMU] = new Dictionary<OverlayType, ViewModelBase>();
 
         // Initialize with the current game from the service
         _currentGame = GameSelectionService.Instance.SelectedGame;
@@ -120,7 +120,7 @@ public class OverlaysViewModel : ViewModelBase
     //////////////////////////////////////////////////////////////////////////////////////////////
     ///                     HANDLE SELECTED GAME CHANGES                                       ///
     //////////////////////////////////////////////////////////////////////////////////////////////
-    private void OnGameChanged(string newGame)
+    private void OnGameChanged(SupportedGame newGame)
     {
         // Store current game
         _currentGame = newGame;

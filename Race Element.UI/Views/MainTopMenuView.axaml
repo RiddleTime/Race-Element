@@ -12,6 +12,7 @@
  xmlns:sys="using:System"
  mc:Ignorable="d" d:DesignWidth="1280" d:DesignHeight="96"
  x:Class="RaceElement.UI.Views.MainTopMenuView"
+ xmlns:services="using:RaceElement.UI.Services"
  x:DataType="vm:MainTopMenuViewModel"
  xmlns:stylers="using:RaceElement.UI.Views.Stylers">
 
@@ -132,28 +133,28 @@
                 </Style>
               </MenuItem.Styles>
 
-              <MenuItem Name="iracing" Command="{Binding GameSelectionCommand}" CommandParameter="{Binding $self.Name}">
+              <MenuItem Name="iracing" Command="{Binding GameSelectionCommand}" CommandParameter="{x:Static services:SupportedGame.IRacing}">
                 <MenuItem.Icon>
                   <Image Source="avares://RaceElement.UI/Assets/iracing-list-image.jpg"
                     Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxWidth="128" MaxHeight="32"/>
                 </MenuItem.Icon>
               </MenuItem>
               <Separator />
-              <MenuItem Name="acc" Command="{Binding GameSelectionCommand}" CommandParameter="{Binding $self.Name}">
+              <MenuItem Name="acc" Command="{Binding GameSelectionCommand}" CommandParameter="{x:Static services:SupportedGame.ACC}">
                 <MenuItem.Icon>
                   <Image Source="avares://RaceElement.UI/Assets/acc-list-image.jpg"
                     Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxWidth="128" MaxHeight="32"/>
                 </MenuItem.Icon>
               </MenuItem>
               <Separator />
-              <MenuItem Name="acevo" Command="{Binding GameSelectionCommand}" CommandParameter="{Binding $self.Name}">
+              <MenuItem Name="acevo" Command="{Binding GameSelectionCommand}" CommandParameter="{x:Static services:SupportedGame.ACEvo}">
                 <MenuItem.Icon>
                   <Image Source="avares://RaceElement.UI/Assets/acevo-list-image.jpg"
                     Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxWidth="128" MaxHeight="32"/>
                 </MenuItem.Icon>
               </MenuItem>
               <Separator />
-              <MenuItem Name="lmu" Command="{Binding GameSelectionCommand}" CommandParameter="{Binding $self.Name}">
+              <MenuItem Name="lmu" Command="{Binding GameSelectionCommand}" CommandParameter="{x:Static services:SupportedGame.LMU}">
                 <MenuItem.Icon>
                   <Image Source="avares://RaceElement.UI/Assets/lmu-list-image.png"
                     Stretch="UniformToFill" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" MaxWidth="128" MaxHeight="32"/>

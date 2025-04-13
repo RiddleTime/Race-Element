@@ -73,17 +73,17 @@ public class OverlaySelectionService
 
     #region Game-Specific Overlay Availability
     // Define which overlays are available for each game
-    private readonly Dictionary<string, HashSet<OverlayType>> _gameOverlayAvailability;
+    private readonly Dictionary<SupportedGame, HashSet<OverlayType>> _gameOverlayAvailability;
     #endregion
 
     #region Constructor
     private OverlaySelectionService()
     {
         // Initialize availability mappings
-        _gameOverlayAvailability = new Dictionary<string, HashSet<OverlayType>>
+        _gameOverlayAvailability = new Dictionary<SupportedGame, HashSet<OverlayType>>
         {
             // iRacing supports all overlays
-            ["iracing"] = new HashSet<OverlayType>
+            [SupportedGame.IRacing] = new HashSet<OverlayType>
             {
                 OverlayType.Inputs,
                 OverlayType.Standings,
@@ -99,7 +99,7 @@ public class OverlaySelectionService
             },
 
             // ACC doesn't support BoostGauge and BrakePressure
-            ["acc"] = new HashSet<OverlayType>
+            [SupportedGame.ACC] = new HashSet<OverlayType>
             {
                 OverlayType.Inputs,
                 OverlayType.Standings,
@@ -112,7 +112,7 @@ public class OverlaySelectionService
             },
 
             // AC Evo doesn't support Spotter
-            ["acevo"] = new HashSet<OverlayType>
+            [SupportedGame.ACEvo] = new HashSet<OverlayType>
             {
                 OverlayType.Inputs,
                 OverlayType.Standings,
@@ -127,7 +127,7 @@ public class OverlaySelectionService
             },
 
             // LMU has limited overlay support
-            ["lmu"] = new HashSet<OverlayType>
+            [SupportedGame.LMU] = new HashSet<OverlayType>
             {
                 OverlayType.Inputs,
                 OverlayType.Standings,
@@ -146,7 +146,7 @@ public class OverlaySelectionService
     /// <param name="overlayType">The overlay type to check</param>
     /// <param name="game">The game identifier</param>
     /// <returns>True if the overlay is available, false otherwise</returns>
-    public bool IsOverlayAvailableForGame(OverlayType overlayType, string game)
+    public bool IsOverlayAvailableForGame(OverlayType overlayType, SupportedGame game)
     {
         if (_gameOverlayAvailability.TryGetValue(game, out var availableItems))
         {
@@ -160,7 +160,7 @@ public class OverlaySelectionService
     /// </summary>
     /// <param name="game">The game identifier</param>
     /// <returns>An enumerable of available overlay types</returns>
-    public IEnumerable<OverlayType> GetAvailableOverlaysForGame(string game)
+    public IEnumerable<OverlayType> GetAvailableOverlaysForGame(SupportedGame game)
     {
         if (_gameOverlayAvailability.TryGetValue(game, out var availableItems))
         {
@@ -170,25 +170,11 @@ public class OverlaySelectionService
     }
 
     /// <summary>
-    /// Gets the overlay type with the specified index
-    /// </summary>
-    /// <param name="index">The numeric index of the overlay</param>
-    /// <returns>The corresponding overlay type</returns>
-    public OverlayType GetOverlayTypeFromIndex(int index)
-    {
-        if (Enum.IsDefined(typeof(OverlayType), index))
-        {
-            return (OverlayType)index;
-        }
-        return OverlayType.Inputs; // Default to Inputs if invalid
-    }
-
-    /// <summary>
     /// Finds the first available overlay for the specified game
     /// </summary>
     /// <param name="game">The game identifier</param>
     /// <returns>The first available overlay type</returns>
-    public OverlayType FindFirstAvailableOverlay(string game)
+    public OverlayType FindFirstAvailableOverlay(SupportedGame game)
     {
         return GetAvailableOverlaysForGame(game).FirstOrDefault();
     }

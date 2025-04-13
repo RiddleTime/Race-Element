@@ -26,13 +26,13 @@ public class GameSelectionService : ReactiveObject
     #endregion
 
     #region Events
-    public event Action<string>? GameChanged;
+    public event Action<SupportedGame>? GameChanged;
     #endregion
 
     #region Properties
-    private string _selectedGame = "acc"; // Default game
+    private SupportedGame _selectedGame = SupportedGame.ACC; // Default game
 
-    public string SelectedGame => _selectedGame;
+    public SupportedGame SelectedGame => _selectedGame;
     #endregion
 
     #region Constructor
@@ -49,28 +49,27 @@ public class GameSelectionService : ReactiveObject
     /// </summary>
     /// <param name="game">The game identifier</param>
     /// <returns>True if the selection was valid and processed, false otherwise</returns>
-    public bool SelectGame(string game)
+    public bool SelectGame(SupportedGame game)
     {
         if (game == _selectedGame)
             return false;
 
         _selectedGame = game;
-        GameChanged?.Invoke(game);
+        GameChanged?.Invoke(game); // Convert SupportedGame enum to string
         return true;
     }
-
     /// <summary>
     /// Updates the selected game (internal - only used by MainTopMenuViewModel)
     /// </summary>
-    public void UpdateSelectedGame(string game)
+    public void UpdateSelectedGame(SupportedGame game)
     {
         _selectedGame = game;
     }
 
     // Helper methods to check for specific games
-    public bool IsIRacing => SelectedGame == "iracing";
-    public bool IsACC => SelectedGame == "acc";
-    public bool IsACEvo => SelectedGame == "acevo";
-    public bool IsLMU => SelectedGame == "lmu";
+    public bool IsIRacing => SelectedGame == SupportedGame.IRacing;
+    public bool IsACC => SelectedGame == SupportedGame.ACC;
+    public bool IsACEvo => SelectedGame == SupportedGame.ACEvo;
+    public bool IsLMU => SelectedGame == SupportedGame.LMU;
     #endregion
 }
