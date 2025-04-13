@@ -1,15 +1,64 @@
 ﻿using Avalonia.Media;
+using Material.Icons;
 using ReactiveUI;
 using System.Collections.ObjectModel;
+
+using RaceElement.UI.Services;
 
 namespace RaceElement.UI.ViewModels.OverlaySettingViewModels;
 public class OverlaySettingViewModelBase : ViewModelBase
 {
     private bool _isFavorite;
+    private OverlayType _type;
+    private string _name;
+    private MaterialIconKind _iconKind;
+
+    public OverlaySettingViewModelBase()
+    {
+        // Subscribe to game changes to update availability
+        GameSelectionService.Instance.GameChanged += OnGameChanged;
+    }
+
+
+    /// <summary>
+    /// Indicates if this overlay is available for the currently selected game
+    /// </summary>
+    public bool IsAvailable => OverlaySelectionService.Instance.IsOverlayAvailableForGame(Type, GameSelectionService.Instance.SelectedGame);
+
+    /// <summary>
+    /// Indicates if this overlay is a favorite
+    /// </summary>
     public bool IsFavorite
     {
         get => _isFavorite;
         set => this.RaiseAndSetIfChanged(ref _isFavorite, value);
+    }
+
+    /// <summary>
+    /// The type of overlay this item represents
+    /// </summary>
+    public OverlayType Type
+    {
+        get => _type;
+        set => this.RaiseAndSetIfChanged(ref _type, value);
+    }
+
+    /// <summary>
+    /// Display name of the overlay
+    /// </summary>
+    public string Name
+    {
+        get => _name;
+        set => this.RaiseAndSetIfChanged(ref _name, value);
+    }
+
+    /// <summary>
+    /// The Material Icons kind to use for this overlay
+    /// </summary>
+    public MaterialIconKind IconKind
+    {
+        get => _iconKind;
+        set => this.RaiseAndSetIfChanged(ref _iconKind, value);
     }
 
     // Display Settings
@@ -20,88 +69,15 @@ public class OverlaySettingViewModelBase : ViewModelBase
         set => this.RaiseAndSetIfChanged(ref _isEnabled, value);
     }
 
-    private double _size = 150;
-    public double Size
+    private void OnGameChanged(string newGame)
     {
-        get => _size;
-        set => this.RaiseAndSetIfChanged(ref _size, value);
+        // Notify UI that IsAvailable property might have changed
+        this.RaisePropertyChanged(nameof(IsAvailable));
     }
 
-    private double _opacity = 0.8;
-    public double Opacity
+    // Clean up event subscriptions
+    public void Dispose()
     {
-        get => _opacity;
-        set => this.RaiseAndSetIfChanged(ref _opacity, value);
-    }
-
-    // Behavior Settings
-    private double _sensitivity = 1.0;
-    public double Sensitivity
-    {
-        get => _sensitivity;
-        set => this.RaiseAndSetIfChanged(ref _sensitivity, value);
-    }
-
-    private double _smoothing = 3;
-    public double Smoothing
-    {
-        get => _smoothing;
-        set => this.RaiseAndSetIfChanged(ref _smoothing, value);
-    }
-
-    // Position Settings
-    private int _selectedPositionIndex = 0;
-    public int SelectedPositionIndex
-    {
-        get => _selectedPositionIndex;
-        set => this.RaiseAndSetIfChanged(ref _selectedPositionIndex, value);
-    }
-
-    public ObservableCollection<string> PositionPresets { get; } = new ObservableCollection<string>
-        {
-            "Center", "Top Left", "Top Right", "Bottom Left", "Bottom Right", "Custom"
-        };
-
-    private double _xPosition = 50;
-    public double XPosition
-    {
-        get => _xPosition;
-        set => this.RaiseAndSetIfChanged(ref _xPosition, value);
-    }
-
-    private double _yPosition = 50;
-    public double YPosition
-    {
-        get => _yPosition;
-        set => this.RaiseAndSetIfChanged(ref _yPosition, value);
-    }
-
-    private bool _alwaysOnTop = true;
-    public bool AlwaysOnTop
-    {
-        get => _alwaysOnTop;
-        set => this.RaiseAndSetIfChanged(ref _alwaysOnTop, value);
-    }
-
-    // Appearance
-    private Color _backgroundColor = Colors.Transparent;
-    public Color BackgroundColor
-    {
-        get => _backgroundColor;
-        set => this.RaiseAndSetIfChanged(ref _backgroundColor, value);
-    }
-
-    private Color _indicatorColor = Colors.Red;
-    public Color IndicatorColor
-    {
-        get => _indicatorColor;
-        set => this.RaiseAndSetIfChanged(ref _indicatorColor, value);
-    }
-
-    private bool _showGridLines = true;
-    public bool ShowGridLines
-    {
-        get => _showGridLines;
-        set => this.RaiseAndSetIfChanged(ref _showGridLines, value);
+        GameSelectionService.Instance.GameChanged -= OnGameChanged;
     }
 }

@@ -12,6 +12,7 @@
 
   <!-- Use DockPanel as the root layout to anchor the floating buttons -->
   <DockPanel LastChildFill="True">
+    <TextBox Text="Fuel Settings" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="24" FontWeight="Bold"/>
   </DockPanel>
 
 </UserControl>

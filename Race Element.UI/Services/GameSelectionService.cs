@@ -26,7 +26,7 @@ public class GameSelectionService : ReactiveObject
     #endregion
 
     #region Events
-    public event Action<string> GameChanged;
+    public event Action<string>? GameChanged;
     #endregion
 
     #region Properties
@@ -36,9 +36,9 @@ public class GameSelectionService : ReactiveObject
     #endregion
 
     #region Constructor
+    // Private constructor for singleton
     private GameSelectionService()
     {
-        // Private constructor for singleton
     }
     #endregion
 
@@ -73,67 +73,4 @@ public class GameSelectionService : ReactiveObject
     public bool IsACEvo => SelectedGame == "acevo";
     public bool IsLMU => SelectedGame == "lmu";
     #endregion
-
-
-
-    //internal bool SelectGame(string selection)
-    //{
-    //    string game = selection.ToLower();
-
-    //    // Skip if same game selected
-    //    if (_selectedGame == game) return false;
-
-    //    // Update the selected game
-    //    this.RaiseAndSetIfChanged(ref _selectedGame, game);
-
-    //    // Perform game-specific initialization
-    //    InitializeGameSpecificSettings(game);
-
-    //    return true;
-    //}
-
-    /// <summary>
-    /// Initializes game-specific settings and configurations
-    /// </summary>
-    private void InitializeGameSpecificSettings(string game)
-    {
-        switch (game)
-        {
-            case "iracing":
-                // iRacing-specific initialization
-                InitializeIRacingSettings();
-                break;
-
-            case "acc":
-                // ACC-specific initialization
-                InitializeACCSettings();
-                break;
-
-            case "acevo":
-                // AC Evo-specific initialization
-                InitializeACEvoSettings();
-                break;
-
-            case "lmu":
-                // LMU-specific initialization
-                InitializeLMUSettings();
-                break;
-        }
-    }
-
-    private void InitializeIRacingSettings()
-    {
-    }
-
-    private void InitializeACCSettings()
-    {
-    }
-
-    private void InitializeACEvoSettings()
-    {
-    }
-
-    private void InitializeLMUSettings()
-    {
-    }
 }

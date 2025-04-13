@@ -15,6 +15,10 @@ mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="688"
 x:Class="RaceElement.UI.Views.Pages.OverlaysPageView"
 xmlns:stylers="using:RaceElement.UI.Views.Stylers">
 
+  <UserControl.Resources>
+    <stylers:EnumToIndexConverter x:Key="EnumToIndexConverter"/>
+  </UserControl.Resources>
+
   <Design.DataContext>
     <vm:OverlaysViewModel />
   </Design.DataContext>
@@ -40,7 +44,9 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
 
         <!-- Scrollable Menu Items -->
         <ListBox Grid.Row="1" Name="OverlayItemsList" Focusable="True"
-          SelectedIndex="{Binding SelectedOverlayIndex, Mode=TwoWay}">
+          SelectedItem="{Binding SelectedOverlayItem, Mode=TwoWay}" ItemsSource="{Binding AvailableOverlays}">
+
+          <!-- Styles -->
           <ListBox.Styles>
             <Style Selector="ListBoxItem">
               <Setter Property="Height" Value="40" />
@@ -50,86 +56,39 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
               <Setter Property="IsEnabled" Value="{Binding $self.IsEnabled}" />
               <Setter Property="Background" Value="Transparent" />
             </Style>
+            <Style Selector="ListBoxItem:disabled">
+              <Setter Property="Opacity" Value="0.5" />
+              <Setter Property="Cursor" Value="No" />
+              <Setter Property="ToolTip.Tip" Value="This overlay is not available for the current game" />
+            </Style>
           </ListBox.Styles>
+          <!-- List of items decided and loaded by the viewmodel -->
+          <ListBox.ItemTemplate>
+            <DataTemplate>
+              <StackPanel Orientation="Horizontal"  IsEnabled="{Binding IsAvailable}">
+                <icons:MaterialIcon Kind="{Binding IconKind}" Width="24" Height="24"
+                                   VerticalAlignment="Center" Foreground="Gray" />
+                <TextBlock Text="{Binding Name}" VerticalAlignment="Center"
+                          Margin="8,0,0,0" Foreground="LightSteelBlue" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
 
-          <!-- Menu Items -->
-          <ListBoxItem IsEnabled="True" Name="Inputs">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="GraphBar" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Inputs" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
 
-          <ListBoxItem IsEnabled="True" Name="Standings">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="ListBox" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Standings" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
-
-          <ListBoxItem IsEnabled="True" Name="Relatives">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="TimelineClock" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Relatives" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
-
-          <ListBoxItem IsEnabled="True" Name="Laptimes">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="Timelapse" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Laptime" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
-
-          <ListBoxItem IsEnabled="True" Name="Fuel">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="Fuel" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Fuel" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
-
-          <ListBoxItem IsEnabled="True" Name="TrackMap">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="Map" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Track Map" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
-
-          <ListBoxItem IsEnabled="True" Name="Spotter">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="ViewCarousel" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Spotter" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
-
-          <ListBoxItem IsEnabled="True" Name="Accelerometer">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="Speedometer" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Accelerometer" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
-
-          <ListBoxItem IsEnabled="True" Name="AverageLaptime">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="TimeOfDay" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Average Laptime" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
-
-          <ListBoxItem IsEnabled="True" Name="BoostGauge">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="PowerMeter" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Boost Gauge" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
-
-          <ListBoxItem IsEnabled="True" Name="BrakePressure">
-            <StackPanel Orientation="Horizontal">
-              <icons:MaterialIcon Kind="StopPause" Width="24" Height="24" VerticalAlignment="Center" Foreground="Gray" />
-              <TextBlock Text="Brake Pressure" VerticalAlignment="Center" Margin="8,0,0,0" Foreground="LightSteelBlue" />
-            </StackPanel>
-          </ListBoxItem>
-
+          <!-- Menu Items will be loaded with DataTemplate above -->
+          <!--
+          <ListBoxItem IsEnabled="{Binding IsInputsAvailable}" Name="Inputs" />
+          <ListBoxItem IsEnabled="{Binding IsStandingsAvailable}" Name="Standings"/>
+          <ListBoxItem IsEnabled="{Binding IsRelativesAvailable}" Name="Relatives"/>
+          <ListBoxItem IsEnabled="{Binding IsLaptimesAvailable}" Name="Laptimes"/>
+          <ListBoxItem IsEnabled="{Binding IsFuelAvailable}" Name="Fuel"/>
+          <ListBoxItem IsEnabled="{Binding IsTrackMapAvailable}" Name="TrackMap"/>
+          <ListBoxItem IsEnabled="{Binding IsSpotterAvailable}" Name="Spotter"/>
+          <ListBoxItem IsEnabled="{Binding IsAccelerometerAvailable}" Name="Accelerometer"/>
+          <ListBoxItem IsEnabled="{Binding IsAverageLaptimeAvailable}" Name="AverageLaptime"/>
+          <ListBoxItem IsEnabled="{Binding IsBoostGaugeAvailable}" Name="BoostGauge"/>
+          <ListBoxItem IsEnabled="{Binding IsBrakePressureAvailable}" Name="BrakePressure"/>
+          -->
         </ListBox>
       </Grid>
     </controls:Card>
@@ -138,7 +97,7 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
     <Grid Grid.Column="1" Margin="10">
       <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Carousel Name="OverlayItemSettingPage" HorizontalAlignment="Stretch"
-          SelectedIndex="{Binding SelectedOverlayIndex, Mode=TwoWay}">
+                  SelectedIndex="{Binding SelectedOverlayItem.Type, Converter={StaticResource EnumToIndexConverter}, Mode=TwoWay}">
           <Carousel.Styles>
             <Style Selector="Carousel#OverlayItemSettingPage:not(.no-transitions)">
               <Setter Property="PageTransition">
@@ -146,14 +105,13 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
               </Setter>
             </Style>
           </Carousel.Styles>
-
           <!-- Inputs Settings Page -->
           <overlay:InputsOverlayView />
           <!-- Standings Settings Page -->
           <overlay:StandingsOverlayView />
           <!-- Relatives Settings Page -->
           <overlay:RelativesOverlayView />
-          <!-- Lapt ime Settings Page -->
+          <!-- Laptime Settings Page -->
           <overlay:LaptimeOverlayView />
           <!-- Fuel Settings Page -->
           <overlay:FuelOverlayView />
@@ -165,6 +123,10 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
           <overlay:AccelerometerView />
           <!-- AverageLapTime Settings Page -->
           <overlay:AverageLaptimeView />
+          <!-- BoostGauge Settings Page --><!--
+          <overlay:BoostGaugeView />
+          --><!-- BrakePressure Settings Page --><!--
+          <overlay:BrakePressureView />-->
         </Carousel>
       </Border>
     </Grid>

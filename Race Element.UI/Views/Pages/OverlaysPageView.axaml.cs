@@ -10,6 +10,7 @@ using Avalonia.Markup.Xaml;
 using Avalonia.ReactiveUI;
 using ReactiveUI;
 
+using RaceElement.UI.Services;
 using RaceElement.UI.ViewModels;
 using RaceElement.UI.ViewModels.OverlaySettingViewModels;
 using RaceElement.UI.Views.OverlaySettingsPages;
@@ -35,10 +36,10 @@ public partial class OverlaysPageView : ReactiveUserControl<OverlaysViewModel>
                 .Subscribe(viewModel =>
                 {
                     // Initial setup when ViewModel is set
-                    UpdateControlButtons(viewModel.SelectedOverlayIndex);
+                    UpdateControlButtons(viewModel.SelectedOverlayType);
 
                     // Subscribe to changes in SelectedOverlayIndex
-                    viewModel.WhenAnyValue(vm => vm.SelectedOverlayIndex)
+                    viewModel.WhenAnyValue(vm => vm.SelectedOverlayType)
                         .Subscribe(UpdateControlButtons)
                         .DisposeWith(disposables);
                 })
@@ -46,7 +47,7 @@ public partial class OverlaysPageView : ReactiveUserControl<OverlaysViewModel>
         });
     }
 
-    private void UpdateControlButtons(int index)
+    private void UpdateControlButtons(OverlayType index)
     {
         // Update the control buttons based on the selected overlay index
         if (_controlButtonsPanelView?.DataContext is ControlButtonsPanelViewModel controlButtonsVM &&
