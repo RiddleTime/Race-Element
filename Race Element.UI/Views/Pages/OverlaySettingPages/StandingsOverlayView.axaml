@@ -6,15 +6,12 @@
              xmlns:assist="clr-namespace:Avalonia.Themes.Neumorphism.Assist;assembly=Avalonia.Themes.Neumorphism"
              xmlns:icons="using:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:controlbuttons="using:RaceElement.UI.Views.OverlaySettingsPages"
              x:Class="RaceElement.UI.Views.Pages.OverlaySettingPages.StandingsOverlayView"
              xmlns:vm="using:RaceElement.UI.ViewModels.OverlaySettingViewModels"
              x:DataType="vm:StandingsOverlayViewModel">
 
   <!-- Use DockPanel as the root layout to anchor the floating buttons -->
   <DockPanel LastChildFill="True">
-    <!-- Right side buttons that will stay fixed -->
-    <controlbuttons:ControlButtonsPanelView Name="ControlButtons" DockPanel.Dock="Right" />
   </DockPanel>
 
 </UserControl>

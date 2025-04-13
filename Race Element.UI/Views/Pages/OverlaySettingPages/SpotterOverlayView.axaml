@@ -13,8 +13,6 @@
 
   <!-- Use DockPanel as the root layout to anchor the floating buttons -->
   <DockPanel LastChildFill="True">
-    <!-- Right side buttons that will stay fixed -->
-    <controlbuttons:ControlButtonsPanelView Name="ControlButtons" DockPanel.Dock="Right" />
   </DockPanel>
 
 </UserControl>

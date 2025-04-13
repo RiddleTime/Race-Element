@@ -92,7 +92,7 @@
               assist:MenuAssist.PopupHorizontalOffset="-140"
               assist:MenuAssist.PopupVerticalOffset="10">
 
-              <!--Fully redefined menu item template-->
+              <!-- Game Selection dropdown list with images and updates the icon of the button -->
               <MenuItem.Template>
                 <ControlTemplate>
                   <Panel Width="100" Height="100">
@@ -108,7 +108,7 @@
                         BorderBrush="{DynamicResource MaterialDesignToolBackground}" BorderThickness="1" ClipToBounds="False">
                         <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="100" ClipToBounds="True">
                           <Image HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0" ClipToBounds="True"
-                                Source="{Binding CurrentGameIconSource, Converter={StaticResource GameSelectionIconStyler}}" 
+                                Source="{Binding CurrentGameIconSource, Converter={StaticResource GameSelectionIconStyler}}"
                                 Stretch="Uniform" Width="64" Height="64" />
                         </Border>
                       </Border>

@@ -8,17 +8,18 @@ namespace RaceElement.UI.ViewModels.OverlaySettingViewModels;
 
 public class ControlButtonsPanelViewModel : ViewModelBase
 {
+    #region Private Fields
     // Reference to the current overlay view model
     private ViewModelBase _currentOverlayViewModel;
 
-    // Commands for each button in the control panel
-    public ReactiveCommand<Unit, Unit> ActivateCommand { get; }
-    public ReactiveCommand<Unit, Unit> PreviewNowCommand { get; }
-    public ReactiveCommand<Unit, Unit> AddFavoriteCommand { get; }
-    public ReactiveCommand<Unit, Unit> ResetToDefaultCommand { get; }
-    public ReactiveCommand<Unit, Unit> MoveResizeCommand { get; }
-    public ReactiveCommand<Unit, Unit> SaveChangesCommand { get; }
+    // Property to determine the favorite icon's color
+    private IBrush _favoriteIconColor = Brushes.White;
 
+    // Property to track if the current overlay is a favorite
+    private bool _isCurrentOverlayFavorite;
+    #endregion
+
+    #region Constructor
     public ControlButtonsPanelViewModel()
     {
         // Initialize commands with their implementations
@@ -28,18 +29,24 @@ public class ControlButtonsPanelViewModel : ViewModelBase
         ResetToDefaultCommand = ReactiveCommand.CreateFromTask(OnResetToDefaultAsync);
         MoveResizeCommand = ReactiveCommand.CreateFromTask(OnMoveResizeAsync);
         SaveChangesCommand = ReactiveCommand.CreateFromTask(OnSaveChangesAsync);
-    }
+    } 
+    #endregion
 
-    // Property to determine the favorite icon's color
-    private IBrush _favoriteIconColor = Brushes.White;
+    #region Public Methods
+    // Commands for each button in the control panel
+    public ReactiveCommand<Unit, Unit> ActivateCommand { get; }
+    public ReactiveCommand<Unit, Unit> PreviewNowCommand { get; }
+    public ReactiveCommand<Unit, Unit> AddFavoriteCommand { get; }
+    public ReactiveCommand<Unit, Unit> ResetToDefaultCommand { get; }
+    public ReactiveCommand<Unit, Unit> MoveResizeCommand { get; }
+    public ReactiveCommand<Unit, Unit> SaveChangesCommand { get; }
+
     public IBrush FavoriteIconColor
     {
         get => _favoriteIconColor;
         private set => this.RaiseAndSetIfChanged(ref _favoriteIconColor, value);
     }
 
-    // Property to track if the current overlay is a favorite
-    private bool _isCurrentOverlayFavorite;
     public bool IsCurrentOverlayFavorite
     {
         get => _isCurrentOverlayFavorite;
@@ -61,11 +68,11 @@ public class ControlButtonsPanelViewModel : ViewModelBase
         _currentOverlayViewModel = viewModel;
 
         // Update favorite status based on the current view model
-        if (_currentOverlayViewModel is OverlaySettingViewModelBase accelerometerVM)
+        if (_currentOverlayViewModel is OverlaySettingViewModelBase overlaySettingVM)
         {
-            IsCurrentOverlayFavorite = accelerometerVM.IsFavorite;
+            IsCurrentOverlayFavorite = overlaySettingVM.IsFavorite;
 
-            accelerometerVM.WhenAnyValue(vm => vm.IsFavorite)
+            overlaySettingVM.WhenAnyValue(vm => vm.IsFavorite)
                 .Subscribe(isFavorite =>
                 {
                     IsCurrentOverlayFavorite = isFavorite;
@@ -75,8 +82,10 @@ public class ControlButtonsPanelViewModel : ViewModelBase
         {
             IsCurrentOverlayFavorite = false;
         }
-    }
+    } 
+    #endregion
 
+    #region Private Methods
     private void UpdateFavoriteIconColor()
     {
         FavoriteIconColor = IsCurrentOverlayFavorite ? Brushes.Red : Brushes.White;
@@ -117,5 +126,6 @@ public class ControlButtonsPanelViewModel : ViewModelBase
     {
         // Implement the logic to save the current settings
         await Task.CompletedTask;
-    }
+    } 
+    #endregion
 }

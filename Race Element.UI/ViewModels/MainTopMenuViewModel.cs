@@ -1,15 +1,15 @@
-﻿using Avalonia.Controls.ApplicationLifetimes;
-using Avalonia.Controls;
-using ReactiveUI;
-using System;
-using System.Reactive;
-using RaceElement.UI.Services;
-using Avalonia.Themes.Neumorphism.Dialogs.Interfaces;
+﻿using System;
 using System.Threading.Tasks;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Controls;
 using Avalonia.Themes.Neumorphism.Dialogs;
 using Avalonia.Themes.Neumorphism.Dialogs.Bases;
+
+using System.Reactive;
+using ReactiveUI;
+
+using RaceElement.UI.Services;
 using RaceElement.UI.Views;
-using Avalonia.Themes.Neumorphism.Dialogs.Enums;
 
 namespace RaceElement.UI.ViewModels;
 public class MainTopMenuViewModel : ViewModelBase
@@ -40,8 +40,6 @@ public class MainTopMenuViewModel : ViewModelBase
         {
             await ShowSettingsDialogAsync();
         });
-
-
     }
     #endregion
 

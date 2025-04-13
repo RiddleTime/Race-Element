@@ -9,6 +9,7 @@ xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalo
 xmlns:vm="using:RaceElement.UI.ViewModels"
 xmlns:overlayvm="using:RaceElement.UI.ViewModels.OverlaySettingViewModels"
 xmlns:overlay="using:RaceElement.UI.Views.Pages.OverlaySettingPages"
+xmlns:controlbuttons="using:RaceElement.UI.Views.OverlaySettingsPages"
 x:DataType="vm:OverlaysViewModel"
 mc:Ignorable="d" d:DesignWidth="1200" d:DesignHeight="688"
 x:Class="RaceElement.UI.Views.Pages.OverlaysPageView"
@@ -22,6 +23,7 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
     <Grid.ColumnDefinitions>
       <ColumnDefinition Width="210" />
       <ColumnDefinition Width="*" />
+      <ColumnDefinition Width="80" />
     </Grid.ColumnDefinitions>
 
     <!-- Left Drawer Menu -->
@@ -134,11 +136,9 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
 
     <!-- Main Content Area -->
     <Grid Grid.Column="1" Margin="10">
-      <Border HorizontalAlignment="Stretch"
-          VerticalAlignment="Stretch">
-        <Carousel Name="OverlayItemSettingPage"
-          SelectedIndex="{Binding SelectedOverlayIndex, Mode=TwoWay}"
-          HorizontalAlignment="Stretch">
+      <Border HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+        <Carousel Name="OverlayItemSettingPage" HorizontalAlignment="Stretch"
+          SelectedIndex="{Binding SelectedOverlayIndex, Mode=TwoWay}">
           <Carousel.Styles>
             <Style Selector="Carousel#OverlayItemSettingPage:not(.no-transitions)">
               <Setter Property="PageTransition">
@@ -167,6 +167,13 @@ xmlns:stylers="using:RaceElement.UI.Views.Stylers">
           <overlay:AverageLaptimeView />
         </Carousel>
       </Border>
+    </Grid>
+
+    <Grid Grid.Column="2">
+      <!-- Right side buttons that will stay fixed -->
+      <controlbuttons:ControlButtonsPanelView Name="GlobalControlButtons"
+                                       VerticalAlignment="Center"
+                                       Margin="0,0,5,0"/>
     </Grid>
   </Grid>
 

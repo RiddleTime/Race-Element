@@ -18,53 +18,79 @@ public enum SupportedGame
 /// </summary>
 public class GameSelectionService : ReactiveObject
 {
-    private static GameSelectionService? _instance;
+    #region Singleton
+    private static readonly Lazy<GameSelectionService> _instance =
+        new Lazy<GameSelectionService>(() => new GameSelectionService());
 
-    private string _selectedGame = "acc";
+    public static GameSelectionService Instance => _instance.Value;
+    #endregion
 
-    // Constructor is private to enforce singleton pattern
-    private GameSelectionService() { }
+    #region Events
+    public event Action<string> GameChanged;
+    #endregion
+
+    #region Properties
+    private string _selectedGame = "acc"; // Default game
+
+    public string SelectedGame => _selectedGame;
+    #endregion
+
+    #region Constructor
+    private GameSelectionService()
+    {
+        // Private constructor for singleton
+    }
+    #endregion
+
+    #region Public Methods
 
     /// <summary>
-    /// Gets the currently selected game
+    /// Updates the selected game and performs any game-specific initialization logic
     /// </summary>
-    public string SelectedGame => _selectedGame;
+    /// <param name="game">The game identifier</param>
+    /// <returns>True if the selection was valid and processed, false otherwise</returns>
+    public bool SelectGame(string game)
+    {
+        if (game == _selectedGame)
+            return false;
 
-    public static GameSelectionService Instance => _instance ??= new GameSelectionService();
+        _selectedGame = game;
+        GameChanged?.Invoke(game);
+        return true;
+    }
+
+    /// <summary>
+    /// Updates the selected game (internal - only used by MainTopMenuViewModel)
+    /// </summary>
+    public void UpdateSelectedGame(string game)
+    {
+        _selectedGame = game;
+    }
+
     // Helper methods to check for specific games
     public bool IsIRacing => SelectedGame == "iracing";
     public bool IsACC => SelectedGame == "acc";
     public bool IsACEvo => SelectedGame == "acevo";
     public bool IsLMU => SelectedGame == "lmu";
+    #endregion
 
-    /// <summary>
-    /// Updates the selected game (internal - only used by MainTopMenuViewModel)
-    /// </summary>
-    internal void UpdateSelectedGame(string game)
-    {
-        this.RaiseAndSetIfChanged(ref _selectedGame, game);
-    }
 
-    /// <summary>
-    /// Updates the selected game and performs any game-specific initialization logic
-    /// </summary>
-    /// <param name="selection">The game identifier</param>
-    /// <returns>True if the selection was valid and processed, false otherwise</returns>
-    internal bool SelectGame(string selection)
-    {
-        string game = selection.ToLower();
 
-        // Skip if same game selected
-        if (_selectedGame == game) return false;
+    //internal bool SelectGame(string selection)
+    //{
+    //    string game = selection.ToLower();
 
-        // Update the selected game
-        this.RaiseAndSetIfChanged(ref _selectedGame, game);
+    //    // Skip if same game selected
+    //    if (_selectedGame == game) return false;
 
-        // Perform game-specific initialization
-        InitializeGameSpecificSettings(game);
+    //    // Update the selected game
+    //    this.RaiseAndSetIfChanged(ref _selectedGame, game);
 
-        return true;
-    }
+    //    // Perform game-specific initialization
+    //    InitializeGameSpecificSettings(game);
+
+    //    return true;
+    //}
 
     /// <summary>
     /// Initializes game-specific settings and configurations

@@ -5,14 +5,11 @@
              xmlns:controls="clr-namespace:Avalonia.Themes.Neumorphism.Controls;assembly=Avalonia.Themes.Neumorphism"
              xmlns:assist="clr-namespace:Avalonia.Themes.Neumorphism.Assist;assembly=Avalonia.Themes.Neumorphism"
              xmlns:icons="clr-namespace:Material.Icons.Avalonia;assembly=Material.Icons.Avalonia"
-             xmlns:controlbuttons="using:RaceElement.UI.Views.OverlaySettingsPages"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="RaceElement.UI.Views.Pages.OverlaySettingPages.AverageLaptimeView">
 
   <!-- Use DockPanel as the root layout to anchor the floating buttons -->
   <DockPanel LastChildFill="True">
-    <!-- Right side buttons that will stay fixed -->
-    <controlbuttons:ControlButtonsPanelView Name="ControlButtons" DockPanel.Dock="Right" />
   </DockPanel>
 
 </UserControl>
