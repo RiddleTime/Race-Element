@@ -1,10 +1,12 @@
-const e=`---
+const t=`---
 title: "Multi-Sim"
 slug: multi-sim
 description: Getting Race Element Ready for Multi-Sim
 type: guide
 ---
 
+<h1 id="auto-switching">Auto-switching</h1>
+<p>Race Element has an option in the main menu of the app that allows it to automatically switch itself to any supported running simulator. Without it you&#39;ll have to manually switch between games, you can do so by clicking the game selector in the left bottom of the app.</p>
 <h1 id="prequisites">Prequisites</h1>
 <p>For some games you need are required to do some small steps so Race Element has access to all data it needs.</p>
 <h2 id="assetto-corsa-1">Assetto Corsa 1</h2>
@@ -26,4 +28,4 @@ type: guide
 <li>Go to System Options</li>
 <li>Enable Telemetry</li>
 </ol>
-`;export{e as default};
+`;export{t as default};
