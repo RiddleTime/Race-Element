@@ -4,8 +4,10 @@ slug: multi-sim
 description: Getting Race Element Ready for Multi-Sim
 type: guide 
 ---
-# Prequisites
+# Auto-switching
+Race Element has an option in the main menu of the app that allows it to automatically switch itself to any supported running simulator. Without it you'll have to manually switch between games, you can do so by clicking the game selector in the left bottom of the app.
 
+# Prequisites
 For some games you need are required to do some small steps so Race Element has access to all data it needs.
 
 ## Assetto Corsa 1
