@@ -30,4 +30,4 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 4. At the bottom of the Hud Tab, Click the Pitwall Section
 5. Click DSX
 6. You can alter behaviour for Braking and Acceleration
-7. For more info read the guide for **[Using the HUD Tab](/guide/how-to-use-huids)**
+7. To activate it read **[The guide for using the HUD Tab](/guide/how-to-use-huds)**
