@@ -25,7 +25,7 @@ type: guide
 <li>Open the HUD Tab</li>
 <li>At the bottom of the Hud Tab, Click the Pitwall Section</li>
 <li>Click DSX</li>
-<li>You can alter behaviour for Braking and acceleration</li>
+<li>You can alter behaviour for Braking and Acceleration</li>
 <li>Follow the Guide on How to use the HUD tab for more information</li>
 </ol>
 `;export{e as default};
