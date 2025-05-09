@@ -1,5 +1,5 @@
 ---
-title: "Using DSX with Race Element for Dualsense Active Triggers"
+title: "Using DSX for Dualsense Active Triggers"
 slug: DSX
 description: Hown to set up DSX and Race Element
 type: guide 
@@ -23,4 +23,5 @@ Active triggers behave is active Force Feedback based on the physics of the car.
 3. Open the HUD Tab
 4. At the bottom of the Hud Tab, Click the Pitwall Section
 5. Click DSX.
-6. Follow the Guide on How to use the HUD tab for more information.
+6. You can alter behaviour for Braking and acceleration.
+7. Follow the Guide on How to use the HUD tab for more information.
