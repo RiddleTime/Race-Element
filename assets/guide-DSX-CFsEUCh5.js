@@ -6,7 +6,7 @@ type: guide
 ---
 
 <h1 id="what-are-active-triggers">What are active triggers?</h1>
-<p>Active triggers behave is active Force Feedback based on the physics of the car. It allows you to feel under and oversteer during acceleration and braking. </p>
+<p>Active triggers is Force Feedback based on the physics of the car which is applied to the left and right trigger. It allows you to feel under and oversteer during acceleration and braking. </p>
 <h1 id="dsx">DSX</h1>
 <ol>
 <li>Open steam</li>
