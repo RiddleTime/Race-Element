@@ -5,7 +5,7 @@ description: How to set up DSX and Race Element
 type: guide 
 ---
 # What are active triggers?
-Active triggers behave is active Force Feedback based on the physics of the car. It allows you to feel under and oversteer during acceleration and braking. 
+Active triggers is Force Feedback based on the physics of the car which is applied to the left and right trigger. It allows you to feel under and oversteer during acceleration and braking. 
 
 # DSX
 1. Open steam
