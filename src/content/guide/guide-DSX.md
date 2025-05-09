@@ -7,6 +7,12 @@ type: guide
 # What are active triggers?
 Active triggers is Force Feedback based on the physics of the car which is applied to the left and right trigger. It allows you to feel under and oversteer during acceleration and braking. 
 
+# Supported Games
+- Assetto Corsa
+- Assetto Corsa Competizione
+- Assetto Corsa EVO
+- RaceRoom
+
 # DSX
 1. Open steam
 2. Go to your Library
