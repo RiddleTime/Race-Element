@@ -1,5 +1,5 @@
 const e=`---
-title: "Using DSX with Race Element for Dualsense Active Triggers"
+title: "Using DSX for Dualsense Active Triggers"
 slug: DSX
 description: Hown to set up DSX and Race Element
 type: guide
@@ -25,6 +25,7 @@ type: guide
 <li>Open the HUD Tab</li>
 <li>At the bottom of the Hud Tab, Click the Pitwall Section</li>
 <li>Click DSX.</li>
+<li>You can alter behaviour for Braking and acceleration.</li>
 <li>Follow the Guide on How to use the HUD tab for more information.</li>
 </ol>
 `;export{e as default};
