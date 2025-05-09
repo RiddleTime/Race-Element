@@ -14,7 +14,7 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 4. Go to Betas and select `dsx_v3.1_beta - v3.1 Beta`
 5. Open DSX and at the left bottom click Settings
 6. Open the Networking tab
-7. Make sure the Firewall Rules are okay(else allow DSX to fix it
+7. Make sure the Firewall Rules are okay, if it's not then allow DSX to fix it
 8. Enable `Incoming UDP`
 
 # Race Element
