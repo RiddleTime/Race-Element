@@ -1,7 +1,7 @@
 const e=`---
 title: "Using DSX for Dualsense Active Triggers"
 slug: DSX
-description: Hown to set up DSX and Race Element
+description: How to set up DSX and Race Element
 type: guide
 ---
 
