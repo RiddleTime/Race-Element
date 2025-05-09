@@ -15,7 +15,7 @@ type: guide
 <li>Go to Betas and select <code>dsx_v3.1_beta - v3.1 Beta</code></li>
 <li>Open DSX and at the left bottom click Settings</li>
 <li>Open the Networking tab</li>
-<li>Make sure the Firewall Rules are okay(else allow DSX to fix it</li>
+<li>Make sure the Firewall Rules are okay, if it&#39;s not then allow DSX to fix it</li>
 <li>Enable <code>Incoming UDP</code></li>
 </ol>
 <h1 id="race-element">Race Element</h1>
