@@ -18,7 +18,7 @@ type: guide
 <ol>
 <li>Open steam</li>
 <li>Go to your Library</li>
-<li>Right click DSX and go to Properties</li>
+<li>Right click DSX and go to Properties (Don&#39;t have DSX yet? <strong><a href="https://store.steampowered.com/app/1812620/DSX/">Get DSX on Steam</a></strong> )</li>
 <li>Go to Betas and select <code>dsx_v3.1_beta - v3.1 Beta</code></li>
 <li>Open DSX and at the left bottom click Settings</li>
 <li>Open the Networking tab</li>
