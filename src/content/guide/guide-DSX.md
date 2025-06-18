@@ -24,7 +24,7 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 8. Enable `Incoming UDP`
 
 # Race Element
-1. Open Race Element
+1. Open Race Element (Don't have Race Element yet? **[Race Element Download and Installation Guide](/guide/how-to-get-started)** )
 2. Make sure the game selection is set correctly
 3. Open the HUD Tab
 4. At the bottom of the Hud Tab, Click the Pitwall Section
