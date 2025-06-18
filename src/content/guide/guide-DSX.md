@@ -16,7 +16,7 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 # DSX
 1. Open steam
 2. Go to your Library
-3. Right click DSX and go to Properties
+3. Right click DSX and go to Properties (Don't have DSX yet? **[Get DSX on Steam](https://store.steampowered.com/app/1812620/DSX/)** )
 4. Go to Betas and select `dsx_v3.1_beta - v3.1 Beta`
 5. Open DSX and at the left bottom click Settings
 6. Open the Networking tab
