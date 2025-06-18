@@ -27,7 +27,7 @@ type: guide
 </ol>
 <h1 id="race-element">Race Element</h1>
 <ol>
-<li>Open Race Element</li>
+<li>Open Race Element (Don&#39;t have Race Element yet? <strong><a href="/guide/how-to-get-started">Race Element Download and Installation Guide</a></strong> )</li>
 <li>Make sure the game selection is set correctly</li>
 <li>Open the HUD Tab</li>
 <li>At the bottom of the Hud Tab, Click the Pitwall Section</li>
