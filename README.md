@@ -34,4 +34,27 @@ https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-9.0
 Free code signing provided by [SignPath.io](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=race-element), certificate by [SignPath Foundation](https://signpath.org?utm_source=foundation&utm_medium=github&utm_campaign=race-element)
 
 ## Contributors
-<!-- This section will be updated by GitHub Actions -->
+<!-- START_CONTRIBUTORS -->
+- [RiddleTime](https://github.com/RiddleTime)
+- [Reinier-Klarenberg](https://github.com/Reinier-Klarenberg)
+- [iFuSiiOnzZ](https://github.com/iFuSiiOnzZ)
+- [KrisV147](https://github.com/KrisV147)
+- [floriwan](https://github.com/floriwan)
+- [Andrei-Jianu](https://github.com/Andrei-Jianu)
+- [Dirk](https://github.com/Dirk)
+- [Florian](https://github.com/Florian)
+- [ConnorMolz](https://github.com/ConnorMolz)
+- [goeflo](https://github.com/goeflo)
+- [GitHub-Action](https://github.com/GitHub-Action)
+- [Andi-Maier](https://github.com/Andi-Maier)
+- [dirkaw](https://github.com/dirkaw)
+- [Mominon](https://github.com/Mominon)
+- [RST](https://github.com/RST)
+- [Marco-De-Fanti](https://github.com/Marco-De-Fanti)
+- [Glen-Germaine](https://github.com/Glen-Germaine)
+- [Balzs-Fehr](https://github.com/Balzs-Fehr)
+- [mreininger23](https://github.com/mreininger23)
+- [Kris](https://github.com/Kris)
+- [Dirk-W](https://github.com/Dirk-W)
+- [Andreas-Willich](https://github.com/Andreas-Willich)
+<!-- END_CONTRIBUTORS -->
