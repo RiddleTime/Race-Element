@@ -66,7 +66,7 @@ internal sealed class InputBarsConfiguration : OverlayConfiguration
         public int AbsOpacity { get; init; } = 255;
 
         [ToolTip("Changes the color of the clutch bar.")]
-        public Color ClutchColor { get; init; } = Color.FromArgb(25, 25, 255, 1);
+        public Color ClutchColor { get; init; } = Color.FromArgb(255, 25, 1, 255);
         [ToolTip("Changes the opacity of the color of the clutch bar.")]
         [IntRange(75, 255, 1)]
         public int ClutchOpacity { get; init; } = 255;
