@@ -1,6 +1,6 @@
 ﻿using RaceElement.Data.ACC.Tracker;
 
-namespace ACCManager.Data.ACC.Core.Game;
+namespace RaceElement.Data.ACC.Core.Game;
 
 public static class AccScheduler
 {

@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
-using RaceElement.Data;
+using RaceElement.Data.ACC.SetupParser;
 using RaceElement.LiveryParser;
 using System;
 using System.Diagnostics;

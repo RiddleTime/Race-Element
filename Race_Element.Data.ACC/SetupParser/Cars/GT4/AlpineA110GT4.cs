@@ -1,10 +1,10 @@
-﻿using RaceElement.Data.SetupRanges;
+﻿using RaceElement.Data.ACC.SetupParser.SetupChanger;
 using System;
 using System.Collections.Generic;
-using static RaceElement.Data.ConversionFactory;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
-namespace RaceElement.Data.Cars.GT4;
+namespace RaceElement.Data.ACC.SetupParser.Cars.GT4;
 
 internal class AlpineA110GT4 : ICarSetupConversion, ISetupChanger
 {

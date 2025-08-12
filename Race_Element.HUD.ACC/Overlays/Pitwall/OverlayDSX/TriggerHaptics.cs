@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using static RaceElement.ACCSharedMemory;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.Dsx.DsxConfiguration;
 using static RaceElement.HUD.ACC.Overlays.Pitwall.Dsx.DsxResources;
 

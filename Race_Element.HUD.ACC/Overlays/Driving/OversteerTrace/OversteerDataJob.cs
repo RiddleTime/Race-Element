@@ -2,7 +2,7 @@
 using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
 using static RaceElement.ACCSharedMemory;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OversteerTrace;
 

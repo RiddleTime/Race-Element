@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Controls;
 using static RaceElement.Data.ACC.Tracks.TrackData;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
 namespace RaceElement.Controls.Telemetry.RaceSessions.Plots;
 

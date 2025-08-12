@@ -1,8 +1,8 @@
 ﻿using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.Database.SessionData;
+using RaceElement.Data.ACC.Laps;
 using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tracker;
-using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.Data.ACC.Tyres;
 using RaceElement.HUD.Overlay.Internal;
 using System;

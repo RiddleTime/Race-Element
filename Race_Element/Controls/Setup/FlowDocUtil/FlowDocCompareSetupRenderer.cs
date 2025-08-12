@@ -1,12 +1,12 @@
 ﻿using RaceElement.Controls.Setup.FlowDocUtil;
-using RaceElement.Data;
+using RaceElement.Data.ACC.SetupParser;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Documents;
 using System.Windows.Media;
-using static RaceElement.Data.ConversionFactory;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
 namespace RaceElement.Controls.Setup;
 

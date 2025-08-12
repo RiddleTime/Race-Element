@@ -1,15 +1,14 @@
-﻿using RaceElement.Data;
-using RaceElement.Data.ACC.Cars;
+﻿using RaceElement.Data.ACC.Cars;
+using RaceElement.Data.ACC.SetupParser;
 using RaceElement.Hardware.ACC.SteeringLock;
 using RaceElement.Util.Settings;
-using SharpCompress;
 using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using static RaceElement.Data.ConversionFactory;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory;
 
 namespace RaceElement.Controls;
 

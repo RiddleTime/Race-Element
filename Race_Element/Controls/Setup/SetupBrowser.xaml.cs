@@ -1,7 +1,6 @@
 ﻿using MaterialDesignThemes.Wpf;
 using RaceElement.Controls.Setup;
 using RaceElement.Controls.Util;
-using RaceElement.Data;
 using RaceElement.Data.ACC.Core;
 using RaceElement.Data.ACC.Tracks;
 using RaceElement.Data.Games;
@@ -19,8 +18,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using static RaceElement.Data.ACC.Tracks.TrackData;
-using static RaceElement.Data.ConversionFactory;
-using static RaceElement.Data.SetupJson;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory;
+using static RaceElement.Data.ACC.SetupParser.SetupJson;
+using RaceElement.Data.ACC.SetupParser;
 
 namespace RaceElement.Controls;
 

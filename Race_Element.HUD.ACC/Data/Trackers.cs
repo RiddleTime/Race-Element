@@ -1,4 +1,4 @@
-﻿using RaceElement.Data.ACC.Tracker.Laps;
+﻿using RaceElement.Data.ACC.Laps;
 using RaceElement.HUD.ACC.Data.Tracker.Weather;
 
 namespace RaceElement.HUD.ACC.Data.Tracker;

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RaceElement.Data;
+namespace RaceElement.Data.ACC.SetupParser;
 
 public class SetupJson
 {

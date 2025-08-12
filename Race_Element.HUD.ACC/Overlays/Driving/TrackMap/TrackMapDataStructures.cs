@@ -3,7 +3,7 @@ using System.Drawing;
 using System.Collections.Generic;
 
 using RaceElement.Broadcast;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 

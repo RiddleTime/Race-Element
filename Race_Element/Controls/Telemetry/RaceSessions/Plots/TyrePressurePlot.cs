@@ -1,5 +1,5 @@
-﻿using RaceElement.Data;
-using RaceElement.Data.ACC.Database.Telemetry;
+﻿using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Data.ACC.SetupParser;
 using RaceElement.Util.SystemExtensions;
 using ScottPlot;
 using ScottPlot.Plottable;

@@ -1,5 +1,5 @@
-﻿using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracker.Laps;
+﻿using RaceElement.Data.ACC.Laps;
+using RaceElement.Data.ACC.Session;
 using RaceElement.Data.ACC.Tyres;
 using System.Diagnostics;
 using System.Threading;

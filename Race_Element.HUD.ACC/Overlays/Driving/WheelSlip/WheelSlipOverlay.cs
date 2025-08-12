@@ -5,7 +5,7 @@ using RaceElement.Util.SystemExtensions;
 using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.OverlayWheelSlip;
 

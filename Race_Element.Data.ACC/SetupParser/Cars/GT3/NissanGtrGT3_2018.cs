@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using static RaceElement.Data.ConversionFactory;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
-namespace RaceElement.Data.Cars.GT3;
+namespace RaceElement.Data.ACC.SetupParser.Cars.GT3;
 
 internal class NissanGtrGT3_2018 : ICarSetupConversion
 {

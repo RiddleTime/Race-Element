@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.ACC.Cars;
+using RaceElement.Data.ACC.SetupParser;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -273,10 +274,10 @@ internal sealed class DamageOverlay : AbstractOverlay
 
         /// SUSPENSION DAMAGE
         /// 
-        float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.FrontLeft);
-        float suspensionDamageFrontRight = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.FrontRight);
-        float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.RearLeft);
-        float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.RearRight);
+        float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, SetupConverter.Wheel.FrontLeft);
+        float suspensionDamageFrontRight = Damage.GetSuspensionDamage(pagePhysics, SetupConverter.Wheel.FrontRight);
+        float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, SetupConverter.Wheel.RearLeft);
+        float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, SetupConverter.Wheel.RearRight);
 
         _shapeSuspensionFrontLeft.Brush = new LinearGradientBrush(_shapeSuspensionFrontLeft.Shape, suspensionDamageFrontLeft > 0 ? Color.Red : baseColor, Color.Transparent, LinearGradientMode.Horizontal);
         _shapeSuspensionFrontRight.Brush = new LinearGradientBrush(_shapeSuspensionFrontRight.Shape, Color.Transparent, suspensionDamageFrontRight > 0 ? Color.Red : baseColor, LinearGradientMode.Horizontal);
@@ -306,10 +307,10 @@ internal sealed class DamageOverlay : AbstractOverlay
 
         _suspensionDamage?.SetRenderer(g =>
         {
-            float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.FrontLeft);
-            float suspensionDamageFrontRight = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.FrontRight);
-            float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.RearLeft);
-            float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, RaceElement.Data.SetupConverter.Wheel.RearRight);
+            float suspensionDamageFrontLeft = Damage.GetSuspensionDamage(pagePhysics, SetupConverter.Wheel.FrontLeft);
+            float suspensionDamageFrontRight = Damage.GetSuspensionDamage(pagePhysics, SetupConverter.Wheel.FrontRight);
+            float suspensionDamageRearLeft = Damage.GetSuspensionDamage(pagePhysics, SetupConverter.Wheel.RearLeft);
+            float suspensionDamageRearRight = Damage.GetSuspensionDamage(pagePhysics, SetupConverter.Wheel.RearRight);
 
             if (suspensionDamageFrontLeft > 0)
                 DrawTextWithOutline(g, Color.White, $"{GetPercentage(suspensionDamageFrontLeft, 30):F0}%", (int)(horizontalPadding * 2.67f), (int)(verticalPadding * 2.0f - halfFontHeight));

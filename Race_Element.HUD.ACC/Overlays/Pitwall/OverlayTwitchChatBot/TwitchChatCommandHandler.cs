@@ -1,12 +1,12 @@
 ﻿using Newtonsoft.Json;
 using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
-using RaceElement.Data;
 using RaceElement.Data.ACC.Cars;
 using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.Laps;
 using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.Data.ACC.SetupParser;
 using RaceElement.HUD.ACC.Overlays.Pitwall.OverlayTwitchChat;
 using RaceElement.Util;
 using System;
@@ -568,6 +568,6 @@ internal sealed class TwitchChatBotCommandHandler
         var currentTrack = RaceElement.Data.ACC.Tracks.TrackData.GetCurrentTrack(_overlay.pageStatic.Track);
         if (currentTrack == null) return string.Empty;
 
-        return $"{currentTrack.FullName}, Length: {currentTrack.TrackLength} meters";
+        return $"{currentTrack.FullName}, Length: {currentTrack.TrackLength} meters, Pitlane: {currentTrack.PitLaneTime} seconds.";
     }
 }

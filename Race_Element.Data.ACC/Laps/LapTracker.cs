@@ -2,6 +2,7 @@
 using RaceElement.Data.ACC.Core;
 using RaceElement.Data.ACC.Database.LapDataDB;
 using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tracker;
 using RaceElement.Data.Games;
 using RaceElement.Util;
 using System;
@@ -9,7 +10,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 
-namespace RaceElement.Data.ACC.Tracker.Laps;
+namespace RaceElement.Data.ACC.Laps;
 
 public class LapTracker
 {
@@ -35,7 +36,7 @@ public class LapTracker
     private LapTracker()
     {
         if (!IsTracking)
-            this.Start();
+            Start();
 
         BroadcastTracker.Instance.OnRealTimeLocalCarUpdate += Instance_OnRealTimeCarUpdate;
         RaceSessionTracker.Instance.OnACSessionTypeChanged += Instance_OnACSessionTypeChanged;

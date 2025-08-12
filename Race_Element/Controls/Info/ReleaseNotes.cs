@@ -6,7 +6,11 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
-
+        {"2.2.6.8", "Assetto Corsa Competizione:"+
+                    "\n - Twitch Chat Bot: +track command now also replies with pitlane time."+
+                    "\n\nMulti-Sim:"+
+                    "\n- Input Bars HUD: Added Clutch bar."
+                    },
         {"2.2.6.6", "- Improve multi-sim experience." 
                     },
         {"2.2.6.4", "Race Element:"+

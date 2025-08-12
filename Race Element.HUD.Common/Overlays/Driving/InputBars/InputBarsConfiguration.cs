@@ -15,6 +15,9 @@ internal sealed class InputBarsConfiguration : OverlayConfiguration
     {
         public BarOrientation Orientation { get; init; } = BarOrientation.Vertical;
 
+        [ToolTip("Displays another bar showing the clutch inputs.")]
+        public bool ShowClutch { get; init; } = false;
+
         [ToolTip("Length of the input bars.")]
         [IntRange(100, 250, 1)]
         public int Length { get; init; } = 200;
@@ -31,7 +34,6 @@ internal sealed class InputBarsConfiguration : OverlayConfiguration
         [IntRange(30, 70, 1)]
         public int RefreshRate { get; init; } = 30;
 
-        [ToolTip("Changes the order of the bars, throttle first and brake second (left to right and top to bottom).")]
         internal bool ThrottleFirst { get; set; }
     }
 
@@ -62,5 +64,11 @@ internal sealed class InputBarsConfiguration : OverlayConfiguration
         [ToolTip("Changes the opacity of the brake bar color when ABS is activated.")]
         [IntRange(75, 255, 1)]
         public int AbsOpacity { get; init; } = 255;
+
+        [ToolTip("Changes the color of the clutch bar.")]
+        public Color ClutchColor { get; init; } = Color.FromArgb(255, 25, 1, 255);
+        [ToolTip("Changes the opacity of the color of the clutch bar.")]
+        [IntRange(75, 255, 1)]
+        public int ClutchOpacity { get; init; } = 255;
     }
 }

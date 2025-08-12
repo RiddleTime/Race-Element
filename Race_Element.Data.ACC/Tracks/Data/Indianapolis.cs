@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using static RaceElement.Data.ACC.Tracks.TrackData;
 
-namespace ACCManager.Data.ACC.Tracks.Data;
+namespace RaceElement.Data.ACC.Tracks.Data;
 
 internal sealed class Indianapolis : AbstractTrackData
 {

@@ -1,5 +1,5 @@
-﻿using RaceElement.Data;
-using RaceElement.Data.ACC.EntryList;
+﻿using RaceElement.Data.ACC.EntryList;
+using RaceElement.Data.ACC.SetupParser;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.Util.SystemExtensions;

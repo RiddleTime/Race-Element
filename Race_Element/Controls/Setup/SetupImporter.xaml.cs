@@ -1,5 +1,5 @@
 ﻿using RaceElement.Controls.Setup;
-using RaceElement.Data;
+using RaceElement.Data.ACC.SetupParser;
 using RaceElement.Util;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
@@ -14,7 +14,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using static RaceElement.Data.ACC.Tracks.TrackData;
-using static RaceElement.Data.ConversionFactory;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory;
 
 namespace RaceElement.Controls;
 

@@ -1,9 +1,9 @@
-﻿using RaceElement.Data.SetupRanges;
+﻿using RaceElement.Data.ACC.SetupParser.SetupChanger;
 using System;
 using System.Collections.Generic;
-using static RaceElement.Data.ConversionFactory;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory;
 
-namespace RaceElement.Data;
+namespace RaceElement.Data.ACC.SetupParser;
 
 public class SetupConverter
 {

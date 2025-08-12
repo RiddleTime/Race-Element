@@ -14,7 +14,6 @@ internal static partial class LocalCarMapper
     // -- Inputs Data
     [MapProperty(nameof(PageFilePhysics.Gas), nameof(@LocalCarData.Inputs.Throttle))]
     [MapProperty(nameof(PageFilePhysics.Brake), nameof(@LocalCarData.Inputs.Brake))]
-    [MapProperty(nameof(PageFilePhysics.Clutch), nameof(@LocalCarData.Inputs.Clutch))]
     [MapProperty(nameof(PageFilePhysics.Gear), nameof(@LocalCarData.Inputs.Gear))]
     [MapProperty(nameof(PageFilePhysics.SteerAngle), nameof(@LocalCarData.Inputs.Steering))]
     // -- Tyre Data
@@ -36,6 +35,7 @@ internal static partial class LocalCarMapper
         commonData.Physics.Acceleration = new(pagePhysics.AccG[0], pagePhysics.AccG[2], pagePhysics.AccG[1]);
         commonData.Engine.IsPitLimiterOn = pagePhysics.PitLimiterOn;
         commonData.Engine.IsRunning = commonData.Engine.Rpm > 0;
+        commonData.Inputs.Clutch = 1 - pagePhysics.Clutch;
 
         WithPhysicsPage(pagePhysics, commonData);
     }

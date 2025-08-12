@@ -1,5 +1,4 @@
-﻿using ACCManager.Data.ACC.Core.Game;
-using RaceElement.Controls;
+﻿using RaceElement.Controls;
 using RaceElement.Controls.Util;
 using RaceElement.Data.Games;
 using RaceElement.HUD.ACC.Overlays.OverlayStartScreen;
@@ -15,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using RaceElement.Core.Jobs.Timer;
+using RaceElement.Data.ACC.Core.Game;
 
 namespace RaceElement;
 

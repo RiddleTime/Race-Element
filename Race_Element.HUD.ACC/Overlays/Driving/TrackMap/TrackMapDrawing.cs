@@ -9,7 +9,7 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Broadcast;
 
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 using static RaceElement.HUD.ACC.Overlays.Driving.TrackMap.TrackMapConfiguration;
 using System.Linq;
 using System.Numerics;

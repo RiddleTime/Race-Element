@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading;
 using static RaceElement.ACCSharedMemory;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayPressureTrace;
 

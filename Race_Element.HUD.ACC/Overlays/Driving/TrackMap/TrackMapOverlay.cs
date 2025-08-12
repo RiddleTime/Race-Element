@@ -12,9 +12,9 @@ using RaceElement.Util;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using RaceElement.Data;
 using RaceElement.Data.ACC.Tracks;
 using System;
+using RaceElement.Data.ACC.SetupParser;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.TrackMap;
 

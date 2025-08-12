@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RaceElement.Data.SetupRanges;
+namespace RaceElement.Data.ACC.SetupParser.SetupChanger;
 
 public class SetupDoubleRange
 {

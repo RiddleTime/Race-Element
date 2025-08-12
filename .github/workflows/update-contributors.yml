@@ -1,0 +1,95 @@
+name: Update Contributors
+
+on:
+  schedule:
+    - cron: '0 0 * * 0' # Runs weekly on Sunday at midnight UTC (2:00 AM CEST)
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  update-contributors:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history to access commit details
+
+      - name: Get Contributors and Commit Counts
+        id: contributors
+        run: |
+          set -euo pipefail
+          # Initialize output file for contributor stats
+          echo "{}" > contributors.json || { echo "Error: Failed to create contributors.json"; exit 1; }
+          # Switch to dev branch
+          git checkout dev || { echo "Error: Failed to checkout dev branch"; exit 2; }
+          # Get unique contributors and their commit counts, excluding GitHub-Action
+          echo "Fetching contributors and commit counts"
+          contributors=$(git log --pretty=format:%an 2>/dev/null | grep -v "^actions-user$" | sort | uniq -c || { echo "Error: Failed to run git log or process contributors"; exit 3; })
+          if [ -z "$contributors" ]; then
+            echo "Error: No contributors found in git log output (excluding GitHub-Action)"
+            exit 4
+          fi
+          # Process contributors and commit counts
+          echo "Processing contributors"
+          echo "$contributors" | while read -r count author_name; do
+            if [ -z "$author_name" ] || [ "$author_name" = "GitHub Action" || [ "$author_name" = "actions-user" ]; then
+              echo "Skipping $author_name (count: $count)"
+              continue
+            fi
+            # Sanitize author name as GitHub username
+            login=$(echo "$author_name" | tr -s ' ' '-' | tr -dc '[:alnum:]-')
+            if echo "$author_name" | grep -q '[[:space:]]'; then
+              echo "Warning: Author '$author_name' may not be a valid GitHub username (contains spaces, sanitized to '$login')"
+            fi
+            echo "Contributor: $login, Commits: $count"
+            # Update JSON with contributor stats
+            if ! jq --arg login "$login" --arg count "$count" \
+               '.[$login] |= (. // {commits: 0, login: $login} | .commits = ($count | tonumber))' \
+               contributors.json > tmp.json 2>/dev/null; then
+              echo "Error: jq failed to update stats for $login"
+              exit 5
+            fi
+            if ! mv tmp.json contributors.json 2>/dev/null; then
+              echo "Error: Failed to move tmp.json for $login"
+              exit 6
+            fi
+          done
+          # Generate list sorted by commit count
+          echo "Generating contributor list"
+          if ! list=$(jq -r 'to_entries | sort_by(.value.commits) | reverse | .[] | select(.value.commits > 0) | "- [\(.key)](https://github.com/\(.key))"' contributors.json 2>/dev/null); then
+            echo "Error: jq failed to format list"
+            exit 7
+          fi
+          if [ -z "$list" ]; then
+            list="No contributors with commits (excluding GitHub-Action)."
+            echo "Warning: No valid contributors found"
+          else
+            echo "$list" > contributors_list.txt
+          fi
+        shell: bash
+
+      - name: Update README
+        run: |
+          set -euo pipefail
+          echo "Starting README update at $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          if [ ! -s contributors_list.txt ] || [ "$(cat contributors_list.txt)" = "No contributors with commits (excluding GitHub-Action)." ]; then
+            echo "No contributors to update."
+            exit 0
+          fi
+          # Replace content between markers
+          awk '/<!-- START_CONTRIBUTORS -->/{print; while(getline < "contributors_list.txt") print; flag=1; next} /<!-- END_CONTRIBUTORS -->/{flag=0} !flag' README.md > temp_readme.md || { echo "Error: Failed to update README with awk"; exit 1; }
+          mv temp_readme.md README.md || { echo "Error: Failed to move temp_readme.md"; exit 2; }
+          echo "Updated README content. Checking for changes."
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add README.md || { echo "Error: git add failed"; exit 3; }
+          if git diff-index --quiet HEAD; then
+            echo "No changes to commit. Exiting."
+            exit 0
+          fi
+          echo "Committing changes to README at $(date -u +'%Y-%m-%d %H:%M:%S UTC')"
+          git commit -m "Update contributors list (excluding GitHub-Action)" || { echo "Error: git commit failed"; exit 4; }
+          git push || { echo "Error: git push failed"; exit 5; }
+          echo "Pushed updated README to dev branch."
+        env:
+          GITHUB_TOKEN: ${{ secrets.CUSTOM_GITHUB_TOKEN }}

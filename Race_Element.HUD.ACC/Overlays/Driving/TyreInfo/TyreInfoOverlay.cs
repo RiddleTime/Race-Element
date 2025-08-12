@@ -9,7 +9,7 @@ using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayTyreInfo;
 

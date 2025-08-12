@@ -1,6 +1,5 @@
 ﻿using RaceElement.Broadcast;
 using RaceElement.Broadcast.Structs;
-using RaceElement.Data;
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.EntryList.TrackPositionGraph;
 using RaceElement.Data.ACC.Session;
@@ -16,8 +15,9 @@ using System.Linq;
 using System.Text;
 using static RaceElement.Data.ACC.EntryList.EntryListTracker;
 using static RaceElement.Data.ACC.Tracks.TrackData;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 using static RaceElement.HUD.Overlay.OverlayUtil.InfoTable;
+using RaceElement.Data.ACC.SetupParser;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayDebugInfo.OverlayEntryList;
 

@@ -1,20 +1,19 @@
 ﻿using Newtonsoft.Json;
 using RaceElement.Data.ACC.SetupParser.Cars.GT2;
 using RaceElement.Data.ACC.SetupParser.Cars.GT3;
-using RaceElement.Data.Cars.GT3;
-using RaceElement.Data.Cars.GT4;
-using RaceElement.Data.Cars.GTC;
-using RaceElement.Data.Cars.TCX;
+using RaceElement.Data.ACC.SetupParser.Cars.GT4;
+using RaceElement.Data.ACC.SetupParser.Cars.GTC;
+using RaceElement.Data.ACC.SetupParser.Cars.TCX;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using static RaceElement.Data.ConversionFactory.CarModels;
-using static RaceElement.Data.SetupConverter;
-using static RaceElement.Data.SetupJson;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory.CarModels;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupJson;
 
-namespace RaceElement.Data;
+namespace RaceElement.Data.ACC.SetupParser;
 
 public static class ConversionFactory
 {

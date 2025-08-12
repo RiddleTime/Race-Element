@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using static RaceElement.Data.ConversionFactory;
-using static RaceElement.Data.ConversionFactory.CarModels;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory.CarModels;
 
 namespace RaceElement.HUD.ACC.Overlays.OverlayEcuMapInfo;
 

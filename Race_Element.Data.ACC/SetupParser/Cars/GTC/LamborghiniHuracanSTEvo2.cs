@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using static RaceElement.Data.ConversionFactory;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.ConversionFactory;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
-namespace RaceElement.Data.Cars.GTC;
+namespace RaceElement.Data.ACC.SetupParser.Cars.GTC;
 
 internal class LamborghiniHuracanSTEvo22021 : ICarSetupConversion
 {

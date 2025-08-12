@@ -1,6 +1,6 @@
 ﻿using System;
 using static RaceElement.ACCSharedMemory;
-using static RaceElement.Data.SetupConverter;
+using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
 namespace RaceElement.Data.ACC.Cars;
 

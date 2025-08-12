@@ -1,5 +1,5 @@
 ﻿using RaceElement.Data.ACC.Database.LapDataDB;
-using RaceElement.Data.ACC.Tracker.Laps;
+using RaceElement.Data.ACC.Laps;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;

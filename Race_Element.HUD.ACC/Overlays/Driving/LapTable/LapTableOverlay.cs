@@ -1,6 +1,6 @@
 ﻿using RaceElement.Data.ACC.Database.LapDataDB;
+using RaceElement.Data.ACC.Laps;
 using RaceElement.Data.ACC.Session;
-using RaceElement.Data.ACC.Tracker.Laps;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
