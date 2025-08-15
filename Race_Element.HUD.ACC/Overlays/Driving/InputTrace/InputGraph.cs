@@ -18,6 +18,8 @@ internal class InputGraph : IDisposable
     private readonly Pen _throttlePen;
     private readonly Pen _brakePen;
     private readonly Pen _steeringPen;
+    private readonly Pen _tractionControlPen;
+    private readonly Pen _absPen;
 
     public InputGraph(int x, int y, int width, int height, InputDataJob dataJob, InputTraceConfiguration config)
     {
@@ -31,6 +33,8 @@ internal class InputGraph : IDisposable
         _throttlePen = new Pen(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor), _config.Chart.LineThickness);
         _brakePen = new Pen(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor), _config.Chart.LineThickness);
         _steeringPen = new Pen(Color.FromArgb(_config.Colors.SteeringOpacity, _config.Colors.SteeringColor), _config.Chart.LineThickness);
+        _tractionControlPen = new Pen(Color.FromArgb(_config.Colors.TractionControlOpacity, _config.Colors.TractionControlColor), _config.Chart.LineThickness);
+        _absPen = new Pen(Color.FromArgb(_config.Colors.AbsOpacity, _config.Colors.AbsColor), _config.Chart.LineThickness);
 
         _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
         {
@@ -42,7 +46,7 @@ internal class InputGraph : IDisposable
             }
 
             Rectangle graphRect = new(_x, _y, _width, _height);
-            LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
+            using LinearGradientBrush gradientBrush = new(graphRect, Color.FromArgb(230, Color.Black), Color.FromArgb(120, Color.Black), LinearGradientMode.Vertical);
             g.FillRoundedRectangle(gradientBrush, graphRect, 3);
             g.DrawRoundedRectangle(new Pen(Color.FromArgb(196, Color.Black)), graphRect, 3);
         });
@@ -64,19 +68,50 @@ internal class InputGraph : IDisposable
 
         if (_dataJob != null)
         {
-            List<int> data;
+            List<int> iData;
+            List<bool> bData;
 
             if (_config.Chart.SteeringInput)
             {
-                lock (_dataJob.Steering) data = new(_dataJob.Steering);
-                DrawData(g, data, _steeringPen);
+                lock (_dataJob.Steering) iData = new(_dataJob.Steering);
+                DrawData(g, iData, _steeringPen);
             }
 
-            lock (_dataJob.Throttle) data = new(_dataJob.Throttle);
-            DrawData(g, data, _throttlePen);
+            lock (_dataJob.Throttle) iData = new(_dataJob.Throttle);
+            DrawData(g, iData, _throttlePen);
+            if (_config.Chart.TractionControl)
+            {
+                lock (_dataJob.TC) bData = _dataJob.TC;
+                DrawData(g, bData, iData, _tractionControlPen);
+            }
 
-            lock (_dataJob.Brake) data = new(_dataJob.Brake);
-            DrawData(g, data, _brakePen);
+
+            lock (_dataJob.Brake) iData = new(_dataJob.Brake);
+            DrawData(g, iData, _brakePen);
+            if (_config.Chart.Abs)
+            {
+                lock (_dataJob.ABS) bData = _dataJob.ABS;
+                DrawData(g, bData, iData, _absPen);
+            }
+        }
+    }
+
+    private void DrawData(Graphics g, List<bool> bData, List<int> iData, Pen pen)
+    {
+        if (bData.Count > 0 && iData.Count > 0 && bData.Count == iData.Count)
+        {
+            var bSpan = CollectionsMarshal.AsSpan<bool>(bData);
+            var iSpan = CollectionsMarshal.AsSpan<int>(iData);
+            for (int i = 0; i < bSpan.Length - 1; i++)
+            {
+                if (bSpan[i])
+                {
+                    int x = _x + _width - i * (_width / bSpan.Length);
+                    int y = _y + GetRelativeNodeY(iSpan[i]);
+
+                    g.DrawLine(pen, new Point(x, y - 1), new Point(x, 2));
+                }
+            }
         }
     }
 
@@ -118,5 +153,7 @@ internal class InputGraph : IDisposable
         _throttlePen?.Dispose();
         _brakePen?.Dispose();
         _steeringPen?.Dispose();
+        _tractionControlPen?.Dispose();
+        _absPen?.Dispose();
     }
 }

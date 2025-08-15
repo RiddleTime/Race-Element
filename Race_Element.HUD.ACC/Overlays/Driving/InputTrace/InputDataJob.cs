@@ -24,6 +24,16 @@ internal sealed class InputDataJob : AbstractLoopJob
     /// </summary>
     public readonly List<int> Brake = [];
 
+    /// <summary>
+    /// Stores ABS Activation data
+    /// </summary>
+    public readonly List<bool> ABS = [];
+
+    /// <summary>
+    /// Stores Traction Control activation data
+    /// </summary>
+    public readonly List<bool> TC = [];
+
     public InputDataJob(InputTraceOverlay overlay, int dataCount)
     {
         Overlay = overlay;
@@ -41,6 +51,8 @@ internal sealed class InputDataJob : AbstractLoopJob
             Steering.Insert(0, presetSteering);
             Throttle.Insert(0, presetThrottle);
             Brake.Insert(0, presetBrake);
+            ABS.Insert(0, false);
+            TC.Insert(0, false);
         }
     }
 
@@ -68,6 +80,18 @@ internal sealed class InputDataJob : AbstractLoopJob
             Steering.Insert(0, (int)((filePhysics.SteerAngle + 1.0) / 2 * 100));
             if (Steering.Count > DataCount)
                 Steering.RemoveAt(Steering.Count - 1);
+        }
+        lock (ABS)
+        {
+            ABS.Insert(0, filePhysics.Abs > 0);
+            if (ABS.Count > DataCount)
+                ABS.RemoveAt(ABS.Count - 1);
+        }
+        lock (TC)
+        {
+            TC.Insert(0, filePhysics.TC > 0);
+            if (TC.Count > DataCount)
+                TC.RemoveAt(TC.Count - 1);
         }
     }
 }

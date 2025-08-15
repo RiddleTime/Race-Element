@@ -21,7 +21,7 @@ internal sealed class InputTraceOverlay : AbstractOverlay
     {
         this.Width = _config.Chart.Width;
         this.Height = _config.Chart.Height;
-        this.RefreshRateHz = _config.Chart.HudRefreshRate;
+        this.RefreshRateHz = _config.Data.HudRefreshRate;
         this.RefreshRateHz.ClipMax(_config.Data.Herz);
     }
 
