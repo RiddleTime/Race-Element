@@ -14,6 +14,10 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         [ToolTip("Sets the data collection rate.\n70 Hz and higher will affect cpu usage, don't blame us for your cpu.")]
         [IntRange(10, 150, 2)]
         public int Herz { get; init; } = 70;
+
+        [ToolTip("Sets the drawing refresh rate.")]
+        [IntRange(12, 30, 6)]
+        public int HudRefreshRate { get; init; } = 30;
     }
 
     [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or hide the steering input.")]
@@ -35,12 +39,16 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         [ToolTip("Displays the steering input as a white line in the trace.")]
         public bool SteeringInput { get; init; } = true;
 
+        [ToolTip("Displays Traction Control Activation.")]
+        public bool TractionControl { get; init; } = true;
+
+        [ToolTip("Displays ABS Activation.")]
+        public bool Abs { get; init; } = true;
+
         [ToolTip("Show horizontal grid lines.")]
         public bool GridLines { get; init; } = true;
 
-        [ToolTip("Sets the drawing refresh rate.")]
-        [IntRange(12, 30, 6)]
-        public int HudRefreshRate { get; init; } = 24;
+
     }
 
     [ConfigGrouping("Colors", "Customize the colors of the throttle, brake and steering traces.")]
@@ -58,5 +66,13 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         public Color SteeringColor { get; init; } = Color.FromArgb(255, 255, 255);
         [IntRange(70, 255, 1)]
         public int SteeringOpacity { get; init; } = 190;
+
+        public Color TractionControlColor { get; init; } = Color.FromArgb(0, 255, 0);
+        [IntRange(2, 255, 1)]
+        public int TractionControlOpacity { get; init; } = 90;
+
+        public Color AbsColor { get; init; } = Color.FromArgb(255, 0, 0);
+        [IntRange(2, 255, 1)]
+        public int AbsOpacity { get; init; } = 110;
     }
 }

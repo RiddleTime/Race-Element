@@ -9,6 +9,7 @@ using System.Drawing;
 using System.Linq;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.HUD.ACC.Overlays.Driving.PressureHistory;
 
 namespace RaceElement.HUD.ACC.Overlays.Driving.BrakeTempHistory;
 
@@ -190,10 +191,19 @@ internal sealed class BrakeTempHistoryOverlay : AbstractOverlay
         if (_config.Behavior.HideInRace && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE)
             return false;
 
-        if (_config.Behavior.ShowInSetupScreen && pageGraphics.IsSetupMenuVisible)
-            return true;
+        if (_config.Behavior.HideInQualifying && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_QUALIFY)
+            return false;
 
-        return base.ShouldRender();
+        if (_config.Behavior.HideInPractice && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_PRACTICE)
+            return false;
+
+        return _config.Behavior.Visibility switch
+        {
+            BrakeTempHistoryConfiguration.VisibilitySetting.OnlySetupScreen => pageGraphics.IsSetupMenuVisible,
+            BrakeTempHistoryConfiguration.VisibilitySetting.OnlySessions => base.ShouldRender(),
+            BrakeTempHistoryConfiguration.VisibilitySetting.SetupScreenAndSessions => pageGraphics.IsSetupMenuVisible || base.ShouldRender(),
+            _ => base.ShouldRender(),
+        };
     }
 
     public sealed override void Render(Graphics g)

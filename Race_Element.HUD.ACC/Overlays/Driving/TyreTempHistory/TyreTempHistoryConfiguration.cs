@@ -5,16 +5,28 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.TyreTempHistory;
 internal sealed class TyreTempHistoryConfiguration : OverlayConfiguration
 {
     public TyreTempHistoryConfiguration() => GenericConfiguration.AllowRescale = true;
+    public enum VisibilitySetting
+    {
+        SetupScreenAndSessions,
+        OnlySetupScreen,
+        OnlySessions,
+    }
 
     [ConfigGrouping("Behavior", "Adjust behavorial settings")]
     public BehaviorGrouping Behavior { get; init; } = new();
     public sealed class BehaviorGrouping
     {
-        [ToolTip("Whilst the setup screen is visible, the HUD will also be visible.")]
-        public bool ShowInSetupScreen { get; init; } = true;
+        [ToolTip("Determines when the HUD is visible. A Session is when you're in the car and driving.\nSetup Screen is the setup adjustment menu in-game.")]
+        public VisibilitySetting Visibility { get; init; } = VisibilitySetting.SetupScreenAndSessions;
 
         [ToolTip("Hides this HUD in race sessions.")]
         public bool HideInRace { get; init; } = false;
+
+        [ToolTip("Hides this HUD in qualifying sessions.")]
+        public bool HideInQualifying { get; init; } = false;
+
+        [ToolTip("Hides this HUD in practice sessions.")]
+        public bool HideInPractice { get; init; } = false;
     }
 
     [ConfigGrouping("Table", "Adjust settings for the sector data table")]

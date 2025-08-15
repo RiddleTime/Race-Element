@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.ACC.Database.SessionData;
 using RaceElement.Data.ACC.Session;
+using RaceElement.HUD.ACC.Overlays.Driving.BrakeTempHistory;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.Drawing;
@@ -190,10 +191,19 @@ internal sealed class TyreTempHistoryOverlay : AbstractOverlay
         if (_config.Behavior.HideInRace && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_RACE)
             return false;
 
-        if (_config.Behavior.ShowInSetupScreen && pageGraphics.IsSetupMenuVisible)
-            return true;
+        if (_config.Behavior.HideInQualifying && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_QUALIFY)
+            return false;
 
-        return base.ShouldRender();
+        if (_config.Behavior.HideInPractice && pageGraphics.SessionType == ACCSharedMemory.AcSessionType.AC_PRACTICE)
+            return false;
+
+        return _config.Behavior.Visibility switch
+        {
+            TyreTempHistoryConfiguration.VisibilitySetting.OnlySetupScreen => pageGraphics.IsSetupMenuVisible,
+            TyreTempHistoryConfiguration.VisibilitySetting.OnlySessions => base.ShouldRender(),
+            TyreTempHistoryConfiguration.VisibilitySetting.SetupScreenAndSessions => pageGraphics.IsSetupMenuVisible || base.ShouldRender(),
+            _ => base.ShouldRender(),
+        };
     }
 
     public sealed override void Render(Graphics g)
