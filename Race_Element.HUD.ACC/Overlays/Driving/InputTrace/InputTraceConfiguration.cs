@@ -69,10 +69,10 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
 
         public Color TractionControlColor { get; init; } = Color.FromArgb(0, 255, 0);
         [IntRange(2, 255, 1)]
-        public int TractionControlOpacity { get; init; } = 35;
+        public int TractionControlOpacity { get; init; } = 45;
 
         public Color AbsColor { get; init; } = Color.FromArgb(255, 0, 0);
         [IntRange(2, 255, 1)]
-        public int AbsOpacity { get; init; } = 55;
+        public int AbsOpacity { get; init; } = 65;
     }
 }
