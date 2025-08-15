@@ -11,8 +11,6 @@ internal sealed class PressureHistoryConfiguration : OverlayConfiguration
 {
     public PressureHistoryConfiguration() => GenericConfiguration.AllowRescale = true;
 
-    [ConfigGrouping("Behavior", "Adjust behavorial settings")]
-    public BehaviorGrouping Behavior { get; init; } = new();
 
     public enum VisibilitySetting
     {
@@ -21,6 +19,8 @@ internal sealed class PressureHistoryConfiguration : OverlayConfiguration
         SetupScreenAndSessions,
     }
 
+    [ConfigGrouping("Behavior", "Adjust behavorial settings")]
+    public BehaviorGrouping Behavior { get; init; } = new();
     public sealed class BehaviorGrouping
     {
         [ToolTip("Determines when the HUD is visible. A Session is when you're in the car and driving.\nSetup Screen is the setup adjustment menu in-game.")]
