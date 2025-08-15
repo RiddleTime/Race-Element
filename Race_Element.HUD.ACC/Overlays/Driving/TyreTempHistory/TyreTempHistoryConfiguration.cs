@@ -7,9 +7,9 @@ internal sealed class TyreTempHistoryConfiguration : OverlayConfiguration
     public TyreTempHistoryConfiguration() => GenericConfiguration.AllowRescale = true;
     public enum VisibilitySetting
     {
+        SetupScreenAndSessions,
         OnlySetupScreen,
         OnlySessions,
-        SetupScreenAndSessions,
     }
 
     [ConfigGrouping("Behavior", "Adjust behavorial settings")]

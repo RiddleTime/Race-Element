@@ -8,9 +8,9 @@ internal sealed class BrakeTempHistoryConfiguration : OverlayConfiguration
 
     public enum VisibilitySetting
     {
+        SetupScreenAndSessions,
         OnlySetupScreen,
         OnlySessions,
-        SetupScreenAndSessions,
     }
 
     [ConfigGrouping("Behavior", "Adjust behavorial settings")]
