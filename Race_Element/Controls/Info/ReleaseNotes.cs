@@ -6,6 +6,10 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.2.7.2", "Multi-Sim:"+
+                    "\n- Input Trace HUD: Added option to show Traction Control and ABS Activation, color and opacity can be customized. "+
+                    "Not all games provide TC or ABS data."
+                    },
         {"2.2.7.0", "Assetto Corsa Competizione:"+
                     "\n- Input Trace HUD: Added option to show Traction Control and ABS Activation, color and opacity can be customized."+
                     "\n- Brake Temp History HUD: Added new visibility scenarios like only showing the HUD in the setup screen and not whilst driving."+

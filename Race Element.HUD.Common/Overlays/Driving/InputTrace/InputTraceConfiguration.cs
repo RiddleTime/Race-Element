@@ -41,7 +41,32 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
 
         [ToolTip("Sets the drawing refresh rate.")]
         [IntRange(12, 30, 6)]
-        public int HudRefreshRate { get; init; } = 24;
+        public int HudRefreshRate { get; init; } = 30;
+    }
+
+    [HideForGame(Game.AssettoCorsa1 | Game.iRacing | Game.AmericanTruckSimulator | Game.EuroTruckSimulator2)]
+    [ConfigGrouping("Traction Control", "Adjust settings related to Traction Control Activation.")]
+    public TractionControlGrouping TractionControl { get; init; } = new();
+    public sealed class TractionControlGrouping
+    {
+        [ToolTip("Displays Traction Control Activation.")]
+        public bool TractionControl { get; init; } = true;
+
+        public Color TractionControlColor { get; init; } = Color.FromArgb(0, 255, 0);
+        [IntRange(2, 255, 1)]
+        public int TractionControlOpacity { get; init; } = 90;
+    }
+
+    [HideForGame(Game.AssettoCorsa1 | Game.AmericanTruckSimulator | Game.EuroTruckSimulator2)]
+    [ConfigGrouping("ABS", "Adjust settings related to ABS Activation.")]
+    public AbsGrouping Abs { get; init; } = new();
+    public sealed class AbsGrouping
+    {
+        [ToolTip("Displays ABS Activation.")]
+        public bool Abs { get; init; } = true;
+        public Color AbsColor { get; init; } = Color.FromArgb(255, 0, 0);
+        [IntRange(2, 255, 1)]
+        public int AbsOpacity { get; init; } = 110;
     }
 
     [ConfigGrouping("Colors", "Customize the colors of the throttle, brake and steering traces.")]
