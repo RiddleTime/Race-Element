@@ -47,8 +47,6 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
 
         [ToolTip("Show horizontal grid lines.")]
         public bool GridLines { get; init; } = true;
-
-
     }
 
     [ConfigGrouping("Colors", "Customize the colors of the throttle, brake and steering traces.")]
