@@ -13,4 +13,5 @@ type: guide
 <h1 id="portuguese--português">Portuguese / Português</h1>
 <h2 id="race-element--esse-app-vai-ser-o-seu-melhor-amigo-no-acc-image-alt-text">RACE ELEMENT | ESSE APP VAI SER O SEU MELHOR AMIGO NO ACC! <a href="https://www.youtube.com/watch?v=D8XTKFrADiM" target="_blank"><img src="http://img.youtube.com/vi/D8XTKFrADiM/0.jpg" alt="IMAGE ALT TEXT"></a></h2>
 <h2 id="como-utilizar-o-race-elements--assetto-corsa-competizione-image-alt-text">COMO utilizar o Race Elements | Assetto Corsa Competizione <a href="https://www.youtube.com/watch?v=dP3ELQzdgG0" target="_blank"><img src="http://img.youtube.com/vi/dP3ELQzdgG0/0.jpg" alt="IMAGE ALT TEXT"></a></h2>
+<h2 id="race-element-o-melhor-app-de-hud-para-sim-racing-setup-completo-image-alt-text">Race Element: O Melhor APP de HUD para Sim Racing! (Setup Completo) <a href="https://www.youtube.com/watch?v=jlLtwicXDYE" target="_blank"><img src="http://img.youtube.com/vi/jlLtwicXDYE/0.jpg" alt="IMAGE ALT TEXT"></a></h2>
 `;export{e as default};
