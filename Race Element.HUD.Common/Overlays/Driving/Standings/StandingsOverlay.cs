@@ -15,6 +15,7 @@ using DataUtil = RaceElement.Data.Common.DataUtil;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.Standings;
 
+#if DEBUG
 [Overlay(
     Name = "Live Standings",
     Version = 1.00,
@@ -22,6 +23,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.Standings;
     OverlayType = OverlayType.Drive,
     Game = Game.iRacing | Game.AssettoCorsa1,
     Authors = ["FG", "Dirk Wolf"])]
+#endif
 internal sealed class StandingsOverlay : CommonAbstractOverlay
 {
     private readonly StandingsConfiguration _config = new();
