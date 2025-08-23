@@ -14,3 +14,4 @@ As my spare time is mostly involving the development of the app, I rely on the c
 # Portuguese / Português
 ## RACE ELEMENT | ESSE APP VAI SER O SEU MELHOR AMIGO NO ACC! <a href="https://www.youtube.com/watch?v=D8XTKFrADiM" target="_blank">![IMAGE ALT TEXT](http://img.youtube.com/vi/D8XTKFrADiM/0.jpg)</a>
 ## COMO utilizar o Race Elements | Assetto Corsa Competizione <a href="https://www.youtube.com/watch?v=dP3ELQzdgG0" target="_blank">![IMAGE ALT TEXT](http://img.youtube.com/vi/dP3ELQzdgG0/0.jpg)</a>
+## Race Element: O Melhor APP de HUD para Sim Racing! (Setup Completo) <a href="https://www.youtube.com/watch?v=jlLtwicXDYE" target="_blank">![IMAGE ALT TEXT](http://img.youtube.com/vi/jlLtwicXDYE/0.jpg)</a>
