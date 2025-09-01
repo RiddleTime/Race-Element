@@ -19,7 +19,7 @@ internal static partial class LocalCarMapper
         commonData.Engine.IsRunning = commonData.Engine.Rpm > 0;
 
         commonData.Inputs.Steering = pagePhysics.SteerAngle;
-        commonData.Inputs.Clutch = pagePhysics.Clutch;
+        commonData.Inputs.Clutch = 1 - pagePhysics.Clutch;
         commonData.Inputs.Throttle = pagePhysics.Gas;
         commonData.Inputs.Brake = pagePhysics.Brake;
         commonData.Inputs.Gear = pagePhysics.Gear;
