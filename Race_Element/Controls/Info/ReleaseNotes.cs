@@ -7,7 +7,9 @@ public static class ReleaseNotes
     internal static readonly Dictionary<string, string> Notes = new()
     {
         {"2.2.7.4", "Assetto Corsa EVO:"+
-                    "\n- Input Bars HUD: clutch is now showing correctly."},
+                    "\n- Input Bars HUD: clutch is now showing correctly."+
+                    "\n\nRaceRoom:"+
+                    "\n- Updated Icon for game switcher."},
         {"2.2.7.2", "Multi-Sim:"+
                     "\n- Input Trace HUD: Added option to show Traction Control and ABS Activation, color and opacity can be customized. "+
                     "Not all games provide TC or ABS data."
