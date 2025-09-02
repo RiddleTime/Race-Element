@@ -71,8 +71,4 @@
       <EmbeddedResource Include="Games\Resources\Logos\RaceRoom.jpg" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Games\Forza\" />
-    </ItemGroup>
-
 </Project>

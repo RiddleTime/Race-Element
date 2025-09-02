@@ -135,7 +135,6 @@
             <PackagePath>\</PackagePath>
         </None>
         <Resource Include="Fonts\ConthraxSb.ttf" />
-        <None Include="key.snk" />
     </ItemGroup>
     <ItemGroup>
         <BootstrapperPackage Include=".NETFramework,Version=v4.8">
