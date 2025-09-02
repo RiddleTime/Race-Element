@@ -20,8 +20,10 @@
     <ItemGroup>
       <None Remove="Games\Resources\Icons\ACE.ico" />
       <None Remove="Games\Resources\Icons\ATS.ico" />
+      <None Remove="Games\Resources\Icons\FH5.ico" />
       <None Remove="Games\Resources\Logos\ACE.jpg" />
       <None Remove="Games\Resources\Logos\ATS.jpg" />
+      <None Remove="Games\Resources\Logos\FH5.jpg" />
       <None Remove="Games\SCS2\scs-telemetry.dll" />
       <None Remove="Games\Resources\Icons\AC.ico" />
       <None Remove="Games\Resources\Icons\ACC.ico" />
@@ -55,6 +57,7 @@
       <EmbeddedResource Include="Games\Resources\Icons\AMS2.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\ATS.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\ETS2.ico" />
+      <EmbeddedResource Include="Games\Resources\Icons\FH5.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\iRacing.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\RaceRoom.ico" />
       <EmbeddedResource Include="Games\Resources\Logos\AC.jpg" />
@@ -63,8 +66,13 @@
       <EmbeddedResource Include="Games\Resources\Logos\AMS2.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\ATS.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\ETS2.jpg" />
+      <EmbeddedResource Include="Games\Resources\Logos\FH5.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\iRacing.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\RaceRoom.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Games\Forza\" />
     </ItemGroup>
 
 </Project>
