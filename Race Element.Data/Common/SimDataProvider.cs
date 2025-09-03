@@ -9,6 +9,7 @@ using RaceElement.Data.Games.EuroTruckSimulator2;
 using RaceElement.Data.Games.AssettoCorsaEvo;
 using RaceElement.Data.Common.Graph;
 using RaceElement.Graph;
+using RaceElement.Data.Games.Forza;
 
 namespace RaceElement.Data.Common;
 
@@ -102,6 +103,13 @@ public static class SimDataProvider
             case Game.AssettoCorsaEvo:
                 {
                     Instance ??= new AssettoCorsaEvoDataProvider();
+                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                    _localCarEventLoop.Run();
+                    break;
+                }
+            case Game.ForzaHorizon5:
+                {
+                    Instance ??= new ForzaDataProvider(Game.ForzaHorizon5);
                     Instance.Update(ref _localCarData, ref _session, ref _gameData);
                     _localCarEventLoop.Run();
                     break;

@@ -1,12 +1,13 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.Forza.ForzaUDP;
+using System.Diagnostics;
 using System.Net.Sockets;
 using System.Numerics;
 
 namespace RaceElement.Data.Games.Forza
 {
-    public class ForzaDataProvider : AbstractSimDataProvider
+    public class ForzaDataProvider(Game Game) : AbstractSimDataProvider
     {
         private const int FORZA_DATA_OUT_PORT = 5300;
         private UdpClient _udpClient;
@@ -93,6 +94,7 @@ namespace RaceElement.Data.Games.Forza
             }
             else
             {
+                Debug.WriteLine("invalid packet");
                 return; // Invalid packet
             }
 
@@ -121,6 +123,7 @@ namespace RaceElement.Data.Games.Forza
                 6 => "X",
                 _ => "Unknown"
             };
+
             localCar.Inputs.Throttle = dash.Accelerator / 255f; // Normalize 0-255 to 0-1
             localCar.Inputs.Brake = dash.Brake / 255f;
             localCar.Inputs.Clutch = dash.Clutch / 255f;

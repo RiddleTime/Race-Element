@@ -2,7 +2,7 @@
 
 namespace RaceElement.Data.Games.Forza.ForzaUDP
 {
-    public static class ForzaMotorsportsData
+    static class ForzaMotorsportsData
     {
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
         public struct SledData
@@ -99,24 +99,6 @@ namespace RaceElement.Data.Games.Forza.ForzaUDP
             public byte NormalAiBrakeDifference;
         }
 
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct FH4Data
-        {
-            public SledData Sled;
-            public DashData Dash;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 12)]
-            public byte[] Unknown; // Padding or unknown fields
-        }
-
-        [StructLayout(LayoutKind.Sequential, Pack = 1)]
-        public struct FM8Data
-        {
-            public SledData Sled;
-            public DashData Dash;
-            [MarshalAs(UnmanagedType.ByValArray, SizeConst = 20)]
-            public byte[] Unknown; // Padding or unknown fields
-        }
-
         private const int SLED_PACKET_LENGTH = 232; // FM7
         private const int DASH_PACKET_LENGTH = 311; // FM7
         private const int FH4_PACKET_LENGTH = 324; // FH4 and FH5
@@ -143,18 +125,22 @@ namespace RaceElement.Data.Games.Forza.ForzaUDP
             return MemoryMarshal.Cast<byte, DashData>(bytes.AsSpan(SLED_PACKET_LENGTH))[0];
         }
 
-        public static FH4Data GetFH4Data(byte[] bytes)
+        public static (SledData Sled, DashData Dash) GetFH4Data(byte[] bytes)
         {
             if (bytes.Length < FH4_PACKET_LENGTH)
                 throw new ArgumentException("Not enough bytes for FH4Data");
-            return MemoryMarshal.Cast<byte, FH4Data>(bytes)[0];
+            var sled = MemoryMarshal.Cast<byte, SledData>(bytes.AsSpan(0, SLED_PACKET_LENGTH))[0];
+            var dash = MemoryMarshal.Cast<byte, DashData>(bytes.AsSpan(SLED_PACKET_LENGTH, DASH_PACKET_LENGTH - SLED_PACKET_LENGTH))[0];
+            return (sled, dash);
         }
 
-        public static FM8Data GetFM8Data(byte[] bytes)
+        public static (SledData Sled, DashData Dash) GetFM8Data(byte[] bytes)
         {
             if (bytes.Length < FM8_PACKET_LENGTH)
                 throw new ArgumentException("Not enough bytes for FM8Data");
-            return MemoryMarshal.Cast<byte, FM8Data>(bytes)[0];
+            var sled = MemoryMarshal.Cast<byte, SledData>(bytes.AsSpan(0, SLED_PACKET_LENGTH))[0];
+            var dash = MemoryMarshal.Cast<byte, DashData>(bytes.AsSpan(SLED_PACKET_LENGTH, DASH_PACKET_LENGTH - SLED_PACKET_LENGTH))[0];
+            return (sled, dash);
         }
 
         public static bool IsRaceOn(this byte[] bytes)
