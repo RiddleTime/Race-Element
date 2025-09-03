@@ -1,7 +1,9 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.Forza.ForzaUDP;
+using System;
 using System.Diagnostics;
+using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
 
@@ -44,7 +46,6 @@ namespace RaceElement.Data.Games.Forza
             _isRunning = false;
             _udpClient?.Close();
             _udpClient?.Dispose();
-            _receiverTask?.Wait(1000); // Allow graceful shutdown
         }
 
         internal override int PollingRate() => 60;
