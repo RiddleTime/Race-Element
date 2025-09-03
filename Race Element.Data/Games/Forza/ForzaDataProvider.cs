@@ -10,13 +10,11 @@ namespace RaceElement.Data.Games.Forza
 {
     public class ForzaDataProvider : AbstractSimDataProvider
     {
-        public override List<string> GetCarClasses() => [];
-
-        public override bool HasTelemetry() => false;
+   
 
         public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
-
+            // https://github.com/austinbaccus/forza-telemetry/blob/main/ForzaCore/Program.cs
         }
 
         internal override int PollingRate() => 60;
@@ -28,5 +26,10 @@ namespace RaceElement.Data.Games.Forza
         internal override void Stop()
         {
         }
+
+
+        public override List<string> GetCarClasses() => [];
+
+        public override bool HasTelemetry() => false;
     }
 }
