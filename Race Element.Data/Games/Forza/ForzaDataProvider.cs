@@ -135,7 +135,7 @@ namespace RaceElement.Data.Games.Forza
             localCar.Engine.IsRunning = localCar.Engine.Rpm > 0;
             localCar.Engine.MaxRpm = (int)sled.EngineMaxRpm;
             localCar.Engine.FuelLiters = dash.Fuel;
-            localCar.Physics.Acceleration = new Vector3(sled.AccelerationX, sled.AccelerationY, sled.AccelerationZ);
+            localCar.Physics.Acceleration = new Vector3(-sled.AccelerationX, sled.AccelerationY, sled.AccelerationZ);
             localCar.Physics.Velocity = (float)Math.Sqrt(sled.VelocityX * sled.VelocityX + sled.VelocityY * sled.VelocityY + sled.VelocityZ * sled.VelocityZ) * 3.6f;
             localCar.Physics.Location = new Vector3(dash.PositionX, dash.PositionY, dash.PositionZ);
             localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(sled.Yaw, sled.Pitch, sled.Roll);
