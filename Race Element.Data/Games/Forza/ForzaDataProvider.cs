@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
+using System.Runtime.InteropServices;
 
 namespace RaceElement.Data.Games.Forza
 {
@@ -16,8 +17,6 @@ namespace RaceElement.Data.Games.Forza
         private Task _receiverTask;
         private bool _isRunning;
 
-
-        // Store latest data for Update method (if required by base class)
         private Lock _lock = new();
         private LocalCarData _localCar = new();
         private SessionData _sessionData = new();
@@ -26,16 +25,40 @@ namespace RaceElement.Data.Games.Forza
         internal override void Start()
         {
             _isRunning = true;
-            _udpClient = new UdpClient(FORZA_DATA_OUT_PORT);
+            try
+            {
+                _udpClient = new UdpClient();
+                _udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
+                _udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, FORZA_DATA_OUT_PORT));
+                Debug.WriteLine($"Listening for Forza telemetry on port {FORZA_DATA_OUT_PORT}");
+            }
+            catch (SocketException ex)
+            {
+                Debug.WriteLine($"Failed to bind to port {FORZA_DATA_OUT_PORT}: {ex.Message}");
+                throw;
+            }
+
             _receiverTask = Task.Run(async () =>
             {
                 while (_isRunning)
                 {
-                    var result = await _udpClient.ReceiveAsync();
-                    var packet = result.Buffer;
-                    if (ForzaMotorsportsData.IsValidFormat(packet))
+                    try
                     {
-                        UpdateFromPacket(packet);
+                        var result = await _udpClient.ReceiveAsync();
+                        var packet = result.Buffer;
+                        //Debug.WriteLine($"Received packet of length {packet.Length}");
+                        if (ForzaMotorsportsData.IsValidFormat(packet))
+                        {
+                            UpdateFromPacket(packet);
+                        }
+                        else
+                        {
+                            Debug.WriteLine($"Invalid packet format: length {packet.Length}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Error receiving UDP packet: {ex.Message}");
                     }
                 }
             });
@@ -46,21 +69,24 @@ namespace RaceElement.Data.Games.Forza
             _isRunning = false;
             _udpClient?.Close();
             _udpClient?.Dispose();
+            _receiverTask?.Wait(1000);
         }
 
         internal override int PollingRate() => 60;
 
         public override List<string> GetCarClasses()
         {
-            // Map byte CarClass to string representations (example mapping)
-            return new List<string> { "D", "C", "B", "A", "S", "R", "X" }; // Adjust based on actual Forza class mapping
+            return new List<string> { "D", "C", "B", "A", "S", "R", "X" };
         }
 
         public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
         {
-            localCar = _localCar;
-            sessionData = _sessionData;
-            gameData = _gameData;
+            lock (_lock)
+            {
+                localCar = _localCar;
+                sessionData = _sessionData;
+                gameData = _gameData;
+            }
         }
 
         private void UpdateFromPacket(byte[] packet)
@@ -74,43 +100,48 @@ namespace RaceElement.Data.Games.Forza
 
             if (ForzaMotorsportsData.IsSledFormat(packet))
             {
+                //Debug.WriteLine("Processing sled-only packet (232 bytes)");
                 sled = ForzaMotorsportsData.GetSledData(packet);
             }
             else if (ForzaMotorsportsData.IsDashFormat(packet))
             {
+                //Debug.WriteLine("Processing FM7 dash packet (311 bytes)");
                 sled = ForzaMotorsportsData.GetSledData(packet);
                 dash = ForzaMotorsportsData.GetDashData(packet);
             }
             else if (ForzaMotorsportsData.IsFH4Format(packet))
             {
-                var fh4 = ForzaMotorsportsData.GetFH4Data(packet);
-                sled = fh4.Sled;
-                dash = fh4.Dash;
+                //Debug.WriteLine("Processing FH4/FH5 packet (324 bytes)");
+                var (sledData, dashData) = ForzaMotorsportsData.GetFH4Data(packet);
+                sled = sledData;
+                dash = dashData;
             }
             else if (ForzaMotorsportsData.IsFM8Format(packet))
             {
-                var fm8 = ForzaMotorsportsData.GetFM8Data(packet);
-                sled = fm8.Sled;
-                dash = fm8.Dash;
+                //Debug.WriteLine("Processing FM8 packet (331 bytes)");
+                var (sledData, dashData) = ForzaMotorsportsData.GetFM8Data(packet);
+                sled = sledData;
+                dash = dashData;
             }
             else
             {
-                Debug.WriteLine("invalid packet");
-                return; // Invalid packet
+                //Debug.WriteLine("Invalid packet");
+                return;
             }
 
-            // Map SledData to LocalCarData
+
+            // Map SledData to LocalCarData (unchanged as per request)
             localCar.Engine.Rpm = (int)sled.CurrentEngineRpm;
             localCar.Engine.IsRunning = localCar.Engine.Rpm > 0;
             localCar.Engine.MaxRpm = (int)sled.EngineMaxRpm;
-            localCar.Engine.FuelLiters = dash.Fuel; // Only if dash data available
+            localCar.Engine.FuelLiters = dash.Fuel;
             localCar.Physics.Acceleration = new Vector3(sled.AccelerationX, sled.AccelerationY, sled.AccelerationZ);
-            localCar.Physics.Velocity = (float)Math.Sqrt(sled.VelocityX * sled.VelocityX + sled.VelocityY * sled.VelocityY + sled.VelocityZ * sled.VelocityZ) * 3.6f; // Convert m/s to km/h
-            localCar.Physics.Location = new Vector3(dash.PositionX, dash.PositionY, dash.PositionZ); // Only if dash data
+            localCar.Physics.Velocity = (float)Math.Sqrt(sled.VelocityX * sled.VelocityX + sled.VelocityY * sled.VelocityY + sled.VelocityZ * sled.VelocityZ) * 3.6f;
+            localCar.Physics.Location = new Vector3(dash.PositionX, dash.PositionY, dash.PositionZ);
             localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(sled.Yaw, sled.Pitch, sled.Roll);
             localCar.Tyres.SlipAngle = [sled.TireSlipAngleFl, sled.TireSlipAngleFr, sled.TireSlipAngleRl, sled.TireSlipAngleRr];
             localCar.Tyres.SlipRatio = [sled.TireSlipRatioFl, sled.TireSlipRatioFr, sled.TireSlipRatioRl, sled.TireSlipRatioRr];
-            localCar.Tyres.CoreTemperature = [dash.TireTempFl, dash.TireTempFr, dash.TireTempRl, dash.TireTempRr]; // Only if dash data
+            localCar.Tyres.CoreTemperature = [dash.TireTempFl, dash.TireTempFr, dash.TireTempRl, dash.TireTempRr];
             localCar.Tyres.Velocity = [sled.WheelRotationSpeedFl, sled.WheelRotationSpeedFr, sled.WheelRotationSpeedRl, sled.WheelRotationSpeedRr];
             localCar.CarModel.GameId = sled.CarOrdinal;
             localCar.CarModel.CarClass = sled.CarClass switch
@@ -124,24 +155,22 @@ namespace RaceElement.Data.Games.Forza
                 6 => "X",
                 _ => "Unknown"
             };
-
-            localCar.Inputs.Throttle = dash.Accelerator / 255f; // Normalize 0-255 to 0-1
+            localCar.Inputs.Throttle = dash.Accelerator / 255f;
             localCar.Inputs.Brake = dash.Brake / 255f;
             localCar.Inputs.Clutch = dash.Clutch / 255f;
             localCar.Inputs.HandBrake = dash.Handbrake / 255f;
-            localCar.Inputs.Steering = dash.Steer / 127f; // Normalize -127 to 127 to -1 to 1
-            localCar.Inputs.Gear = dash.Gear;
-            localCar.Race.LapsDriven = dash.Lap;
-            localCar.Race.GlobalPosition = dash.RacePosition;
-            localCar.Timing.CurrentLaptimeMS = (int)(dash.CurrentLapTime * 1000);
-            localCar.Timing.LapTimeBestMs = (int)(dash.BestLapTime * 1000);
+            localCar.Inputs.Steering = dash.Steer / 127f;
+            localCar.Inputs.Gear = (int)dash.Gear;
+            localCar.Race.LapsDriven = (int)dash.Lap;
+            localCar.Race.GlobalPosition = (int)dash.RacePosition;
+            localCar.Timing.CurrentLaptimeMS = (int)(dash.CurrentLapTime * 1000f);
+            localCar.Timing.LapTimeBestMs = (int)(dash.BestLapTime * 1000f);
             localCar.Timing.HasLapTimeBest = dash.BestLapTime > 0;
 
             // Map to GameData
             gameData.Name = ForzaMotorsportsData.IsFH4Format(packet) ? "Forza Horizon 4/5" : ForzaMotorsportsData.IsFM8Format(packet) ? "Forza Motorsport 8" : "Forza Motorsport 7";
 
-
-            // Update shared data (thread-safe access may be needed depending on AbstractSimDataProvider)
+            // Update shared data
             lock (_lock)
             {
                 _localCar = localCar;
@@ -150,6 +179,6 @@ namespace RaceElement.Data.Games.Forza
             }
         }
 
-        public override bool HasTelemetry() => false;
+        public override bool HasTelemetry() => true; // Changed to true since telemetry is processed
     }
 }

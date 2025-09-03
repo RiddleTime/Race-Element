@@ -99,10 +99,11 @@ namespace RaceElement.Data.Games.Forza.ForzaUDP
             public byte NormalAiBrakeDifference;
         }
 
-        private const int SLED_PACKET_LENGTH = 232; // FM7
-        private const int DASH_PACKET_LENGTH = 311; // FM7
+        private const int SLED_PACKET_LENGTH = 232; // FM7 sled
+        private const int DASH_PACKET_LENGTH = 311; // FM7 dash
         private const int FH4_PACKET_LENGTH = 324; // FH4 and FH5
         private const int FM8_PACKET_LENGTH = 331; // FM8
+        private const int FH4_DASH_OFFSET = 12; // 12-byte offset for FH4/FH5 dash data
 
         public static bool IsSledFormat(byte[] packet) => packet.Length == SLED_PACKET_LENGTH;
         public static bool IsDashFormat(byte[] packet) => packet.Length == DASH_PACKET_LENGTH;
@@ -130,7 +131,7 @@ namespace RaceElement.Data.Games.Forza.ForzaUDP
             if (bytes.Length < FH4_PACKET_LENGTH)
                 throw new ArgumentException("Not enough bytes for FH4Data");
             var sled = MemoryMarshal.Cast<byte, SledData>(bytes.AsSpan(0, SLED_PACKET_LENGTH))[0];
-            var dash = MemoryMarshal.Cast<byte, DashData>(bytes.AsSpan(SLED_PACKET_LENGTH, DASH_PACKET_LENGTH - SLED_PACKET_LENGTH))[0];
+            var dash = MemoryMarshal.Cast<byte, DashData>(bytes.AsSpan(SLED_PACKET_LENGTH + FH4_DASH_OFFSET, DASH_PACKET_LENGTH - SLED_PACKET_LENGTH))[0];
             return (sled, dash);
         }
 
@@ -139,6 +140,7 @@ namespace RaceElement.Data.Games.Forza.ForzaUDP
             if (bytes.Length < FM8_PACKET_LENGTH)
                 throw new ArgumentException("Not enough bytes for FM8Data");
             var sled = MemoryMarshal.Cast<byte, SledData>(bytes.AsSpan(0, SLED_PACKET_LENGTH))[0];
+            // Assume no offset for FM8 for now; adjust if needed
             var dash = MemoryMarshal.Cast<byte, DashData>(bytes.AsSpan(SLED_PACKET_LENGTH, DASH_PACKET_LENGTH - SLED_PACKET_LENGTH))[0];
             return (sled, dash);
         }
