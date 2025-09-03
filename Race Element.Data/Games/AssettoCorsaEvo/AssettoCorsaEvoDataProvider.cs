@@ -134,11 +134,6 @@ internal sealed class AssettoCorsaEvoDataProvider : AbstractSimDataProvider
     // AC1 seems to have only one class. Or at least no race class info in the telemetry.
     static string dummyCarClass = "Race";
     List<string> classes = [dummyCarClass];
-    public override bool IsSpectating(int playerCarIndex, int focusedIndex)
-    {
-        // TODO: Can we spectate other cars in the pits in AC1?
-        return false;
-    }
 
     public override Color GetColorForCategory(string category)
     {

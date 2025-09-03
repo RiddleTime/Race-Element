@@ -146,12 +146,6 @@ internal sealed class AssettoCorsa1DataProvider : AbstractSimDataProvider
         // No-op
     }
 
-    public override bool IsSpectating(int playerCarIndex, int focusedIndex)
-    {
-        // TODO: Can we spectate other cars in the pits in AC1?
-        return false;
-    }
-
     public override Color GetColorForCategory(string category)
     {
         return Color.White;
