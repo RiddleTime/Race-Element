@@ -1,12 +1,10 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.Forza.ForzaUDP;
-using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
-using System.Runtime.InteropServices;
 
 namespace RaceElement.Data.Games.Forza
 {
@@ -140,7 +138,7 @@ namespace RaceElement.Data.Games.Forza
             localCar.Physics.Location = new Vector3(dash.PositionX, dash.PositionY, dash.PositionZ);
             localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(sled.Yaw, sled.Pitch, sled.Roll);
             localCar.Tyres.SlipAngle = [sled.TireSlipAngleFl, sled.TireSlipAngleFr, sled.TireSlipAngleRl, sled.TireSlipAngleRr];
-            localCar.Tyres.SlipRatio = [sled.TireSlipRatioFl, sled.TireSlipRatioFr, sled.TireSlipRatioRl, sled.TireSlipRatioRr];
+            localCar.Tyres.SlipRatio = [NegateIfNegative(sled.TireSlipRatioFl), NegateIfNegative(sled.TireSlipRatioFr), NegateIfNegative(sled.TireSlipRatioRl), NegateIfNegative(sled.TireSlipRatioRr)];
             localCar.Tyres.CoreTemperature = [dash.TireTempFl, dash.TireTempFr, dash.TireTempRl, dash.TireTempRr];
             localCar.Tyres.Velocity = [sled.WheelRotationSpeedFl, sled.WheelRotationSpeedFr, sled.WheelRotationSpeedRl, sled.WheelRotationSpeedRr];
             localCar.CarModel.GameId = sled.CarOrdinal;
@@ -178,6 +176,8 @@ namespace RaceElement.Data.Games.Forza
                 _gameData = gameData;
             }
         }
+
+        float NegateIfNegative(float value) => (value < 0 ? -value : value);
 
         public override bool HasTelemetry() => true; // Changed to true since telemetry is processed
     }
