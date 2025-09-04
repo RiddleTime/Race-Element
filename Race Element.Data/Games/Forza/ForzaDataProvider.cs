@@ -130,7 +130,7 @@ namespace RaceElement.Data.Games.Forza
 
             // Map SledData to LocalCarData (unchanged as per request)
             localCar.Engine.Rpm = (int)sled.CurrentEngineRpm;
-            localCar.Engine.IsRunning = localCar.Engine.Rpm > 0;
+            localCar.Engine.IsRunning = dash.Fuel > 0;
             localCar.Engine.MaxRpm = (int)sled.EngineMaxRpm;
             localCar.Engine.FuelLiters = dash.Fuel;
             localCar.Physics.Acceleration = new Vector3(-sled.AccelerationX, sled.AccelerationY, sled.AccelerationZ);
