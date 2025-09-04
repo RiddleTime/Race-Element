@@ -6,6 +6,10 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.3.0.0", "Added Forza Horizon 5:"+
+                    "\n- Basic HUD Support(Inputs, rpms, g-forces)."+
+                    "\n- DSX/DualSense Support."
+                    },
         {"2.2.7.4", "Assetto Corsa EVO:"+
                     "\n- Input Bars HUD: clutch is now showing correctly."+
                     "\n\nRaceRoom:"+
