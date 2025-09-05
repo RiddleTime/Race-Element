@@ -12,9 +12,9 @@
         <SuiteName>Race Element</SuiteName>
         <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
         <DisallowUrlActivation>true</DisallowUrlActivation>
-        <ApplicationVersion>2.2.7.4</ApplicationVersion>
-        <AssemblyVersion>2.2.7.4</AssemblyVersion>
-        <Version>2.2.7.4</Version>
+        <ApplicationVersion>2.3.0.0</ApplicationVersion>
+        <AssemblyVersion>2.3.0.0</AssemblyVersion>
+        <Version>2.3.0.0</Version>
         <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
         <UseWindowsForms>true</UseWindowsForms>
         <UseWPF>true</UseWPF>
@@ -135,7 +135,6 @@
             <PackagePath>\</PackagePath>
         </None>
         <Resource Include="Fonts\ConthraxSb.ttf" />
-        <None Include="key.snk" />
     </ItemGroup>
     <ItemGroup>
         <BootstrapperPackage Include=".NETFramework,Version=v4.8">

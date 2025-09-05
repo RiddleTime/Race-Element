@@ -774,13 +774,6 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
         return SpotterCallout;
     }
 
-    public override bool IsSpectating(int playerCarIndex, int focusedIndex)
-    {
-        // TODO We need to test how spotting team mates works in a multi-driver team race.
-        // E.g. what telemetry is available
-        return false;
-    }
-
     /// <summary>
     /// iRacing license class to color mapping.
     /// </summary>

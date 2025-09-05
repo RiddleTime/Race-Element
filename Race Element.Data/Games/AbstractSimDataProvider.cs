@@ -39,10 +39,6 @@ public abstract class AbstractSimDataProvider
 
     public virtual void SetupPreviewData() { }
 
-    public virtual bool IsSpectating(int playerCarIndex, int focusedIndex)
-    {
-        throw new NotImplementedException();
-    }
 
     #endregion
 }

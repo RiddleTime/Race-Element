@@ -21,11 +21,11 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
     public ChartGrouping Chart { get; init; } = new ChartGrouping();
     public sealed class ChartGrouping
     {
-        [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
+        [ToolTip("The amount of datapoints/pixels shown, this changes the width of the overlay.")]
         [IntRange(10, 800, 10)]
         public int Width { get; init; } = 300;
 
-        [ToolTip("The amount of datapoints shown, this changes the width of the overlay.")]
+        [ToolTip("The height of the chart, pixel wise.")]
         [IntRange(80, 250, 10)]
         public int Height { get; init; } = 120;
 
