@@ -17,6 +17,7 @@ description: General features
 <li>American Truck Simulator</li>
 <li>Automobilista 2</li>
 <li>Euro Truck Simulator 2</li>
+<li>Forza Horizon 5</li>
 <li>iRacing</li>
 <li>RaceRoom</li>
 </ul>
