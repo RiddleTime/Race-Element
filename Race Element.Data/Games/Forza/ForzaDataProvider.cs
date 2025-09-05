@@ -158,7 +158,7 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         localCar.Inputs.Clutch = dash.Clutch / 255f;
         localCar.Inputs.HandBrake = dash.Handbrake / 255f;
         localCar.Inputs.Steering = dash.Steer / 127f;
-        localCar.Inputs.Gear = (int)dash.Gear;
+        localCar.Inputs.Gear = (int)dash.Gear > 0 ? dash.Gear + 1 : dash.Gear;
         localCar.Race.LapsDriven = (int)dash.Lap;
         localCar.Race.GlobalPosition = (int)dash.RacePosition;
         localCar.Timing.CurrentLaptimeMS = (int)(dash.CurrentLapTime * 1000f);
