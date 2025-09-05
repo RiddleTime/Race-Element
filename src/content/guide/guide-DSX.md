@@ -11,6 +11,7 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 - Assetto Corsa
 - Assetto Corsa Competizione
 - Assetto Corsa EVO
+- Forza Horizon 5
 - RaceRoom
 
 # DSX
