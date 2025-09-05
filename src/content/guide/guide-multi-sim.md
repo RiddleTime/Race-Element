@@ -26,3 +26,12 @@ Both simulators require a plugin to be installed before any data can be read fro
 1. Go to Options
 2. Go to System Options
 3. Enable Telemetry
+
+## Forza Horizon 5
+1. Go to Options
+2. Go to HUD AND GAMEPLAY
+3. Set Data Out to `On`
+4. Set Data Out IP Address to `127.0.0.1`
+5. Set Data Out Port to `5300`
+6. Restart Forza Horizon 5.
+7. Restart Race Element.
