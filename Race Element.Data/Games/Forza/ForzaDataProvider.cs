@@ -133,7 +133,7 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         localCar.Engine.IsRunning = dash.Fuel > 0;
         localCar.Engine.MaxRpm = (int)sled.EngineMaxRpm;
         localCar.Engine.FuelLiters = dash.Fuel;
-        localCar.Physics.Acceleration = new Vector3(-sled.AccelerationX, sled.AccelerationY, sled.AccelerationZ);
+        localCar.Physics.Acceleration = new Vector3(-sled.AccelerationX / 9.80665f, sled.AccelerationY / 9.80665f, sled.AccelerationZ / 9.80665f);
         localCar.Physics.Velocity = (float)Math.Sqrt(sled.VelocityX * sled.VelocityX + sled.VelocityY * sled.VelocityY + sled.VelocityZ * sled.VelocityZ) * 3.6f;
         localCar.Physics.Location = new Vector3(dash.PositionX, dash.PositionY, dash.PositionZ);
         localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(sled.Yaw, sled.Pitch, sled.Roll);
@@ -158,7 +158,7 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         localCar.Inputs.Clutch = dash.Clutch / 255f;
         localCar.Inputs.HandBrake = dash.Handbrake / 255f;
         localCar.Inputs.Steering = dash.Steer / 127f;
-        localCar.Inputs.Gear = (int)dash.Gear;
+        localCar.Inputs.Gear = (int)dash.Gear > 0 ? dash.Gear + 1 : dash.Gear;
         localCar.Race.LapsDriven = (int)dash.Lap;
         localCar.Race.GlobalPosition = (int)dash.RacePosition;
         localCar.Timing.CurrentLaptimeMS = (int)(dash.CurrentLapTime * 1000f);
