@@ -35,3 +35,4 @@ Both simulators require a plugin to be installed before any data can be read fro
 5. Set Data Out Port to `5300`
 6. Restart Forza Horizon 5.
 7. Restart Race Element.
+8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Horizon 5.
