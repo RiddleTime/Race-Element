@@ -28,4 +28,14 @@ type: guide
 <li>Go to System Options</li>
 <li>Enable Telemetry</li>
 </ol>
+<h2 id="forza-horizon-5">Forza Horizon 5</h2>
+<ol>
+<li>Go to Options</li>
+<li>Go to HUD AND GAMEPLAY</li>
+<li>Set Data Out to <code>On</code></li>
+<li>Set Data Out IP Address to <code>127.0.0.1</code></li>
+<li>Set Data Out Port to <code>5300</code></li>
+<li>Restart Forza Horizon 5.</li>
+<li>Restart Race Element.</li>
+</ol>
 `;export{t as default};
