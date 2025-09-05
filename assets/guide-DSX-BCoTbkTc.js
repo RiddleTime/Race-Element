@@ -29,7 +29,8 @@ type: guide
 <h1 id="race-element">Race Element</h1>
 <ol>
 <li>Open Race Element (Don&#39;t have Race Element yet? <strong><a href="/guide/how-to-get-started">Race Element Download and Installation Guide</a></strong> )</li>
-<li>Make sure the game selection is set correctly</li>
+<li>Some Games require you to configure a data stream, make sure to read the <strong><a href="/guide/multi-sim">Multi-Sim Guide</a></strong></li>
+<li>Make sure the game selection is set correctly(left-bottem of the app), this should happen automatically unless disabled</li>
 <li>Open the HUD Tab</li>
 <li>At the bottom of the Hud Tab, Click the Pitwall Section</li>
 <li>Click DSX</li>
