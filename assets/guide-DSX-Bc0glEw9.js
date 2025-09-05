@@ -12,6 +12,7 @@ type: guide
 <li>Assetto Corsa</li>
 <li>Assetto Corsa Competizione</li>
 <li>Assetto Corsa EVO</li>
+<li>Forza Horizon 5</li>
 <li>RaceRoom</li>
 </ul>
 <h1 id="dsx">DSX</h1>
