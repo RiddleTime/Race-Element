@@ -37,5 +37,6 @@ type: guide
 <li>Set Data Out Port to <code>5300</code></li>
 <li>Restart Forza Horizon 5.</li>
 <li>Restart Race Element.</li>
+<li>If Windows asks permission for network access allow it else race element won&#39;t be able to receive data from Forza Horizon 5.</li>
 </ol>
 `;export{t as default};
