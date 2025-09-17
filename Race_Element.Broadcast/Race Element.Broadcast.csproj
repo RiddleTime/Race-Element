@@ -19,7 +19,7 @@
     <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
     <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
   </ItemGroup>
 </Project>

@@ -12,9 +12,9 @@
         <SuiteName>Race Element</SuiteName>
         <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
         <DisallowUrlActivation>true</DisallowUrlActivation>
-        <ApplicationVersion>2.3.0.0</ApplicationVersion>
-        <AssemblyVersion>2.3.0.0</AssemblyVersion>
-        <Version>2.3.0.0</Version>
+        <ApplicationVersion>2.3.0.2</ApplicationVersion>
+        <AssemblyVersion>2.3.0.2</AssemblyVersion>
+        <Version>2.3.0.2</Version>
         <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
         <UseWindowsForms>true</UseWindowsForms>
         <UseWPF>true</UseWPF>
@@ -79,52 +79,52 @@
         <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
         <PackageReference Include="ScottPlot" Version="4.1.69" />
         <PackageReference Include="ScottPlot.WPF" Version="4.1.69" />
-        <PackageReference Include="SharpCompress" Version="0.39.0" />
+        <PackageReference Include="SharpCompress" Version="0.40.0" />
         <PackageReference Include="SLOBSharp" Version="1.1.4" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
-        <PackageReference Include="System.Reactive" Version="6.0.1" />
+        <PackageReference Include="System.Reactive" Version="6.0.2" />
         <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
         <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
         <PackageReference Include="Websocket.Client" Version="5.0.0" />
         <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Logging.EventSource" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Primitives" Version="9.0.8" />
+        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Logging" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Logging.EventSource" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Options" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="9.0.9" />
+        <PackageReference Include="Microsoft.Extensions.Primitives" Version="9.0.9" />
         <PackageReference Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-        <PackageReference Include="System.Collections.Immutable" Version="9.0.8" />
-        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="9.0.8" />
-        <PackageReference Include="System.Drawing.Common" Version="9.0.8" />
+        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+        <PackageReference Include="System.Collections.Immutable" Version="9.0.9" />
+        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="9.0.9" />
+        <PackageReference Include="System.Drawing.Common" Version="9.0.9" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
-        <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.8" />
-        <PackageReference Include="System.Text.Encodings.Web" Version="9.0.8" />
-        <PackageReference Include="System.Text.Json" Version="9.0.8" />
-        <PackageReference Include="System.Threading.Channels" Version="9.0.8" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.8" />
+        <PackageReference Include="System.Text.Encoding.CodePages" Version="9.0.9" />
+        <PackageReference Include="System.Text.Encodings.Web" Version="9.0.9" />
+        <PackageReference Include="System.Text.Json" Version="9.0.9" />
+        <PackageReference Include="System.Threading.Channels" Version="9.0.9" />
+        <PackageReference Include="System.Configuration.ConfigurationManager" Version="9.0.9" />
     </ItemGroup>
     <ItemGroup>
         <None Include="..\.editorconfig">
