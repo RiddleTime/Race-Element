@@ -11,7 +11,7 @@ internal static class LocalCarMapper
         localCar.Inputs.Brake = (float)vehicleTelemetry.mUnfilteredBrake;
         localCar.Inputs.Clutch = (float)vehicleTelemetry.mUnfilteredClutch;
         localCar.Inputs.Steering = (float)vehicleTelemetry.mUnfilteredSteering;
-        localCar.Inputs.MaxSteeringAngle = vehicleTelemetry.mPhysicalSteeringWheelRange;
+        localCar.Inputs.MaxSteeringAngle = vehicleTelemetry.mVisualSteeringWheelRange;
 
         if (vehicleTelemetry.mFilteredClutch > 0)
         {
