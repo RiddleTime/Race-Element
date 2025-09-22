@@ -51,12 +51,7 @@ namespace RaceElement.Data.Games.rFactor2
             localCar.Inputs.MaxSteeringAngle = localVehicle.mPhysicalSteeringWheelRange;
 
 
-            localCar.Tyres.SlipRatio = [
-                CalculateSlipRatio((float)localVehicle.mWheels[0].mLongitudinalPatchVel * 3.6f, localCar.Physics.Velocity),
-                CalculateSlipRatio((float) localVehicle.mWheels[1].mLongitudinalPatchVel * 3.6f, localCar.Physics.Velocity),
-                CalculateSlipRatio((float) localVehicle.mWheels[2].mLongitudinalPatchVel * 3.6f, localCar.Physics.Velocity),
-                CalculateSlipRatio((float)localVehicle.mWheels[3].mLongitudinalPatchVel * 3.6f, localCar.Physics.Velocity),
-            ];
+    
 
             localCar.Engine.IsIgnitionOn = localVehicle.mIgnitionStarter == 1;
             localCar.Engine.MaxRpm = (int)localVehicle.mEngineMaxRPM;
@@ -68,6 +63,13 @@ namespace RaceElement.Data.Games.rFactor2
                 + (localVehicle.mLocalVel.z * localVehicle.mLocalVel.z));
 
             localCar.Physics.Velocity = (float)(speedMetersPerSecond * 3.6f);
+
+            localCar.Tyres.SlipRatio = [
+                CalculateSlipRatio((float)localVehicle.mWheels[0].mLongitudinalGroundVel * 3.6f, localCar.Physics.Velocity),
+                CalculateSlipRatio((float)localVehicle.mWheels[1].mLongitudinalGroundVel * 3.6f, localCar.Physics.Velocity),
+                CalculateSlipRatio((float)localVehicle.mWheels[2].mLongitudinalGroundVel * 3.6f, localCar.Physics.Velocity),
+                CalculateSlipRatio((float)localVehicle.mWheels[3].mLongitudinalGroundVel * 3.6f, localCar.Physics.Velocity),
+            ];
         }
 
         private int GetPlayerVehicleIndex()
@@ -117,6 +119,7 @@ namespace RaceElement.Data.Games.rFactor2
 
         private static float CalculateSlipRatio(float tyreVelocity, float carVelocity)
         {
+            if (tyreVelocity < 0) tyreVelocity *= -1;
             if (carVelocity < 1) return 0;
             float ratio = (tyreVelocity - carVelocity) / tyreVelocity * 10;
 
