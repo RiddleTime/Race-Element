@@ -17,7 +17,6 @@ public enum Game : int
     ForzaHorizon5 = (1 << 9),
     LeMansUltimate = (1 << 10),
     //rFactor2,
-    // LMU,
 }
 
 public static class GameExtensions
