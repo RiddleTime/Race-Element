@@ -52,16 +52,16 @@ namespace RaceElement.Data.Games.rFactor2
 
 
             localCar.Tyres.SlipRatio = [
-                CalculateSlipRatio((float)localVehicle.mWheels[0].mLongitudinalPatchVel, localCar.Physics.Velocity),
-                CalculateSlipRatio((float)localVehicle.mWheels[1].mLongitudinalPatchVel, localCar.Physics.Velocity),
-                CalculateSlipRatio((float)localVehicle.mWheels[2].mLongitudinalPatchVel, localCar.Physics.Velocity),
-                CalculateSlipRatio((float)localVehicle.mWheels[3].mLongitudinalPatchVel, localCar.Physics.Velocity),
+                CalculateSlipRatio((float)localVehicle.mWheels[0].mLongitudinalPatchVel * 3.6f, localCar.Physics.Velocity),
+                CalculateSlipRatio((float) localVehicle.mWheels[1].mLongitudinalPatchVel * 3.6f, localCar.Physics.Velocity),
+                CalculateSlipRatio((float) localVehicle.mWheels[2].mLongitudinalPatchVel * 3.6f, localCar.Physics.Velocity),
+                CalculateSlipRatio((float)localVehicle.mWheels[3].mLongitudinalPatchVel * 3.6f, localCar.Physics.Velocity),
             ];
 
             localCar.Engine.IsIgnitionOn = localVehicle.mIgnitionStarter == 1;
-
             localCar.Engine.MaxRpm = (int)localVehicle.mEngineMaxRPM;
             localCar.Engine.Rpm = (int)localVehicle.mEngineRPM;
+            localCar.Engine.IsRunning = localCar.Engine.Rpm > 0;
 
             var speedMetersPerSecond = Math.Sqrt((localVehicle.mLocalVel.x * localVehicle.mLocalVel.x)
                 + (localVehicle.mLocalVel.y * localVehicle.mLocalVel.y)
