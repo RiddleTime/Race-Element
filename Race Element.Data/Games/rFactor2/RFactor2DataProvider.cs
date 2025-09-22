@@ -50,8 +50,9 @@ namespace RaceElement.Data.Games.rFactor2
             localCar.Inputs.Steering = (float)localVehicle.mUnfilteredSteering;
             localCar.Inputs.MaxSteeringAngle = localVehicle.mPhysicalSteeringWheelRange;
 
+            localCar.Electronics.TractionControlActivation = localVehicle.mFilteredThrottle < localVehicle.mUnfilteredThrottle ? 1 : 0;
+            localCar.Electronics.AbsActivation = localVehicle.mFilteredBrake < localVehicle.mUnfilteredBrake? 1 : 0;
 
-    
 
             localCar.Engine.IsIgnitionOn = localVehicle.mIgnitionStarter == 1;
             localCar.Engine.MaxRpm = (int)localVehicle.mEngineMaxRPM;
@@ -61,8 +62,9 @@ namespace RaceElement.Data.Games.rFactor2
             var speedMetersPerSecond = Math.Sqrt((localVehicle.mLocalVel.x * localVehicle.mLocalVel.x)
                 + (localVehicle.mLocalVel.y * localVehicle.mLocalVel.y)
                 + (localVehicle.mLocalVel.z * localVehicle.mLocalVel.z));
-
             localCar.Physics.Velocity = (float)(speedMetersPerSecond * 3.6f);
+            localCar.Physics.Acceleration = new((float)localVehicle.mLocalAccel.x / 9.80665f, (float)localVehicle.mLocalAccel.y / 9.80665f, (float)-localVehicle.mLocalAccel.z / 9.80665f);
+
 
             localCar.Tyres.SlipRatio = [
                 CalculateSlipRatio((float)localVehicle.mWheels[0].mLongitudinalGroundVel * 3.6f, localCar.Physics.Velocity),
