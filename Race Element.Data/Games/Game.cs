@@ -15,6 +15,7 @@ public enum Game : int
     AmericanTruckSimulator = (1 << 7),
     AssettoCorsaEvo = (1 << 8),
     ForzaHorizon5 = (1 << 9),
+    LeMansUltimate = (1 << 10),
     //rFactor2,
     // LMU,
 }
@@ -32,6 +33,7 @@ public static class GameExtensions
         public const string AmericanTruckSimulator = "American Truck Simulator";
         public const string AssettoCorsaEvo = "Assetto Corsa EVO";
         public const string ForzaHorizon5 = "Forza Horizon 5";
+        public const string LeMansUltimate = "Le Mans Ultimate";
     }
 
     private static class ShortNames
@@ -45,6 +47,7 @@ public static class GameExtensions
         public const string AmericanTruckSimulator = "ATS";
         public const string AssettoCorsaEvo = "ACE";
         public const string ForzaHorizon5 = "FH5";
+        public const string LeMansUltimate = "LMU";
     }
 
     private static class ExeNames
@@ -52,7 +55,7 @@ public static class GameExtensions
         public static readonly string[] All =
         [
             AssettoCorsa, AssettoCorsaCompetizione, AssettoCorsaEvo, IRacing, RaceRoom, RaceRoomX64, Automobilista2,
-            EuroTruckSimulator2, AmericanTruckSimulator, ForzaHorizon5
+            EuroTruckSimulator2, AmericanTruckSimulator, ForzaHorizon5, LeMansUltimate
         ];
 
         public const string AssettoCorsaCompetizione = "AC2-Win64-Shipping";
@@ -65,6 +68,7 @@ public static class GameExtensions
         public const string AmericanTruckSimulator = "amtrucks";
         public const string AssettoCorsaEvo = "AssettoCorsaEVO";
         public const string ForzaHorizon5 = "ForzaHorizon5";
+        public const string LeMansUltimate = "Le Mans Ultimate";
     }
 
     public static Game GameFromProcessName(string processName) => processName switch
@@ -79,6 +83,7 @@ public static class GameExtensions
         ExeNames.AmericanTruckSimulator => Game.AmericanTruckSimulator,
         ExeNames.AssettoCorsaEvo => Game.AssettoCorsaEvo,
         ExeNames.ForzaHorizon5 => Game.ForzaHorizon5,
+        ExeNames.LeMansUltimate => Game.LeMansUltimate,
         _ => Game.Any,
     };
 
@@ -93,6 +98,7 @@ public static class GameExtensions
         Game.AmericanTruckSimulator => FriendlyNames.AmericanTruckSimulator,
         Game.AssettoCorsaEvo => FriendlyNames.AssettoCorsaEvo,
         Game.ForzaHorizon5 => FriendlyNames.ForzaHorizon5,
+        Game.LeMansUltimate => FriendlyNames.LeMansUltimate,
         _ => string.Empty
     };
 
@@ -107,6 +113,7 @@ public static class GameExtensions
         Game.AmericanTruckSimulator => ShortNames.AmericanTruckSimulator,
         Game.AssettoCorsaEvo => ShortNames.AssettoCorsaEvo,
         Game.ForzaHorizon5 => ShortNames.ForzaHorizon5,
+        Game.LeMansUltimate => ShortNames.LeMansUltimate,
         _ => string.Empty
     };
 
@@ -121,6 +128,7 @@ public static class GameExtensions
         FriendlyNames.AmericanTruckSimulator => Game.AmericanTruckSimulator,
         FriendlyNames.AssettoCorsaEvo => Game.AssettoCorsaEvo,
         FriendlyNames.ForzaHorizon5 => Game.ForzaHorizon5,
+        FriendlyNames.LeMansUltimate => Game.LeMansUltimate,
         _ => Game.AssettoCorsaCompetizione,
     };
 
@@ -135,6 +143,7 @@ public static class GameExtensions
         Game.AmericanTruckSimulator => 270880,
         Game.AssettoCorsaEvo => 3058630,
         Game.ForzaHorizon5 => 1551360,
+        Game.LeMansUltimate => 2399420,
         _ => -1
     };
 
