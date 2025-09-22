@@ -29,7 +29,7 @@ namespace RaceElement.Data.Games.rFactor2
 
             _telemetryBuffer.GetMappedDataUnsynchronized(ref _telemetry);
             _scoringBuffer.GetMappedDataUnsynchronized(ref _scoring);
-            
+
             if (_telemetry.mNumVehicles == 0) return;
 
             int localVehicleIndex = GetPlayerVehicleIndex();
@@ -37,7 +37,7 @@ namespace RaceElement.Data.Games.rFactor2
             RF2VehicleTelemetry localVehicle = _telemetry.mVehicles[localVehicleIndex];
 
 
-         
+
             foreach (var vehicle in _telemetry.mVehicles)
             {
                 //Debug.WriteLine($"{vehicle.mID}");
@@ -50,6 +50,13 @@ namespace RaceElement.Data.Games.rFactor2
             localCar.Inputs.Steering = (float)localVehicle.mUnfilteredSteering;
             localCar.Inputs.MaxSteeringAngle = localVehicle.mPhysicalSteeringWheelRange;
 
+
+            localCar.Tyres.SlipRatio = [
+                CalculateSlipRatio((float)localVehicle.mWheels[0].mLongitudinalPatchVel, localCar.Physics.Velocity),
+                CalculateSlipRatio((float)localVehicle.mWheels[1].mLongitudinalPatchVel, localCar.Physics.Velocity),
+                CalculateSlipRatio((float)localVehicle.mWheels[2].mLongitudinalPatchVel, localCar.Physics.Velocity),
+                CalculateSlipRatio((float)localVehicle.mWheels[3].mLongitudinalPatchVel, localCar.Physics.Velocity),
+            ];
 
             localCar.Engine.IsIgnitionOn = localVehicle.mIgnitionStarter == 1;
 
@@ -106,6 +113,16 @@ namespace RaceElement.Data.Games.rFactor2
             }
 
             return playerVehScoring;
+        }
+
+        private static float CalculateSlipRatio(float tyreVelocity, float carVelocity)
+        {
+            if (carVelocity < 1) return 0;
+            float ratio = (tyreVelocity - carVelocity) / tyreVelocity * 10;
+
+            if (ratio < 0) ratio *= -1;
+
+            return ratio;
         }
 
         internal override int PollingRate() => 200;
