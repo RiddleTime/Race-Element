@@ -18,7 +18,7 @@ namespace RaceElement.Data.Games.rFactor2
         private MappedBuffer<RF2Scoring> _scoringBuffer = new(Constants.MM_SCORING_FILE_NAME, true, true);
         private RF2Telemetry _telemetry = new();
         private RF2Scoring _scoring = new();
-        private uint _lastUpdate = 0;
+        private uint _lastFrameId = 0;
         private uint _sameFrames = 0;
 
         private bool _initialized = false;
@@ -32,11 +32,11 @@ namespace RaceElement.Data.Games.rFactor2
             _telemetryBuffer.GetMappedData(ref _telemetry);
             _scoringBuffer.GetMappedData(ref _scoring);
 
-            if (_lastUpdate == _telemetry.mVersionUpdateBegin)
+            if (_lastFrameId == _telemetry.mVersionUpdateBegin)
             {
                 _sameFrames++;
 
-                if (_sameFrames > 100)
+                if (_sameFrames > 50)
                 {
                     gameData.IsGamePaused = true;
                     return;
@@ -47,7 +47,7 @@ namespace RaceElement.Data.Games.rFactor2
                 _sameFrames = 0;
                 gameData.IsGamePaused = false;
             }
-            _lastUpdate = _telemetry.mVersionUpdateBegin;
+            _lastFrameId = _telemetry.mVersionUpdateBegin;
 
             if (_telemetry.mNumVehicles == 0) return;
 
