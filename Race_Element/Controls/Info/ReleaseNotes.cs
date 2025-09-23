@@ -7,7 +7,8 @@ public static class ReleaseNotes
     internal static readonly Dictionary<string, string> Notes = new()
     {
         {"2.3.1.0", "RaceRoom:"+
-                    "\n- Updated Data Connector to support data for hybrid cars."                     
+                    "\n- Updated Data Connector to support data for hybrid cars."+
+                    "\n- RaceRoom users, update the 24th of september when raceroom updates."
                     },
         {"2.3.0.2", "Race Element:"+
                     "\n- Updated .Net Packages to 9.0.9"
