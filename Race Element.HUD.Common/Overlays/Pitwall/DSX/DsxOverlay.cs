@@ -14,7 +14,7 @@ namespace RaceElement.HUD.Common.Overlays.Pitwall.DSX;
     Description = "Adds active triggers for the DualSense Controller using DSX on steam.\n See Guide in the Discord of Race Element for instructions.",
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Pitwall,
-    Game = Game.RaceRoom | Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.ForzaHorizon5 | Game.LeMansUltimate,
+    Game = Game.RaceRoom | Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class DsxOverlay : CommonAbstractOverlay

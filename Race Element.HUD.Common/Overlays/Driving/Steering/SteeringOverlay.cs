@@ -17,7 +17,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.Steering;
     OverlayType = OverlayType.Drive,
     Description = "Displays the Steering Input.",
     OverlayCategory = OverlayCategory.Inputs,
-    Game = Game.RaceRoom | Game.iRacing | Game.LeMansUltimate,
+    Game = Game.RaceRoom | Game.iRacing | Game.LeMansUltimate | Game.rFactor2,
     Authors = ["FG", "Reinier Klarenberg"])
 ]
 internal sealed class SteeringOverlay : CommonAbstractOverlay
