@@ -10,7 +10,7 @@ internal sealed class Constants
         /// <summary>
         /// Major version number to test against
         /// </summary>
-        R3E_VERSION_MAJOR = 2
+        R3E_VERSION_MAJOR = 3
     };
 
     enum VersionMinor
@@ -18,7 +18,20 @@ internal sealed class Constants
         /// <summary>
         /// Minor version number to test against
         /// </summary>
-        R3E_VERSION_MINOR = 16
+        R3E_VERSION_MINOR = 4
+    };
+
+    enum GameMode
+    {
+        Unavailable = -1,
+        TrackTest = 0,
+        LeaderboardChallenge = 1,
+        Competition = 2,
+        SingleRace = 3,
+        Championship = 4,
+        Multiplayer = 5,
+        MultiplayerRanked = 6, // not impl currently
+        TryBeforeYouBuy = 7,
     };
 
     /// <summary>
@@ -223,23 +236,17 @@ internal sealed class Constants
         Fuel = 3,
         Fronttires = 4,
         Reartires = 5,
-        Frontwing = 6,
-        Rearwing = 7,
-        Suspension = 8,
+        Body = 6,
+        Frontwing = 7,
+        Rearwing = 8,
+        Suspension = 9,
 
-        /// <summary>
-        /// Pit menu buttons up
-        /// </summary>
-        ButtonTop = 9,
-        /// <summary>
-        /// Pit menu button down
-        /// </summary>
-        ButtonBottom = 10,
+        // Pit menu buttons
+        ButtonTop = 10,
+        ButtonBottom = 11,
 
-        /// <summary>
-        /// Pit menu nothing selected
-        /// </summary>
-        Max = 11
+        // Pit menu nothing selected
+        Max = 12
     };
 
     enum TireType
