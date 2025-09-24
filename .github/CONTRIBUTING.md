@@ -17,6 +17,7 @@ Thank you for contributing to this project! Please follow these guidelines to en
 - Follow the project's coding standards, auto-format your code.
 - Ensure your code is well-documented and tested.
 - Don't create create pull requests with over 500 lines of code unless it's wel described(reason) and documented.
+- Small commits are encouraged.
 
 ## Questions?
 Feel free to reach out in the discord server: https://discord.gg/26AAEW5mUq
