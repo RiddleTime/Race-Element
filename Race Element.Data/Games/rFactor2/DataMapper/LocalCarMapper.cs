@@ -13,7 +13,7 @@ internal static class LocalCarMapper
         localCar.Inputs.Steering = (float)vehicleTelemetry.mUnfilteredSteering;
         localCar.Inputs.MaxSteeringAngle = vehicleTelemetry.mVisualSteeringWheelRange;
 
-        if (vehicleTelemetry.mFilteredClutch > 0)
+        if (vehicleTelemetry.mFilteredClutch > 0 || vehicleTelemetry.mSpeedLimiter > 0)
         {
             localCar.Electronics.TractionControlActivation = 0;
             localCar.Electronics.AbsActivation = 0;
