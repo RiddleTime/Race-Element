@@ -5,18 +5,19 @@ namespace RaceElement.Data.Games;
 [Flags]
 public enum Game : int
 {
-    Any = (1 << 0),
-    AssettoCorsa1 = (1 << 1),
-    AssettoCorsaCompetizione = (1 << 2),
-    iRacing = (1 << 3),
-    RaceRoom = (1 << 4),
-    Automobilista2 = (1 << 5),
-    EuroTruckSimulator2 = (1 << 6),
-    AmericanTruckSimulator = (1 << 7),
-    AssettoCorsaEvo = (1 << 8),
-    ForzaHorizon5 = (1 << 9),
-    LeMansUltimate = (1 << 10),
-    rFactor2 = (1 << 11),
+    Any = 1 << 0,
+    AssettoCorsa1 = 1 << 1,
+    AssettoCorsaCompetizione = 1 << 2,
+    iRacing = 1 << 3,
+    RaceRoom = 1 << 4,
+    Automobilista2 = 1 << 5,
+    EuroTruckSimulator2 = 1 << 6,
+    AmericanTruckSimulator = 1 << 7,
+    AssettoCorsaEvo = 1 << 8,
+    ForzaHorizon5 = 1 << 9,
+    LeMansUltimate = 1 << 10,
+    rFactor2 = 1 << 11,
+    WRC_Generations = 1 << 12,
 }
 
 public static class GameExtensions
@@ -34,6 +35,7 @@ public static class GameExtensions
         public const string ForzaHorizon5 = "Forza Horizon 5";
         public const string LeMansUltimate = "Le Mans Ultimate";
         public const string RFactor2 = "rFactor 2";
+        public const string WRC_Generations = "WRC Generations";
     }
 
     private static class ShortNames
@@ -49,6 +51,7 @@ public static class GameExtensions
         public const string ForzaHorizon5 = "FH5";
         public const string LeMansUltimate = "LMU";
         public const string RFactor2 = "rF2";
+        public const string WRC_Generations = "WRCG";
     }
 
     private static class ExeNames
@@ -56,7 +59,7 @@ public static class GameExtensions
         public static readonly string[] All =
         [
             AssettoCorsa, AssettoCorsaCompetizione, AssettoCorsaEvo, IRacing, RaceRoom, RaceRoomX64, Automobilista2,
-            EuroTruckSimulator2, AmericanTruckSimulator, ForzaHorizon5, LeMansUltimate, RFactor2
+            EuroTruckSimulator2, AmericanTruckSimulator, ForzaHorizon5, LeMansUltimate, RFactor2, WRC_Generations,
         ];
 
         public const string AssettoCorsaCompetizione = "AC2-Win64-Shipping";
@@ -71,6 +74,7 @@ public static class GameExtensions
         public const string ForzaHorizon5 = "ForzaHorizon5";
         public const string LeMansUltimate = "Le Mans Ultimate";
         public const string RFactor2 = "rFactor2";
+        public const string WRC_Generations = "WRCG";
     }
 
     public static Game GameFromProcessName(string processName) => processName switch
@@ -87,6 +91,7 @@ public static class GameExtensions
         ExeNames.ForzaHorizon5 => Game.ForzaHorizon5,
         ExeNames.LeMansUltimate => Game.LeMansUltimate,
         ExeNames.RFactor2 => Game.rFactor2,
+        ExeNames.WRC_Generations => Game.WRC_Generations,
         _ => Game.Any,
     };
 
@@ -103,6 +108,7 @@ public static class GameExtensions
         Game.ForzaHorizon5 => FriendlyNames.ForzaHorizon5,
         Game.LeMansUltimate => FriendlyNames.LeMansUltimate,
         Game.rFactor2 => FriendlyNames.RFactor2,
+        Game.WRC_Generations => FriendlyNames.WRC_Generations,
         _ => string.Empty
     };
 
@@ -119,6 +125,7 @@ public static class GameExtensions
         Game.ForzaHorizon5 => ShortNames.ForzaHorizon5,
         Game.LeMansUltimate => ShortNames.LeMansUltimate,
         Game.rFactor2 => ShortNames.RFactor2,
+        Game.WRC_Generations => ShortNames.WRC_Generations,
         _ => string.Empty
     };
 
@@ -135,6 +142,7 @@ public static class GameExtensions
         FriendlyNames.ForzaHorizon5 => Game.ForzaHorizon5,
         FriendlyNames.LeMansUltimate => Game.LeMansUltimate,
         FriendlyNames.RFactor2 => Game.rFactor2,
+        FriendlyNames.WRC_Generations => Game.WRC_Generations,
         _ => Game.AssettoCorsaCompetizione,
     };
 
@@ -151,6 +159,7 @@ public static class GameExtensions
         Game.ForzaHorizon5 => 1551360,
         Game.LeMansUltimate => 2399420,
         Game.rFactor2 => 365960,
+        Game.WRC_Generations => 1953520,
         _ => -1
     };
 
