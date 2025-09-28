@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Data.Games.rFactor2.SharedMemory
 {
-    class SharedMemoryStructs
+    sealed class SharedMemoryStructs
     {
 
         [StructLayout(LayoutKind.Sequential, Pack = 4)]

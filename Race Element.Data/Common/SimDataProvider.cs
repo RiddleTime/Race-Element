@@ -11,6 +11,7 @@ using RaceElement.Data.Common.Graph;
 using RaceElement.Graph;
 using RaceElement.Data.Games.Forza;
 using RaceElement.Data.Games.rFactor2;
+using RaceElement.Data.Games.WRC_Generations;
 
 namespace RaceElement.Data.Common;
 
@@ -125,6 +126,13 @@ public static class SimDataProvider
             case Game.rFactor2:
                 {
                     Instance ??= new RFactor2DataProvider();
+                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                    _localCarEventLoop.Run();
+                    break;
+                }
+            case Game.WRC_Generations:
+                {
+                    Instance ??= new WrcGenerationsDataProvider();
                     Instance.Update(ref _localCarData, ref _session, ref _gameData);
                     _localCarEventLoop.Run();
                     break;
