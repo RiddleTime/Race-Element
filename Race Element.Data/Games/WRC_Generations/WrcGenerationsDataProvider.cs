@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
@@ -39,7 +40,7 @@ internal sealed class WrcGenerationsDataProvider : AbstractSimDataProvider
 
         localCar.Physics.Velocity = data.Speed * 3.6f;
 
-        localCar.Physics.Acceleration = new(data.LateralGForce, data.LongitudinalGForce, 0);
+        localCar.Physics.Acceleration = new(-data.LateralGForce / 9.81f, 0, -data.LongitudinalGForce / 9.81f);
 
         localCar.Inputs.Throttle = data.Throttle;
         localCar.Inputs.Brake = data.Brake;
@@ -56,6 +57,7 @@ internal sealed class WrcGenerationsDataProvider : AbstractSimDataProvider
                                     SlipCalc.Ratio(data.WheelSpeedRearLeft, data.Speed),
                                     SlipCalc.Ratio(data.WheelSpeedRearRight, data.Speed)
                                    ];
+        //localCar.Tyres.SlipRatio = data.GetWheelSlipRatios();
         //data.CalculateLongitudinalSlips();
 
         //// Wheel speeds (assuming order FL, FR, RL, RR)
@@ -186,7 +188,7 @@ internal static class SlipCalc
         if (carVelocity < 1) return 0;
         float ratio = (tyreVelocity - carVelocity) / tyreVelocity;
 
-        //if (ratio < 0) ratio *= -1;
+        if (ratio < 0) ratio *= -1;
 
         return ratio;
     }
@@ -224,5 +226,36 @@ internal static class SlipCalc
         return new[] { slip_fl * 1000f, slip_fr * 1000f, slip_rl * 1000f, slip_rr * 1000f };
     }
 
+    /// <summary>
+    /// Calculates longitudinal slip ratios for all four wheels.
+    /// Returns: [FrontLeft, FrontRight, RearLeft, RearRight]
+    /// </summary>
+    public static float[] GetWheelSlipRatios(this WRCGenData data)
+    {
+        // Compute vehicle longitudinal velocity (dot product of velocity and local forward vectors)
+        Vector3 velocity = new(data.VelocityX, data.VelocityY, data.VelocityZ);
+        Vector3 localForward = new(data.LocalForwardX, data.LocalForwardY, data.LocalForwardZ);
+        float vLong = Vector3.Dot(velocity, localForward);
+
+        float absVLong = Math.Abs(vLong) * 10f;
+        if (absVLong < 0.01f)
+        {
+            // Near-stationary: no meaningful slip
+            return [0f, 0f, 0f, 0f];
+        }
+
+        // Slip ratios: (wheel_speed - vLong) / |vLong|
+        float fl = (data.WheelSpeedFrontLeft * 10f - vLong) / absVLong;
+        float fr = (data.WheelSpeedFrontRight - vLong) / absVLong;
+        float rl = (data.WheelSpeedRearLeft - vLong) / absVLong;
+        float rr = (data.WheelSpeedRearRight - vLong) / absVLong;
+
+        if (fl < 0) fl *= -1;
+        if (fr < 0) fr *= -1;
+        if (rl < 0) rl *= -1;
+        if (rr < 0) rr *= -1;
+
+        return [fl, fr, rl, rr];
+    }
 
 }
