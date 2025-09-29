@@ -7,7 +7,8 @@ public static class ReleaseNotes
     internal static readonly Dictionary<string, string> Notes = new()
     {
         {"2.4.0.0", "- Added Le Mans Ultimate."+
-                    "\n- Added rFactor 2."
+                    "\n- Added rFactor 2."+
+                    "\n- Added WRC Generations."
         },
         {"2.3.1.0", "RaceRoom:"+
                     "\n- Updated Data Connector to support data for hybrid cars."+
