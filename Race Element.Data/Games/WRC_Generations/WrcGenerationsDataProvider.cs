@@ -37,7 +37,7 @@ internal sealed class WrcGenerationsDataProvider : AbstractSimDataProvider
         // Map to LocalCarData (assuming standard fields; adjust based on exact definitions)
         localCar.Physics.Location = new(data.PositionX, data.PositionY, data.PositionZ);
 
-        localCar.Physics.Velocity = data.Speed;
+        localCar.Physics.Velocity = data.Speed * 3.6f;
 
         localCar.Physics.Acceleration = new(data.LateralGForce, data.LongitudinalGForce, 0);
 
