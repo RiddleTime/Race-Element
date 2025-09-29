@@ -23,7 +23,7 @@ namespace RaceElement.HUD.Common.Overlays.OverlayCurrentGear;
     OverlayCategory = OverlayCategory.Driving,
     Description = "Shows the selected gear.",
     Authors = ["Reinier Klarenberg, Dirk Wolf"],
-    Game = Game.iRacing | Game.Automobilista2 | Game.AssettoCorsa1 | Game.RaceRoom | Game.ForzaHorizon5)]
+    Game = Game.iRacing | Game.Automobilista2 | Game.AssettoCorsa1 | Game.RaceRoom | Game.ForzaHorizon5 | Game.WRC_Generations)]
 internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 {
     private readonly CurrentGearConfiguration _config = new();
