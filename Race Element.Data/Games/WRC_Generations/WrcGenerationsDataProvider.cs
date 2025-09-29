@@ -15,15 +15,9 @@ internal sealed class WrcGenerationsDataProvider : AbstractSimDataProvider
     private bool _isRunning;
     private const int Port = 20777;
 
-    public override List<string> GetCarClasses()
-    {
-        return new List<string> { "WRC", "WRC2", "Legends" };
-    }
+    public override List<string> GetCarClasses() => ["WRC", "WRC2", "Legends"];
 
-    public override bool HasTelemetry()
-    {
-        return true;
-    }
+    public override bool HasTelemetry() => true;
 
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
