@@ -56,6 +56,8 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
     private Pen _wheelPen;
 
     private WheelSlipModel _wheelSlipModel;
+
+    private const Game GamesWithSlipAngle = Game.ForzaHorizon5;
     private readonly struct WheelSlipModel(float[] slipRatios, float[] slipAngles)
     {
         public readonly float[] SlipRatios = slipRatios;
@@ -161,7 +163,10 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 
         g.FillEllipse(pthGrBrush, centerX, centerY, size / 2 * percentage / 100);
 
-        //float slipAngle = (float)(_wheelSlipModel.SlipAngles[(int)wheel] * 180d / Math.PI * 2) - 90;
-        //g.DrawArc(_wheelPen, wheelRect, slipAngle - 10, 20);
+        if (GamesWithSlipAngle.HasFlag(this.GameWhenStarted))
+        {
+            float slipAngle = (float)(_wheelSlipModel.SlipAngles[(int)wheel] * 180d / Math.PI / 2) - 90;
+            g.DrawArc(_wheelPen, wheelRect, slipAngle - 10, 20);
+        }
     }
 }

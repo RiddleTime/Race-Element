@@ -8,7 +8,9 @@ public static class ReleaseNotes
     {
         {"2.4.0.0", "- Added Le Mans Ultimate."+
                     "\n- Added rFactor 2."+
-                    "\n- Added WRC Generations."
+                    "\n- Added WRC Generations."+
+                    "\n\nForza Horizon 5:"+
+                    "\n- Wheel Slip HUD: added wheel slip angle indicator."
         },
         {"2.3.1.0", "RaceRoom:"+
                     "\n- Updated Data Connector to support data for hybrid cars."+

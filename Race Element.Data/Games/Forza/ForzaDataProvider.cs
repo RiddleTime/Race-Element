@@ -137,8 +137,8 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         localCar.Physics.Velocity = (float)Math.Sqrt(sled.VelocityX * sled.VelocityX + sled.VelocityY * sled.VelocityY + sled.VelocityZ * sled.VelocityZ) * 3.6f;
         localCar.Physics.Location = new Vector3(dash.PositionX, dash.PositionY, dash.PositionZ);
         localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(sled.Yaw, sled.Pitch, sled.Roll);
-        localCar.Tyres.SlipAngle = [sled.TireSlipAngleFr, sled.TireSlipAngleFl, sled.TireSlipAngleRr, sled.TireSlipAngleRl];
-        localCar.Tyres.SlipRatio = [NegateIfNegative(sled.TireSlipRatioFr), NegateIfNegative(sled.TireSlipRatioFl), NegateIfNegative(sled.TireSlipRatioRr), NegateIfNegative(sled.TireSlipRatioRl)];
+        localCar.Tyres.SlipAngle = [sled.TireSlipAngleFr / -2f, sled.TireSlipAngleFl / -2f, sled.TireSlipAngleRr / -2f, sled.TireSlipAngleRl / -2f];
+        localCar.Tyres.SlipRatio = [NegateIfNegative(sled.TireCombinedSlipFr), NegateIfNegative(sled.TireCombinedSlipFl), NegateIfNegative(sled.TireCombinedSlipRr), NegateIfNegative(sled.TireCombinedSlipRl)];
         localCar.Tyres.CoreTemperature = [dash.TireTempFr, dash.TireTempFl, dash.TireTempRr, dash.TireTempRl];
         localCar.Tyres.Velocity = [sled.WheelRotationSpeedFr, sled.WheelRotationSpeedFl, sled.WheelRotationSpeedRr, sled.WheelRotationSpeedRl];
         localCar.CarModel.GameId = sled.CarOrdinal;
