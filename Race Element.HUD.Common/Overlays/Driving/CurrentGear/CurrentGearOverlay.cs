@@ -14,7 +14,7 @@ using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Util.SystemExtensions;
 using RaceElement.Data.Games;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayCurrentGear;
+namespace RaceElement.HUD.Common.Overlays.Driving.CurrentGear;
 
 [Overlay(
     Name = "Current Gear",
@@ -76,10 +76,10 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 
     public sealed override void BeforeStart()
     {
-        Font font = FontUtil.FontConthrax(50 * this.Scale);
+        Font font = FontUtil.FontConthrax(50 * Scale);
         HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, Color.FromArgb(225, Color.Black), Color.FromArgb(185, Color.Black));
 
-        Rectangle renderRectangle = new(0, 0, (int)(InitialWidth * this.Scale), (int)(InitialHeight * this.Scale));
+        Rectangle renderRectangle = new(0, 0, (int)(InitialWidth * Scale), (int)(InitialHeight * Scale));
         for (int i = 0; i <= 11; i++)
         {
             string gear = i switch
@@ -89,15 +89,15 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
                 _ => $"{i - 1}",
             };
 
-            _gearBitmaps.Add(new CachedBitmap((int)(InitialWidth * this.Scale) + 1, (int)(InitialHeight * this.Scale) + 1, g =>
+            _gearBitmaps.Add(new CachedBitmap((int)(InitialWidth * Scale) + 1, (int)(InitialHeight * Scale) + 1, g =>
             {
                 g.TextRenderingHint = TextRenderingHint.AntiAlias;
                 g.TextContrast = 1;
 
-                g.FillRoundedRectangle(hatchBrush, renderRectangle, (int)(6 * this.Scale));
+                g.FillRoundedRectangle(hatchBrush, renderRectangle, (int)(6 * Scale));
 
                 int textWidth = (int)g.MeasureString(gear, font).Width;
-                g.DrawStringWithShadow(gear, font, Color.FromArgb(_config.Colors.TextOpacity, _config.Colors.TextColor), new Point(renderRectangle.Width / 2 - textWidth / 2, (int)(renderRectangle.Height / 2 - font.Height / 2.18)), 1.5f * this.Scale);
+                g.DrawStringWithShadow(gear, font, Color.FromArgb(_config.Colors.TextOpacity, _config.Colors.TextColor), new Point(renderRectangle.Width / 2 - textWidth / 2, (int)(renderRectangle.Height / 2 - font.Height / 2.18)), 1.5f * Scale);
             }));
         }
 

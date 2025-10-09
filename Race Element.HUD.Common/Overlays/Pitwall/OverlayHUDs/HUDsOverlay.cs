@@ -4,7 +4,7 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.OverlayHUDs;
+namespace RaceElement.HUD.Common.Overlays.Pitwall.OverlayHUDs;
 
 [Overlay(Name = "HUDs",
     Description = "Shows info about active HUDs",
@@ -14,7 +14,7 @@ internal sealed class HUDsOverlay : CommonAbstractOverlay
     private readonly HUDsConfiguration _config = new();
     private sealed class HUDsConfiguration : OverlayConfiguration
     {
-        public HUDsConfiguration() => this.GenericConfiguration.AllowRescale = true;
+        public HUDsConfiguration() => GenericConfiguration.AllowRescale = true;
     }
 
     private InfoPanel _panel;
