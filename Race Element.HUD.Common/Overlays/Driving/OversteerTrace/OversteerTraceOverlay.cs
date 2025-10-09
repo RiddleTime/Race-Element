@@ -1,4 +1,5 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.Data.Games;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 
@@ -9,6 +10,7 @@ Description = "Live graph of oversteer in red and understeer in blue.",
 OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.Physics,
 Version = 1.00,
+Game = Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.RaceRoom | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class OversteerTraceOverlay : CommonAbstractOverlay
 {

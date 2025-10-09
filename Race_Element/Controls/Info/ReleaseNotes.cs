@@ -10,7 +10,16 @@ public static class ReleaseNotes
                     "\n- Added rFactor 2."+
                     "\n- Added WRC Generations."+
                     "\n\nForza Horizon 5:"+
-                    "\n- Wheel Slip HUD: added wheel slip angle indicator."
+                    "\n- Wheel Slip HUD: added wheel slip angle indicator."+
+                    "\n- Added Oversteer Trace HUD."+
+                    "\n\nRaceRoom:"+
+                    "\n- Added Oversteer Trace HUD."+
+                    "\n\nAssetto Corsa:"+
+                    "\n- Added Oversteer Trace HUD."+
+                    "\n\nAssetto Corsa EVO:"+
+                    "\n- Added Oversteer Trace HUD."+
+                    "\n\nDSX:"+
+                    "\n- Added support for Le Mans Ultimate, rFactor 2 and WRC Generations."
         },
         {"2.3.1.0", "RaceRoom:"+
                     "\n- Updated Data Connector to support data for hybrid cars."+

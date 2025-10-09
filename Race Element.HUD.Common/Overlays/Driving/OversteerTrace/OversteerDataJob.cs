@@ -1,8 +1,7 @@
 ﻿using RaceElement.Core.Jobs.Loop;
+using RaceElement.Data.Common;
+using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Util.SystemExtensions;
-using System.Collections.Generic;
-using static RaceElement.ACCSharedMemory;
-using static RaceElement.Data.ACC.SetupParser.SetupConverter;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.OversteerTrace;
 
@@ -44,10 +43,10 @@ internal sealed class OversteerDataJob : AbstractLoopJob
         if (!Overlay.ShouldRender())
             return;
 
-        SPageFilePhysics pagePhysics = Overlay.pagePhysics;
+        TyresData td = SimDataProvider.LocalCar.Tyres;
 
-        float slipRatioFront = (pagePhysics.WheelSlip[(int)Wheel.FrontLeft] + pagePhysics.WheelSlip[(int)Wheel.FrontRight]) / 2;
-        float slipRatioRear = (pagePhysics.WheelSlip[(int)Wheel.RearLeft] + pagePhysics.WheelSlip[(int)Wheel.RearRight]) / 2;
+        float slipRatioFront = (td.SlipRatio[0] + td.SlipRatio[1]) / 2;
+        float slipRatioRear = (td.SlipRatio[2] + td.SlipRatio[3]) / 2;
 
         // understeer
         if (slipRatioFront > slipRatioRear)
