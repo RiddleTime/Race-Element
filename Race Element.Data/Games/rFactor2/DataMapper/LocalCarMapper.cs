@@ -12,6 +12,7 @@ internal static class LocalCarMapper
         localCar.Inputs.Clutch = (float)vehicleTelemetry.mUnfilteredClutch;
         localCar.Inputs.Steering = (float)vehicleTelemetry.mUnfilteredSteering;
         localCar.Inputs.MaxSteeringAngle = vehicleTelemetry.mVisualSteeringWheelRange;
+        localCar.Inputs.Gear = vehicleTelemetry.mGear + 1;
 
         if (vehicleTelemetry.mFilteredClutch > 0 || vehicleTelemetry.mSpeedLimiter > 0)
         {
@@ -28,6 +29,7 @@ internal static class LocalCarMapper
         localCar.Engine.MaxRpm = (int)vehicleTelemetry.mEngineMaxRPM;
         localCar.Engine.Rpm = (int)vehicleTelemetry.mEngineRPM;
         localCar.Engine.IsRunning = localCar.Engine.Rpm > 0;
+
 
         localCar.Timing.LapTimeDeltaBestMS = (int)vehicleTelemetry.mDeltaTime;
         localCar.Timing.CurrentLaptimeMS = (int)vehicleScoring.mTimeIntoLap * 1000;
