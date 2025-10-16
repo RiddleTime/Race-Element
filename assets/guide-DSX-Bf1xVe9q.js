@@ -17,7 +17,7 @@ type: guide
 </ul>
 <h1 id="dsx">DSX</h1>
 <ol>
-<li>Open DSX and at the left bottom click Settings</li>
+<li>Open DSX and at the left bottom click Settings (Don&#39;t have DSX yet? <strong><a href="https://store.steampowered.com/app/1812620/DSX/">Get DSX on Steam</a></strong> )</li>
 <li>Open the Networking tab</li>
 <li>Make sure the Firewall Rules are okay, if it&#39;s not then allow DSX to fix it</li>
 <li>Enable <code>Incoming UDP</code></li>
