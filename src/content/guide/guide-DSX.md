@@ -15,7 +15,7 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 - RaceRoom
 
 # DSX
-1. Open DSX and at the left bottom click Settings
+1. Open DSX and at the left bottom click Settings (Don't have DSX yet? **[Get DSX on Steam](https://store.steampowered.com/app/1812620/DSX/)** )
 2. Open the Networking tab
 3. Make sure the Firewall Rules are okay, if it's not then allow DSX to fix it
 4. Enable `Incoming UDP`
