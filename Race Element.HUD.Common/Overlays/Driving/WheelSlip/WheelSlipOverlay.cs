@@ -165,7 +165,7 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 
         if (GamesWithSlipAngle.HasFlag(this.GameWhenStarted))
         {
-            float slipAngle = (float)(_wheelSlipModel.SlipAngles[(int)wheel] * 180d / Math.PI / 2) - 90;
+            float slipAngle = (float)(_wheelSlipModel.SlipAngles[(int)wheel] * 180d / Math.PI / 4) - 90;
             g.DrawArc(_wheelPen, wheelRect, slipAngle - 10, 20);
         }
     }
