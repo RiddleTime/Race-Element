@@ -9,6 +9,7 @@ public static class ReleaseNotes
         {"2.4.0.0", "- Added Le Mans Ultimate."+
                     "\n- Added rFactor 2."+
                     "\n- Added WRC Generations."+
+                    "\n- Added New Speedometer HUD for all other games than ACC."+
                     "\n\nForza Horizon 5:"+
                     "\n- Wheel Slip HUD: added wheel slip angle indicator."+
                     "\n- Added Oversteer Trace HUD."+
