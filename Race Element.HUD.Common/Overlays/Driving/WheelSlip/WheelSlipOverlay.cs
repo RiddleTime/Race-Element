@@ -52,8 +52,8 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
         public WheelSlipConfiguration() => GenericConfiguration.AllowRescale = true;
     }
 
-    private CachedBitmap _cachedCircleBackground;
-    private Pen _wheelPen;
+    private CachedBitmap? _cachedCircleBackground;
+    private Pen? _wheelPen;
 
     private WheelSlipModel _wheelSlipModel;
 
