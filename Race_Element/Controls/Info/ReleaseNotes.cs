@@ -6,9 +6,9 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
-        {"2.4.0.0", "- Added Le Mans Ultimate."+
-                    "\n- Added rFactor 2."+
-                    "\n- Added WRC Generations."+
+        {"2.4.0.0", "- Added Le Mans Ultimate, see multi-sim guide on website how to set it up."+
+                    "\n- Added rFactor 2, see multi-sim guide on website how to set it up."+
+                    "\n- Added WRC Generations, see multi-sim guide on website how to set it up."+
                     "\n- Added New Speedometer HUD for all other games than ACC."+
                     "\n\nForza Horizon 5:"+
                     "\n- Wheel Slip HUD: added wheel slip angle indicator."+
