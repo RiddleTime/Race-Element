@@ -20,7 +20,9 @@ public static class ReleaseNotes
                     "\n\nAssetto Corsa EVO:"+
                     "\n- Added Oversteer Trace HUD."+
                     "\n\nDSX:"+
-                    "\n- Added support for Le Mans Ultimate, rFactor 2 and WRC Generations."
+                    "\n- Added support for Le Mans Ultimate, rFactor 2 and WRC Generations."+
+                    "\n\nRace Element:"+
+                    "\n- Fixed Race Element Icon in Settings tab."
         },
         {"2.3.1.0", "RaceRoom:"+
                     "\n- Updated Data Connector to support data for hybrid cars."+
