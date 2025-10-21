@@ -34,7 +34,7 @@ internal sealed class AutoVisibilityTesterOverlay : AbstractOverlay
     }
 
     public sealed override void BeforeStart() => _panel = new InfoPanel(11, Width);
-    public sealed override void BeforeStop() => _panel = null;
+    public sealed override void BeforeStop() => _panel?.Dispose();
 
     public sealed override bool ShouldRender() => true;
     public sealed override void Render(Graphics g)
