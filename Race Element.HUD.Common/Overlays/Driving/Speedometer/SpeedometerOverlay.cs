@@ -6,6 +6,7 @@ using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
+using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.Speedometer;
 [Overlay(
@@ -50,7 +51,7 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
 
     public override void Render(Graphics g)
     {
-        _cachedBackground?.Draw(g);
+        if (_config.Colors.BackgroundOpacity != 0) _cachedBackground?.Draw(g);
 
         int x = 0;
 
@@ -63,10 +64,8 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
         for (int i = 0; i < _config.General.Digits; i++)
         {
             if (byte.TryParse(s.AsSpan(i, 1), out byte number))
-            {
                 if (i != 0 || number != 0) // do not draw the first "0"
                     _bitmaps.GetForNumber(number).Draw(g, new(x, 0));
-            }
 
             x += _bitmaps.Dimension.Width + _config.General.ExtraDigitSpacing;
         }

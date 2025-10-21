@@ -41,7 +41,9 @@ internal sealed class SpeedometerConfiguration : OverlayConfiguration
         public int TextOpacity { get; init; } = 255;
 
         public Color BackgroundColor { get; init; } = Color.FromArgb(255, 0, 0, 0);
-        [IntRange(75, 255, 1)]
+
+        [ToolTip("Changes the background opacity, 0 is invisible.")]
+        [IntRange(0, 255, 1)]
         public int BackgroundOpacity { get; init; } = 175;
     }
 
