@@ -78,7 +78,7 @@ internal sealed class AutoVisibilityTesterOverlay : AbstractOverlay
             if (pageGraphics.GlobalRed)
                 shouldRender = false;
 
-            if (RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase))
+            if (RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase) && pagePhysics.IgnitionOn)
                 shouldRender = true;
 
             if (pageGraphics.Status == ACCSharedMemory.AcStatus.AC_PAUSE || pageGraphics.Status == ACCSharedMemory.AcStatus.AC_REPLAY)
