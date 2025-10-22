@@ -47,12 +47,7 @@ sealed class RFactor2DataProvider : AbstractSimDataProvider
         if (_telemetry.mNumVehicles == 0) return;
 
         int localVehicleIndex = GetPlayerVehicleIndex();
-        if (localVehicleIndex == -1)
-        {
-            localCar = new();
-            sessionData = new();
-            return;
-        }
+        if (localVehicleIndex == -1) return;
         RF2VehicleTelemetry localVehicle = _telemetry.mVehicles[localVehicleIndex];
         LocalCarMapper.MapLocalCar(ref localCar, localVehicle, GetPlayerScoring(ref _scoring));
     }
