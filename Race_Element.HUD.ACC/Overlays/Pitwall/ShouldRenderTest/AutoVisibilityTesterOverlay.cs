@@ -49,6 +49,7 @@ internal sealed class AutoVisibilityTesterOverlay : AbstractOverlay
 
         _panel.AddLine($"GlobalRed", $"{pageGraphics.GlobalRed}");
 
+        _panel.AddLine($"Broadcast Phase", $"{broadCastRealTime.Phase}");
         _panel.AddLine($"IsFormationLap", $"{RaceSessionState.IsFormationLap(pageGraphics.GlobalRed, broadCastRealTime.Phase)}");
 
         _panel.AddLine($"LocalCarIndex/Spectating", $"{pageGraphics.PlayerCarID}/{broadCastRealTime.FocusedCarIndex}");
