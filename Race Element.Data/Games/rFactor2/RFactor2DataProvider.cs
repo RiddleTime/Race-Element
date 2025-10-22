@@ -9,8 +9,8 @@ using static RaceElement.Data.Games.rFactor2.SharedMemory.SharedMemoryStructs;
 namespace RaceElement.Data.Games.rFactor2;
 sealed class RFactor2DataProvider : AbstractSimDataProvider
 {
-    private MappedBuffer<RF2Telemetry> _telemetryBuffer = new(Constants.MM_TELEMETRY_FILE_NAME, true, true);
-    private MappedBuffer<RF2Scoring> _scoringBuffer = new(Constants.MM_SCORING_FILE_NAME, true, true);
+    private readonly MappedBuffer<RF2Telemetry> _telemetryBuffer = new(Constants.MM_TELEMETRY_FILE_NAME, true, true);
+    private readonly MappedBuffer<RF2Scoring> _scoringBuffer = new(Constants.MM_SCORING_FILE_NAME, true, true);
     private RF2Telemetry _telemetry = new();
     private RF2Scoring _scoring = new();
     private uint _lastFrameId = 0;
@@ -47,7 +47,12 @@ sealed class RFactor2DataProvider : AbstractSimDataProvider
         if (_telemetry.mNumVehicles == 0) return;
 
         int localVehicleIndex = GetPlayerVehicleIndex();
-        if (localVehicleIndex == -1) return;
+        if (localVehicleIndex == -1)
+        {
+            localCar = new();
+            sessionData = new();
+            return;
+        }
         RF2VehicleTelemetry localVehicle = _telemetry.mVehicles[localVehicleIndex];
         LocalCarMapper.MapLocalCar(ref localCar, localVehicle, GetPlayerScoring(ref _scoring));
     }
