@@ -6,7 +6,6 @@ using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
-using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.Speedometer;
 [Overlay(
@@ -18,16 +17,16 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
 {
     private readonly SpeedometerConfiguration _config = new();
 
-    private CachedBitmap _cachedBackground;
-    private RpmBitmaps _bitmaps;
+    private CachedBitmap? _cachedBackground;
+    private RpmBitmaps? _bitmaps;
 
     public override void BeforeStart()
     {
         RefreshRateHz = _config.General.RefreshRate;
 
         _bitmaps = new RpmBitmaps(_config);
-        Width = _config.General.Digits * _bitmaps.Dimension.Width + _config.General.ExtraDigitSpacing * (_config.General.Digits - 1);
-        Height = _bitmaps.Dimension.Height;
+        Width = _config.General.Digits * _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing * (_config.General.Digits - 1);
+        Height = _bitmaps.BitmapDimension.Height;
 
         _cachedBackground = new(Width, Height, g =>
         {
@@ -53,6 +52,8 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
     {
         if (_config.Colors.BackgroundOpacity != 0) _cachedBackground?.Draw(g);
 
+        if (_bitmaps == null) return;
+
         int x = 0;
 
         float speedKmh = SimDataProvider.LocalCar.Physics.Velocity;
@@ -67,18 +68,18 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
                 if (i != 0 || number != 0) // do not draw the first "0"
                     _bitmaps.GetForNumber(number).Draw(g, new(x, 0));
 
-            x += _bitmaps.Dimension.Width + _config.General.ExtraDigitSpacing;
+            x += _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing;
         }
     }
 
     private sealed class RpmBitmaps : IDisposable
     {
         private readonly CachedBitmap[] _rpmBitmaps = new CachedBitmap[10];
-        public readonly (int Width, int Height) Dimension;
+        public readonly (int Width, int Height) BitmapDimension;
         public RpmBitmaps(SpeedometerConfiguration config)
         {
             GenerateBitMaps(config);
-            Dimension = (_rpmBitmaps[0].Width, _rpmBitmaps[0].Height);
+            BitmapDimension = (_rpmBitmaps[0].Width, _rpmBitmaps[0].Height);
         }
 
         private void GenerateBitMaps(SpeedometerConfiguration config)
