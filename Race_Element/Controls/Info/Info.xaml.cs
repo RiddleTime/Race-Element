@@ -88,7 +88,7 @@ public partial class Info : UserControl
         TitleBar.Instance.SetAppTitle("Dev");
         return;
 #endif
-#pragma warning disable CS0162 // Unreachable code detected
+#pragma warning disable CS0162 // Unreachable code detected: GitHub has rate limits, so if you want to test a release version.. better not contact git early.
 
         try
         {
@@ -189,7 +189,7 @@ public partial class Info : UserControl
                     Background = new LinearGradientBrush(Color.FromArgb(130, 255, 69, 0), Color.FromArgb(5, 0, 0, 0), 0),
                     Foreground = Brushes.White,
                     Padding = new(2, 0, 0, 0),
-                    Margin = new(0, 0, 0, 2),
+                    Margin = new(-6, 0, 0, 0),
                 };
                 TextBlock noteDescription = new()
                 {
