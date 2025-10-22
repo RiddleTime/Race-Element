@@ -6,10 +6,12 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
-        {"2.4.0.0", "- Added Le Mans Ultimate, see multi-sim guide on website how to set it up."+
+        {"2.4.0.0", "Race Element:"+
+                    "\n- Added Le Mans Ultimate, see multi-sim guide on website how to set it up."+
                     "\n- Added rFactor 2, see multi-sim guide on website how to set it up."+
                     "\n- Added WRC Generations, see multi-sim guide on website how to set it up."+
                     "\n- Added New Speedometer HUD for all other games than ACC."+
+                    "\n- Fixed Race Element Icon in Settings tab."+
                     "\n\nForza Horizon 5:"+
                     "\n- Wheel Slip HUD: added wheel slip angle indicator."+
                     "\n- Added Oversteer Trace HUD."+
@@ -19,10 +21,10 @@ public static class ReleaseNotes
                     "\n- Added Oversteer Trace HUD."+
                     "\n\nAssetto Corsa EVO:"+
                     "\n- Added Oversteer Trace HUD."+
+                    "\n\nAssetto Corsa Competizione:"+
+                    "\n- During a Race, HUDs will now become visible as soon as you hit Drive, previously visibilty started when the countdown timer for the formation lap ended."+
                     "\n\nDSX:"+
-                    "\n- Added support for Le Mans Ultimate, rFactor 2 and WRC Generations."+
-                    "\n\nRace Element:"+
-                    "\n- Fixed Race Element Icon in Settings tab."
+                    "\n- Added support for Le Mans Ultimate, rFactor 2 and WRC Generations."                 
         },
         {"2.3.1.0", "RaceRoom:"+
                     "\n- Updated Data Connector to support data for hybrid cars."+

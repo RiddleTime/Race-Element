@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace RaceElement.Controls;
 
@@ -18,7 +19,6 @@ namespace RaceElement.Controls;
 public partial class Info : UserControl
 {
     private bool HasAddedDownloadButton = false;
-
 
     public Info()
     {
@@ -144,7 +144,7 @@ public partial class Info : UserControl
 #pragma warning restore CS0162 // Unreachable code detected
     }
 
-    private void RemoveTempVersionFile()
+    private static void RemoveTempVersionFile()
     {
         try
         {
@@ -160,7 +160,7 @@ public partial class Info : UserControl
         }
     }
 
-    private long VersionToLong(Version VersionInfo)
+    private static long VersionToLong(Version VersionInfo)
     {
         string major = $"{VersionInfo.Major}".FillStart(4, '0');
         string minor = $"{VersionInfo.Minor}".FillStart(4, '0');
@@ -184,7 +184,12 @@ public partial class Info : UserControl
                     Text = note.Key,
                     Style = Resources["MaterialDesignBody1TextBlock"] as Style,
                     FontWeight = FontWeights.Bold,
-                    FontStyle = FontStyles.Italic
+                    FontSize = 18,
+                    FontStyle = FontStyles.Italic,
+                    Background = new LinearGradientBrush(Color.FromArgb(130, 255, 69, 0), Color.FromArgb(5, 0, 0, 0), 0),
+                    Foreground = Brushes.White,
+                    Padding = new(2, 0, 0, 0),
+                    Margin = new(0, 0, 0, 2),
                 };
                 TextBlock noteDescription = new()
                 {
