@@ -22,7 +22,10 @@ sealed class RFactor2DataProvider : AbstractSimDataProvider
     {
         if (!GameManager.IsGameRunning) return;
 
-        if (!_initialized && !Initialize()) return;
+        if (!_initialized && !Initialize())
+        {
+            Thread.Sleep(200); return;
+        }
 
         _telemetryBuffer.GetMappedData(ref _telemetry);
         _scoringBuffer.GetMappedData(ref _scoring);
