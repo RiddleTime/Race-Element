@@ -181,8 +181,8 @@ public partial class HudOptions : UserControl
                     listDebugOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
 
                     /// enables <see cref="ListViewScrollHandler"/>
-                    //listOverlays.PreviewMouseWheel += (s, e) => ListViewScrollHandler(s, e, listOverlays);
-                    //listDebugOverlays.PreviewMouseWheel += (s, e) => ListViewScrollHandler(s, e, listDebugOverlays);
+                    listOverlays.PreviewMouseWheel += (s, e) => ListViewScrollHandler(s, e, listOverlays);
+                    listDebugOverlays.PreviewMouseWheel += (s, e) => ListViewScrollHandler(s, e, listDebugOverlays);
 
                     m_GlobalHook = Hook.GlobalEvents();
                     m_GlobalHook.OnCombination(new Dictionary<Combination, Action> {
@@ -733,16 +733,18 @@ public partial class HudOptions : UserControl
                 continue;
 
           
-            Thickness defaultTextBlockMargin = new(14, 0, 0, 0);
-            Thickness selectedTextBlockMargin = new(7, 0, 0, 0);
+            Thickness defaultTextBlockMargin = new(14, 0.5, 0, 0.5);
+            Thickness selectedTextBlockMargin = new(12, 0.5, 0, 0.5);
 
             TextBlock textBlock = new()
             {
                 Text = x.Key,
                 Style = Resources["MaterialDesignButtonTextBlock"] as Style,
                 Margin = defaultTextBlockMargin,
-                FontSize = 14.8,
-                FontWeight = FontWeights.DemiBold,
+                FontSize = 15.8,
+                FontWeight = FontWeights.Normal,
+                FontStyle = FontStyles.Normal,
+                TextAlignment = TextAlignment.Left,
             };
 
             double marginTopBottom = 6.5d;
@@ -750,19 +752,21 @@ public partial class HudOptions : UserControl
             {
                 Content = textBlock,
                 DataContext = x,
-                HorizontalContentAlignment = HorizontalAlignment.Left,
+                HorizontalContentAlignment = HorizontalAlignment.Stretch,
                 Padding = new Thickness(0, marginTopBottom, 0, marginTopBottom),
                 Margin = new Thickness(0, 0.5, 0, 0.5),
                 BorderBrush = new SolidColorBrush(Colors.Transparent),
                 BorderThickness = new Thickness(4, 0, 0, 0),
             };
             listViewItem.Selected += (s, e) => {
-                textBlock.Margin = selectedTextBlockMargin;
                 textBlock.FontWeight = FontWeights.Bold;
+                textBlock.FontStyle = FontStyles.Italic;
+                textBlock.Margin = selectedTextBlockMargin;
             };
             listViewItem.Unselected += (s, e) => {
+                textBlock.FontWeight = FontWeights.Normal;
+                textBlock.FontStyle = FontStyles.Normal;
                 textBlock.Margin = defaultTextBlockMargin;
-                textBlock.FontWeight = FontWeights.DemiBold;
             };
 
             if (overlayAttribute.Description != string.Empty)

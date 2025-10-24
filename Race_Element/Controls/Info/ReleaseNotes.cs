@@ -13,6 +13,10 @@ public static class ReleaseNotes
                     "\n- Configure by reading multi-sim guide on website!!"+
                     "\n- DSX: Added support for Le Mans Ultimate, rFactor 2 and WRC Generations."+
 
+                    "\n\nHUD Tab:"+
+                    "\n- Small re-design of HUD List."+
+                    "\n- When scrolling the HUDs, it will now scroll one item up or down."+
+
                     "\n\nMulti-Sim HUDs"+
                     "\n- Added New Speedometer HUD for all other games than ACC."+
                     "\n- Added Oversteer Trace HUD for: Assetto Corsa, Assetto Corsa EVO, Forza Horizon 5 and RaceRoom."+
