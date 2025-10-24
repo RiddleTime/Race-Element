@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System.Collections.Immutable;
+using System.Diagnostics;
 
 namespace RaceElement.Data.Games;
 
@@ -24,178 +25,157 @@ public static class GameExtensions
 {
     private static class FriendlyNames
     {
-        public const string AssettoCorsaCompetizione = "Assetto Corsa Competizione";
-        public const string AssettoCorsa = "Assetto Corsa";
-        public const string IRacing = "iRacing";
-        public const string RaceRoom = "RaceRoom Racing Experience";
-        public const string Automobilista2 = "Automobilista 2";
-        public const string EuroTruckSimulator2 = "Euro Truck Simulator 2";
-        public const string AmericanTruckSimulator = "American Truck Simulator";
-        public const string AssettoCorsaEvo = "Assetto Corsa EVO";
-        public const string ForzaHorizon5 = "Forza Horizon 5";
-        public const string LeMansUltimate = "Le Mans Ultimate";
-        public const string RFactor2 = "rFactor 2";
-        public const string WRC_Generations = "WRC Generations";
+        public static readonly ImmutableDictionary<Game, string> Map = new Dictionary<Game, string>
+        {
+            { Game.AssettoCorsa1, "Assetto Corsa" },
+            { Game.AssettoCorsaCompetizione, "Assetto Corsa Competizione" },
+            { Game.iRacing, "iRacing" },
+            { Game.RaceRoom, "RaceRoom Racing Experience" },
+            { Game.Automobilista2, "Automobilista 2" },
+            { Game.EuroTruckSimulator2, "Euro Truck Simulator 2" },
+            { Game.AmericanTruckSimulator, "American Truck Simulator" },
+            { Game.AssettoCorsaEvo, "Assetto Corsa EVO" },
+            { Game.ForzaHorizon5, "Forza Horizon 5" },
+            { Game.LeMansUltimate, "Le Mans Ultimate" },
+            { Game.rFactor2, "rFactor 2" },
+            { Game.WRC_Generations, "WRC Generations" }
+        }.ToImmutableDictionary();
     }
 
     private static class ShortNames
     {
-        public const string AssettoCorsaCompetizione = "ACC";
-        public const string AssettoCorsa = "AC";
-        public const string IRacing = "iRacing";
-        public const string RaceRoom = "RaceRoom";
-        public const string Automobilista2 = "AMS2";
-        public const string EuroTruckSimulator2 = "ETS2";
-        public const string AmericanTruckSimulator = "ATS";
-        public const string AssettoCorsaEvo = "ACE";
-        public const string ForzaHorizon5 = "FH5";
-        public const string LeMansUltimate = "LMU";
-        public const string RFactor2 = "rF2";
-        public const string WRC_Generations = "WRCG";
+        public static readonly ImmutableDictionary<Game, string> Map = new Dictionary<Game, string>
+        {
+            { Game.AssettoCorsa1, "AC" },
+            { Game.AssettoCorsaCompetizione, "ACC" },
+            { Game.iRacing, "iRacing" },
+            { Game.RaceRoom, "RaceRoom" },
+            { Game.Automobilista2, "AMS2" },
+            { Game.EuroTruckSimulator2, "ETS2" },
+            { Game.AmericanTruckSimulator, "ATS" },
+            { Game.AssettoCorsaEvo, "ACE" },
+            { Game.ForzaHorizon5, "FH5" },
+            { Game.LeMansUltimate, "LMU" },
+            { Game.rFactor2, "rF2" },
+            { Game.WRC_Generations, "WRCG" }
+        }.ToImmutableDictionary();
     }
 
     private static class ExeNames
     {
-        public static readonly string[] All =
-        [
-            AssettoCorsa, AssettoCorsaCompetizione, AssettoCorsaEvo, IRacing, RaceRoom, RaceRoomX64, Automobilista2,
-            EuroTruckSimulator2, AmericanTruckSimulator, ForzaHorizon5, LeMansUltimate, RFactor2, WRC_Generations,
-        ];
+        public static readonly ImmutableArray<string> All = ImmutableArray.Create(
+            "acs", "AC2-Win64-Shipping", "AssettoCorsaEVO", "iRacingSim64DX11",
+            "RRRE", "RRRE64", "AMS2AVX", "eurotrucks2", "amtrucks",
+            "ForzaHorizon5", "Le Mans Ultimate", "rFactor2", "WRCG"
+        );
 
-        public const string AssettoCorsaCompetizione = "AC2-Win64-Shipping";
-        public const string AssettoCorsa = "acs";
-        public const string IRacing = "iRacingSim64DX11";
-        public const string RaceRoomX64 = "RRRE64";
-        public const string RaceRoom = "RRRE";
-        public const string Automobilista2 = "AMS2AVX";
-        public const string EuroTruckSimulator2 = "eurotrucks2";
-        public const string AmericanTruckSimulator = "amtrucks";
-        public const string AssettoCorsaEvo = "AssettoCorsaEVO";
-        public const string ForzaHorizon5 = "ForzaHorizon5";
-        public const string LeMansUltimate = "Le Mans Ultimate";
-        public const string RFactor2 = "rFactor2";
-        public const string WRC_Generations = "WRCG";
+        public static readonly ImmutableDictionary<string, Game> ProcessMap = new Dictionary<string, Game>
+        {
+            { "acs", Game.AssettoCorsa1 },
+            { "AC2-Win64-Shipping", Game.AssettoCorsaCompetizione },
+            { "AssettoCorsaEVO", Game.AssettoCorsaEvo },
+            { "iRacingSim64DX11", Game.iRacing },
+            { "RRRE", Game.RaceRoom },
+            { "RRRE64", Game.RaceRoom },
+            { "AMS2AVX", Game.Automobilista2 },
+            { "eurotrucks2", Game.EuroTruckSimulator2 },
+            { "amtrucks", Game.AmericanTruckSimulator },
+            { "ForzaHorizon5", Game.ForzaHorizon5 },
+            { "Le Mans Ultimate", Game.LeMansUltimate },
+            { "rFactor2", Game.rFactor2 },
+            { "WRCG", Game.WRC_Generations }
+        }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
     }
 
-    public static Game GameFromProcessName(string processName) => processName switch
+    private static class SteamIds
     {
-        ExeNames.AssettoCorsa => Game.AssettoCorsa1,
-        ExeNames.AssettoCorsaCompetizione => Game.AssettoCorsaCompetizione,
-        ExeNames.Automobilista2 => Game.Automobilista2,
-        ExeNames.IRacing => Game.iRacing,
-        ExeNames.RaceRoom => Game.RaceRoom,
-        ExeNames.RaceRoomX64 => Game.RaceRoom,
-        ExeNames.EuroTruckSimulator2 => Game.EuroTruckSimulator2,
-        ExeNames.AmericanTruckSimulator => Game.AmericanTruckSimulator,
-        ExeNames.AssettoCorsaEvo => Game.AssettoCorsaEvo,
-        ExeNames.ForzaHorizon5 => Game.ForzaHorizon5,
-        ExeNames.LeMansUltimate => Game.LeMansUltimate,
-        ExeNames.RFactor2 => Game.rFactor2,
-        ExeNames.WRC_Generations => Game.WRC_Generations,
-        _ => Game.Any,
-    };
+        public static readonly ImmutableDictionary<Game, int> Map = new Dictionary<Game, int>
+        {
+            { Game.AssettoCorsa1, 244210 },
+            { Game.AssettoCorsaCompetizione, 805550 },
+            { Game.iRacing, 266410 },
+            { Game.RaceRoom, 211500 },
+            { Game.Automobilista2, 1066890 },
+            { Game.EuroTruckSimulator2, 227300 },
+            { Game.AmericanTruckSimulator, 270880 },
+            { Game.AssettoCorsaEvo, 3058630 },
+            { Game.ForzaHorizon5, 1551360 },
+            { Game.LeMansUltimate, 2399420 },
+            { Game.rFactor2, 365960 },
+            { Game.WRC_Generations, 1953520 }
+        }.ToImmutableDictionary();
+    }
 
-    public static string ToFriendlyName(this Game game) => game switch
-    {
-        Game.AssettoCorsa1 => FriendlyNames.AssettoCorsa,
-        Game.AssettoCorsaCompetizione => FriendlyNames.AssettoCorsaCompetizione,
-        Game.iRacing => FriendlyNames.IRacing,
-        Game.RaceRoom => FriendlyNames.RaceRoom,
-        Game.Automobilista2 => FriendlyNames.Automobilista2,
-        Game.EuroTruckSimulator2 => FriendlyNames.EuroTruckSimulator2,
-        Game.AmericanTruckSimulator => FriendlyNames.AmericanTruckSimulator,
-        Game.AssettoCorsaEvo => FriendlyNames.AssettoCorsaEvo,
-        Game.ForzaHorizon5 => FriendlyNames.ForzaHorizon5,
-        Game.LeMansUltimate => FriendlyNames.LeMansUltimate,
-        Game.rFactor2 => FriendlyNames.RFactor2,
-        Game.WRC_Generations => FriendlyNames.WRC_Generations,
-        _ => string.Empty
-    };
+    private static readonly Lazy<string[]> ResourceNames = new(() => typeof(Game).Assembly.GetManifestResourceNames());
 
-    public static string ToShortName(this Game game) => game switch
-    {
-        Game.AssettoCorsa1 => ShortNames.AssettoCorsa,
-        Game.AssettoCorsaCompetizione => ShortNames.AssettoCorsaCompetizione,
-        Game.iRacing => ShortNames.IRacing,
-        Game.RaceRoom => ShortNames.RaceRoom,
-        Game.Automobilista2 => ShortNames.Automobilista2,
-        Game.EuroTruckSimulator2 => ShortNames.EuroTruckSimulator2,
-        Game.AmericanTruckSimulator => ShortNames.AmericanTruckSimulator,
-        Game.AssettoCorsaEvo => ShortNames.AssettoCorsaEvo,
-        Game.ForzaHorizon5 => ShortNames.ForzaHorizon5,
-        Game.LeMansUltimate => ShortNames.LeMansUltimate,
-        Game.rFactor2 => ShortNames.RFactor2,
-        Game.WRC_Generations => ShortNames.WRC_Generations,
-        _ => string.Empty
-    };
 
-    public static Game ToGame(this string friendlyName) => friendlyName switch
-    {
-        FriendlyNames.AssettoCorsa => Game.AssettoCorsa1,
-        FriendlyNames.AssettoCorsaCompetizione => Game.AssettoCorsaCompetizione,
-        FriendlyNames.IRacing => Game.iRacing,
-        FriendlyNames.RaceRoom => Game.RaceRoom,
-        FriendlyNames.Automobilista2 => Game.Automobilista2,
-        FriendlyNames.EuroTruckSimulator2 => Game.EuroTruckSimulator2,
-        FriendlyNames.AmericanTruckSimulator => Game.AmericanTruckSimulator,
-        FriendlyNames.AssettoCorsaEvo => Game.AssettoCorsaEvo,
-        FriendlyNames.ForzaHorizon5 => Game.ForzaHorizon5,
-        FriendlyNames.LeMansUltimate => Game.LeMansUltimate,
-        FriendlyNames.RFactor2 => Game.rFactor2,
-        FriendlyNames.WRC_Generations => Game.WRC_Generations,
-        _ => Game.AssettoCorsaCompetizione,
-    };
 
-    public static int GetSteamID(this Game game) => game switch
-    {
-        Game.AssettoCorsa1 => 244210,
-        Game.AssettoCorsaCompetizione => 805550,
-        Game.iRacing => 266410,
-        Game.RaceRoom => 211500,
-        Game.Automobilista2 => 1066890,
-        Game.EuroTruckSimulator2 => 227300,
-        Game.AmericanTruckSimulator => 270880,
-        Game.AssettoCorsaEvo => 3058630,
-        Game.ForzaHorizon5 => 1551360,
-        Game.LeMansUltimate => 2399420,
-        Game.rFactor2 => 365960,
-        Game.WRC_Generations => 1953520,
-        _ => -1
-    };
+    public static string ToFriendlyName(this Game game) =>
+        FriendlyNames.Map.TryGetValue(game, out var name) ? name : string.Empty;
+
+    public static string ToShortName(this Game game) =>
+        ShortNames.Map.TryGetValue(game, out var name) ? name : string.Empty;
+
+    public static Game ToGame(this string? friendlyName) =>
+        friendlyName != null && FriendlyNames.Map.ContainsValue(friendlyName)
+            ? FriendlyNames.Map.FirstOrDefault(x => x.Value.Equals(friendlyName, StringComparison.OrdinalIgnoreCase)).Key
+            : Game.AssettoCorsaCompetizione;
+
+    public static int GetSteamID(this Game game) =>
+        SteamIds.Map.TryGetValue(game, out var id) ? id : -1;
 
     public static Stream? GetSteamLogo(this Game game)
     {
-        var enumAssembly = typeof(Game).Assembly;
+        var shortName = game.ToShortName();
+        if (string.IsNullOrEmpty(shortName)) return null;
 
-        var resourceNames = enumAssembly.GetManifestResourceNames();
-        var found = resourceNames.FirstOrDefault(x => x.EndsWith($"Logos.{game.ToShortName()}.jpg"));
-        if (found == null) return null;
-
-        return enumAssembly.GetManifestResourceStream(found);
+        var resourceName = ResourceNames.Value.FirstOrDefault(x => x.EndsWith($"Logos.{shortName}.jpg", StringComparison.OrdinalIgnoreCase));
+        return resourceName != null ? typeof(Game).Assembly.GetManifestResourceStream(resourceName) : null;
     }
 
     public static Stream? GetGameClientIcon(this Game game)
     {
-        var enumAssembly = typeof(Game).Assembly;
+        var shortName = game.ToShortName();
+        if (string.IsNullOrEmpty(shortName)) return null;
 
-        var resourceNames = enumAssembly.GetManifestResourceNames();
-        var found = resourceNames.FirstOrDefault(x => x.EndsWith($"Icons.{game.ToShortName()}.ico"));
-        if (found == null) return null;
-
-        return enumAssembly.GetManifestResourceStream(found);
+        var resourceName = ResourceNames.Value.FirstOrDefault(x => x.EndsWith($"Icons.{shortName}.ico", StringComparison.OrdinalIgnoreCase));
+        return resourceName != null ? typeof(Game).Assembly.GetManifestResourceStream(resourceName) : null;
     }
 
     public static Game GetRunningGame()
     {
-        var processes = Process.GetProcesses();
-
-        foreach (string exeName in ExeNames.All)
+        try
         {
-            using Process? process = processes.FirstOrDefault(x => x.ProcessName == exeName);
-            if (process != null)
-                return GameFromProcessName(process.ProcessName);
+            foreach (var process in Process.GetProcesses())
+            {
+                try
+                {
+                    if (ExeNames.All.Contains(process.ProcessName, StringComparer.OrdinalIgnoreCase))
+                    {
+                        var game = GameFromProcessName(process.ProcessName);
+                        if (game != Game.Any)
+                        {
+                            process?.Dispose();
+                            return game;
+                        }
+                    }
+                }
+                finally
+                {
+                    process?.Dispose();
+                }
+            }
         }
-
+        catch (Exception)
+        {
+        }
         return Game.Any;
+    }
+
+    public static Game GameFromProcessName(string? processName)
+    {
+        return (processName != null && ExeNames.ProcessMap.TryGetValue(processName, out var game))
+        ? game
+        : Game.Any;
     }
 }
