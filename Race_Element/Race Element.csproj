@@ -12,9 +12,9 @@
         <SuiteName>Race Element</SuiteName>
         <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
         <DisallowUrlActivation>true</DisallowUrlActivation>
-        <ApplicationVersion>2.3.1.9</ApplicationVersion>
-        <AssemblyVersion>2.3.1.9</AssemblyVersion>
-        <Version>2.3.1.9</Version>
+        <ApplicationVersion>2.3.2.1</ApplicationVersion>
+        <AssemblyVersion>2.3.2.1</AssemblyVersion>
+        <Version>2.3.2.1</Version>
         <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
         <UseWindowsForms>true</UseWindowsForms>
         <UseWPF>true</UseWPF>
