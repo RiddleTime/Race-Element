@@ -31,7 +31,7 @@
 <!-- seo end -->
 
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <script type="module" crossorigin="" src="/assets/index-CqRIzHYX.js"></script>
+    <script type="module" crossorigin="" src="/assets/index-CntJQp7E.js"></script>
     <link rel="stylesheet" crossorigin="" href="/assets/index-DJABbfkK.css">
   <meta name="og:url" content="https://race.elementfuture.com/guide/multi-sim"><meta name="og:title" content="Race Element - Guide | Multi-Sim"><meta name="og:description" content="Getting Race Element Ready for Multi-Sim"><meta name="twitter:title" content="Race Element - Guide | Multi-Sim"></head>
   <body><!--nghm-->
@@ -58,6 +58,19 @@
 <li>Go to System Options</li>
 <li>Enable Telemetry</li>
 </ol>
+<h2 id="le-mans-ultimate">Le Mans Ultimate</h2>
+<ol>
+<li>Open the installation folder of Le Mans Ultimate</li>
+<li>Go to <code>Plugins</code></li>
+<li>Download the shared memory plugin <a href="https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file">https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file</a></li>
+<li>Open the downloaded zip file and look for the <code>rFactor2SharedMemoryMapPlugin64.dll</code></li>
+<li>Extract that .dll file to the folder you've opened</li>
+<li>Launch the game and exit it</li>
+<li>Open the installation folder of Le Mans Ultimate</li>
+<li>Go to <code>UserData\player</code></li>
+<li>Open <code>CustomPluginVariables.json</code> with a text editor like notepad</li>
+<li>Set the rFactor2SharedMemoryMapPlugin64.dll to <code>" Enabled": 1,</code> and Save</li>
+</ol>
 <h2 id="forza-horizon-5">Forza Horizon 5</h2>
 <ol>
 <li>Go to Options</li>
@@ -68,6 +81,30 @@
 <li>Restart Forza Horizon 5.</li>
 <li>Restart Race Element.</li>
 <li>If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Horizon 5.</li>
+</ol>
+<h2 id="rfactor-2">rFactor 2</h2>
+<ol>
+<li>Open the installation folder of rFactor 2</li>
+<li>Go to <code>Bin64\Plugins</code></li>
+<li>Download the shared memory plugin <a href="https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file">https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file</a></li>
+<li>Open the downloaded zip file and look for the <code>rFactor2SharedMemoryMapPlugin64.dll</code></li>
+<li>Extract that .dll file to the folder you've opened</li>
+<li>Launch the game</li>
+<li>Go to Options -&gt; Gameplay: Set "rFactor2SharedMemoryMapPlugin64" to <code>ON</code></li>
+<li>Restart the game</li>
+</ol>
+<h2 id="wrc-generations">WRC Generations</h2>
+<ol>
+<li>Open Windows Explorer</li>
+<li>Paste <code>%userprofile%\Documents\My Games\WRCG\</code> in the address bar and hit Enter.</li>
+<li>Open <code>UserSettings.cg</code> with a text editor like notepad.</li>
+<li>Scroll to the bottom and add or set these 4 lines to:</li>
+</ol>
+<pre><code>  <span class="token constant">WRC</span><span class="token punctuation">.</span>Telemetry<span class="token punctuation">.</span>EnableTelemetry <span class="token operator">=</span> <span class="token boolean">true</span>
+  <span class="token constant">WRC</span><span class="token punctuation">.</span>Telemetry<span class="token punctuation">.</span>TelemetryPort <span class="token operator">=</span> <span class="token number">20777</span>
+  <span class="token constant">WRC</span><span class="token punctuation">.</span>Telemetry<span class="token punctuation">.</span>TelemetryAdress <span class="token operator">=</span> <span class="token string">"127.0.0.1"</span>
+  <span class="token constant">WRC</span><span class="token punctuation">.</span>Telemetry<span class="token punctuation">.</span>TelemetryRate <span class="token operator">=</span> <span class="token number">60</span></code></pre><ol start="5">
+<li>Save the file.</li>
 </ol>
 </div><!----></analog-markdown></div></article><!----></app-guides-post><!----><footer _ngcontent-ng-c1790267124="" class="text-sm select-none mx-auto mt-2"><img _ngcontent-ng-c1790267124="" alt="GitHub Downloads (specific asset, all releases)" src="https://img.shields.io/github/downloads/riddletime/race-element/RaceElement.exe?style=flat&amp;label=Downloads&amp;color=%23FF4500"><p _ngcontent-ng-c1790267124="" class="text-center">© 2022 - 2025 Reinier Klarenberg</p></footer></div></app-root>
 
