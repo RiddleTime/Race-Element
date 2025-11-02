@@ -12,11 +12,11 @@ public static class ReleaseNotes
                     "\n- WRC Generations"+
                     "\n- Configure by reading multi-sim guide on website!!"+
 
-                    "\n\nDSX:"+
+                    "\n\nDSX"+
                     "\n- Added support for Le Mans Ultimate, rFactor 2 and WRC Generations."+
                     "\n- Moved DSX to Driving section of HUD Tab."+
 
-                    "\n\nHUD Tab:"+
+                    "\n\nHUD Tab"+
                     "\n- Small re-design of HUD List."+
                     "\n- When scrolling the HUDs, it will now scroll one item up or down."+
 
