@@ -22,6 +22,9 @@ Race Element is a lightweight application for racing simulators which is designe
 - rFactor 2
 - WRC Generations
 
+  
+<img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="Main Menu of Race Element" />
+
 # HUDs (40+)
 HUDs(Head-up displays) are 2D graphics that can be used to provide you data whilst driving. There are a various amount of HUDs that each provides you useful information in a minimalistic manner whilst being highly configurable.
 - Scalable
@@ -30,7 +33,6 @@ HUDs(Head-up displays) are 2D graphics that can be used to provide you data whil
 - Very Low performance hit as the app doesn't use your gpu to render the HUDs.
 - Can be used for stream only
 - Render up to 200 Hz
-<img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="Main Menu of Race Element" />
 
 # Data
 The app represents data recorded during driving into so called Race Weekend Databases(RWDB files). These Race Weekends can be viewed in the Data tab of the application and provide you essential information such as lap- and sectortimes, fuel usage and the conditions of each lap.
