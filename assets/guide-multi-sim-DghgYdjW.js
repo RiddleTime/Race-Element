@@ -9,13 +9,6 @@ type: guide
 <p>Race Element has an option in the main menu of the app that allows it to automatically switch itself to any supported running simulator. Without it you&#39;ll have to manually switch between games, you can do so by clicking the game selector in the left bottom of the app.</p>
 <h1 id="prequisites">Prequisites</h1>
 <p>For some games you need are required to do some small steps so Race Element has access to all data it needs.</p>
-<h2 id="assetto-corsa-1">Assetto Corsa 1</h2>
-<p>AC 1 needs the Crew Chief plugin installed. It will provide more telemetry on opponents cars than the telemetry that comes with AC1 out of the box. Once Crew Chief installs the plugin, it doesn&#39;t need to run while playing AC and using Race Element HUDs. The installation steps are:</p>
-<ol>
-<li>Install Crew Chief from <a href="https://thecrewchief.org/forumdisplay.php?28-Download-and-Links">https://thecrewchief.org/forumdisplay.php?28-Download-and-Links</a></li>
-<li>Start Crew Chief. Select &quot;Assetto Corsa&quot; as &quot;Game&quot; and use the &quot;Start Crew Chief Button&quot;. It should provide a dialog saying it will install the Crew Chief plugin</li>
-<li>Start AC1. Select the &quot;Crew Chief&quot; app on the right border where all the apps are listed. At this point Crew Chief does not have to be running anymore.</li>
-</ol>
 <h2 id="american-truck-simulator--euro-truck-simulator-2">American Truck Simulator &amp; Euro Truck Simulator 2</h2>
 <p>Both simulators require a plugin to be installed before any data can be read from the game.</p>
 <ol>
@@ -60,7 +53,7 @@ type: guide
 <li>Open the downloaded zip file and look for the <code>rFactor2SharedMemoryMapPlugin64.dll</code></li>
 <li>Extract that .dll file to the folder you&#39;ve opened</li>
 <li>Launch the game</li>
-<li>Go to Options -&gt; Gameplay: Set &quot;rFactor2SharedMemoryMapPlugin64&quot; to <code>ON</code></li>
+<li>Go to Options -&gt; Gameplay: Set <code>rFactor2SharedMemoryMapPlugin64</code> to <code>ON</code></li>
 <li>Restart the game</li>
 </ol>
 <h2 id="wrc-generations">WRC Generations</h2>
