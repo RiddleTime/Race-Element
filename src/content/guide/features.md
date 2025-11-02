@@ -17,8 +17,11 @@ Race Element is a lightweight application for racing simulators which is designe
 - Automobilista 2
 - Euro Truck Simulator 2
 - Forza Horizon 5
+- Le Mans Ultimate
 - iRacing
 - RaceRoom
+- rFactor 2
+- WRC Generations
 
 # HUDs (40+)
 HUDs(Head-up displays) are 2D graphics that can be used to provide you data whilst driving. There are a various amount of HUDs that each provides you useful information in a minimalistic manner whilst being highly configurable.
