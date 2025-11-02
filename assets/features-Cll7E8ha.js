@@ -18,8 +18,8 @@ description: General features
 <li>Automobilista 2</li>
 <li>Euro Truck Simulator 2</li>
 <li>Forza Horizon 5</li>
-<li>Le Mans Ultimate</li>
 <li>iRacing</li>
+<li>Le Mans Ultimate</li>
 <li>RaceRoom</li>
 <li>rFactor 2</li>
 <li>WRC Generations</li>
