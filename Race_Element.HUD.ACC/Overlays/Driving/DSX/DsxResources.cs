@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Net;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.Dsx;
+namespace RaceElement.HUD.ACC.Overlays.Driving.DSX;
 
 internal sealed class DsxResources
 {
@@ -11,7 +11,7 @@ internal sealed class DsxResources
 
         public static string PacketToJson(Packet packet)
         {
-            return Newtonsoft.Json.JsonConvert.SerializeObject(packet);
+            return JsonConvert.SerializeObject(packet);
         }
 
         public static Packet JsonToPacket(string json)

@@ -6,14 +6,14 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.Json;
-using static RaceElement.HUD.Common.Overlays.Pitwall.DSX.Resources;
+using static RaceElement.HUD.Common.Overlays.Driving.DSX.Resources;
 
-namespace RaceElement.HUD.Common.Overlays.Pitwall.DSX;
+namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
 
 [Overlay(Name = "DSX",
     Description = "Adds active triggers for the DualSense Controller using DSX on steam.\n See Guide in the Discord of Race Element for instructions.",
     OverlayCategory = OverlayCategory.Inputs,
-    OverlayType = OverlayType.Pitwall,
+    OverlayType = OverlayType.Drive,
     Game = Game.RaceRoom | Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations,
     Authors = ["Reinier Klarenberg"]
 )]

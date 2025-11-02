@@ -1,6 +1,6 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 
-namespace RaceElement.HUD.Common.Overlays.Pitwall.DSX;
+namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
 
 internal sealed class DsxConfiguration : OverlayConfiguration
 {
