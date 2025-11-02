@@ -56,7 +56,7 @@ Both simulators require a plugin to be installed before any data can be read fro
 4. Open the downloaded zip file and look for the `rFactor2SharedMemoryMapPlugin64.dll`
 5. Extract that .dll file to the folder you've opened
 6. Launch the game
-7. Go to Options -> Gameplay: Set "rFactor2SharedMemoryMapPlugin64" to `ON`
+7. Go to Options -> Gameplay: Set `rFactor2SharedMemoryMapPlugin64` to `ON`
 8. Restart the game
 
 ## WRC Generations
