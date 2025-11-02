@@ -13,7 +13,10 @@ type: guide
 <li>Assetto Corsa Competizione</li>
 <li>Assetto Corsa EVO</li>
 <li>Forza Horizon 5</li>
+<li>Le Mans Ultimate</li>
 <li>RaceRoom</li>
+<li>rFactor 2</li>
+<li>WRC Generations</li>
 </ul>
 <h1 id="dsx">DSX</h1>
 <ol>
