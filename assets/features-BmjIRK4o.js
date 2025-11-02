@@ -22,6 +22,8 @@ description: General features
 <li>rFactor 2</li>
 <li>WRC Generations</li>
 </ul>
+<img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="Main Menu of Race Element" />
+
 <h1 id="huds-40">HUDs (40+)</h1>
 <p>HUDs(Head-up displays) are 2D graphics that can be used to provide you data whilst driving. There are a various amount of HUDs that each provides you useful information in a minimalistic manner whilst being highly configurable.</p>
 <ul>
@@ -30,7 +32,7 @@ description: General features
 <li>Custom Configuration</li>
 <li>Very Low performance hit as the app doesn&#39;t use your gpu to render the HUDs.</li>
 <li>Can be used for stream only</li>
-<li>Render up to 200 Hz<img src="https://github.com/user-attachments/assets/a7686e22-3028-4c88-b93b-a797522b27ff" alt="Main Menu of Race Element" /></li>
+<li>Render up to 200 Hz</li>
 </ul>
 <h1 id="data">Data</h1>
 <p>The app represents data recorded during driving into so called Race Weekend Databases(RWDB files). These Race Weekends can be viewed in the Data tab of the application and provide you essential information such as lap- and sectortimes, fuel usage and the conditions of each lap.</p>
