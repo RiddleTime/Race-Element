@@ -10,7 +10,7 @@ using System.Drawing;
 using System.Text;
 using System.Text.Json;
 
-namespace RaceElement.HUD.Common.Overlays.Pitwall.DataGraphTest;
+namespace RaceElement.HUD.Common.Overlays.Pitwall.DataGraphLeaderBoard;
 
 #if DEBUG
 [Overlay(

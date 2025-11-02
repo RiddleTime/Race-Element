@@ -1,7 +1,6 @@
-﻿
-using static RaceElement.HUD.Common.Overlays.Pitwall.DSX.Resources;
+﻿using static RaceElement.HUD.Common.Overlays.Driving.DSX.Resources;
 
-namespace RaceElement.HUD.Common.Overlays.Pitwall.DSX;
+namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
 internal static class DsxPacketExtensions
 {
 

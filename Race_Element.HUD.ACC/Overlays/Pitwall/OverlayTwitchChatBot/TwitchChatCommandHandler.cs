@@ -44,7 +44,7 @@ internal sealed class TwitchChatBotCommandHandler
         _overlay = overlay;
 
         Responses = [
-            new(["commands", "help"], GetCommandsLink),
+            new(["commands", "help", "?"], GetCommandsLink),
             new(["app"], (args) => "https://race.elementfuture.com / https://discord.gg/26AAEW5mUq"),
             new(["damage"], (args) => $"{TimeSpan.FromSeconds(Damage.GetTotalRepairTime(_overlay.pagePhysics)):mm\\:ss\\.fff}"),
             new(["potential"], GetPotentialBestResponse),
@@ -519,6 +519,8 @@ internal sealed class TwitchChatBotCommandHandler
         if (purpleCar.Any())
         {
             car = purpleCar.First().Value;
+
+#if DEBUG
             var carBestLap = car.RealtimeCarUpdate.BestSessionLap;
             if (carBestLap.LaptimeMS != null && !carBestLap.IsInvalid && lobbyBest.IsValidForBest)
             {
@@ -526,6 +528,7 @@ internal sealed class TwitchChatBotCommandHandler
                 Debug.WriteLine(JsonConvert.SerializeObject(carBestLap));
                 //lobbyBest = carBestLap;
             }
+#endif
         }
 
         try
@@ -557,7 +560,13 @@ internal sealed class TwitchChatBotCommandHandler
         if (_overlay.pageStatic.CarModel.IsNullOrEmpty())
             return string.Empty;
 
-        return $"{ConversionFactory.GetCarName(_overlay.pageStatic.CarModel)}";
+        StringBuilder sb = new();
+        sb.Append($"{ConversionFactory.GetCarName(_overlay.pageStatic.CarModel)}");
+
+        if (_overlay.pageStatic.MaxRpm > 0)
+            sb.Append($" - Max RPM {_overlay.pageStatic.MaxRpm}");
+
+        return sb.ToString();
     }
 
     private string GetCurrentTrackResponse(string[] args)

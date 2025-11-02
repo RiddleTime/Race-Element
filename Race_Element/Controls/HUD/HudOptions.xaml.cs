@@ -177,7 +177,12 @@ public partial class HudOptions : UserControl
                     // double click to activate overlays in the lists
                     listOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
                     listOverlays.MouseLeftButtonDown += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
+
                     listDebugOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
+
+                    /// enables <see cref="ListViewScrollHandler"/>
+                    listOverlays.PreviewMouseWheel += (s, e) => ListViewScrollHandler(s, e, listOverlays);
+                    listDebugOverlays.PreviewMouseWheel += (s, e) => ListViewScrollHandler(s, e, listDebugOverlays);
 
                     m_GlobalHook = Hook.GlobalEvents();
                     m_GlobalHook.OnCombination(new Dictionary<Combination, Action> {
@@ -211,6 +216,80 @@ public partial class HudOptions : UserControl
         }));
 
         Instance = this;
+    }
+
+    /// <summary>
+    /// Handles mouse wheel scrolling for a ListView, providing up/down selection when not over the scrollbar,
+    /// and normal scrolling behavior when the mouse is over the scrollbar.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The event data containing mouse wheel and position information.</param>
+    /// <param name="listView">The ListView to apply scrolling behavior to.</param>
+    private static void ListViewScrollHandler(object sender, MouseWheelEventArgs e, ListView listView)
+    {
+        // Check if mouse is over the scrollbar
+        ScrollViewer scrollViewer = FindVisualChild<ScrollViewer>(listView);
+        if (scrollViewer != null)
+        {
+            Point mousePosition = e.GetPosition(listView);
+            bool isOverScrollBar = mousePosition.X > listView.ActualWidth - SystemParameters.VerticalScrollBarWidth;
+
+            // If mouse is over scrollbar, allow default scrolling behavior
+            if (isOverScrollBar)
+            {
+                e.Handled = false;
+                return;
+            }
+        }
+
+        int selectedIndex = listView.SelectedIndex;
+
+        // Handle no selection
+        if (selectedIndex == -1)
+        {
+            listView.SelectedIndex = 0;
+            return;
+        }
+
+        // Handle first and last selection when trying to select out of bounds
+        if (selectedIndex == 0 && e.Delta > 0) return;
+        if (selectedIndex >= listView.Items.Count - 1 && e.Delta < 0) return;
+
+        if (e.Delta > 0)
+        {
+            listView.SelectedIndex -= 1;
+            listView.ScrollIntoView(listView.SelectedItem);
+            e.Handled = true;
+        }
+        else if (e.Delta < 0)
+        {
+            listView.SelectedIndex += 1;
+            listView.ScrollIntoView(listView.SelectedItem);
+            e.Handled = true;
+        }
+    }
+
+    /// <summary>
+    /// Finds a visual child of type T in the visual tree.
+    /// </summary>
+    /// <typeparam name="T">The type of the visual child to find.</typeparam>
+    /// <param name="obj">The parent object to search from.</param>
+    /// <returns>The first visual child of type T, or null if not found.</returns>
+    private static T FindVisualChild<T>(DependencyObject obj) where T : DependencyObject
+    {
+        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(obj); i++)
+        {
+            DependencyObject child = VisualTreeHelper.GetChild(obj, i);
+            if (child != null && child is T t)
+                return t;
+            else
+            {
+                T childOfChild = FindVisualChild<T>(child);
+                if (childOfChild != null)
+                    return childOfChild;
+            }
+        }
+        return null;
     }
 
     private void ComboBoxHudReset_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -653,23 +732,43 @@ public partial class HudOptions : UserControl
             if (overlayAttribute.OverlayType != overlayType)
                 continue;
 
+          
+            Thickness defaultTextBlockMargin = new(14, 0.5, 0, 0.5);
+            Thickness selectedTextBlockMargin = new(12, 0.5, 0, 0.5);
+
+            TextBlock textBlock = new()
+            {
+                Text = x.Key,
+                Style = Resources["MaterialDesignButtonTextBlock"] as Style,
+                Margin = defaultTextBlockMargin,
+                FontSize = 15.8,
+                FontWeight = FontWeights.Normal,
+                FontStyle = FontStyles.Normal,
+                TextAlignment = TextAlignment.Left,
+            };
+
             double marginTopBottom = 6.5d;
             ListViewItem listViewItem = new()
             {
-                Content = new TextBlock()
-                {
-                    Text = x.Key,
-                    Style = Resources["MaterialDesignButtonTextBlock"] as Style,
-                    Margin = new Thickness(14, 0, 0, 0),
-                    FontSize = 13.8,
-                },
+                Content = textBlock,
                 DataContext = x,
-                HorizontalContentAlignment = HorizontalAlignment.Left,
+                HorizontalContentAlignment = HorizontalAlignment.Stretch,
                 Padding = new Thickness(0, marginTopBottom, 0, marginTopBottom),
                 Margin = new Thickness(0, 0.5, 0, 0.5),
                 BorderBrush = new SolidColorBrush(Colors.Transparent),
                 BorderThickness = new Thickness(4, 0, 0, 0),
             };
+            listViewItem.Selected += (s, e) => {
+                textBlock.FontWeight = FontWeights.Bold;
+                textBlock.FontStyle = FontStyles.Italic;
+                textBlock.Margin = selectedTextBlockMargin;
+            };
+            listViewItem.Unselected += (s, e) => {
+                textBlock.FontWeight = FontWeights.Normal;
+                textBlock.FontStyle = FontStyles.Normal;
+                textBlock.Margin = defaultTextBlockMargin;
+            };
+
             if (overlayAttribute.Description != string.Empty)
             {
                 StringBuilder tooltipBuilder = new StringBuilder(overlayAttribute.Description);

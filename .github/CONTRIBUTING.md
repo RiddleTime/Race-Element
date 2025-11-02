@@ -7,7 +7,7 @@ Thank you for contributing to this project! Please follow these guidelines to en
 2. Create a new branch (`git checkout -b feature/your-feature`).
 3. Make your changes and commit them (`git commit -m "Add your message"`).
 4. Push to your branch (`git push origin feature/your-feature`).
-5. Open a Pull Request using the template provided.
+5. Open a Pull Request using the template provided, you can use this freely, just be descriptive.
 
 ## Reporting Issues
 - Use the issue template to report bugs or suggest features.
@@ -16,6 +16,8 @@ Thank you for contributing to this project! Please follow these guidelines to en
 ## Code Style
 - Follow the project's coding standards, auto-format your code.
 - Ensure your code is well-documented and tested.
+- Don't create create pull requests with over 500 lines of code unless it's wel described(reason) and documented.
+- Small commits are encouraged.
 
 ## Questions?
 Feel free to reach out in the discord server: https://discord.gg/26AAEW5mUq

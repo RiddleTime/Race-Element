@@ -79,6 +79,12 @@ public sealed record EngineData
     public float MaxFuelLiters { get; internal set; }
     public float FuelLitersXLap { get; internal set; }
     public float FuelEstimatedLaps { get; internal set; }
+
+    // Battery info
+    public float MaxVirtualEnergy { get; internal set; }
+    public float VirtualEnergy { get; internal set; }
+    public float VirtualEnergyXLap { get; internal set; }
+
 }
 public sealed record TyresData
 {

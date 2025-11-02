@@ -140,7 +140,6 @@ internal sealed class SectorDataOverlay(Rectangle rectangle) : AbstractOverlay(r
     private void SectorCompleted(object sender, SectorDataModel e)
     {
         _Sectors.Insert(0, e);
-        Debug.WriteLine($"Sector {e.SectorIndex + 1} completed:\n{JsonConvert.SerializeObject(e)}");
     }
 
     public sealed override void BeforeStop()

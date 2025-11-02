@@ -21,9 +21,15 @@
       <None Remove="Games\Resources\Icons\ACE.ico" />
       <None Remove="Games\Resources\Icons\ATS.ico" />
       <None Remove="Games\Resources\Icons\FH5.ico" />
+      <None Remove="Games\Resources\Icons\LMU.ico" />
+      <None Remove="Games\Resources\Icons\rF2.ico" />
+      <None Remove="Games\Resources\Icons\WRCG.ico" />
       <None Remove="Games\Resources\Logos\ACE.jpg" />
       <None Remove="Games\Resources\Logos\ATS.jpg" />
       <None Remove="Games\Resources\Logos\FH5.jpg" />
+      <None Remove="Games\Resources\Logos\LMU.jpg" />
+      <None Remove="Games\Resources\Logos\rF2.jpg" />
+      <None Remove="Games\Resources\Logos\WRCG.jpg" />
       <None Remove="Games\SCS2\scs-telemetry.dll" />
       <None Remove="Games\Resources\Icons\AC.ico" />
       <None Remove="Games\Resources\Icons\ACC.ico" />
@@ -59,7 +65,10 @@
       <EmbeddedResource Include="Games\Resources\Icons\ETS2.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\FH5.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\iRacing.ico" />
+      <EmbeddedResource Include="Games\Resources\Icons\LMU.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\RaceRoom.ico" />
+      <EmbeddedResource Include="Games\Resources\Icons\rF2.ico" />
+      <EmbeddedResource Include="Games\Resources\Icons\WRCG.ico" />
       <EmbeddedResource Include="Games\Resources\Logos\AC.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\ACC.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\ACE.jpg" />
@@ -68,7 +77,10 @@
       <EmbeddedResource Include="Games\Resources\Logos\ETS2.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\FH5.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\iRacing.jpg" />
+      <EmbeddedResource Include="Games\Resources\Logos\LMU.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\RaceRoom.jpg" />
+      <EmbeddedResource Include="Games\Resources\Logos\rF2.jpg" />
+      <EmbeddedResource Include="Games\Resources\Logos\WRCG.jpg" />
     </ItemGroup>
 
 </Project>

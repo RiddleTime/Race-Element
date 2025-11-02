@@ -1,7 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayLapDeltaBar;
+namespace RaceElement.HUD.Common.Overlays.Driving.LapDeltaBar;
 
 internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
 {
@@ -59,5 +59,5 @@ internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
         public int SlowerOpacity { get; init; } = 255;
     }
 
-    public LapTimeDeltaConfiguration() => this.GenericConfiguration.AllowRescale = true;
+    public LapTimeDeltaConfiguration() => GenericConfiguration.AllowRescale = true;
 }

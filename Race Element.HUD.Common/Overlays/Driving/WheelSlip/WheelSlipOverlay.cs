@@ -15,7 +15,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.WheelSlip;
     Description = "Shows wheel slip angle and ratio of each tyre.",
     OverlayCategory = OverlayCategory.Physics,
     OverlayType = OverlayType.Drive,
-    Game = Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.RaceRoom | Game.ForzaHorizon5,
+    Game = Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.RaceRoom | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations,
     Authors = ["Reinier Klarenberg"]),
 ]
 internal sealed class WheelSlipOverlay : CommonAbstractOverlay
@@ -52,10 +52,12 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
         public WheelSlipConfiguration() => GenericConfiguration.AllowRescale = true;
     }
 
-    private CachedBitmap _cachedCircleBackground;
-    private Pen _wheelPen;
+    private CachedBitmap? _cachedCircleBackground;
+    private Pen? _wheelPen;
 
     private WheelSlipModel _wheelSlipModel;
+
+    private const Game GamesWithSlipAngle = Game.ForzaHorizon5;
     private readonly struct WheelSlipModel(float[] slipRatios, float[] slipAngles)
     {
         public readonly float[] SlipRatios = slipRatios;
@@ -161,7 +163,10 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 
         g.FillEllipse(pthGrBrush, centerX, centerY, size / 2 * percentage / 100);
 
-        //float slipAngle = (float)(_wheelSlipModel.SlipAngles[(int)wheel] * 180d / Math.PI * 2) - 90;
-        //g.DrawArc(_wheelPen, wheelRect, slipAngle - 10, 20);
+        if (GamesWithSlipAngle.HasFlag(this.GameWhenStarted))
+        {
+            float slipAngle = (float)(_wheelSlipModel.SlipAngles[(int)wheel] * 180d / Math.PI / 4) - 90;
+            g.DrawArc(_wheelPen, wheelRect, slipAngle - 10, 20);
+        }
     }
 }

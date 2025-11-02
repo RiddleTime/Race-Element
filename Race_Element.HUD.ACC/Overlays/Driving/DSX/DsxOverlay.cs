@@ -6,14 +6,14 @@ using System.Drawing;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using static RaceElement.HUD.ACC.Overlays.Pitwall.Dsx.DsxResources;
+using static RaceElement.HUD.ACC.Overlays.Driving.DSX.DsxResources;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.Dsx;
+namespace RaceElement.HUD.ACC.Overlays.Driving.DSX;
 
 [Overlay(Name = "DSX",
     Description = "Adds active triggers for the DualSense Controller using DSX on steam.\n See Guide in the Discord of Race Element for instructions.",
     OverlayCategory = OverlayCategory.Inputs,
-    OverlayType = OverlayType.Pitwall,
+    OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class DsxOverlay : AbstractOverlay
 {
@@ -26,7 +26,7 @@ internal sealed class DsxOverlay : AbstractOverlay
 
     public DsxOverlay(Rectangle rectangle) : base(rectangle, "DSX")
     {
-        this.Width = 1; this.Height = 1;
+        Width = 1; Height = 1;
         RefreshRateHz = 1;
         AllowReposition = false;
     }

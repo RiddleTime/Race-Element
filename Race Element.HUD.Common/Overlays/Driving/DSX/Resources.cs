@@ -2,7 +2,7 @@
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace RaceElement.HUD.Common.Overlays.Pitwall.DSX;
+namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
 
 internal static class Resources
 {

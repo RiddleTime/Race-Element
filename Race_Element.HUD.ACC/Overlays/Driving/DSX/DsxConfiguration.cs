@@ -1,15 +1,15 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.Dsx;
+namespace RaceElement.HUD.ACC.Overlays.Driving.DSX;
 
 internal sealed class DsxConfiguration : OverlayConfiguration
 {
     public DsxConfiguration()
     {
-        this.GenericConfiguration.AlwaysOnTop = false;
-        this.GenericConfiguration.Window = false;
-        this.GenericConfiguration.Opacity = 1.0f;
-        this.GenericConfiguration.AllowRescale = false;
+        GenericConfiguration.AlwaysOnTop = false;
+        GenericConfiguration.Window = false;
+        GenericConfiguration.Opacity = 1.0f;
+        GenericConfiguration.AllowRescale = false;
     }
 
     [ConfigGrouping("DSX UDP", "Adjust the port DSX uses, 6969 is default.")]

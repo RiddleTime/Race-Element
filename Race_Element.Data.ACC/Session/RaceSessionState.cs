@@ -6,7 +6,7 @@ public class RaceSessionState
 {
     public static bool IsFormationLap(bool globalRed, SessionPhase phase)
     {
-        return globalRed && (phase == SessionPhase.PreSession || phase == SessionPhase.FormationLap);
+        return globalRed && (phase == SessionPhase.PreSession || phase == SessionPhase.PreFormation ||  phase == SessionPhase.FormationLap);
     }
 
     public static bool IsSpectating(int localPlayedIndex, int spectatingPlayerIndex)

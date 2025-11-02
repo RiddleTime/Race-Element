@@ -10,7 +10,7 @@ using RaceElement.Util.SystemExtensions;
 using System;
 using System.Drawing;
 
-namespace RaceElement.HUD.Common.Overlays.OverlayFuelInfo;
+namespace RaceElement.HUD.Common.Overlays.Driving.FuelInfo;
 
 [Overlay(
     Name = "Fuel Info (ALPHA)",
@@ -90,15 +90,15 @@ internal sealed class FuelInfoOverlay : CommonAbstractOverlay
 
         public FuelInfoConfig()
         {
-            this.GenericConfiguration.AllowRescale = true;
+            GenericConfiguration.AllowRescale = true;
         }
     }
 
     public FuelInfoOverlay(Rectangle rectangle) : base(rectangle, "Fuel Info")
     {
-        this.Width = 222;
-        _infoPanel = new InfoPanel(10, this.Width - 1) { FirstRowLine = 1 };
-        this.Height = this._infoPanel.FontHeight * 6 + 1;
+        Width = 222;
+        _infoPanel = new InfoPanel(10, Width - 1) { FirstRowLine = 1 };
+        Height = _infoPanel.FontHeight * 6 + 1;
         RefreshRateHz = 2;
     }
 
@@ -110,10 +110,10 @@ internal sealed class FuelInfoOverlay : CommonAbstractOverlay
     public sealed override void BeforeStart()
     {
         if (!_config.InfoPanel.StintInfo)
-            this.Height -= _infoPanel.FontHeight * 2;
+            Height -= _infoPanel.FontHeight * 2;
 
         if (!_config.InfoPanel.FuelTime)
-            this.Height -= _infoPanel.FontHeight;
+            Height -= _infoPanel.FontHeight;
     }
 
     public override void BeforeStop()
@@ -135,7 +135,7 @@ internal sealed class FuelInfoOverlay : CommonAbstractOverlay
         using SolidBrush fuelBarBrush = new(GetFuelBarColor());
         _infoPanel.AddProgressBarWithCenteredText($"{fuelLiters:F2} L", 0, SimDataProvider.LocalCar.Engine.MaxFuelLiters, fuelLiters, fuelBarBrush);
         // Some global variants
-        double lapBufferVar = SimDataProvider.LocalCar.Engine.FuelLitersXLap * this._config.InfoPanel.FuelBufferLaps;
+        double lapBufferVar = SimDataProvider.LocalCar.Engine.FuelLitersXLap * _config.InfoPanel.FuelBufferLaps;
         double bestLapTime = GetLapTimeMS();
         if (bestLapTime <= 0)
         {
@@ -171,7 +171,7 @@ internal sealed class FuelInfoOverlay : CommonAbstractOverlay
         _infoPanel.AddLine("Fuel-End", $"{fuelToEnd + lapBufferVar:F1} : Add {fuelToAdd:F0}");
         //End (Basic)
         //Magic Start (Advanced)
-        if (this._config.InfoPanel.FuelTime)
+        if (_config.InfoPanel.FuelTime)
             _infoPanel.AddLine("Fuel Time", fuelTime, fuelTimeBrush);
 
         if (_config.InfoPanel.StintInfo)

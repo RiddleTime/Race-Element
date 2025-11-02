@@ -3,10 +3,10 @@ using System;
 using System.Collections.Generic;
 using static RaceElement.ACCSharedMemory;
 using static RaceElement.Data.ACC.SetupParser.SetupConverter;
-using static RaceElement.HUD.ACC.Overlays.Pitwall.Dsx.DsxConfiguration;
-using static RaceElement.HUD.ACC.Overlays.Pitwall.Dsx.DsxResources;
+using static RaceElement.HUD.ACC.Overlays.Driving.DSX.DsxConfiguration;
+using static RaceElement.HUD.ACC.Overlays.Driving.DSX.DsxResources;
 
-namespace RaceElement.HUD.ACC.Overlays.Pitwall.Dsx;
+namespace RaceElement.HUD.ACC.Overlays.Driving.DSX;
 
 internal static class TriggerHaptics
 {
