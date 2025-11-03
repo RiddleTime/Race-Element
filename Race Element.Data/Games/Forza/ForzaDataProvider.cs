@@ -33,7 +33,6 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         catch (SocketException ex)
         {
             Debug.WriteLine($"Failed to bind to port {FORZA_DATA_OUT_PORT}: {ex.Message}");
-            throw;
         }
 
         _receiverTask = Task.Run(async () =>
