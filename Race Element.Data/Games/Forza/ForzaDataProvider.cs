@@ -11,11 +11,11 @@ namespace RaceElement.Data.Games.Forza;
 public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
 {
     private const int FORZA_DATA_OUT_PORT = 5300;
-    private UdpClient _udpClient;
-    private Task _receiverTask;
+    private UdpClient? _udpClient;
+    private Task? _receiverTask;
     private bool _isRunning;
 
-    private Lock _lock = new();
+    private readonly Lock _lock = new();
     private LocalCarData _localCar = new();
     private SessionData _sessionData = new();
     private GameData _gameData = new();
@@ -72,10 +72,7 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
 
     internal override int PollingRate() => 200;
 
-    public override List<string> GetCarClasses()
-    {
-        return new List<string> { "D", "C", "B", "A", "S", "R", "X" };
-    }
+    public override List<string> GetCarClasses() => ["D", "C", "B", "A", "S", "R", "X"];
 
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
@@ -128,7 +125,7 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         }
 
 
-        // Map SledData to LocalCarData (unchanged as per request)
+        // Map SledData to LocalCarData 
         localCar.Engine.Rpm = (int)sled.CurrentEngineRpm;
         localCar.Engine.IsRunning = dash.Fuel > 0;
         localCar.Engine.MaxRpm = (int)sled.EngineMaxRpm;
