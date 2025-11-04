@@ -19,6 +19,7 @@ public enum Game : int
     LeMansUltimate = 1 << 10,
     rFactor2 = 1 << 11,
     WRC_Generations = 1 << 12,
+    ForzaMotorsport = 1 << 13,
 }
 
 public static class GameExtensions
@@ -38,7 +39,8 @@ public static class GameExtensions
             { Game.ForzaHorizon5, "Forza Horizon 5" },
             { Game.LeMansUltimate, "Le Mans Ultimate" },
             { Game.rFactor2, "rFactor 2" },
-            { Game.WRC_Generations, "WRC Generations" }
+            { Game.WRC_Generations, "WRC Generations" },
+            { Game.ForzaMotorsport, "Forza Motorsport" }
         }.ToImmutableDictionary();
     }
 
@@ -57,7 +59,8 @@ public static class GameExtensions
             { Game.ForzaHorizon5, "FH5" },
             { Game.LeMansUltimate, "LMU" },
             { Game.rFactor2, "rF2" },
-            { Game.WRC_Generations, "WRCG" }
+            { Game.WRC_Generations, "WRCG" },
+            { Game.ForzaMotorsport, "FM" },
         }.ToImmutableDictionary();
     }
 
@@ -66,7 +69,7 @@ public static class GameExtensions
         public static readonly ImmutableArray<string> All = ImmutableArray.Create(
             "acs", "AC2-Win64-Shipping", "AssettoCorsaEVO", "iRacingSim64DX11",
             "RRRE", "RRRE64", "AMS2AVX", "eurotrucks2", "amtrucks",
-            "ForzaHorizon5", "Le Mans Ultimate", "rFactor2", "WRCG"
+            "ForzaHorizon5", "Le Mans Ultimate", "rFactor2", "WRCG", "ForzaMotorsport"
         );
 
         public static readonly ImmutableDictionary<string, Game> ProcessMap = new Dictionary<string, Game>
@@ -83,7 +86,8 @@ public static class GameExtensions
             { "ForzaHorizon5", Game.ForzaHorizon5 },
             { "Le Mans Ultimate", Game.LeMansUltimate },
             { "rFactor2", Game.rFactor2 },
-            { "WRCG", Game.WRC_Generations }
+            { "WRCG", Game.WRC_Generations },
+            { "ForzaMotorsport", Game.ForzaMotorsport },
         }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
     }
 
@@ -102,7 +106,8 @@ public static class GameExtensions
             { Game.ForzaHorizon5, 1551360 },
             { Game.LeMansUltimate, 2399420 },
             { Game.rFactor2, 365960 },
-            { Game.WRC_Generations, 1953520 }
+            { Game.WRC_Generations, 1953520 },
+            { Game.ForzaMotorsport, 2440510 },
         }.ToImmutableDictionary();
     }
 

@@ -116,6 +116,13 @@ public static class SimDataProvider
                     _localCarEventLoop.Run();
                     break;
                 }
+            case Game.ForzaMotorsport:
+                {
+                    Instance ??= new ForzaDataProvider(Game.ForzaMotorsport);
+                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                    _localCarEventLoop.Run();
+                    break;
+                }
             case Game.LeMansUltimate:
                 {
                     Instance ??= new RFactor2DataProvider();
