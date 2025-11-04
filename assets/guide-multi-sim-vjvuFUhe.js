@@ -35,7 +35,7 @@ If you really need help ask in the discord, else translate this page to your pre
 <li>Open <code>CustomPluginVariables.json</code> with a text editor like notepad</li>
 <li>Set the rFactor2SharedMemoryMapPlugin64.dll to <code>&quot; Enabled&quot;: 1,</code> and Save</li>
 </ol>
-<h2 id="forza-horizon-5">Forza Horizon 5</h2>
+<h1 id="forza-horizon-5">Forza Horizon 5</h1>
 <ol>
 <li>Go to Options</li>
 <li>Go to HUD AND GAMEPLAY</li>
@@ -46,7 +46,7 @@ If you really need help ask in the discord, else translate this page to your pre
 <li>Restart Race Element.</li>
 <li>If Windows asks permission for network access allow it else race element won&#39;t be able to receive data from Forza Horizon 5.</li>
 </ol>
-<h2 id="rfactor-2">rFactor 2</h2>
+<h1 id="rfactor-2">rFactor 2</h1>
 <ol>
 <li>Open the installation folder of rFactor 2</li>
 <li>Go to <code>Bin64\\Plugins</code></li>
@@ -57,7 +57,7 @@ If you really need help ask in the discord, else translate this page to your pre
 <li>Go to Options -&gt; Gameplay: Set <code>rFactor2SharedMemoryMapPlugin64</code> to <code>ON</code></li>
 <li>Restart the game</li>
 </ol>
-<h2 id="wrc-generations">WRC Generations</h2>
+<h1 id="wrc-generations">WRC Generations</h1>
 <ol>
 <li>Open Windows Explorer</li>
 <li>Paste <code>%userprofile%\\Documents\\My Games\\WRCG\\</code> in the address bar and hit Enter.</li>
