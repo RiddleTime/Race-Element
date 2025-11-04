@@ -8,20 +8,21 @@ type: guide
 <h1 id="auto-switching">Auto-switching</h1>
 <p>Race Element has an option in the main menu of the app that allows it to automatically switch itself to any supported running simulator. Without it you&#39;ll have to manually switch between games, you can do so by clicking the game selector in the left bottom of the app.</p>
 <h1 id="prequisites">Prequisites</h1>
-<p>For some games you need are required to do some small steps so Race Element has access to all data it needs.</p>
-<h2 id="american-truck-simulator--euro-truck-simulator-2">American Truck Simulator &amp; Euro Truck Simulator 2</h2>
+<p>Below you can find a guide for each game that requires it, make sure to do it else Race Element won&#39;t receive any data! 
+If you really need help ask in the discord, else translate this page to your preferred language.</p>
+<h1 id="american-truck-simulator--euro-truck-simulator-2">American Truck Simulator &amp; Euro Truck Simulator 2</h1>
 <p>Both simulators require a plugin to be installed before any data can be read from the game.</p>
 <ol>
 <li>For both simulators you will need to &quot;Install&quot; a plugin: <em>scs-telemetry.dll</em></li>
 <li>Download the latest release and Follow the installation instructions here: <strong><a href="https://github.com/RenCloud/scs-sdk-plugin?tab=readme-ov-file#installation" target="_blank">https://github.com/RenCloud/scs-sdk-plugin?tab=readme-ov-file#installation</a></strong></li>
 </ol>
-<h2 id="automobilista-2">Automobilista 2</h2>
+<h1 id="automobilista-2">Automobilista 2</h1>
 <ol>
 <li>Go to Options</li>
 <li>Go to System Options</li>
 <li>Enable Telemetry</li>
 </ol>
-<h2 id="le-mans-ultimate">Le Mans Ultimate</h2>
+<h1 id="le-mans-ultimate">Le Mans Ultimate</h1>
 <ol>
 <li>Open the installation folder of Le Mans Ultimate</li>
 <li>Go to <code>Plugins</code></li>
