@@ -8,19 +8,20 @@ type: guide
 Race Element has an option in the main menu of the app that allows it to automatically switch itself to any supported running simulator. Without it you'll have to manually switch between games, you can do so by clicking the game selector in the left bottom of the app.
 
 # Prequisites
-For some games you need are required to do some small steps so Race Element has access to all data it needs.
+Below you can find a guide for each game that requires it, make sure to do it else Race Element won't receive any data! 
+If you really need help ask in the discord, else translate this page to your preferred language.
 
-## American Truck Simulator & Euro Truck Simulator 2
+# American Truck Simulator & Euro Truck Simulator 2
 Both simulators require a plugin to be installed before any data can be read from the game.
 1. For both simulators you will need to "Install" a plugin: *scs-telemetry.dll*
 2. Download the latest release and Follow the installation instructions here: **<a href="https://github.com/RenCloud/scs-sdk-plugin?tab=readme-ov-file#installation" target="_blank">https://github.com/RenCloud/scs-sdk-plugin?tab=readme-ov-file#installation</a>**
 
-## Automobilista 2
+# Automobilista 2
 1. Go to Options
 2. Go to System Options
 3. Enable Telemetry
 
-## Le Mans Ultimate
+# Le Mans Ultimate
 1. Open the installation folder of Le Mans Ultimate
 2. Go to `Plugins`
 3. Download the shared memory plugin https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file
