@@ -8,8 +8,8 @@ type: guide
 Race Element has an option in the main menu of the app that allows it to automatically switch itself to any supported running simulator. Without it you'll have to manually switch between games, you can do so by clicking the game selector in the left bottom of the app.
 
 # Prequisites
-Below you can find a guide for each game that requires it, make sure to do it else Race Element won't receive any data! 
-If you really need help ask in the discord, else translate this page to your preferred language.
+The game you want to play with Race Element might require some extra steps, this so Race Element can receive all required data.
+Below you can find a guide for each game that requires a setup. If you can't figure it out, ask in the Race ELement Discord.
 
 # American Truck Simulator & Euro Truck Simulator 2
 Both simulators require a plugin to be installed before any data can be read from the game.
