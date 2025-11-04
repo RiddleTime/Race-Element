@@ -134,7 +134,13 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         localCar.Physics.Location = new Vector3(dash.PositionX, dash.PositionY, dash.PositionZ);
         localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(sled.Yaw, sled.Pitch, sled.Roll);
         localCar.Tyres.SlipAngle = [sled.TireSlipAngleFr / -2f, sled.TireSlipAngleFl / -2f, sled.TireSlipAngleRr / -2f, sled.TireSlipAngleRl / -2f];
-        localCar.Tyres.SlipRatio = [NegateIfNegative(sled.TireCombinedSlipFr), NegateIfNegative(sled.TireCombinedSlipFl), NegateIfNegative(sled.TireCombinedSlipRr), NegateIfNegative(sled.TireCombinedSlipRl)];
+        localCar.Tyres.SlipRatio =
+        [
+            NegateIfNegative(sled.TireCombinedSlipFr),
+            NegateIfNegative(sled.TireCombinedSlipFl),
+            NegateIfNegative(sled.TireCombinedSlipRr),
+            NegateIfNegative(sled.TireCombinedSlipRl)
+        ];
         localCar.Tyres.CoreTemperature = [dash.TireTempFr, dash.TireTempFl, dash.TireTempRr, dash.TireTempRl];
         localCar.Tyres.Velocity = [sled.WheelRotationSpeedFr, sled.WheelRotationSpeedFl, sled.WheelRotationSpeedRr, sled.WheelRotationSpeedRl];
         localCar.CarModel.GameId = sled.CarOrdinal;
@@ -175,5 +181,5 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
 
     private static float NegateIfNegative(float value) => (value < 0 ? -value : value);
 
-    public override bool HasTelemetry() => true; // Changed to true since telemetry is processed
+    public override bool HasTelemetry() => true;
 }
