@@ -31,7 +31,8 @@ Both simulators require a plugin to be installed before any data can be read fro
 7. Open the installation folder of Le Mans Ultimate
 8. Go to `UserData\player`
 9. Open `CustomPluginVariables.json` with a text editor like notepad
-10. Set the rFactor2SharedMemoryMapPlugin64.dll to `" Enabled": 1,` and Save
+10. If you see anything else than `null` as text in this file go to step 11. Else please read: https://community.lemansultimate.com/index.php?threads/shared-memory-plugin-not-loading.3705/#post-24870 and install the C++ redistributable(https://aka.ms/highdpimfc2013x64enu). Then launch and exit the game.
+11. Set the rFactor2SharedMemoryMapPlugin64.dll to `" Enabled": 1,` and Save. 
 
 # Forza Horizon 5
 1. Go to Options
