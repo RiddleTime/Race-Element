@@ -33,7 +33,8 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Open the installation folder of Le Mans Ultimate</li>
 <li>Go to <code>UserData\\player</code></li>
 <li>Open <code>CustomPluginVariables.json</code> with a text editor like notepad</li>
-<li>Set the rFactor2SharedMemoryMapPlugin64.dll to <code>&quot; Enabled&quot;: 1,</code> and Save</li>
+<li>If you see anything else than <code>null</code> as text in this file go to step 11. Else please read: <a href="https://community.lemansultimate.com/index.php?threads/shared-memory-plugin-not-loading.3705/#post-24870">https://community.lemansultimate.com/index.php?threads/shared-memory-plugin-not-loading.3705/#post-24870</a> and install the C++ redistributable(<a href="https://aka.ms/highdpimfc2013x64enu">https://aka.ms/highdpimfc2013x64enu</a>). Then launch and exit the game.</li>
+<li>Set the rFactor2SharedMemoryMapPlugin64.dll to <code>&quot; Enabled&quot;: 1,</code> and Save.</li>
 </ol>
 <h1 id="forza-horizon-5">Forza Horizon 5</h1>
 <ol>
