@@ -13,7 +13,7 @@ install:
       $installScript = "$env:TEMP\dotnet-install.ps1"
       Invoke-WebRequest -Uri 'https://dot.net/v1/dotnet-install.ps1' -UseBasicParsing -OutFile $installScript
 
-      # Install .NET 10.0 RC2 (x64)
+      # Install .NET 10 (latest)
       & $installScript -Architecture x64 -Channel 10.0 -Version latest -InstallDir "$env:ProgramFiles\dotnet" -Verbose
 
       # Add .NET to PATH for the current session
