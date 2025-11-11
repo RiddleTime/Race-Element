@@ -28,7 +28,9 @@ internal sealed class OpponentsOverlay : AbstractOverlay
     private readonly record struct CarDataModel
     {
         public int CarIndex { get; init; }
-        public int LaptimeMs { get; init; }
+        public int LastLapMs { get; init; }
+        public bool LastLapValid { get; init; }
+        public int BestLapMs { get; init; }
         public int[] SectorsMs { get; init; }
         public GapModel Gap { get; init; }
     }
@@ -45,7 +47,7 @@ internal sealed class OpponentsOverlay : AbstractOverlay
         Height = 350;
         List<int> columnSizes = [50];
 
-        _table = new InfoTable(12, [60, 100]) { DrawBackground = true, DrawRowLines = true, DrawValueBackground = true, };
+        _table = new InfoTable(12, [50, 100, 100]) { DrawBackground = true, DrawRowLines = true, DrawValueBackground = true, };
     }
 
     public sealed override bool ShouldRender() => true;
@@ -57,7 +59,7 @@ internal sealed class OpponentsOverlay : AbstractOverlay
         _table.AddRow(new()
         {
             Header = "P",
-            Columns = ["#", "Last"],
+            Columns = ["#", "Last", "Best"],
         });
 
         if (model.Ahead?.Length == 0 && model.Behind?.Length == 0)
@@ -71,18 +73,22 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                 _table.AddRow(new()
                 {
                     Header = header,
-                    Columns = [$"{car.CarInfo.RaceNumber}", $"{GetLapTime(item.LaptimeMs)}"],
+                    Columns = [$"{car.CarInfo.RaceNumber}", $"{GetLapTime(item.LastLapMs)}", $"{GetLapTime(item.BestLapMs)}"],
+                    ColumnColors = [Color.White, (item.LastLapValid? Color.White : Color.Red), Color.White],
                 });
             }
         // add local car
         var localCar = GetCarData(PlayerCarID);
-        if (localCar != null)
+        if (localCar != null) {
+            bool lastLapInvalid = !localCar.RealtimeCarUpdate.LastLap.IsInvalid;
             _table.AddRow(new()
             {
                 Header = $"{localCar.RealtimeCarUpdate.Position}",
-                Columns = [$"{localCar.CarInfo.RaceNumber}", GetLapTime(localCar.RealtimeCarUpdate.LastLap)],
+                Columns = [$"{localCar.CarInfo.RaceNumber}", GetLapTime(localCar.RealtimeCarUpdate.LastLap), GetLapTime(localCar.RealtimeCarUpdate.BestSessionLap)],
                 HeaderBackground = Color.OrangeRed,
+                ColumnColors = [Color.White, (lastLapInvalid ? Color.White : Color.Red), Color.White],
             });
+        }
 
         if (model.Behind != null)
             foreach (var item in model.Behind)
@@ -92,7 +98,8 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                 _table.AddRow(new()
                 {
                     Header = header,
-                    Columns = [$"{car.CarInfo.RaceNumber}", $"{GetLapTime(item.LaptimeMs)}"],
+                    Columns = [$"{car.CarInfo.RaceNumber}", $"{GetLapTime(item.LastLapMs)}", $"{GetLapTime(item.BestLapMs)}"],
+                    ColumnColors = [Color.White, (item.LastLapValid ? Color.White : Color.Red), Color.White],
                 });
             }
 
@@ -101,15 +108,15 @@ internal sealed class OpponentsOverlay : AbstractOverlay
 
     private static string GetLapTime(LapInfo lapInfo)
     {
-        if (lapInfo.LaptimeMS.HasValue && TimeSpan.FromMilliseconds(lapInfo.LaptimeMS.Value) > TimeSpan.FromSeconds(1))
-            return $"{TimeSpan.FromMilliseconds(lapInfo.GetLapTimeMS()):mm\\:ss\\:fff}";
+        if (lapInfo != null && lapInfo.LaptimeMS.HasValue && TimeSpan.FromMilliseconds(lapInfo.LaptimeMS.Value) > TimeSpan.FromSeconds(1))
+            return $"{TimeSpan.FromMilliseconds(lapInfo.LaptimeMS.Value):mm\\:ss\\:fff}";
         else
             return "";
     }
 
     private static string GetLapTime(int lapTimeMs)
     {
-        return lapTimeMs > 100 ? $"{TimeSpan.FromMilliseconds(lapTimeMs):mm\\:ss\\:fff}" : "";
+        return lapTimeMs > 1000 ? $"{TimeSpan.FromMilliseconds(lapTimeMs):mm\\:ss\\:fff}" : "";
     }
 
     private int PlayerCarID
@@ -146,8 +153,10 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                     int[] sectors = [-1, -1, -1];
 
                     var lastLap = ahead.Value.RealtimeCarUpdate.LastLap;
+                    bool lastLapValid = false;
                     if (lastLap != null && lastLap.LaptimeMS.HasValue)
                     {
+                        lastLapValid = !lastLap.IsInvalid;
                         laptime = lastLap.LaptimeMS.Value;
                         for (int s = 0; s < lastLap.Splits.Count; s++)
                             sectors[s] = lastLap.Splits[s].Value;
@@ -157,7 +166,9 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                     CarDataModel model = new()
                     {
                         CarIndex = ahead.Key,
-                        LaptimeMs = laptime,
+                        LastLapMs = laptime,
+                        LastLapValid = lastLapValid,
+                        BestLapMs = ahead.Value.RealtimeCarUpdate.BestSessionLap?.LaptimeMS ?? -1,
                         SectorsMs = sectors,
                         Gap = new GapModel()
                         {
@@ -186,9 +197,10 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                     int[] sectors = [-1, -1, -1];
 
                     var lastLap = behind.Value.RealtimeCarUpdate.LastLap;
+                    bool lastLapValid = false;
                     if (lastLap != null && lastLap.LaptimeMS.HasValue)
                     {
-
+                        lastLapValid = !lastLap.IsInvalid;
                         laptime = lastLap.LaptimeMS.Value;
                         for (int s = 0; s < lastLap.Splits.Count; s++)
                             sectors[s] = lastLap.Splits[s].Value;
@@ -198,7 +210,9 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                     CarDataModel model = new()
                     {
                         CarIndex = behind.Key,
-                        LaptimeMs = laptime,
+                        LastLapMs = laptime,
+                        LastLapValid = lastLapValid,
+                        BestLapMs = behind.Value.RealtimeCarUpdate.BestSessionLap?.LaptimeMS ?? -1,
                         SectorsMs = sectors,
                         Gap = new GapModel()
                         {
