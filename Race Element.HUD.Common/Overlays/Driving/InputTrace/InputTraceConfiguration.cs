@@ -40,8 +40,8 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         public bool GridLines { get; init; } = true;
 
         [ToolTip("Sets the drawing refresh rate.")]
-        [IntRange(12, 70, 6)]
-        public int HudRefreshRate { get; init; } = 50;
+        [IntRange(12, 30, 6)]
+        public int HudRefreshRate { get; init; } = 30;
     }
 
     [HideForGame(Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.iRacing | Game.AmericanTruckSimulator | Game.EuroTruckSimulator2)]
