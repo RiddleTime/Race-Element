@@ -6,7 +6,7 @@ branches:
   except:
     - gh-pages
     - pages
-image: Visual Studio 2026
+image: Visual Studio 2022
 configuration: Release
 install:
 - ps: |
