@@ -15,11 +15,10 @@ internal sealed class OpponentsConfiguration : OverlayConfiguration
     }
 
     [ConfigGrouping("Data", "Change which opponents data is displayed.")]
-    public BehaviorGrouping Data { get; init; } = new();
-    public sealed class BehaviorGrouping
+    public DataGrouping Data { get; init; } = new();
+    public sealed class DataGrouping
     {
         public bool Sectors { get; init; } = true;
-        public bool Gap { get; init; } = true;
         public bool Difference { get; init; } = true;
     }
 }

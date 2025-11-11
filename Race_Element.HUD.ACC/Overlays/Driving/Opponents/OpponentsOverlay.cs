@@ -1,7 +1,9 @@
-﻿using RaceElement.Data.ACC.EntryList;
+﻿using RaceElement.Broadcast.Structs;
+using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -17,7 +19,7 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.Opponents;
 internal sealed class OpponentsOverlay : AbstractOverlay
 {
     private readonly OpponentsConfiguration _config = new();
-  
+
     private readonly record struct OpponentsModel
     {
         public CarDataModel[] Ahead { get; init; }
@@ -43,7 +45,7 @@ internal sealed class OpponentsOverlay : AbstractOverlay
         Height = 350;
         List<int> columnSizes = [50];
 
-        _table = new InfoTable(12, [100, 100, 50]) { DrawBackground = true, DrawRowLines = true, DrawValueBackground = true, };
+        _table = new InfoTable(12, [60, 100]) { DrawBackground = true, DrawRowLines = true, DrawValueBackground = true, };
     }
 
     public sealed override bool ShouldRender() => true;
@@ -55,7 +57,7 @@ internal sealed class OpponentsOverlay : AbstractOverlay
         _table.AddRow(new()
         {
             Header = "P",
-            Columns = ["Lap", "Gap"],
+            Columns = ["#", "Last"],
         });
 
         if (model.Ahead?.Length == 0 && model.Behind?.Length == 0)
@@ -65,11 +67,11 @@ internal sealed class OpponentsOverlay : AbstractOverlay
             foreach (var item in model.Ahead)
             {
                 var car = GetCarData(item.CarIndex);
-                string header = $"{car.CarInfo.RaceNumber}";
+                string header = $"{car.RealtimeCarUpdate.Position}";
                 _table.AddRow(new()
                 {
                     Header = header,
-                    Columns = [$"P{car.RealtimeCarUpdate.Position}", $"{item.LaptimeMs}", $"{item.Gap.GapTime:F1}"],
+                    Columns = [$"{car.CarInfo.RaceNumber}", $"{GetLapTime(item.LaptimeMs)}"],
                 });
             }
         // add local car
@@ -77,23 +79,37 @@ internal sealed class OpponentsOverlay : AbstractOverlay
         if (localCar != null)
             _table.AddRow(new()
             {
-                Header = $"-> {localCar.CarInfo.RaceNumber}",
-                Columns = [$"P{localCar.RealtimeCarUpdate.Position}"],
+                Header = $"{localCar.RealtimeCarUpdate.Position}",
+                Columns = [$"{localCar.CarInfo.RaceNumber}", GetLapTime(localCar.RealtimeCarUpdate.LastLap)],
+                HeaderBackground = Color.OrangeRed,
             });
 
         if (model.Behind != null)
             foreach (var item in model.Behind)
             {
                 var car = GetCarData(item.CarIndex);
-                string header = $"{car.CarInfo.RaceNumber}";
+                string header = $"{car.RealtimeCarUpdate.Position}";
                 _table.AddRow(new()
                 {
                     Header = header,
-                    Columns = [$"P{car.RealtimeCarUpdate.Position}", $"{item.LaptimeMs}", $"{item.Gap.GapTime:F1}"],
+                    Columns = [$"{car.CarInfo.RaceNumber}", $"{GetLapTime(item.LaptimeMs)}"],
                 });
             }
 
         _table.Draw(g);
+    }
+
+    private static string GetLapTime(LapInfo lapInfo)
+    {
+        if (lapInfo.LaptimeMS.HasValue && TimeSpan.FromMilliseconds(lapInfo.LaptimeMS.Value) > TimeSpan.FromSeconds(1))
+            return $"{TimeSpan.FromMilliseconds(lapInfo.GetLapTimeMS()):mm\\:ss\\:fff}";
+        else
+            return "";
+    }
+
+    private static string GetLapTime(int lapTimeMs)
+    {
+        return lapTimeMs > 100 ? $"{TimeSpan.FromMilliseconds(lapTimeMs):mm\\:ss\\:fff}" : "";
     }
 
     private int PlayerCarID
