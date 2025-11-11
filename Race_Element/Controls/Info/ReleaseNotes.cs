@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.4.1.0", "Moved to .NET 10"
+
+        },
         {"2.4.0.0", "Added 3 New Driving Simulators"+
                     "\n- Le Mans Ultimate"+
                     "\n- rFactor 2"+
