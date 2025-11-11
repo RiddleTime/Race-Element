@@ -74,13 +74,17 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                 {
                     Header = header,
                     Columns = [$"{car.CarInfo.RaceNumber}", $"{GetLapTime(item.LastLapMs)}", $"{GetLapTime(item.BestLapMs)}"],
-                    ColumnColors = [Color.White, (item.LastLapValid? Color.White : Color.Red), Color.White],
+                    ColumnColors = [Color.White, (item.LastLapValid ? Color.White : Color.Red), Color.White],
                 });
             }
         // add local car
         var localCar = GetCarData(PlayerCarID);
-        if (localCar != null) {
-            bool lastLapInvalid = !localCar.RealtimeCarUpdate.LastLap.IsInvalid;
+        if (localCar != null)
+        {
+            bool lastLapInvalid = true;
+            if (localCar.RealtimeCarUpdate.LastLap != null)
+                lastLapInvalid = !localCar.RealtimeCarUpdate.LastLap.IsInvalid;
+
             _table.AddRow(new()
             {
                 Header = $"{localCar.RealtimeCarUpdate.Position}",
