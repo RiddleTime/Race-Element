@@ -79,7 +79,7 @@ internal sealed class InputGraph : IDisposable
     /// <summary>
     /// Fast hash of buffer contents to detect meaningful changes
     /// </summary>
-    private static int ComputeDataHash(List<int> throttle, List<int> brake, List<int> steering, List<bool> tc, List<bool> abs)
+    private int ComputeDataHash(List<int> throttle, List<int> brake, List<int> steering, List<bool> tc, List<bool> abs)
     {
         unchecked
         {
