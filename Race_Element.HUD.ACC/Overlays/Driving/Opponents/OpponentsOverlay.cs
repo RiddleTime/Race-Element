@@ -43,11 +43,16 @@ internal sealed class OpponentsOverlay : AbstractOverlay
     private readonly InfoTable _table;
     public OpponentsOverlay(Rectangle rectangle) : base(rectangle, "Opponents")
     {
-        Width = 350;
+        Width = 570;
         Height = 350;
         List<int> columnSizes = [50];
 
-        _table = new InfoTable(12, [50, 100, 100]) { DrawBackground = true, DrawRowLines = true, DrawValueBackground = true, };
+        _table = new InfoTable(12, [50, 100, 90, 90, 90, 150])
+        {
+            DrawBackground = true,
+            DrawRowLines = true,
+            DrawValueBackground = true,
+        };
     }
 
     public sealed override bool ShouldRender() => true;
@@ -59,7 +64,7 @@ internal sealed class OpponentsOverlay : AbstractOverlay
         _table.AddRow(new()
         {
             Header = "P",
-            Columns = ["#", "Last", "Best"],
+            Columns = ["#", "Last", "S1", "S2", "S3", "Best"],
         });
 
         if (model.Ahead?.Length == 0 && model.Behind?.Length == 0)
@@ -73,7 +78,13 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                 _table.AddRow(new()
                 {
                     Header = header,
-                    Columns = [$"{car.CarInfo.RaceNumber}", $"{GetLapTime(item.LastLapMs)}", $"{GetLapTime(item.BestLapMs)}"],
+                    Columns = [$"{car.CarInfo.RaceNumber}",
+                        $"{GetLapTime(item.LastLapMs)}",
+                        $"{GetSectorTime(item.SectorsMs[0])}",
+                        $"{GetSectorTime(item.SectorsMs[1])}",
+                        $"{GetSectorTime(item.SectorsMs[2])}",
+                        $"{GetLapTime(item.BestLapMs)}",
+                    ],
                     ColumnColors = [Color.White, (item.LastLapValid ? Color.White : Color.Red), Color.White],
                 });
             }
@@ -88,7 +99,13 @@ internal sealed class OpponentsOverlay : AbstractOverlay
             _table.AddRow(new()
             {
                 Header = $"{localCar.RealtimeCarUpdate.Position}",
-                Columns = [$"{localCar.CarInfo.RaceNumber}", GetLapTime(localCar.RealtimeCarUpdate.LastLap), GetLapTime(localCar.RealtimeCarUpdate.BestSessionLap)],
+                Columns = [$"{localCar.CarInfo.RaceNumber}",
+                    GetLapTime(localCar.RealtimeCarUpdate.LastLap),
+                    "",
+                    "",
+                    "",
+                    GetLapTime(localCar.RealtimeCarUpdate.BestSessionLap),
+                ],
                 HeaderBackground = Color.OrangeRed,
                 ColumnColors = [Color.White, (lastLapInvalid ? Color.White : Color.Red), Color.White],
             });
@@ -102,7 +119,13 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                 _table.AddRow(new()
                 {
                     Header = header,
-                    Columns = [$"{car.CarInfo.RaceNumber}", $"{GetLapTime(item.LastLapMs)}", $"{GetLapTime(item.BestLapMs)}"],
+                    Columns = [$"{car.CarInfo.RaceNumber}",
+                        $"{GetLapTime(item.LastLapMs)}",
+                        $"{GetSectorTime(item.SectorsMs[0])}",
+                        $"{GetSectorTime(item.SectorsMs[1])}",
+                        $"{GetSectorTime(item.SectorsMs[2])}",
+                        $"{GetLapTime(item.BestLapMs)}",
+                    ],
                     ColumnColors = [Color.White, (item.LastLapValid ? Color.White : Color.Red), Color.White],
                 });
             }
@@ -121,6 +144,10 @@ internal sealed class OpponentsOverlay : AbstractOverlay
     private static string GetLapTime(int lapTimeMs)
     {
         return lapTimeMs > 1000 ? $"{TimeSpan.FromMilliseconds(lapTimeMs):mm\\:ss\\:fff}" : "";
+    }
+    private static string GetSectorTime(int sectorTimeMs)
+    {
+        return sectorTimeMs > 1000 ? $"{TimeSpan.FromMilliseconds(sectorTimeMs):m\\:ss\\:fff}" : "";
     }
 
     private int PlayerCarID
