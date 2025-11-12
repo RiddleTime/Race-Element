@@ -23,6 +23,7 @@ internal sealed class AssettoCorsaEvoDataProvider : AbstractSimDataProvider
     public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         var physicsPage = AcEvoSharedMemory.Instance.ReadPhysicsPageFile();
+        // no need to remap the physics page if packet is the same
         if (lastPhysicsPacketId == physicsPage.PacketId) // no need to remap the physics page if packet is the same
         {
             lastPhysicsPacketId = physicsPage.PacketId;
@@ -34,7 +35,7 @@ internal sealed class AssettoCorsaEvoDataProvider : AbstractSimDataProvider
             lastPhysicsPacketId = physicsPage.PacketId;
             SimDataProvider.GameData.IsGamePaused = false;
         }
-
+        
         LocalCarMapper.AddPhysics(ref physicsPage, ref localCar, ref sessionData);
 
         gameData.Name = GameName;
@@ -49,6 +50,7 @@ internal sealed class AssettoCorsaEvoDataProvider : AbstractSimDataProvider
         //SessionData.Instance.PlayerCarIndex = graphicsPage.PlayerCarID;
         //SimDataProvider.LocalCar.CarModel.CarClass = dummyCarClass;
 
+        lastPhysicsPacketId = physicsPage.PacketId;
     }
 
     //private LogFileJob _logFileJob;

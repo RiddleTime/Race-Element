@@ -11,11 +11,17 @@ internal static partial class LocalCarMapper
 {
     internal static void AddPhysics(ref SPageFilePhysics pagePhysics, ref LocalCarData commonData, ref SessionData sessionData)
     {
+        commonData.Physics.SuspensionTravel = pagePhysics.SuspensionTravel;
+        commonData.Physics.KerbVibration = pagePhysics.KerbVibration;
+        commonData.Physics.SlipVibrations = pagePhysics.SlipVibrations;
+        commonData.Physics.Gvibrations = pagePhysics.Gvibrations;
+        commonData.Physics.AbsVibrations = pagePhysics.AbsVibrations;
         commonData.Physics.Acceleration = new(pagePhysics.AccG[0], pagePhysics.AccG[1], pagePhysics.AccG[2]);
+        commonData.Physics.Damage = pagePhysics.CarDamage;
+
         commonData.Engine.IsPitLimiterOn = pagePhysics.PitLimiterOn;
         commonData.Engine.MaxRpm = pagePhysics.CurrentMaxRpm;
         commonData.Engine.Rpm = pagePhysics.Rpms;
-
         commonData.Engine.IsRunning = commonData.Engine.Rpm > 0;
 
         commonData.Inputs.Steering = pagePhysics.SteerAngle;

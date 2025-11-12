@@ -149,6 +149,24 @@ public sealed record PhysicsData
     /// The speed of the car in kilometers per hour.
     /// </summary>
     public float Velocity { get; internal set; }
+
+    /// <summary>Wheel suspension travel.</summary>
+    public float[] SuspensionTravel { get; internal set; } = new float[4];
+
+    /// <summary>Damage to each side.</summary>
+    public float[] Damage { get; internal set; } = new float[5];
+
+    /// <summary>Vibrations generated from driving on curbs and off track.</summary>
+    public float KerbVibration;
+
+    /// <summary>Vibrations generated from tire slip.</summary>
+    public float SlipVibrations;
+
+    /// <summary>Vibrations generated from g-forces.</summary>
+    public float Gvibrations;
+
+    /// <summary>Vibrations generated from brake ABS.</summary>
+    public float AbsVibrations;
 }
 public sealed record InputsData
 {

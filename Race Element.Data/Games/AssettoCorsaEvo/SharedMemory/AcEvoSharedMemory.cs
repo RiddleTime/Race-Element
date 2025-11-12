@@ -691,16 +691,16 @@ public sealed unsafe class AcEvoSharedMemory
         /// <summary>Engine running?</summary>
         [MarshalAs(UnmanagedType.Bool)] public bool IsEngineRunning;
 
-        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
+        /// <summary>Vibrations generated from driving on curbs and off track.</summary>
         public float KerbVibration;
 
-        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
+        /// <summary>Vibrations generated from tire slip.</summary>
         public float SlipVibrations;
 
-        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
+        /// <summary>Vibrations generated from g-forces.</summary>
         public float Gvibrations;
 
-        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
+        /// <summary>Vibrations generated from brake ABS.</summary>
         public float AbsVibrations;
 
         public static readonly int Size = Marshal.SizeOf(typeof(SPageFilePhysics));

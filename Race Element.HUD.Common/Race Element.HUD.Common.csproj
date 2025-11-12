@@ -24,6 +24,12 @@
         <IsTrimmable>True</IsTrimmable>
         <IsAotCompatible>True</IsAotCompatible>
     </PropertyGroup>
+    <ItemGroup>
+        <None Remove="Overlays\Driving\DualSense\ds5w_x64.dll" />
+    </ItemGroup>
+    <ItemGroup>
+        <EmbeddedResource Include="Overlays\Driving\DualSense\ds5w_x64.dll" />
+    </ItemGroup>
 
     <ItemGroup>
         <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
@@ -38,7 +44,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Overlays\System\" />
+        <Folder Include="Overlays\System\" />
     </ItemGroup>
-
 </Project>
