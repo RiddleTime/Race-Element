@@ -12,6 +12,7 @@ type: guide
 <li>Assetto Corsa</li>
 <li>Assetto Corsa Competizione</li>
 <li>Assetto Corsa EVO</li>
+<li>Assetto Corsa Rally</li>
 <li>Forza Horizon 5</li>
 <li>Le Mans Ultimate</li>
 <li>RaceRoom</li>
