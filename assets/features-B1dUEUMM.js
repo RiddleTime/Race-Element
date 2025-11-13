@@ -12,10 +12,12 @@ description: General features
 <li>Assetto Corsa Competizione</li>
 <li>Assetto Corsa</li>
 <li>Assetto Corsa EVO</li>
+<li>Assetto Corsa Rally</li>
 <li>American Truck Simulator</li>
 <li>Automobilista 2</li>
 <li>Euro Truck Simulator 2</li>
 <li>Forza Horizon 5</li>
+<li>Forza Motorsport (8)</li>
 <li>iRacing</li>
 <li>Le Mans Ultimate</li>
 <li>RaceRoom</li>
