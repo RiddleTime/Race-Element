@@ -1,7 +1,5 @@
-﻿using RaceElement.Broadcast.Structs;
-using RaceElement.Data.ACC.EntryList;
+﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
-using RaceElement.Data.Common.SimulatorData;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
