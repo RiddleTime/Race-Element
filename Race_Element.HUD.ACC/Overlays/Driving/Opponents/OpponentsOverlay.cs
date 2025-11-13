@@ -1,6 +1,7 @@
 ﻿using RaceElement.Broadcast.Structs;
 using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.ACC.Session;
+using RaceElement.Data.Common.SimulatorData;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
@@ -70,6 +71,17 @@ internal sealed class OpponentsOverlay : AbstractOverlay
         if (model.Ahead?.Length == 0 && model.Behind?.Length == 0)
             return;
 
+
+        var localCar = GetCarData(PlayerCarID);
+        if (localCar == null)
+            return;
+
+        Broadcast.Structs.LapInfo lastLocalLap = localCar.RealtimeCarUpdate.LastLap;
+        if (lastLocalLap == null || !lastLocalLap.LaptimeMS.HasValue)
+            return;
+
+
+
         if (model.Ahead != null)
             foreach (var item in model.Ahead)
             {
@@ -80,36 +92,31 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                     Header = header,
                     Columns = [$"{car.CarInfo.RaceNumber}",
                         $"{GetLapTime(item.LastLapMs)}",
-                        $"{GetSectorTime(item.SectorsMs[0])}",
-                        $"{GetSectorTime(item.SectorsMs[1])}",
-                        $"{GetSectorTime(item.SectorsMs[2])}",
+                        $"{GetSectorTimeDiff(lastLocalLap.Splits[0].Value, item.SectorsMs[0])}",
+                        $"{GetSectorTimeDiff(lastLocalLap.Splits[1].Value, item.SectorsMs[1])}",
+                        $"{GetSectorTimeDiff(lastLocalLap.Splits[2].Value, item.SectorsMs[2])}",
                         $"{GetLapTime(item.BestLapMs)}",
                     ],
                     ColumnColors = [Color.White, (item.LastLapValid ? Color.White : Color.Red), Color.White],
                 });
             }
-        // add local car
-        var localCar = GetCarData(PlayerCarID);
-        if (localCar != null)
-        {
-            bool lastLapInvalid = true;
-            if (localCar.RealtimeCarUpdate.LastLap != null)
-                lastLapInvalid = !localCar.RealtimeCarUpdate.LastLap.IsInvalid;
 
-            _table.AddRow(new()
-            {
-                Header = $"{localCar.RealtimeCarUpdate.Position}",
-                Columns = [$"{localCar.CarInfo.RaceNumber}",
-                    GetLapTime(localCar.RealtimeCarUpdate.LastLap),
+        bool lastLapInvalid = true;
+        if (localCar.RealtimeCarUpdate.LastLap != null)
+            lastLapInvalid = !localCar.RealtimeCarUpdate.LastLap.IsInvalid;
+        _table.AddRow(new()
+        {
+            Header = $"{localCar.RealtimeCarUpdate.Position}",
+            Columns = [$"{localCar.CarInfo.RaceNumber}",
+                    GetLapTime(lastLocalLap),
                     "",
                     "",
                     "",
                     GetLapTime(localCar.RealtimeCarUpdate.BestSessionLap),
                 ],
-                HeaderBackground = Color.OrangeRed,
-                ColumnColors = [Color.White, (lastLapInvalid ? Color.White : Color.Red), Color.White],
-            });
-        }
+            HeaderBackground = Color.OrangeRed,
+            ColumnColors = [Color.White, (lastLapInvalid ? Color.White : Color.Red), Color.White],
+        });
 
         if (model.Behind != null)
             foreach (var item in model.Behind)
@@ -121,9 +128,9 @@ internal sealed class OpponentsOverlay : AbstractOverlay
                     Header = header,
                     Columns = [$"{car.CarInfo.RaceNumber}",
                         $"{GetLapTime(item.LastLapMs)}",
-                        $"{GetSectorTime(item.SectorsMs[0])}",
-                        $"{GetSectorTime(item.SectorsMs[1])}",
-                        $"{GetSectorTime(item.SectorsMs[2])}",
+                        $"{GetSectorTimeDiff(lastLocalLap.Splits[0].Value, item.SectorsMs[0])}",
+                        $"{GetSectorTimeDiff(lastLocalLap.Splits[1].Value, item.SectorsMs[1])}",
+                        $"{GetSectorTimeDiff(lastLocalLap.Splits[2].Value, item.SectorsMs[2])}",
                         $"{GetLapTime(item.BestLapMs)}",
                     ],
                     ColumnColors = [Color.White, (item.LastLapValid ? Color.White : Color.Red), Color.White],
@@ -133,7 +140,7 @@ internal sealed class OpponentsOverlay : AbstractOverlay
         _table.Draw(g);
     }
 
-    private static string GetLapTime(LapInfo lapInfo)
+    private static string GetLapTime(Broadcast.Structs.LapInfo lapInfo)
     {
         if (lapInfo != null && lapInfo.LaptimeMS.HasValue && TimeSpan.FromMilliseconds(lapInfo.LaptimeMS.Value) > TimeSpan.FromSeconds(1))
             return $"{TimeSpan.FromMilliseconds(lapInfo.LaptimeMS.Value):mm\\:ss\\:fff}";
@@ -145,9 +152,19 @@ internal sealed class OpponentsOverlay : AbstractOverlay
     {
         return lapTimeMs > 1000 ? $"{TimeSpan.FromMilliseconds(lapTimeMs):mm\\:ss\\:fff}" : "";
     }
+
     private static string GetSectorTime(int sectorTimeMs)
     {
         return sectorTimeMs > 1000 ? $"{TimeSpan.FromMilliseconds(sectorTimeMs):m\\:ss\\:fff}" : "";
+    }
+
+    private static string GetSectorTimeDiff(int localSectorTimeMs, int otherSectorTimeMs)
+    {
+        if (localSectorTimeMs < 1000 || otherSectorTimeMs < 1000)
+            return string.Empty;
+
+        TimeSpan offsetSector1 = TimeSpan.FromMilliseconds(localSectorTimeMs).Subtract(TimeSpan.FromMilliseconds(otherSectorTimeMs));
+        return $"{(offsetSector1.Ticks < 0 ? "-" : (offsetSector1.Ticks > 0 ? "+" : ""))}{offsetSector1:s\\.fff}";
     }
 
     private int PlayerCarID
