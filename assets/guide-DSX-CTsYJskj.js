@@ -31,7 +31,6 @@ type: guide
 <li>Some Games require you to configure a data stream, make sure to read the <strong><a href="/guide/multi-sim">Multi-Sim Guide</a></strong></li>
 <li>Make sure the game selection is set correctly(left-bottem of the app), this should happen automatically unless disabled</li>
 <li>Open the HUD Tab</li>
-<li>At the bottom of the Hud Tab, Click the Pitwall Section</li>
 <li>Click DSX</li>
 <li>You can alter behaviour for Braking and Acceleration</li>
 <li>To activate it read <strong><a href="/guide/how-to-use-huds">The guide for using the HUD Tab</a></strong></li>
