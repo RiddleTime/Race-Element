@@ -18,7 +18,7 @@ internal sealed class AssettoCorsaRallyDataProvider : AbstractSimDataProvider
 
     internal override int PollingRate() => 200;
 
-    private static string GameName => Game.AssettoCorsaEvo.ToShortName();
+    private static string GameName => Game.AssettoCorsaRally.ToShortName();
 
     public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
