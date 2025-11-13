@@ -1,9 +1,9 @@
 ﻿using RaceElement.Data.Common.SimulatorData.LocalCar;
 using Riok.Mapperly.Abstractions;
 using System.Numerics;
-using static RaceElement.Data.Games.AssettoCorsaEvo.SharedMemory.AcEvoSharedMemory;
+using static RaceElement.Data.Games.AssettoCorsaRally.SharedMemory.AcRallySharedMemory;
 
-namespace RaceElement.Data.Games.AssettoCorsaEvo.DataMapper.LocalCar;
+namespace RaceElement.Data.Games.AssettoCorsaRally.DataMapper.LocalCar;
 
 [Mapper]
 internal static partial class PhysicsDataMapper
