@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
+using static System.Net.WebRequestMethods;
 
 namespace RaceElement.Data.Games;
 
@@ -19,6 +20,8 @@ public enum Game : int
     LeMansUltimate = 1 << 10,
     rFactor2 = 1 << 11,
     WRC_Generations = 1 << 12,
+    ForzaMotorsport = 1 << 13,
+    AssettoCorsaRally = 1 << 14,
 }
 
 public static class GameExtensions
@@ -38,7 +41,9 @@ public static class GameExtensions
             { Game.ForzaHorizon5, "Forza Horizon 5" },
             { Game.LeMansUltimate, "Le Mans Ultimate" },
             { Game.rFactor2, "rFactor 2" },
-            { Game.WRC_Generations, "WRC Generations" }
+            { Game.WRC_Generations, "WRC Generations" },
+            { Game.ForzaMotorsport, "Forza Motorsport" },
+            { Game.AssettoCorsaRally, "Assetto Corsa Rally" },
         }.ToImmutableDictionary();
     }
 
@@ -57,18 +62,14 @@ public static class GameExtensions
             { Game.ForzaHorizon5, "FH5" },
             { Game.LeMansUltimate, "LMU" },
             { Game.rFactor2, "rF2" },
-            { Game.WRC_Generations, "WRCG" }
+            { Game.WRC_Generations, "WRCG" },
+            { Game.ForzaMotorsport, "FM" },
+            { Game.AssettoCorsaRally, "ACR" },
         }.ToImmutableDictionary();
     }
 
     private static class ExeNames
     {
-        public static readonly ImmutableArray<string> All = ImmutableArray.Create(
-            "acs", "AC2-Win64-Shipping", "AssettoCorsaEVO", "iRacingSim64DX11",
-            "RRRE", "RRRE64", "AMS2AVX", "eurotrucks2", "amtrucks",
-            "ForzaHorizon5", "Le Mans Ultimate", "rFactor2", "WRCG"
-        );
-
         public static readonly ImmutableDictionary<string, Game> ProcessMap = new Dictionary<string, Game>
         {
             { "acs", Game.AssettoCorsa1 },
@@ -83,8 +84,12 @@ public static class GameExtensions
             { "ForzaHorizon5", Game.ForzaHorizon5 },
             { "Le Mans Ultimate", Game.LeMansUltimate },
             { "rFactor2", Game.rFactor2 },
-            { "WRCG", Game.WRC_Generations }
+            { "WRCG", Game.WRC_Generations },
+            { "forza_steamworks_release_final", Game.ForzaMotorsport },
+            { "acr", Game.AssettoCorsaRally },
         }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
+
+        public static readonly Lazy<ImmutableArray<string>> All = new(() => ImmutableArray.Create(ProcessMap.Select(x => x.Key).ToArray()));
     }
 
     private static class SteamIds
@@ -102,13 +107,13 @@ public static class GameExtensions
             { Game.ForzaHorizon5, 1551360 },
             { Game.LeMansUltimate, 2399420 },
             { Game.rFactor2, 365960 },
-            { Game.WRC_Generations, 1953520 }
+            { Game.WRC_Generations, 1953520 },
+            { Game.ForzaMotorsport, 2440510 },
+            { Game.AssettoCorsaRally, 3917090},
         }.ToImmutableDictionary();
     }
 
     private static readonly Lazy<string[]> ResourceNames = new(() => typeof(Game).Assembly.GetManifestResourceNames());
-
-
 
     public static string ToFriendlyName(this Game game) =>
         FriendlyNames.Map.TryGetValue(game, out var name) ? name : string.Empty;
@@ -150,7 +155,7 @@ public static class GameExtensions
             {
                 try
                 {
-                    if (ExeNames.All.Contains(process.ProcessName, StringComparer.OrdinalIgnoreCase))
+                    if (ExeNames.All.Value.Contains(process.ProcessName, StringComparer.OrdinalIgnoreCase))
                     {
                         var game = GameFromProcessName(process.ProcessName);
                         if (game != Game.Any)

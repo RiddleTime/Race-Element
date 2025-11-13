@@ -2,7 +2,6 @@
 using System.Collections.Concurrent;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Runtime.InteropServices;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.InputTrace;
 
@@ -18,6 +17,14 @@ internal sealed class InputGraph : IDisposable
     private readonly Pen _steeringPen;
     private readonly Pen _tractionControlPen;
     private readonly Pen _absPen;
+
+    // Reusable buffers to avoid per-frame allocations
+    private readonly List<int> _throttleBuffer = [];
+    private readonly List<int> _brakeBuffer = [];
+    private readonly List<int> _steeringBuffer = [];
+    private readonly List<bool> _tractionControlBuffer = [];
+    private readonly List<bool> _absBuffer = [];
+    private readonly List<Point> _pointsBuffer = [];
 
     public InputGraph(int x, int y, int width, int height, InputTraceConfiguration config)
     {
@@ -57,35 +64,42 @@ internal sealed class InputGraph : IDisposable
                 + _height / 10;
     }
 
-    private List<int> _iData = [];
-    private List<bool> _bData = [];
     public void Draw(Graphics g, ConcurrentQueue<InputsData> data)
     {
         _cachedBackground?.Draw(g);
 
         g.SmoothingMode = SmoothingMode.HighQuality;
 
+        _throttleBuffer.Clear();
+        _brakeBuffer.Clear();
+        _steeringBuffer.Clear();
+        _tractionControlBuffer.Clear();
+        _absBuffer.Clear();
+
+        foreach (var item in data)
+        {
+            _throttleBuffer.Add(item.Throttle);
+            _brakeBuffer.Add(item.Brake);
+            _steeringBuffer.Add(item.Steering);
+            _tractionControlBuffer.Add(item.TractionControlActivation);
+            _absBuffer.Add(item.AbsActivation);
+        }
+
         if (_config.Chart.SteeringInput)
         {
-            _iData = new(data.Select(x => x.Steering));
-            DrawData(g, _iData, _steeringPen);
+            DrawData(g, _steeringBuffer, _steeringPen);
         }
 
-        _iData = new(data.Select(x => x.Throttle));
-        DrawData(g, _iData, _throttlePen);
+        DrawData(g, _throttleBuffer, _throttlePen);
         if (_config.TractionControl.TractionControl)
         {
-            _bData = new(data.Select(x => x.TractionControlActivation));
-            DrawData(g, _bData, _iData, _tractionControlPen);
+            DrawData(g, _tractionControlBuffer, _throttleBuffer, _tractionControlPen);
         }
 
-
-        _iData = new(data.Select(x => x.Brake));
-        DrawData(g, _iData, _brakePen);
+        DrawData(g, _brakeBuffer, _brakePen);
         if (_config.Abs.Abs)
         {
-            _bData = new(data.Select(x => x.AbsActivation));
-            DrawData(g, _bData, _iData, _absPen);
+            DrawData(g, _absBuffer, _brakeBuffer, _absPen);
         }
     }
 
@@ -93,14 +107,13 @@ internal sealed class InputGraph : IDisposable
     {
         if (bData.Count > 0 && iData.Count > 0 && bData.Count == iData.Count)
         {
-            var bSpan = CollectionsMarshal.AsSpan<bool>(bData);
-            var iSpan = CollectionsMarshal.AsSpan<int>(iData);
-            for (int i = bSpan.Length - 1; i >= 0; i--)
+            int dataLength = bData.Count;
+            for (int i = dataLength - 1; i >= 0; i--)
             {
-                if (bSpan[i])
+                if (bData[i])
                 {
-                    int x = _x + i* (_width / bSpan.Length);
-                    int y = _y + GetRelativeNodeY(iSpan[i]);
+                    int x = _x + i * (_width / dataLength);
+                    int y = _y + GetRelativeNodeY(iData[i]);
 
                     g.DrawLine(pen, new Point(x, y - 1), new Point(x, 2));
                 }
@@ -112,23 +125,24 @@ internal sealed class InputGraph : IDisposable
     {
         if (data.Count > 0)
         {
-            List<Point> points = [];
-            ReadOnlySpan<int> spanData = CollectionsMarshal.AsSpan<int>(data);
-            for (int i = spanData.Length - 1; i >= 0; i--)
+            _pointsBuffer.Clear();
+
+            int dataLength = data.Count;
+            for (int i = dataLength - 1; i >= 0; i--)
             {
-                int x = _x + i * (_width / spanData.Length);
-                int y = _y + GetRelativeNodeY(spanData[i]);
+                int x = _x + i * (_width / dataLength);
+                int y = _y + GetRelativeNodeY(data[i]);
 
                 if (x < _x)
                     break;
 
-                points.Add(new Point(x, y));
+                _pointsBuffer.Add(new Point(x, y));
             }
 
-            if (points.Count > 0)
+            if (_pointsBuffer.Count > 0)
             {
                 using GraphicsPath path = new();
-                path.AddLines(points.ToArray());
+                path.AddLines(_pointsBuffer.ToArray());
                 g.DrawPath(pen, path);
             }
         }

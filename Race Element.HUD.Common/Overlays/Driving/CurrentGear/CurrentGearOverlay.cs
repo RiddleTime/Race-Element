@@ -1,6 +1,4 @@
 ﻿// TODO: refactor to allow for non-ACC sims to not use RaceElement.Data.ACC
-using RaceElement.Data.ACC.EntryList;
-using RaceElement.Data.ACC.Session;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -23,7 +21,9 @@ namespace RaceElement.HUD.Common.Overlays.Driving.CurrentGear;
     OverlayCategory = OverlayCategory.Driving,
     Description = "Shows the selected gear.",
     Authors = ["Reinier Klarenberg, Dirk Wolf"],
-    Game = Game.iRacing | Game.Automobilista2 | Game.AssettoCorsa1 | Game.RaceRoom | Game.ForzaHorizon5 | Game.WRC_Generations | Game.LeMansUltimate)]
+    Game = Game.iRacing | Game.Automobilista2 | Game.AssettoCorsa1 | Game.RaceRoom | Game.ForzaHorizon5 | Game.WRC_Generations | Game.LeMansUltimate
+        | Game.AssettoCorsaRally | Game.rFactor2
+)]
 internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 {
     private readonly CurrentGearConfiguration _config = new();
@@ -124,25 +124,7 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 
     private int GetCurrentGear()
     {
-        if (IsPreviewing)
-            return _currentGear;
-
         _currentGear = SimDataProvider.LocalCar.Inputs.Gear;
-
-        if (_config.Gear.Spectator)
-        {
-            int focusedIndex = SessionData.Instance.FocusedCarIndex;
-
-            // TODO: refactor to allow for non-ACC sims
-            // if (RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, focusedIndex))
-            lock (EntryListTracker.Instance.Cars)
-                if (EntryListTracker.Instance.Cars.Any())
-                {
-                    var car = EntryListTracker.Instance.Cars.First(car => car.Key == focusedIndex);
-                    _currentGear = car.Value.RealtimeCarUpdate.Gear + 2;
-                }
-        }
-
         return _currentGear;
     }
 

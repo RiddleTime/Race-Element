@@ -34,9 +34,17 @@ public sealed class EntryListTracker
     {
         get
         {
-            if (_entryListCars.Count > 0)
-                return [.. _entryListCars];
-            else return [];
+            if (!_entryListCars.IsEmpty)
+                try
+                {
+                    return [.. _entryListCars];
+                }
+                catch
+                {
+                    return [];
+                }
+
+            return [];
         }
     }
 

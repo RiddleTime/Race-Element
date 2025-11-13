@@ -11,11 +11,11 @@ namespace RaceElement.Data.Games.Forza;
 public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
 {
     private const int FORZA_DATA_OUT_PORT = 5300;
-    private UdpClient _udpClient;
-    private Task _receiverTask;
+    private UdpClient? _udpClient;
+    private Task? _receiverTask;
     private bool _isRunning;
 
-    private Lock _lock = new();
+    private readonly Lock _lock = new();
     private LocalCarData _localCar = new();
     private SessionData _sessionData = new();
     private GameData _gameData = new();
@@ -33,7 +33,6 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         catch (SocketException ex)
         {
             Debug.WriteLine($"Failed to bind to port {FORZA_DATA_OUT_PORT}: {ex.Message}");
-            throw;
         }
 
         _receiverTask = Task.Run(async () =>
@@ -72,10 +71,7 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
 
     internal override int PollingRate() => 200;
 
-    public override List<string> GetCarClasses()
-    {
-        return new List<string> { "D", "C", "B", "A", "S", "R", "X" };
-    }
+    public override List<string> GetCarClasses() => ["D", "C", "B", "A", "S", "R", "X"];
 
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
@@ -128,7 +124,7 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         }
 
 
-        // Map SledData to LocalCarData (unchanged as per request)
+        // Map SledData to LocalCarData 
         localCar.Engine.Rpm = (int)sled.CurrentEngineRpm;
         localCar.Engine.IsRunning = dash.Fuel > 0;
         localCar.Engine.MaxRpm = (int)sled.EngineMaxRpm;
@@ -138,7 +134,13 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         localCar.Physics.Location = new Vector3(dash.PositionX, dash.PositionY, dash.PositionZ);
         localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(sled.Yaw, sled.Pitch, sled.Roll);
         localCar.Tyres.SlipAngle = [sled.TireSlipAngleFr / -2f, sled.TireSlipAngleFl / -2f, sled.TireSlipAngleRr / -2f, sled.TireSlipAngleRl / -2f];
-        localCar.Tyres.SlipRatio = [NegateIfNegative(sled.TireCombinedSlipFr), NegateIfNegative(sled.TireCombinedSlipFl), NegateIfNegative(sled.TireCombinedSlipRr), NegateIfNegative(sled.TireCombinedSlipRl)];
+        localCar.Tyres.SlipRatio =
+        [
+            NegateIfNegative(sled.TireCombinedSlipFr),
+            NegateIfNegative(sled.TireCombinedSlipFl),
+            NegateIfNegative(sled.TireCombinedSlipRr),
+            NegateIfNegative(sled.TireCombinedSlipRl)
+        ];
         localCar.Tyres.CoreTemperature = [dash.TireTempFr, dash.TireTempFl, dash.TireTempRr, dash.TireTempRl];
         localCar.Tyres.Velocity = [sled.WheelRotationSpeedFr, sled.WheelRotationSpeedFl, sled.WheelRotationSpeedRr, sled.WheelRotationSpeedRl];
         localCar.CarModel.GameId = sled.CarOrdinal;
@@ -179,5 +181,5 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
 
     private static float NegateIfNegative(float value) => (value < 0 ? -value : value);
 
-    public override bool HasTelemetry() => true; // Changed to true since telemetry is processed
+    public override bool HasTelemetry() => true;
 }

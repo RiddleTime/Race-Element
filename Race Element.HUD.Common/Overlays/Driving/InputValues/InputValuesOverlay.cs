@@ -10,7 +10,7 @@ using System.Drawing.Drawing2D;
 namespace RaceElement.HUD.Common.Overlays.Driving.InputValues;
 
 [Overlay(Name = "Input Values",
-    Description = "Shows raw Throttle and Brake data. (BETA)",
+    Description = "Shows Throttle and Brake Input Percentage.",
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Drive,
 Authors = ["Reinier Klarenberg"]
