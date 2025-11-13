@@ -28,7 +28,6 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 2. Some Games require you to configure a data stream, make sure to read the **[Multi-Sim Guide](/guide/multi-sim)**
 3. Make sure the game selection is set correctly(left-bottem of the app), this should happen automatically unless disabled
 4. Open the HUD Tab
-5. At the bottom of the Hud Tab, Click the Pitwall Section
-6. Click DSX
-7. You can alter behaviour for Braking and Acceleration
-8. To activate it read **[The guide for using the HUD Tab](/guide/how-to-use-huds)**
+5. Click DSX
+6. You can alter behaviour for Braking and Acceleration
+7. To activate it read **[The guide for using the HUD Tab](/guide/how-to-use-huds)**
