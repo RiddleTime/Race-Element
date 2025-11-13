@@ -6,8 +6,11 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
-        {"2.4.1.0", "Moved to .NET 10"
-
+        {"2.5.0.0", "Race Element" +
+                    "\n- Added Assetto Corsa Rally"+
+                    "\n- Updated to .NET 10"+
+                    "\n\nDSX"+
+                    "\n- Added support for Assetto Corsa Rally"
         },
         {"2.4.0.0", "Added 3 New Driving Simulators"+
                     "\n- Le Mans Ultimate"+
