@@ -1,5 +1,6 @@
 ﻿using System.Collections.Immutable;
 using System.Diagnostics;
+using static System.Net.WebRequestMethods;
 
 namespace RaceElement.Data.Games;
 
@@ -20,6 +21,7 @@ public enum Game : int
     rFactor2 = 1 << 11,
     WRC_Generations = 1 << 12,
     ForzaMotorsport = 1 << 13,
+    AssettoCorsaRally = 1 << 14,
 }
 
 public static class GameExtensions
@@ -40,7 +42,8 @@ public static class GameExtensions
             { Game.LeMansUltimate, "Le Mans Ultimate" },
             { Game.rFactor2, "rFactor 2" },
             { Game.WRC_Generations, "WRC Generations" },
-            { Game.ForzaMotorsport, "Forza Motorsport" }
+            { Game.ForzaMotorsport, "Forza Motorsport" },
+            { Game.AssettoCorsaRally, "Assetto Corsa Rally" },
         }.ToImmutableDictionary();
     }
 
@@ -61,6 +64,7 @@ public static class GameExtensions
             { Game.rFactor2, "rF2" },
             { Game.WRC_Generations, "WRCG" },
             { Game.ForzaMotorsport, "FM" },
+            { Game.AssettoCorsaRally, "ACR" },
         }.ToImmutableDictionary();
     }
 
@@ -82,6 +86,7 @@ public static class GameExtensions
             { "rFactor2", Game.rFactor2 },
             { "WRCG", Game.WRC_Generations },
             { "forza_steamworks_release_final", Game.ForzaMotorsport },
+            { "acr", Game.AssettoCorsaRally },
         }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
         public static readonly Lazy<ImmutableArray<string>> All = new(() => ImmutableArray.Create(ProcessMap.Select(x => x.Key).ToArray()));
@@ -104,6 +109,7 @@ public static class GameExtensions
             { Game.rFactor2, 365960 },
             { Game.WRC_Generations, 1953520 },
             { Game.ForzaMotorsport, 2440510 },
+            { Game.AssettoCorsaRally, 3917090},
         }.ToImmutableDictionary();
     }
 

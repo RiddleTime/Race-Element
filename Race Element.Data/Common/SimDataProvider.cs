@@ -144,6 +144,13 @@ public static class SimDataProvider
                     _localCarEventLoop.Run();
                     break;
                 }
+            case Game.AssettoCorsaRally:
+                {
+                    Instance ??= new AssettoCorsaEvoDataProvider();
+                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                    _localCarEventLoop.Run();
+                    break;
+                }
             default: { break; }
         }
     }
