@@ -12,6 +12,8 @@ internal static partial class LocalCarMapper
     internal static void AddPhysics(ref SPageFilePhysics pagePhysics, ref LocalCarData commonData, ref SessionData sessionData)
     {
         commonData.Physics.Acceleration = new(pagePhysics.AccG[0], pagePhysics.AccG[1], pagePhysics.AccG[2]);
+        commonData.Physics.Velocity = pagePhysics.SpeedKmh;
+
         commonData.Engine.IsPitLimiterOn = pagePhysics.PitLimiterOn;
         commonData.Engine.MaxRpm = pagePhysics.CurrentMaxRpm;
         commonData.Engine.Rpm = pagePhysics.Rpms;
@@ -28,6 +30,8 @@ internal static partial class LocalCarMapper
         commonData.Tyres.Pressure = pagePhysics.WheelPressure;
         commonData.Tyres.SlipRatio = pagePhysics.WheelSlip;
         commonData.Tyres.Velocity = pagePhysics.Velocity;
+
+       
 
         commonData.Brakes.DiscTemperature = pagePhysics.BrakeTemperature;
         commonData.Brakes.Pressure = pagePhysics.brakePressure;
