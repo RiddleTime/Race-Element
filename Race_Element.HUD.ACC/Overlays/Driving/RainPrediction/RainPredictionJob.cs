@@ -57,7 +57,7 @@ internal sealed class RainPredictionJob(RainPredictionOverlay Overlay) : Abstrac
                 In30 = Overlay.pageGraphics.rainIntensityIn30min
             };
 
-            if (newScan != _lastWeather || UpcomingChanges.Count == 0)
+            if (newScan != _lastWeather || UpcomingChanges.IsEmpty)
             {
                 DateTime change = DateTime.UtcNow;
                 WeatherChanges.TryAdd(change, newScan);

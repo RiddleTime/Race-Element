@@ -472,7 +472,7 @@ public sealed unsafe class AcRallySharedMemory
         /// <summary>Car speed in km/h</summary>
         public float SpeedKmh;
 
-        /// <summary>Car velocity vector in global coordinates</summary>
+        /// <summary>Tyre velocity vector in global coordinates</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)] public float[] Velocity;
 
         /// <summary>Car acceleration vector in global coordinates</summary>

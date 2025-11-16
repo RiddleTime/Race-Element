@@ -33,6 +33,7 @@ internal static partial class LocalCarMapper
     internal static void AddPhysics(ref PageFilePhysics pagePhysics, ref LocalCarData commonData)
     {
         commonData.Physics.Acceleration = new(pagePhysics.AccG[0], pagePhysics.AccG[2], pagePhysics.AccG[1]);
+        commonData.Physics.Velocity = pagePhysics.SpeedKmh;
         commonData.Engine.IsPitLimiterOn = pagePhysics.PitLimiterOn;
         commonData.Engine.IsRunning = commonData.Engine.Rpm > 0;
         commonData.Inputs.Clutch = 1 - pagePhysics.Clutch;

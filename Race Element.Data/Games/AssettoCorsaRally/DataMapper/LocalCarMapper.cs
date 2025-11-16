@@ -1,21 +1,20 @@
 ﻿using RaceElement.Data.Common.SimulatorData.LocalCar;
-using Riok.Mapperly.Abstractions;
 using System.Numerics;
 using RaceElement.Data.Common.SimulatorData;
 using static RaceElement.Data.Games.AssettoCorsaRally.SharedMemory.AcRallySharedMemory;
 
 namespace RaceElement.Data.Games.AssettoCorsaRally.DataMapper;
 
-[Mapper]
 internal static partial class LocalCarMapper
 {
     internal static void AddPhysics(ref SPageFilePhysics pagePhysics, ref LocalCarData commonData, ref SessionData sessionData)
     {
         commonData.Physics.Acceleration = new(pagePhysics.AccG[0], pagePhysics.AccG[1], pagePhysics.AccG[2]);
+        commonData.Physics.Velocity = pagePhysics.SpeedKmh;
+
         commonData.Engine.IsPitLimiterOn = pagePhysics.PitLimiterOn;
         commonData.Engine.MaxRpm = pagePhysics.CurrentMaxRpm;
         commonData.Engine.Rpm = pagePhysics.Rpms;
-
         commonData.Engine.IsRunning = commonData.Engine.Rpm > 0;
 
         commonData.Inputs.Steering = pagePhysics.SteerAngle;
@@ -36,7 +35,6 @@ internal static partial class LocalCarMapper
         commonData.Electronics.AbsLevel = (int)pagePhysics.Abs;
         commonData.Engine.FuelLiters = pagePhysics.Fuel;
 
-        ///
         sessionData.Weather.AirTemperature = pagePhysics.AirTemp;
     }
 
