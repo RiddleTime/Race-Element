@@ -1,4 +1,3 @@
-﻿// TODO: refactor to allow for non-ACC sims to not use RaceElement.Data.ACC
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
