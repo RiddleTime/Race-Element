@@ -71,6 +71,13 @@ internal static partial class R3ELocalCarMapper
         localCarData.Physics.Rotation = System.Numerics.Quaternion.CreateFromYawPitchRoll(sharedData.CarOrientation.Yaw, sharedData.CarOrientation.Pitch, sharedData.CarOrientation.Roll);
 
 
+        localCarData.Suspension.RideHeight = [
+            (float)sharedData.Player.RideHeight.FrontLeft,
+            (float)sharedData.Player.RideHeight.FrontRight,
+            (float)sharedData.Player.RideHeight.RearLeft,
+            (float)sharedData.Player.RideHeight.RearRight,
+        ];
+
         // Timing Data
         localCarData.Timing.LapTimeDeltaBestMS = (int)(sharedData.TimeDeltaBestSelf * 1000f);
         localCarData.Timing.CurrentLaptimeMS = (int)(sharedData.LapTimeCurrentSelf * 1000f);
