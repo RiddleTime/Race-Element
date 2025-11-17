@@ -47,6 +47,14 @@ internal static class LocalCarMapper
             CalculateWheelSlipRatio(vehicleTelemetry.mWheels[2]),
             CalculateWheelSlipRatio(vehicleTelemetry.mWheels[3]),
         ];
+
+        localCar.Suspension.RideHeight =
+        [
+            (float)vehicleTelemetry.mFrontRideHeight,
+            (float)vehicleTelemetry.mFrontRideHeight,
+            (float)vehicleTelemetry.mRearRideHeight,
+            (float)vehicleTelemetry.mRearRideHeight
+        ];
     }
 
     private static float CalculateWheelSlipRatio(RF2Wheel wheel)
