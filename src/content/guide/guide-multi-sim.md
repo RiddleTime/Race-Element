@@ -44,6 +44,15 @@ Both simulators require a plugin to be installed before any data can be read fro
 7. Restart Race Element.
 8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Horizon 5.
 
+# Forza Motorsport 8
+1. Start Forza Motorsport 8
+2. Go to Gameplay and HUD tab
+3. Scroll to the bottom
+4. Enable `Data Out`
+5. Set Data Out IP Address to: `127.0.0.1`
+6. Set Data Out Port to: `5300`
+7. Set Data Out Packet Format to: `Car Dash`
+
 # rFactor 2
 1. Open the installation folder of rFactor 2
 2. Go to `Bin64\Plugins`
