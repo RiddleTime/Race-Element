@@ -47,6 +47,16 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Restart Race Element.</li>
 <li>If Windows asks permission for network access allow it else race element won&#39;t be able to receive data from Forza Horizon 5.</li>
 </ol>
+<h1 id="forza-motorsport-8">Forza Motorsport 8</h1>
+<ol>
+<li>Start Forza Motorsport 8</li>
+<li>Go to Gameplay and HUD tab</li>
+<li>Scroll to the bottom</li>
+<li>Enable <code>Data Out</code></li>
+<li>Set Data Out IP Address to: <code>127.0.0.1</code></li>
+<li>Set Data Out Port to: <code>5300</code></li>
+<li>Set Data Out Packet Format to: <code>Car Dash</code></li>
+</ol>
 <h1 id="rfactor-2">rFactor 2</h1>
 <ol>
 <li>Open the installation folder of rFactor 2</li>
