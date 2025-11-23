@@ -13,6 +13,7 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 - Assetto Corsa EVO
 - Assetto Corsa Rally
 - Forza Horizon 5
+- Forza Motorsport 8
 - Le Mans Ultimate
 - RaceRoom
 - rFactor 2
