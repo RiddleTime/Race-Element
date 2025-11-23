@@ -21,8 +21,8 @@ type: news
 <h1 id="august-2025-forza-horizon-5-is-added-9-supported-simulators">August 2025: Forza Horizon 5 is added, 9 supported simulators</h1>
 <p>Forza Horizon 5, without a doubt, is a great game to cruise, just to have fun and chill with your friends. One easily puts in 30–50 hours just by exploring the map and enjoying a bit of multiplayer! DSX Support is also there.
 <br /></p>
-<h1 id="november-2025-14-supported-simulators">November 2025: 14 supported simulators...</h1>
-<p>What a month! Le Mans Ultimate, rFactor 2 and WRC Generations were added as well as Assetto Corsa Rally which went into Early Access. Another addition is Forza Motorsport 8. All of these support DSX Adaptive Triggers with Race Element and plenty of HUDs to customize your game.
+<h1 id="november-2025-upgraded-to-net-10-with-14-supported-simulators">November 2025: Upgraded to .NET 10, with 14 supported simulators.</h1>
+<p>What a month! Le Mans Ultimate, rFactor 2 and WRC Generations were added as well as Assetto Corsa Rally which went into Early Access. Another addition is Forza Motorsport 8. All of these support DSX Adaptive Triggers with Race Element and plenty of HUDs to customize your game. With the upgrade to .NET 10 the app&#39;s executable has become smallerm this will speed up updates on slower networks.
 <br /></p>
 <h1 id="what-is-next">What is next?</h1>
 <p>Additional driving simulators and HUDs will be added as long as the app is viable to exist, though more than a 1000 hours have been spent on this app so far. If you want to contribute, please do so with either code or a donation: <a href="https://race.elementfuture.com/guide/sponsor">https://race.elementfuture.com/guide/sponsor</a></p>
