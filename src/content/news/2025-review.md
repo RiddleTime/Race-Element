@@ -18,7 +18,7 @@ Assetto Corsa EVO was teased and let loose at the 2024 ADAC Simracing Expo in Do
 <br />
 
 # May 2025: DSX Guides added to the website and auto game detection
-DSX has been a main part of Race Element for the past 1.5 years. DSX provides a lot of fun with DualSense since it provides Adaptive Triggers with Race Element, this will grow further along the year! Race Element now automatically detects whether any of the supported games are running causing it to auto-switch without the user having to interact with Race Element.
+DSX has been a main part of Race Element for the past 1.5 years. DSX adds a lot of fun with DualSense since it provides Adaptive Triggers with Race Element, this will grow further along the year! Race Element now automatically detects whether any of the supported games are running causing it to auto-switch without the user having to interact with Race Element.
 <br />
 
 # August 2025: Forza Horizon 5 is added, 9 supported simulators
