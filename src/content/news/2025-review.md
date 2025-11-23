@@ -14,7 +14,7 @@ Once adding new games to Race Element became easier, AMS2 was added whilst ETS2 
 <br />
 
 # January 2025: AC EVO Support is added, 8 supported simulators
-Assetto Corsa EVO was teased and let loose at the 2024 ADAC Simracing Expo in Dortmund, in January 2025 the game was released as Early Access and supported was added to Race Element.
+Assetto Corsa EVO was teased and let loose at the 2024 ADAC Simracing Expo in Dortmund, in January 2025 the game was released as Early Access and support was added to Race Element.
 <br />
 
 # May 2025: DSX Guides added to the website and auto game detection
