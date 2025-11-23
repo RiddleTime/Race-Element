@@ -1,5 +1,5 @@
 const e=`---
-title: A Review of 2025
+title: A Review of 2025, The Multi Sim Year
 slug: 2025-Review
 description: 14 supported simulators in 2025 and what may be next
 date: 2025-11-23
