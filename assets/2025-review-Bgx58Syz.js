@@ -13,7 +13,7 @@ type: news
 <p>Once adding new games to Race Element became easier, AMS2 was added whilst ETS2 and ATS were also added. During this month a new shift bar was also added being able to render up to 200 Hz. The app was also migrated to .NET 9 during this month providing better performance and some extra techniques to write code more efficiently.
 <br /></p>
 <h1 id="january-2025-ac-evo-support-is-added-8-supported-simulators">January 2025: AC EVO Support is added, 8 supported simulators</h1>
-<p>Assetto Corsa EVO was teased and let loose at the 2024 ADAC Simracing Expo in Dortmund, in January 2025 the game was released as Early Access and supported was added to Race Element.
+<p>Assetto Corsa EVO was teased and let loose at the 2024 ADAC Simracing Expo in Dortmund, in January 2025 the game was released as Early Access and support was added to Race Element.
 <br /></p>
 <h1 id="may-2025-dsx-guides-added-to-the-website-and-auto-game-detection">May 2025: DSX Guides added to the website and auto game detection</h1>
 <p>DSX has been a main part of Race Element for the past 1.5 years. DSX provides a lot of fun with DualSense since it provides Adaptive Triggers with Race Element, this will grow further along the year! Race Element now automatically detects whether any of the supported games are running causing it to auto-switch without the user having to interact with Race Element.
