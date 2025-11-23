@@ -16,7 +16,7 @@ type: news
 <p>Assetto Corsa EVO was teased and let loose at the 2024 ADAC Simracing Expo in Dortmund, in January 2025 the game was released as Early Access and support was added to Race Element.
 <br /></p>
 <h1 id="may-2025-dsx-guides-added-to-the-website-and-auto-game-detection">May 2025: DSX Guides added to the website and auto game detection</h1>
-<p>DSX has been a main part of Race Element for the past 1.5 years. DSX provides a lot of fun with DualSense since it provides Adaptive Triggers with Race Element, this will grow further along the year! Race Element now automatically detects whether any of the supported games are running causing it to auto-switch without the user having to interact with Race Element.
+<p>DSX has been a main part of Race Element for the past 1.5 years. DSX adds a lot of fun with DualSense since it provides Adaptive Triggers with Race Element, this will grow further along the year! Race Element now automatically detects whether any of the supported games are running causing it to auto-switch without the user having to interact with Race Element.
 <br /></p>
 <h1 id="august-2025-forza-horizon-5-is-added-9-supported-simulators">August 2025: Forza Horizon 5 is added, 9 supported simulators</h1>
 <p>Forza Horizon 5, without a doubt, is a great game to cruise, just to have fun and chill with your friends. One easily puts in 30–50 hours just by exploring the map and enjoying a bit of multiplayer! DSX Support is also there.
