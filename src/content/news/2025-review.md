@@ -25,8 +25,8 @@ DSX has been a main part of Race Element for the past 1.5 years. DSX provides a 
 Forza Horizon 5, without a doubt, is a great game to cruise, just to have fun and chill with your friends. One easily puts in 30–50 hours just by exploring the map and enjoying a bit of multiplayer! DSX Support is also there.
 <br />
 
-# November 2025: 14 supported simulators...
-What a month! Le Mans Ultimate, rFactor 2 and WRC Generations were added as well as Assetto Corsa Rally which went into Early Access. Another addition is Forza Motorsport 8. All of these support DSX Adaptive Triggers with Race Element and plenty of HUDs to customize your game.
+# November 2025: Upgraded to .NET 10, with 14 supported simulators.
+What a month! Le Mans Ultimate, rFactor 2 and WRC Generations were added as well as Assetto Corsa Rally which went into Early Access. Another addition is Forza Motorsport 8. All of these support DSX Adaptive Triggers with Race Element and plenty of HUDs to customize your game. With the upgrade to .NET 10 the app's executable has become smallerm this will speed up updates on slower networks.
 <br />
 
 # What is next?
