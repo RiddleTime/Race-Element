@@ -10,7 +10,7 @@ Back in October 2024, Race Element went Multi-Sim for the first time, adding Ass
 <br/>
 
 # End of 2024: Automobilista 2, Euro Truck Simulator 2 and American Truck Simulator are now supported, 7 supported simulators
-Once adding new games to Race Element became easier, Andrei Jianu added AMS2 whilst ETS2 and ATS were also added by Reinier Klarenberg (creator of Race Element). During this month a new shift bar was also added being able to render up to 200 Hz. The app was also migrated to .NET 9 during this month providing better performance and some extra techniques to write code more efficiently.
+Once adding new games to Race Element became easier, AMS2 was added whilst ETS2 and ATS were also added. During this month a new shift bar was also added being able to render up to 200 Hz. The app was also migrated to .NET 9 during this month providing better performance and some extra techniques to write code more efficiently.
 <br />
 
 # January 2025: AC EVO Support is added, 8 supported simulators
