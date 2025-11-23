@@ -17,7 +17,7 @@ description: General features
 <li>Automobilista 2</li>
 <li>Euro Truck Simulator 2</li>
 <li>Forza Horizon 5</li>
-<li>Forza Motorsport (8)</li>
+<li>Forza Motorsport 8</li>
 <li>iRacing</li>
 <li>Le Mans Ultimate</li>
 <li>RaceRoom</li>
