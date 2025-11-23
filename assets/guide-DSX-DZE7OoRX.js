@@ -14,6 +14,7 @@ type: guide
 <li>Assetto Corsa EVO</li>
 <li>Assetto Corsa Rally</li>
 <li>Forza Horizon 5</li>
+<li>Forza Motorsport 8</li>
 <li>Le Mans Ultimate</li>
 <li>RaceRoom</li>
 <li>rFactor 2</li>
