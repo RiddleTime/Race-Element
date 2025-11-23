@@ -26,8 +26,8 @@ Forza Horizon 5, without a doubt, is a great game to cruise, just to have fun an
 <br />
 
 # November 2025: Upgraded to .NET 10, with 14 supported simulators.
-What a month! Le Mans Ultimate, rFactor 2 and WRC Generations were added as well as Assetto Corsa Rally which went into Early Access. Another addition is Forza Motorsport 8. All of these support DSX Adaptive Triggers with Race Element and plenty of HUDs to customize your game. With the upgrade to .NET 10 the app's executable has become smallerm this will speed up updates on slower networks.
+What a month! Le Mans Ultimate, rFactor 2 and WRC Generations were added as well as Assetto Corsa Rally which went into Early Access. Another addition is Forza Motorsport 8. All of these support DSX Adaptive Triggers with Race Element and plenty of HUDs to customize your game. With the upgrade to .NET 10 the app's executable has become smaller, this will speed up updates on slower networks.
 <br />
 
 # What is next?
-Additional driving simulators and HUDs will be added as long as the app is viable to exist, though more than a 1000 hours have been spent on this app so far. If you want to contribute, please do so with either code or a donation: https://race.elementfuture.com/guide/sponsor
+The GUI will be rewritten at some point to add more features like profiles. Additional driving simulators and HUDs will be added as long as the app is viable to exist, though more than a 1000 hours have been spent on this app so far. If you want to contribute, please do so with either code or a donation: https://race.elementfuture.com/guide/sponsor
