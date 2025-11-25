@@ -31,6 +31,30 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
 
         var telemetry = _dataStore.GetTelemetryForVehicle(playerVehicleId);
 
+        // Inputs
+        localCar.Inputs.Throttle = telemetry.m_input.m_accelerator;
+        localCar.Inputs.Brake = telemetry.m_input.m_brake;
+        localCar.Inputs.Clutch = telemetry.m_input.m_clutch;
+        localCar.Inputs.Steering = telemetry.m_input.m_steering;
+        localCar.Inputs.MaxSteeringAngle = telemetry.m_general.m_steeringWheelAngle;
+
+        // Physica
+        localCar.Physics.Velocity = telemetry.m_general.m_estRollingSpeed * 3.6f;
+
+        // Tyres
+        localCar.Tyres.SlipRatio = [
+            telemetry.m_wheels[0].m_slipRatio,
+            telemetry.m_wheels[1].m_slipRatio,
+            telemetry.m_wheels[2].m_slipRatio,
+            telemetry.m_wheels[3].m_slipRatio,
+        ];
+        localCar.Tyres.SlipAngle = [
+            telemetry.m_wheels[0].m_slipAngle,
+            telemetry.m_wheels[1].m_slipAngle,
+            telemetry.m_wheels[2].m_slipAngle,
+            telemetry.m_wheels[3].m_slipAngle,
+        ];
+
 
     }
 

@@ -272,8 +272,8 @@ public class UDPVehicleTelemetryWheel
     float m_contactRadius = 0.0f;
     float m_pressure = 0.0f;
     float m_inclination = 0.0f;
-    float m_slipRatio = 0.0f;
-    float m_slipAngle = 0.0f;
+    public float m_slipRatio = 0.0f;
+    public float m_slipAngle = 0.0f;
 
     // thermodynamics data
     UDPVec3 m_tread;
