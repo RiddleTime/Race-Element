@@ -7,7 +7,6 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using Unglide;
 using RaceElement.Data.Common;
-using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Util.SystemExtensions;
 using RaceElement.Data.Games;
 
@@ -21,7 +20,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.CurrentGear;
     Description = "Shows the selected gear.",
     Authors = ["Reinier Klarenberg, Dirk Wolf"],
     Game = Game.iRacing | Game.Automobilista2 | Game.AssettoCorsa1 | Game.RaceRoom | Game.ForzaHorizon5 | Game.WRC_Generations | Game.LeMansUltimate
-        | Game.AssettoCorsaRally | Game.rFactor2
+        | Game.AssettoCorsaRally | Game.rFactor2 | Game.ProjectMotorRacing
 )]
 internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 {

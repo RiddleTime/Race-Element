@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.5.1.0", "Race Element"+
+                    "\n- Added Project Motor Racing"
+        },
         {"2.5.0.2", "Assetto Corsa Rally/EVO:"+
                     "\n- Mapped Speed for Speedometer HUD."
         },
