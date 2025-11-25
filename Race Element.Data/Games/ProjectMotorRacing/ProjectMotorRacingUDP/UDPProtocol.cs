@@ -22,7 +22,7 @@ public enum UDPRaceSessionState
     Complete = 2
 };
 
-public class UDPRaceInfo
+public sealed class UDPRaceInfo
 {
     public static UDPRaceInfo Decode(ref byte[] data, int startIdx)
     {
@@ -91,7 +91,7 @@ public class UDPRaceInfo
 ///////////////////////////////////////////////////////////////////////////////////////
 // PARTICIPANT RACE STATE PACKET
 ///////////////////////////////////////////////////////////////////////////////////////
-public class UDPParticipantRaceState : IComparable<UDPParticipantRaceState>
+public sealed class UDPParticipantRaceState : IComparable<UDPParticipantRaceState>
 {
     public UDPParticipantRaceState()
     {
@@ -184,7 +184,7 @@ public class UDPParticipantRaceState : IComparable<UDPParticipantRaceState>
         return p;
     }
 
-    public override string ToString()
+    public sealed override string ToString()
     {
         if (string.IsNullOrEmpty(m_driverName))
         {
@@ -194,10 +194,7 @@ public class UDPParticipantRaceState : IComparable<UDPParticipantRaceState>
         return string.Format(" {0}. {1}", m_racePos, m_driverName);
     }
 
-    public int CompareTo(UDPParticipantRaceState other)
-    {
-        return m_racePos.CompareTo(other.m_racePos);
-    }
+    public int CompareTo(UDPParticipantRaceState other) => m_racePos.CompareTo(other.m_racePos);
 
     public ushort m_packetVersion = 0;
     public int m_vehicleId = -1;
@@ -216,8 +213,8 @@ public class UDPParticipantRaceState : IComparable<UDPParticipantRaceState>
     public float m_lapProgress;
 
     public int m_currentSector;
-    public List<float> m_sectorTimes = new List<float>();
-    public List<float> m_bestSectorTimes = new List<float>();
+    public List<float> m_sectorTimes = [];
+    public List<float> m_bestSectorTimes = [];
 
     public bool m_inPits = false;
     public bool m_sessionFinished = false;
@@ -236,7 +233,7 @@ public class UDPParticipantRaceState : IComparable<UDPParticipantRaceState>
 
 //
 // structure for a 3d vector
-public class UDPVec3
+public sealed class UDPVec3
 {
     public float x = 0.0f;
     public float y = 0.0f;
@@ -246,7 +243,7 @@ public class UDPVec3
 
 //
 // structure for a quaternion
-public class UDPQuat
+public sealed class UDPQuat
 {
     public float x = 0.0f;
     public float y = 0.0f;
@@ -256,7 +253,7 @@ public class UDPQuat
 
 //
 // structure for a single telemetry wheel data
-public class UDPVehicleTelemetryWheel
+public sealed class UDPVehicleTelemetryWheel
 {
     // contact data
     int m_contactMaterialHash = 0;
@@ -341,7 +338,7 @@ public class UDPVehicleTelemetryWheel
 
 //
 // structure for the telemetry chassis data
-public class UDPVehicleTelemetryChassis
+public sealed class UDPVehicleTelemetryChassis
 {
     public UDPVec3 m_posWS;
     public UDPQuat m_quat;
@@ -377,7 +374,7 @@ public class UDPVehicleTelemetryChassis
 
 //
 // structure for the telemetry drivetrain data
-public class UDPVehicleTelemetryGear
+public sealed class UDPVehicleTelemetryGear
 {
     // ICE
     public float m_upshiftRPM = 0.0f;
@@ -396,7 +393,7 @@ public class UDPVehicleTelemetryGear
 
 //
 // structure for the telemetry drivetrain data
-public class UDPVehicleTelemetryDrivetrain
+public sealed class UDPVehicleTelemetryDrivetrain
 {
     // ICE
     public float m_engineRPM = 0.0f;
@@ -501,7 +498,7 @@ public class UDPVehicleTelemetryDrivetrain
 
 //
 // structure for the telemetry suspension data
-public class UDPVehicleTelemetrySuspension
+public sealed class UDPVehicleTelemetrySuspension
 {
     List<float> m_avgLoads = new List<float>();
     float m_loadBias = 0.0f;
@@ -528,7 +525,7 @@ public class UDPVehicleTelemetrySuspension
 
 //
 // structure for the telemetry input data
-public class UDPVehicleTelemetryInput
+public sealed class UDPVehicleTelemetryInput
 {
     public float m_steering = 0.0f;
     public float m_accelerator = 0.0f;
@@ -554,7 +551,7 @@ public class UDPVehicleTelemetryInput
 
 //
 // structure for the telemetry input data
-public class UDPVehicleTelemetrySetup
+public sealed class UDPVehicleTelemetrySetup
 {
     public float m_brakeBias = 0.0f;
     public float m_frontAntiRollStiffness = 0.0f;
@@ -582,7 +579,7 @@ public class UDPVehicleTelemetrySetup
 
 //
 // structure for the general telemetry vehicle data
-public class UDPVehicleTelemetryGeneral
+public sealed class UDPVehicleTelemetryGeneral
 {
     public UDPVec3 m_centerOfGravity;
     public float m_steeringWheelAngle = 0.0f;
@@ -615,7 +612,7 @@ public class UDPVehicleTelemetryGeneral
 
 //
 // structure for the general telemetry vehicle data
-public class UDPVehicleTelemetryConstant
+public sealed class UDPVehicleTelemetryConstant
 {
     public UDPVec3 m_chassisBBMin;
     public UDPVec3 m_chassisBBMax;
@@ -666,7 +663,7 @@ public class UDPVehicleTelemetryConstant
 
 //
 // structure for the telemetry of a single vehicle
-public class UDPVehicleTelemetry
+public sealed class UDPVehicleTelemetry
 {
     ushort m_packetVersion = 0;
     public int m_vehicleId = -1;
