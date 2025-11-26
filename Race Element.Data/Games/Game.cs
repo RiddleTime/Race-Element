@@ -114,7 +114,7 @@ public static class GameExtensions
             { Game.WRC_Generations, 1953520 },
             { Game.ForzaMotorsport, 2440510 },
             { Game.AssettoCorsaRally, 3917090 },
-            { Game.ProjectMotorRacing, 299971 },
+            { Game.ProjectMotorRacing, 299970 },
         }.ToImmutableDictionary();
     }
 
