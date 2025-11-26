@@ -1,9 +1,6 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.ProjectMotorRacing.ProjectMotorRacingUDP;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace RaceElement.Data.Games.ProjectMotorRacing;
 internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
@@ -23,7 +20,7 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         int playerVehicleId = -1;
-        UDPParticipantRaceState participant = null;
+        UDPParticipantRaceState? participant = null;
         foreach (var item in _dataStore.GetLeaderboard())
             if (item.m_isPlayer)
             {
