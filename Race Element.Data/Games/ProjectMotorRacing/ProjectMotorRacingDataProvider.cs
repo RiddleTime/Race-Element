@@ -90,13 +90,13 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
             if (localCar.Tyres.SlipRatio[i] < 0)
                 localCar.Tyres.SlipRatio[i] *= -1;
 
+        // TODO
         localCar.Tyres.SlipAngle = [
             telemetry.m_wheels[0].m_slipAngle,
             telemetry.m_wheels[1].m_slipAngle,
             telemetry.m_wheels[2].m_slipAngle,
             telemetry.m_wheels[3].m_slipAngle,
         ];
-
 
     }
 
