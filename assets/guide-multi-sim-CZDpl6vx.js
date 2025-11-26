@@ -65,7 +65,7 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Set <code>UDP Enabled</code> to <code>On</code></li>
 <li>Set <code>UDP Frequency</code> to <code>60</code></li>
 <li>UDP Port should be <code>7576</code></li>
-<li>UDP HOST should be <code>224.0.0.150</code></li>
+<li>UDP Host should be <code>224.0.0.150</code></li>
 <li>Save (spacebar on keyboard)</li>
 </ol>
 <h1 id="rfactor-2">rFactor 2</h1>
