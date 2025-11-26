@@ -60,7 +60,7 @@ Both simulators require a plugin to be installed before any data can be read fro
 4. Set `UDP Enabled` to `On`
 5. Set `UDP Frequency` to `60`
 6. UDP Port should be `7576`
-7. UDP HOST should be `224.0.0.150`
+7. UDP Host should be `224.0.0.150`
 8. Save (spacebar on keyboard)
 
 # rFactor 2
