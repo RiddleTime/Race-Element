@@ -53,6 +53,10 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
         localCar.Engine.MaxRpm = (int)telemetry.m_drivetrain.m_gears.Last().m_upshiftRPM;
         localCar.Engine.Rpm = (int)telemetry.m_drivetrain.m_engineRPM;
 
+        // Electronics
+        localCar.Electronics.TractionControlActivation = telemetry.m_drivetrain.m_tractionControlActive ? 1 : 0;
+        localCar.Electronics.AbsActivation = telemetry.m_general.m_absActive ? 1 : 0;
+
         // Tyres
         localCar.Tyres.SlipRatio = [
             telemetry.m_wheels[0].m_slipRatio,
