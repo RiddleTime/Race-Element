@@ -58,7 +58,7 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 
     private WheelSlipModel _wheelSlipModel;
 
-    private const Game GamesWithSlipAngle = Game.ForzaHorizon5 | Game.ProjectMotorRacing;
+    private const Game GamesWithSlipAngle = Game.ForzaHorizon5;
     private readonly struct WheelSlipModel(float[] slipRatios, float[] slipAngles)
     {
         public readonly float[] SlipRatios = slipRatios;
