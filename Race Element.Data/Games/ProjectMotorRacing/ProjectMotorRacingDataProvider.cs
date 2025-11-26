@@ -13,7 +13,12 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
 
     internal override int PollingRate() => 100;
 
-
+    private static void ResetData(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
+    {
+        localCar = new();
+        sessionData = new();
+        gameData = new();
+    }
 
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
@@ -26,7 +31,11 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
                 playerVehicleId = item.m_vehicleId;
                 break;
             }
-        if (playerVehicleId == -1 || participant == null) return;
+        if (playerVehicleId == -1 || participant == null)
+        {
+            ResetData(ref localCar, ref sessionData, ref gameData);
+            return;
+        }
 
         TimeSpan sinceLastWrite = _dataStore.TimeSinceLastWrite();
         if (sinceLastWrite > TimeSpan.FromSeconds(1))
@@ -35,7 +44,11 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
             gameData.IsGamePaused = false;
 
         var telemetry = _dataStore.GetTelemetryForVehicle(playerVehicleId);
-        if (telemetry == null) return;
+        if (telemetry == null)
+        {
+            ResetData(ref localCar, ref sessionData, ref gameData);
+            return;
+        }
 
         // car 
         localCar.CarModel.GameId = participant.m_vehicleId;
