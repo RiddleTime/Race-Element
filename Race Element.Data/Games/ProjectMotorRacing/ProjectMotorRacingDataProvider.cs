@@ -25,8 +25,14 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
                 break;
             }
         if (playerVehicleId == -1) return;
+        TimeSpan sinceLastWrite = _dataStore.TimeSinceLastWrite();
+        if (sinceLastWrite > TimeSpan.FromSeconds(1))
+            gameData.IsGamePaused = true;
+        else
+            gameData.IsGamePaused = false;
 
         var telemetry = _dataStore.GetTelemetryForVehicle(playerVehicleId);
+        ;// _dataStore.m_raceInfo.m_state == UDPRaceSessionState.Active;
         if (telemetry == null) return;
 
         // Inputs
@@ -40,10 +46,11 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
         // Physica
         localCar.Physics.Velocity = telemetry.m_general.m_estLinearSpeed * 3.6f;
         localCar.Physics.Acceleration = new(-telemetry.m_chassis.m_accelerationLS.z / 9.80665f, telemetry.m_chassis.m_accelerationLS.y / 9.80665f, telemetry.m_chassis.m_accelerationLS.x / 9.80665f);
+        localCar.Physics.Rotation = new(telemetry.m_chassis.m_quat.x, telemetry.m_chassis.m_quat.y, telemetry.m_chassis.m_quat.z, telemetry.m_chassis.m_quat.w);
 
         // Engine
         localCar.Engine.IsRunning = telemetry.m_drivetrain.m_engineRunning;
-        localCar.Engine.MaxRpm = (int)telemetry.m_constant.m_engineMaxRPM;
+        localCar.Engine.MaxRpm = (int)telemetry.m_drivetrain.m_gears.Last().m_upshiftRPM;
         localCar.Engine.Rpm = (int)telemetry.m_drivetrain.m_engineRPM;
 
         // Tyres

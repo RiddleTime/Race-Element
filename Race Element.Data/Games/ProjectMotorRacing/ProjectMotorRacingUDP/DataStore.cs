@@ -211,17 +211,17 @@ public sealed class DataStore
         }
     }
 
-    public int TimeSinceLastWrite()
+    public TimeSpan TimeSinceLastWrite()
     {
         lock (_lock)
         {
-            return (DateTime.Now - m_writeTimestamp).Seconds;
+            return DateTime.Now - m_writeTimestamp;
         }
     }
 
     private Lock _lock = new Lock();
 
-    private UDPRaceInfo m_raceInfo = null;
+    public UDPRaceInfo m_raceInfo = null;
     private List<UDPParticipantRaceState> m_raceStates = new List<UDPParticipantRaceState>();
     private List<UDPVehicleTelemetry> m_telemetry = new List<UDPVehicleTelemetry>();
 
