@@ -18,13 +18,16 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         int playerVehicleId = -1;
+        UDPParticipantRaceState participant = null;
         foreach (var item in _dataStore.GetLeaderboard())
             if (item.m_isPlayer)
             {
+                participant = item;
                 playerVehicleId = item.m_vehicleId;
                 break;
             }
-        if (playerVehicleId == -1) return;
+        if (playerVehicleId == -1 || participant == null) return;
+
         TimeSpan sinceLastWrite = _dataStore.TimeSinceLastWrite();
         if (sinceLastWrite > TimeSpan.FromSeconds(1))
             gameData.IsGamePaused = true;
@@ -32,8 +35,11 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
             gameData.IsGamePaused = false;
 
         var telemetry = _dataStore.GetTelemetryForVehicle(playerVehicleId);
-        ;// _dataStore.m_raceInfo.m_state == UDPRaceSessionState.Active;
         if (telemetry == null) return;
+
+        // car 
+        localCar.CarModel.GameId = participant.m_vehicleId;
+        localCar.CarModel.GameName = participant.m_vehicleName;
 
         // Inputs
         localCar.Inputs.Throttle = telemetry.m_input.m_accelerator;
@@ -52,6 +58,9 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
         localCar.Engine.IsRunning = telemetry.m_drivetrain.m_engineRunning;
         localCar.Engine.MaxRpm = (int)telemetry.m_drivetrain.m_gears.Last().m_upshiftRPM;
         localCar.Engine.Rpm = (int)telemetry.m_drivetrain.m_engineRPM;
+        localCar.Engine.IsPitLimiterOn = telemetry.m_drivetrain.m_speedLimiterActive;
+        localCar.Engine.FuelLiters = telemetry.m_drivetrain.m_fuelRemaining;
+        localCar.Engine.MaxFuelLiters = telemetry.m_constant.m_fuelCapacity;
 
         // Electronics
         localCar.Electronics.TractionControlActivation = telemetry.m_drivetrain.m_tractionControlActive ? 1 : 0;
