@@ -53,6 +53,16 @@ Both simulators require a plugin to be installed before any data can be read fro
 6. Set Data Out Port to: `5300`
 7. Set Data Out Packet Format to: `Car Dash`
 
+# Project Motor Racing
+1. Start Project Motor Racing
+2. Go to Options (X on keyboard)
+3. Go to Preferences
+4. Set `UDP Enabled` to `On`
+5. Set `UDP Frequency` to `60`
+6. UDP Port should be `7576`
+7. UDP HOST should be `224.0.0.150`
+8. Save (spacebar on keyboard)
+
 # rFactor 2
 1. Open the installation folder of rFactor 2
 2. Go to `Bin64\Plugins`
