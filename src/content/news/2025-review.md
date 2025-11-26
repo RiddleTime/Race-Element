@@ -1,7 +1,7 @@
 ---
 title: A Review of 2025, The Multi Sim Year
 slug: 2025-Review
-description: 14 supported simulators in 2025 and what may be next
+description: 15 supported simulators in 2025 and what may be next
 date: 2025-11-23
 type: news
 ---
@@ -25,8 +25,8 @@ DSX has been a main part of Race Element for the past 1.5 years. DSX adds a lot 
 Forza Horizon 5, without a doubt, is a great game to cruise, just to have fun and chill with your friends. One easily puts in 30–50 hours just by exploring the map and enjoying a bit of multiplayer! DSX Support is also there.
 <br />
 
-# November 2025: Upgraded to .NET 10, with 14 supported simulators.
-What a month! Le Mans Ultimate, rFactor 2 and WRC Generations were added as well as Assetto Corsa Rally which went into Early Access. Another addition is Forza Motorsport 8. All of these support DSX Adaptive Triggers with Race Element and plenty of HUDs to customize your game. With the upgrade to .NET 10 the app's executable has become smaller, this will speed up updates on slower networks.
+# November 2025: Upgraded to .NET 10, with 15 supported simulators.
+What a month! Le Mans Ultimate, rFactor 2 and WRC Generations were added as well as Assetto Corsa Rally which went into Early Access. Two late month additions are Forza Motorsport 8 and Project Motor Racing. All of these support DSX Adaptive Triggers with Race Element and plenty of HUDs to customize your game. With the upgrade to .NET 10 the app's executable has become smaller, this will speed up updates on slower networks.
 <br />
 
 # What is next?
