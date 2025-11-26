@@ -39,12 +39,12 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
 
         // Physica
         localCar.Physics.Velocity = telemetry.m_general.m_estLinearSpeed * 3.6f;
+        localCar.Physics.Acceleration = new(-telemetry.m_chassis.m_accelerationLS.z / 9.80665f, telemetry.m_chassis.m_accelerationLS.y / 9.80665f, telemetry.m_chassis.m_accelerationLS.x / 9.80665f);
 
         // Engine
         localCar.Engine.IsRunning = telemetry.m_drivetrain.m_engineRunning;
-        localCar.Engine.MaxRpm = (int)(telemetry.m_drivetrain.m_engineRPM / telemetry.m_drivetrain.m_engineRevRatio);
+        localCar.Engine.MaxRpm = (int)telemetry.m_constant.m_engineMaxRPM;
         localCar.Engine.Rpm = (int)telemetry.m_drivetrain.m_engineRPM;
-        localCar.Engine.ShiftUpRpm = (int)telemetry.m_constant.m_enginePowerPeakRPM;
 
         // Tyres
         localCar.Tyres.SlipRatio = [
