@@ -16,6 +16,7 @@ type: guide
 <li>Forza Horizon 5</li>
 <li>Forza Motorsport 8</li>
 <li>Le Mans Ultimate</li>
+<li>Project Motor Racing</li>
 <li>RaceRoom</li>
 <li>rFactor 2</li>
 <li>WRC Generations</li>
