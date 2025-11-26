@@ -1,4 +1,4 @@
-const e=`---
+const i=`---
 title: Features
 slug: features
 description: General features
@@ -20,6 +20,7 @@ description: General features
 <li>Forza Motorsport 8</li>
 <li>iRacing</li>
 <li>Le Mans Ultimate</li>
+<li>Project Motor Racing</li>
 <li>RaceRoom</li>
 <li>rFactor 2</li>
 <li>WRC Generations</li>
@@ -68,4 +69,4 @@ description: General features
 <li>Automatic steering lock for certain wheelbases( sets max steering lock based on chosen car).</li>
 <li>Adaptive trigger FFB for PS5 controller in combination with DSX.</li>
 </ul>
-`;export{e as default};
+`;export{i as default};
