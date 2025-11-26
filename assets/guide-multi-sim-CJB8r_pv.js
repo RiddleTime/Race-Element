@@ -57,6 +57,17 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Set Data Out Port to: <code>5300</code></li>
 <li>Set Data Out Packet Format to: <code>Car Dash</code></li>
 </ol>
+<h1 id="project-motor-racing">Project Motor Racing</h1>
+<ol>
+<li>Start Project Motor Racing</li>
+<li>Go to Options (X on keyboard)</li>
+<li>Go to Preferences</li>
+<li>Set <code>UDP Enabled</code> to <code>On</code></li>
+<li>Set <code>UDP Frequency</code> to <code>60</code></li>
+<li>UDP Port should be <code>7576</code></li>
+<li>UDP HOST should be <code>224.0.0.150</code></li>
+<li>Save (spacebar on keyboard)</li>
+</ol>
 <h1 id="rfactor-2">rFactor 2</h1>
 <ol>
 <li>Open the installation folder of rFactor 2</li>
