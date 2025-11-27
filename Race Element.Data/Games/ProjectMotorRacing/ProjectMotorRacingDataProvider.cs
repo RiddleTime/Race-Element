@@ -1,12 +1,16 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.ProjectMotorRacing.ProjectMotorRacingUDP;
+using System.Numerics;
 
 namespace RaceElement.Data.Games.ProjectMotorRacing;
 internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
 {
     private readonly DataStore _dataStore = new DataStore();
     private UDPThread _udpThread;
+
+    private Vector3 _lastGForces = new();
+    private int _sameGForceCount = 0;
 
     internal override int PollingRate() => 100;
 
@@ -31,21 +35,20 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
         if (playerVehicleId == -1 || participant == null)
         {
             ResetData(ref localCar, ref sessionData, ref gameData);
+            gameData.IsGamePaused = true;
             return;
         }
-
-        TimeSpan sinceLastWrite = _dataStore.TimeSinceLastWrite();
-        if (sinceLastWrite > TimeSpan.FromSeconds(1))
-            gameData.IsGamePaused = true;
-        else
-            gameData.IsGamePaused = false;
 
         var telemetry = _dataStore.GetTelemetryForVehicle(playerVehicleId);
         if (telemetry == null)
         {
             ResetData(ref localCar, ref sessionData, ref gameData);
+            gameData.IsGamePaused = true;
             return;
         }
+
+        gameData.IsRunning = true;
+
 
         // car 
         localCar.CarModel.GameId = participant.m_vehicleId;
@@ -95,10 +98,27 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
             telemetry.m_wheels[3].m_slipAngle,
         ];
 
+        // handle game pausing by checking acceleration
+        if (localCar.Physics.Acceleration == _lastGForces)
+        {
+            if (_sameGForceCount < 60)
+                _sameGForceCount++;
+            else
+                gameData.IsGamePaused = true;
+        }
+        else
+        {
+            _sameGForceCount = 0;
+            gameData.IsGamePaused = false;
+        }
+        _lastGForces = localCar.Physics.Acceleration;
+
     }
 
     internal override void Start()
     {
+        _udpThread?.Shutdown(this, new());
+
         _udpThread = new(_dataStore, []);
         _udpThread?.StartThread();
     }
