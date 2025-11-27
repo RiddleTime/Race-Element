@@ -11,6 +11,7 @@ type: news
 <ul>
 <li>Official Assetto Corsa Forums: <strong><a href="https://www.assettocorsa.net/forum/index.php?threads/71454" target="_blank">https://www.assettocorsa.net/forum/index.php?threads/71454</a></strong></li>
 <li>Official RaceRoom Forums: <strong><a href="https://forum.kw-studios.com/index.php?threads/race-element-solutions-for-simracing.19690/" target="_blank">https://forum.kw-studios.com/index.php?threads/race-element-solutions-for-simracing.19690/</a></strong></li>
+<li>Official Project Motor Racing Forums: <strong><a href="https://hub.straight4.com/index.php?threads/653" target="_blank">https://hub.straight4.com/index.php?threads/653</a></strong></li>
 <li>Overtake.GG: <strong><a href="https://www.overtake.gg/downloads/race-element.50578/" target="_blank">https://www.overtake.gg/downloads/race-element.50578/</a></strong></li>
 <li>Steam Guide: <strong><a href="https://steamcommunity.com/sharedfiles/filedetails/?id=2811480721">https://steamcommunity.com/sharedfiles/filedetails/?id=2811480721</a></strong></li>
 </ul>
