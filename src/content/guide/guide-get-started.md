@@ -9,7 +9,7 @@ type: guide
 1. **<a href="https://github.com/RiddleTime/Race-Element/releases/latest" target="_blank">Download</a>** the app. The link will lead you to the latest version at GitHub.  
 2. Place **RaceElement.exe** in any folder of My Documents. If the app is not located there you will encounter issues with the auto-updater.
 3. Then simply run the app. Do **not** run it as admin, since this will prevent some features from working.
-4. If you get a prompt that you need to install .NET, make sure to `install the .NET Desktop Runtime (x64)`.
+4. If you get a prompt that you need to install .NET, make sure to download and install the `.NET Desktop Runtime (x64)` from **<a href="https://dotnet.microsoft.com/en-us/download/dotnet/10.0" target="_blank">https://dotnet.microsoft.com/en-us/download/dotnet/10.0</a>**.
 
 # Guides
 The app includes an about tab which contains a guide section, read this carefully since it includes instructions on how to use for example the HUDs.  
