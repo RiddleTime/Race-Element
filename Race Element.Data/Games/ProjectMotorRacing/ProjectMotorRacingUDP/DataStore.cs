@@ -82,18 +82,18 @@ public sealed class DataStore
         {
             m_raceInfo = null;
             m_raceInfoString = string.Empty;
-            
-            if(m_raceStates != null)
+
+            if (m_raceStates != null)
             {
                 m_raceStates.Clear();
             }
 
-            if(m_prevRaceStates != null)
+            if (m_prevRaceStates != null)
             {
                 m_prevRaceStates.Clear();
             }
 
-            if(m_statusUpdates != null)
+            if (m_statusUpdates != null)
             {
                 m_statusUpdates.Clear();
             }
@@ -109,9 +109,9 @@ public sealed class DataStore
 
     public void UpdateRaceInfoString()
     {
-        lock(_lock)
+        lock (_lock)
         {
-            if(m_raceInfo != null)
+            if (m_raceInfo != null)
             {
                 m_raceInfoString = m_raceInfo.ToString();
             }
@@ -122,10 +122,10 @@ public sealed class DataStore
         }
     }
 
-   
+
     public List<UDPParticipantRaceState> GetLeaderboard()
     {
-        lock(_lock)
+        lock (_lock)
         {
             List<UDPParticipantRaceState> leaderboard = new List<UDPParticipantRaceState>();
             CopyRaceStates(m_raceStates, out leaderboard);
@@ -136,14 +136,14 @@ public sealed class DataStore
 
     public void UpdateStatus()
     {
-        if(m_prevRaceStates == null)
+        if (m_prevRaceStates == null)
         {
             CopyRaceStates(m_raceStates, out m_prevRaceStates);
         }
         else
         {
             List<string> newUpdates = GetLapAndSectorUpdates();
-            if(newUpdates != null)
+            if (newUpdates != null)
             {
                 m_statusUpdates.AddRange(newUpdates);
             }
@@ -164,12 +164,12 @@ public sealed class DataStore
 
     private List<string> GetLapAndSectorUpdates()
     {
-        if(m_raceInfo == null || m_raceInfo.m_state == UDPRaceSessionState.Inactive)
+        if (m_raceInfo == null || m_raceInfo.m_state == UDPRaceSessionState.Inactive)
         {
             return null;
         }
 
-        if(m_raceStates.Count != m_prevRaceStates.Count)
+        if (m_raceStates.Count != m_prevRaceStates.Count)
         {
             return null;
         }
@@ -192,7 +192,7 @@ public sealed class DataStore
                     updates.Add(string.Format("{0} finished lap {1} in {2:0.00} seconds!\r\n", curr.m_driverName, prev.m_currentLap, prev.m_currentLapTime));
                 }
 
-                if(curr.m_sessionFinished && !prev.m_sessionFinished)
+                if (curr.m_sessionFinished && !prev.m_sessionFinished)
                 {
                     updates.Add(string.Format("{0} finished session with a best lap of {1:0.00} seconds!\r\n", curr.m_driverName, curr.m_bestLapTime));
                 }
