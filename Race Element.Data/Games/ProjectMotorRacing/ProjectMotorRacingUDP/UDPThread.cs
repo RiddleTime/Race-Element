@@ -1,5 +1,6 @@
 ﻿using System.Net.Sockets;
 using System.Net;
+using System.Diagnostics;
 
 namespace RaceElement.Data.Games.ProjectMotorRacing.ProjectMotorRacingUDP;
 
@@ -37,7 +38,7 @@ internal sealed class UDPThread
         }
     }
 
-    private T GetOptionValue<T>(string[] args, string option, T defaultValue)
+    private static T GetOptionValue<T>(string[] args, string option, T defaultValue)
     {
         foreach (string s in args)
         {
@@ -80,36 +81,42 @@ internal sealed class UDPThread
         m_dataStore.WriteTimestamp();
     }
 
-    private void DoWork(object thread)
+    private async Task DoWork()
     {
         // Create an endpoint to store the sender's address
         IPEndPoint sender = new IPEndPoint(IPAddress.Any, 0);
 
         while (!m_aborted)
         {
-            // Receive data from a client
             try
             {
-                byte[] data = m_udpClient.Receive(ref sender);
+                var packet = await m_udpClient.ReceiveAsync();
+                byte[] data = packet.Buffer;
                 DecodePacket(ref data);
             }
-            catch (SocketException)
+            catch (Exception e)
             {
-                Console.WriteLine("UDPClient Closed");
+             
             }
         }
+        Debug.WriteLine("--- Stopping PMR UDP thread");
+       
     }
+
 
     public void StartThread()
     {
-        m_updateThread = new Thread(new ParameterizedThreadStart(DoWork));
-        m_updateThread.Start(this);
+        m_updateThread = new Thread(async () => await DoWork());
+        m_updateThread.Start();
     }
 
     public void Shutdown(object sender, EventArgs e)
     {
         m_aborted = true;
-        m_udpClient.Close();
+        m_udpClient?.DropMulticastGroup(m_multicastGroup);
+        m_udpClient?.Close();
+        m_udpClient?.Dispose();
+        m_updateThread?.Join();
     }
 
     private bool m_aborted = false;
