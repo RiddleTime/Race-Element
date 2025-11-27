@@ -29,6 +29,12 @@ public sealed record LocalCarData
     /// </summary>
     public BrakesData Brakes { get; internal set; } = new();
 
+
+    /// <summary>
+    /// Contains all data related to the suspension of the car.
+    /// </summary>
+    public SuspensionData Suspension { get; internal set; } = new();
+
     /// <summary>
     /// Contains all data related to electronical systems in the car, like Traction control or ABS.
     /// </summary>
@@ -108,6 +114,14 @@ public sealed record TyresData
     /// Wheel Slip Ratio
     /// </summary>
     public float[] SlipRatio { get; internal set; } = new float[4];
+}
+
+public sealed record SuspensionData
+{
+    /// <summary>
+    /// The ride height in millimeters (mm).
+    /// </summary>
+    public float[] RideHeight { get; internal set; } = new float[4];
 }
 
 public sealed record BrakesData

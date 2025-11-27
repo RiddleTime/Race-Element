@@ -13,6 +13,7 @@ using RaceElement.Data.Games.Forza;
 using RaceElement.Data.Games.rFactor2;
 using RaceElement.Data.Games.WRC_Generations;
 using RaceElement.Data.Games.AssettoCorsaRally;
+using RaceElement.Data.Games.ProjectMotorRacing;
 
 namespace RaceElement.Data.Common;
 
@@ -148,6 +149,13 @@ public static class SimDataProvider
             case Game.AssettoCorsaRally:
                 {
                     Instance ??= new AssettoCorsaRallyDataProvider();
+                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                    _localCarEventLoop.Run();
+                    break;
+                }
+            case Game.ProjectMotorRacing:
+                {
+                    Instance ??= new ProjectMotorRacingDataProvider();
                     Instance.Update(ref _localCarData, ref _session, ref _gameData);
                     _localCarEventLoop.Run();
                     break;

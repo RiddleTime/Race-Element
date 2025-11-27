@@ -6,6 +6,11 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.5.1.0", "Race Element"+
+                    "\n- Added Project Motor Racing, see the multi-sim guide on the website."+
+                    "\n\nDSX"+
+                    "\n- Added support for Project Motor Racing, depending on the car adjust the thresholds for braking and throttle."
+        },
         {"2.5.0.2", "Assetto Corsa Rally/EVO:"+
                     "\n- Mapped Speed for Speedometer HUD."
         },
