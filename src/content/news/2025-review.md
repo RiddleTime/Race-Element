@@ -6,7 +6,7 @@ date: 2025-11-23
 type: news
 ---
 # October 2024: Going Multi-sim, 4 supported simulators
-Back in October 2024, Race Element went Multi-Sim for the first time, adding Assetto Corsa, iRacing and RaceRoom. Since then the app has gained many features that works across many driving simulators. It not only meant that some of the existing HUDs and features for Assetto Corsa Competizione could be ported, but it also meant that some of them could be rewritten from scratch.
+Back in October 2024, Race Element went Multi-Sim for the first time, Race Element initially started with Assetto Corrsa Competizione, adding Assetto Corsa, iRacing and RaceRoom. Since then the app has gained many features that works across many driving simulators. It not only meant that some of the existing HUDs and features for Assetto Corsa Competizione could be ported, but it also meant that some of them could be rewritten from scratch.
 <br/>
 
 # End of 2024: Automobilista 2, Euro Truck Simulator 2 and American Truck Simulator are now supported, 7 supported simulators
