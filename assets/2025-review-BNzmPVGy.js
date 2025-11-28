@@ -7,7 +7,7 @@ type: news
 ---
 
 <h1 id="october-2024-going-multi-sim-4-supported-simulators">October 2024: Going Multi-sim, 4 supported simulators</h1>
-<p>Back in October 2024, Race Element went Multi-Sim for the first time, adding Assetto Corsa, iRacing and RaceRoom. Since then the app has gained many features that works across many driving simulators. It not only meant that some of the existing HUDs and features for Assetto Corsa Competizione could be ported, but it also meant that some of them could be rewritten from scratch.
+<p>Back in October 2024, Race Element went Multi-Sim for the first time, Race Element initially started with Assetto Corrsa Competizione, adding Assetto Corsa, iRacing and RaceRoom. Since then the app has gained many features that works across many driving simulators. It not only meant that some of the existing HUDs and features for Assetto Corsa Competizione could be ported, but it also meant that some of them could be rewritten from scratch.
 <br/></p>
 <h1 id="end-of-2024-automobilista-2-euro-truck-simulator-2-and-american-truck-simulator-are-now-supported-7-supported-simulators">End of 2024: Automobilista 2, Euro Truck Simulator 2 and American Truck Simulator are now supported, 7 supported simulators</h1>
 <p>Once adding new games to Race Element became easier, AMS2 was added whilst ETS2 and ATS were also added. During this month a new shift bar was also added being able to render up to 200 Hz. The app was also migrated to .NET 9 during this month providing better performance and some extra techniques to write code more efficiently.
