@@ -79,7 +79,7 @@
         <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
         <PackageReference Include="ScottPlot" Version="4.1.69" />
         <PackageReference Include="ScottPlot.WPF" Version="4.1.69" />
-        <PackageReference Include="SharpCompress" Version="0.40.0" />
+        <PackageReference Include="SharpCompress" Version="0.42.0" />
         <PackageReference Include="SLOBSharp" Version="1.1.4" />
         <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
         <PackageReference Include="System.Net.Http" Version="4.3.4" />
