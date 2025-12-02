@@ -26,6 +26,9 @@ internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
 
         [ToolTip("Show the Lap Delta HUD when spectating.")]
         public bool Spectator { get; init; } = false;
+        
+        [ToolTip("Select which delta to show. (Only for iRacing)")]
+        public DeltaTypes DeltaType { get; init; } = DeltaTypes.BestLap;
     }
 
     [ConfigGrouping("Bar", "Adjust bar behavior.")]
@@ -60,4 +63,10 @@ internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
     }
 
     public LapTimeDeltaConfiguration() => GenericConfiguration.AllowRescale = true;
+    public enum DeltaTypes
+    {
+        BestLap,
+        LastLap,
+        OptimalLap
+    }
 }

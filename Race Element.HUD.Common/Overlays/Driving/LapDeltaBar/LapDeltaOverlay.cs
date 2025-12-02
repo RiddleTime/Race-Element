@@ -106,16 +106,39 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
     public sealed override void Render(Graphics g)
     {
         _cachedBackground?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
+            float delta = GetDelta();
 
-        float delta = GetDelta();
-        DrawDeltaBar(g, delta);
-        DrawDeltaText(g, delta);
+            DrawDeltaBar(g, delta);
+            DrawDeltaText(g, delta);
+        
     }
 
     private float GetDelta()
     {
-        float delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS).TotalSeconds;
-
+        float delta = 0f;
+        if (!SimDataProvider.GameData.Name.Equals(Game.iRacing.ToShortName()))
+        {
+            delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS)
+                .TotalSeconds;
+        }
+        else
+        {
+            switch (_config.Delta.DeltaType)
+            {
+                case LapTimeDeltaConfiguration.DeltaTypes.BestLap:
+                    delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS)
+                        .TotalSeconds;
+                    break;
+                case LapTimeDeltaConfiguration.DeltaTypes.LastLap:
+                    delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaLastMs)
+                        .TotalSeconds;
+                    break;
+                case LapTimeDeltaConfiguration.DeltaTypes.OptimalLap:
+                    delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaOptimalMs)
+                        .TotalSeconds;
+                    break;
+            }
+        }
 
         // TODO
         //if (_config.Delta.Spectator)
