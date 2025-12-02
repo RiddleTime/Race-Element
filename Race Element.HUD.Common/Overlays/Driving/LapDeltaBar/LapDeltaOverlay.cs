@@ -19,7 +19,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.LapDeltaBar;
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Lap,
     Game = Game.RaceRoom | Game.iRacing,
-    Authors = ["Reinier Klarenberg", "Dirk Wolf"])]
+    Authors = ["Reinier Klarenberg", "Dirk Wolf", "Connor Molz"])]
 internal sealed class LapDeltaOverlay : CommonAbstractOverlay
 {
     private readonly LapTimeDeltaConfiguration _config = new();
