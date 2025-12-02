@@ -79,6 +79,8 @@ public sealed record SessionData
     public RaceSessionType SessionType { get; set; }
     public SessionPhase Phase { get; set; }
     public float LapDeltaToSessionBestLapMs { get; set; }
+    public float LapDeltaToLastLapMs { get; set; }
+    public float LapDeltaToOptimalLapMs { get; set; }
 
     public bool IsSetupMenuVisible { get; set; }
     public double SessionTimeLeftSecs { get; set; }

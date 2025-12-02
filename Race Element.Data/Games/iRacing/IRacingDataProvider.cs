@@ -54,6 +54,8 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
     private IRacingSdkDatum steeringWheelAngleDatum;
     private IRacingSdkDatum steeringWheelAngleMaxDatum;
     private IRacingSdkDatum lapDeltaToSessionBestLapDatum;
+    private IRacingSdkDatum lapDeltaToSessionLastLapDatum;
+    private IRacingSdkDatum lapDeltaToSessionOptimalLapDatum;
     private IRacingSdkDatum airTempDatum;
     private IRacingSdkDatum windVelDatum;
     private IRacingSdkDatum windDirDatum;
@@ -140,6 +142,8 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
         steeringWheelAngleDatum = _iRacingSDK.Data.TelemetryDataProperties["SteeringWheelAngle"];
         steeringWheelAngleMaxDatum = _iRacingSDK.Data.TelemetryDataProperties["SteeringWheelAngleMax"];
         lapDeltaToSessionBestLapDatum = _iRacingSDK.Data.TelemetryDataProperties["LapDeltaToSessionBestLap"];
+        lapDeltaToSessionLastLapDatum = _iRacingSDK.Data.TelemetryDataProperties["LapDeltaToSessionLastlLap"];
+        lapDeltaToSessionOptimalLapDatum = _iRacingSDK.Data.TelemetryDataProperties["LapDeltaToOptimalLap"];
         airTempDatum = _iRacingSDK.Data.TelemetryDataProperties["AirTemp"];
         windVelDatum = _iRacingSDK.Data.TelemetryDataProperties["WindVel"];
         windDirDatum = _iRacingSDK.Data.TelemetryDataProperties["WindDir"];
@@ -311,8 +315,11 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
 
 
             SessionData.Instance.LapDeltaToSessionBestLapMs = _iRacingSDK.Data.GetFloat(lapDeltaToSessionBestLapDatum);
+            SessionData.Instance.LapDeltaToLastLapMs = _iRacingSDK.Data.GetFloat(lapDeltaToSessionLastLapDatum);
+            SessionData.Instance.LapDeltaToOptimalLapMs = _iRacingSDK.Data.GetFloat(lapDeltaToSessionOptimalLapDatum);
             localCar.Timing.LapTimeDeltaBestMS = (int)(SessionData.Instance.LapDeltaToSessionBestLapMs * 1000.0);
-
+            localCar.Timing.LapTimeDeltaLastMs = (int)(SessionData.Instance.LapDeltaToLastLapMs * 1000.0);
+            localCar.Timing.LapTimeDeltaOptimalMs = (int)(SessionData.Instance.LapDeltaToOptimalLapMs * 1000.0);
 
             SimDataProvider.Session.Weather.AirTemperature = _iRacingSDK.Data.GetFloat(airTempDatum);
             SimDataProvider.Session.Weather.AirVelocity = _iRacingSDK.Data.GetFloat(windVelDatum) * 3.6f;
@@ -772,6 +779,13 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
     public CarLeftRight GetSpotterCallout()
     {
         return SpotterCallout;
+    }
+
+    public override bool IsSpectating(int playerCarIndex, int focusedIndex)
+    {
+        // TODO We need to test how spotting team mates works in a multi-driver team race.
+        // E.g. what telemetry is available
+        return false;
     }
 
     /// <summary>
