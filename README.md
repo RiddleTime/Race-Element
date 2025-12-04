@@ -13,7 +13,7 @@
 [Download Latest Release](https://github.com/RiddleTime/Race-Element/releases/latest)
 
 
-## App Requires .NET 10
+## App Requires .NET 10 Desktop Runtime
 https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-10.0.0-windows-x64-installer
 
 ### App
