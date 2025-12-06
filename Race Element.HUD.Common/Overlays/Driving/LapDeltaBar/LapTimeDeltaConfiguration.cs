@@ -1,5 +1,6 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
+using RaceElement.Data.Games;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.LapDeltaBar;
 
@@ -27,6 +28,7 @@ internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
         [ToolTip("Show the Lap Delta HUD when spectating.")]
         public bool Spectator { get; init; } = false;
         
+        [HideForGame(Game.RaceRoom)]
         [ToolTip("Select which delta to show. (Only for iRacing)")]
         public DeltaTypes DeltaType { get; init; } = DeltaTypes.BestLap;
     }
