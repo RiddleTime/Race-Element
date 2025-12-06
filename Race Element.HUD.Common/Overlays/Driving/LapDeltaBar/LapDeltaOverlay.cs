@@ -123,21 +123,13 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
         }
         else
         {
-            switch (_config.Delta.DeltaType)
+            delta = _config.Delta.DeltaType switch
             {
-                case LapTimeDeltaConfiguration.DeltaTypes.BestLap:
-                    delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS)
-                        .TotalSeconds;
-                    break;
-                case LapTimeDeltaConfiguration.DeltaTypes.LastLap:
-                    delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaLastMs)
-                        .TotalSeconds;
-                    break;
-                case LapTimeDeltaConfiguration.DeltaTypes.OptimalLap:
-                    delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaOptimalMs)
-                        .TotalSeconds;
-                    break;
-            }
+                LapTimeDeltaConfiguration.DeltaTypes.BestLap => (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS).TotalSeconds,
+                LapTimeDeltaConfiguration.DeltaTypes.LastLap => (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaLastMs).TotalSeconds,
+                LapTimeDeltaConfiguration.DeltaTypes.OptimalLap => (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaOptimalMs).TotalSeconds,
+                _ => 0
+            };
         }
 
         // TODO
