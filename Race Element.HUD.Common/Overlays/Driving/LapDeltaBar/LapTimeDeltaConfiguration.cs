@@ -7,7 +7,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.LapDeltaBar;
 internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
 {
     [ConfigGrouping("Delta", "Adjust how the delta is displayed")]
-    public DeltaGrouping Delta { get; init; } = new DeltaGrouping();
+    public DeltaGrouping Delta { get; init; } = new();
     public sealed class DeltaGrouping
     {
         [ToolTip("Sets the maximum range in seconds for the delta bar.")]
@@ -24,17 +24,19 @@ internal sealed class LapTimeDeltaConfiguration : OverlayConfiguration
 
         [ToolTip("Hide the Lap Delta HUD during a Race session.")]
         public bool HideForRace { get; init; } = false;
+    }
 
-        [ToolTip("Show the Lap Delta HUD when spectating.")]
-        public bool Spectator { get; init; } = false;
-        
-        [HideForGame(Game.RaceRoom)]
-        [ToolTip("Select which delta to show. (Only for iRacing)")]
+    [HideForGame(Game.RaceRoom)]
+    [ConfigGrouping("Data", "Set a custom data source.")]
+    public DataGrouping Data { get; init; } = new();
+    public sealed class DataGrouping
+    {
+        [ToolTip("Select which delta to show")]
         public DeltaTypes DeltaType { get; init; } = DeltaTypes.BestLap;
     }
 
     [ConfigGrouping("Bar", "Adjust bar behavior.")]
-    public BarGrouping Bar { get; init; } = new BarGrouping();
+    public BarGrouping Bar { get; init; } = new();
     public sealed class BarGrouping
     {
         [ToolTip("Sets the Width of the Delta Bar.")]

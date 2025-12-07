@@ -106,46 +106,29 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
     public sealed override void Render(Graphics g)
     {
         _cachedBackground?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
-            float delta = GetDelta();
+        float delta = GetDelta();
 
-            DrawDeltaBar(g, delta);
-            DrawDeltaText(g, delta);
-        
+        DrawDeltaBar(g, delta);
+        DrawDeltaText(g, delta);
+
     }
 
     private float GetDelta()
     {
-        float delta = 0f;
-        if (!SimDataProvider.GameData.Name.Equals(Game.iRacing.ToShortName()))
-        {
-            delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS)
-                .TotalSeconds;
-        }
-        else
-        {
-            delta = _config.Delta.DeltaType switch
+        float delta;
+
+        Game gamesWithDeltaTypes = Game.iRacing; // Extend this when other games support different delta types. ie..  Game.iRacing | Game.RaceRoom;
+        if (GameWhenStarted.HasFlag(gamesWithDeltaTypes))
+            delta = _config.Data.DeltaType switch
             {
                 LapTimeDeltaConfiguration.DeltaTypes.BestLap => (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS).TotalSeconds,
                 LapTimeDeltaConfiguration.DeltaTypes.LastLap => (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaLastMs).TotalSeconds,
                 LapTimeDeltaConfiguration.DeltaTypes.OptimalLap => (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaOptimalMs).TotalSeconds,
                 _ => 0
             };
-        }
-
-        // TODO
-        //if (_config.Delta.Spectator)
-        //{
-        //    int focusedIndex = SessionData.Instance.FocusedCarIndex;
-        //    if (SimDataProvider.Instance.IsSpectating(SessionData.Instance.PlayerCarIndex, focusedIndex))
-        //        lock (SessionData.Instance.Cars)
-        //        {
-        //            if (SessionData.Instance.Cars.Any())
-        //            {
-        //                var car = SessionData.Instance.Cars.First(car => car.Key == focusedIndex);
-        //                delta = car.Value.LapDeltaToSessionBestLap;
-        //            }
-        //        }
-        //}
+        else
+            delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS)
+                 .TotalSeconds;
 
         delta.Clip(-_config.Delta.MaxDelta, _config.Delta.MaxDelta);
 
