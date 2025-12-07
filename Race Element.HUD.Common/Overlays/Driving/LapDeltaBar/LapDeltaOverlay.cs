@@ -1,5 +1,4 @@
 ﻿using RaceElement.Data.Common;
-using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -40,11 +39,6 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
         Height += _font.Height * 1;
 
         RefreshRateHz = 5;
-    }
-
-    public sealed override void SetupPreviewData()
-    {
-
     }
 
     public sealed override void BeforeStart()
@@ -88,19 +82,6 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
         _cachedNegativeDelta?.Dispose();
 
         _font?.Dispose();
-    }
-
-    public sealed override bool ShouldRender()
-    {
-        // TODO
-        //if (_config.Delta.HideForRace && !IsRepositioning && SessionData.Instance.SessionType == RaceSessionType.Race)
-        //    return false;
-
-        /* TODO
-        if (_config.Delta.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
-            return true; */
-
-        return base.ShouldRender();
     }
 
     public sealed override void Render(Graphics g)
