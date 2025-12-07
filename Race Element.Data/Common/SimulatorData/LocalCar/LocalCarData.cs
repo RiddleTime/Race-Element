@@ -256,6 +256,16 @@ public sealed record TimingData
     /// Current best lap, -1 is invalid.
     /// </summary>
     public int LapTimeBestMs { get; internal set; } = -1;
+    
+    /// <summary>
+    /// Delta to last laptime in milliseconds (Reported by iRacing)
+    /// </summary>
+    public int LapTimeDeltaLastMs {get; internal set;} = 0;
+    
+    /// <summary>
+    /// Delta to personal optimal laptime in milliseconds (Reported by iRacing)
+    /// </summary>
+    public int LapTimeDeltaOptimalMs { get; internal set; } = 0;
 
     public bool HasLapTimeBest { get; internal set; } = false;
 

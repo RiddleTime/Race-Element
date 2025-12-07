@@ -1,5 +1,4 @@
 ﻿using RaceElement.Data.Common;
-using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -19,7 +18,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.LapDeltaBar;
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Lap,
     Game = Game.RaceRoom | Game.iRacing,
-    Authors = ["Reinier Klarenberg", "Dirk Wolf"])]
+    Authors = ["Reinier Klarenberg", "Dirk Wolf", "Connor Molz"])]
 internal sealed class LapDeltaOverlay : CommonAbstractOverlay
 {
     private readonly LapTimeDeltaConfiguration _config = new();
@@ -40,11 +39,6 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
         Height += _font.Height * 1;
 
         RefreshRateHz = 5;
-    }
-
-    public sealed override void SetupPreviewData()
-    {
-
     }
 
     public sealed override void BeforeStart()
@@ -90,47 +84,32 @@ internal sealed class LapDeltaOverlay : CommonAbstractOverlay
         _font?.Dispose();
     }
 
-    public sealed override bool ShouldRender()
-    {
-        // TODO
-        //if (_config.Delta.HideForRace && !IsRepositioning && SessionData.Instance.SessionType == RaceSessionType.Race)
-        //    return false;
-
-        /* TODO
-        if (_config.Delta.Spectator && RaceSessionState.IsSpectating(pageGraphics.PlayerCarID, broadCastRealTime.FocusedCarIndex))
-            return true; */
-
-        return base.ShouldRender();
-    }
-
     public sealed override void Render(Graphics g)
     {
         _cachedBackground?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
-
         float delta = GetDelta();
+
         DrawDeltaBar(g, delta);
         DrawDeltaText(g, delta);
+
     }
 
     private float GetDelta()
     {
-        float delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS).TotalSeconds;
+        float delta;
 
-
-        // TODO
-        //if (_config.Delta.Spectator)
-        //{
-        //    int focusedIndex = SessionData.Instance.FocusedCarIndex;
-        //    if (SimDataProvider.Instance.IsSpectating(SessionData.Instance.PlayerCarIndex, focusedIndex))
-        //        lock (SessionData.Instance.Cars)
-        //        {
-        //            if (SessionData.Instance.Cars.Any())
-        //            {
-        //                var car = SessionData.Instance.Cars.First(car => car.Key == focusedIndex);
-        //                delta = car.Value.LapDeltaToSessionBestLap;
-        //            }
-        //        }
-        //}
+        Game gamesWithDeltaTypes = Game.iRacing; // Extend this when other games support different delta types. ie..  Game.iRacing | Game.RaceRoom;
+        if (GameWhenStarted.HasFlag(gamesWithDeltaTypes))
+            delta = _config.Data.DeltaType switch
+            {
+                LapTimeDeltaConfiguration.DeltaTypes.BestLap => (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS).TotalSeconds,
+                LapTimeDeltaConfiguration.DeltaTypes.LastLap => (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaLastMs).TotalSeconds,
+                LapTimeDeltaConfiguration.DeltaTypes.OptimalLap => (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaOptimalMs).TotalSeconds,
+                _ => 0
+            };
+        else
+            delta = (float)TimeSpan.FromMilliseconds(SimDataProvider.LocalCar.Timing.LapTimeDeltaBestMS)
+                 .TotalSeconds;
 
         delta.Clip(-_config.Delta.MaxDelta, _config.Delta.MaxDelta);
 
