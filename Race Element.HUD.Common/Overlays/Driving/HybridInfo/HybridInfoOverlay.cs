@@ -107,7 +107,7 @@ public class HybridInfoOverlay: CommonAbstractOverlay
 
     private float GetEnergyLevel()
     {
-        return 0.0f;
+        return SimDataProvider.LocalCar.Electronics.PushToPassLevel;
     }
     
     private void DrawEnergyBar(Graphics g, float energyLevel)
