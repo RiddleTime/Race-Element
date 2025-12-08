@@ -74,6 +74,7 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
     private IRacingSdkDatum isReplayPlayingDatum;
     private IRacingSdkDatum isInGarageDatum;
     private IRacingSdkDatum playerCarIdxDatum;
+    private IRacingSdkDatum pushToPassLevelDatum;
 
     private bool datumsInitialized = false;
 
@@ -159,6 +160,7 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
         isInGarageDatum = _iRacingSDK.Data.TelemetryDataProperties["IsInGarage"];
         isReplayPlayingDatum = _iRacingSDK.Data.TelemetryDataProperties["IsReplayPlaying"];
         playerCarIdxDatum = _iRacingSDK.Data.TelemetryDataProperties["PlayerCarIdx"];
+        pushToPassLevelDatum = _iRacingSDK.Data.TelemetryDataProperties["EnergyERSBatteryPct"];
 
         datumsInitialized = true;
     }
@@ -312,6 +314,7 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
             float steeringRadians = -_iRacingSDK.Data.GetFloat(steeringWheelAngleDatum) * 2;
             float steeringPercentage = Single.RadiansToDegrees(steeringRadians) / localCar.Inputs.MaxSteeringAngle;
             localCar.Inputs.Steering = Math.Clamp(steeringPercentage, -1, 1);
+            localCar.Electronics.PushToPassLevel = _iRacingSDK.Data.GetFloat(pushToPassLevelDatum) * 100; // 0-1 to 0-100%
 
 
             SessionData.Instance.LapDeltaToSessionBestLapMs = _iRacingSDK.Data.GetFloat(lapDeltaToSessionBestLapDatum);
