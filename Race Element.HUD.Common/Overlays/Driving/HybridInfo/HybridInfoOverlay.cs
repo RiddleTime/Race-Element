@@ -77,18 +77,18 @@ public sealed class HybridInfoOverlay: CommonAbstractOverlay
                     _config.Colors.ThresholdLowColor));
                 g.FillPath(brush, path);
             });
+            
+            Width = _config.Bar.Width + 1;
+            Height = _config.Bar.Height + 1;
+        
+            Height += _font.Height * 1;
+
+            RefreshRateHz = 30;
+            _config.GenericConfiguration.AllowRescale = true;
     }
     
     public sealed override void BeforeStop()
     {
-        Width = _config.Bar.Width + 1;
-        Height = _config.Bar.Height + 1;
-        
-        Height += _font.Height * 1;
-
-        RefreshRateHz = 30;
-        _config.GenericConfiguration.AllowRescale = true;
-        
         _cachedBackground?.Dispose();
         _cachedEnergyStage1?.Dispose();
         _cachedEnergyStage2?.Dispose();
