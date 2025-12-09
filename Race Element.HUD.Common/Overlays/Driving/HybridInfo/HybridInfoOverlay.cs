@@ -62,21 +62,27 @@ public sealed class HybridInfoOverlay: CommonAbstractOverlay
             {
                 Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * Scale), (int)(_config.Bar.Height * Scale));
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, cornerRadius, 0, 0, cornerRadius);
-                g.FillPath(new SolidBrush(Color.FromArgb(_config.Colors.ThresholdHighOpacity, _config.Colors.ThresholdHighColor)), path);
+                using SolidBrush brush = new(Color.FromArgb(_config.Colors.ThresholdHighOpacity,
+                    _config.Colors.ThresholdHighColor));
+                g.FillPath(brush, path);
             });
 
             _cachedEnergyStage2 = new CachedBitmap((int)(_config.Bar.Width / 2 * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
             {
                 Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * Scale), (int)(_config.Bar.Height * Scale));
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, 0, cornerRadius, cornerRadius, 0);
-                g.FillPath(new SolidBrush(Color.FromArgb(_config.Colors.ThresholdMediumOpacity, _config.Colors.ThresholdMediumColor)), path);
+                using SolidBrush brush = new(Color.FromArgb(_config.Colors.ThresholdMediumOpacity,
+                    _config.Colors.ThresholdMediumColor));
+                g.FillPath(brush, path);
             });
             
             _cachedEnergyStage3 = new CachedBitmap((int)(_config.Bar.Width / 2 * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
             {
                 Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * Scale), (int)(_config.Bar.Height * Scale));
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, 0, cornerRadius, cornerRadius, 0);
-                g.FillPath(new SolidBrush(Color.FromArgb(_config.Colors.ThresholdLowOpacity, _config.Colors.ThresholdLowColor)), path);
+                using SolidBrush brush = new(Color.FromArgb(_config.Colors.ThresholdLowOpacity,
+                    _config.Colors.ThresholdLowColor));
+                g.FillPath(brush, path);
             });
     }
     
