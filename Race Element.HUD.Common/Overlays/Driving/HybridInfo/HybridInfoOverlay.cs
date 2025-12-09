@@ -32,18 +32,11 @@ public sealed class HybridInfoOverlay: CommonAbstractOverlay
     private CachedBitmap _cachedEnergyStage3;
     
     private float _energyStringWidth = -1;
-    
-    
+
+
     public HybridInfoOverlay(Rectangle rectangle) : base(rectangle, "Hybrid Info")
     {
-        Width = _config.Bar.Width + 1;
-        Height = _config.Bar.Height + 1;
-
         _font = FontUtil.FontSegoeMono(_config.Bar.FontSize);
-        Height += _font.Height * 1;
-
-        RefreshRateHz = 30;
-        _config.GenericConfiguration.AllowRescale = true;
     }
     
     public sealed override void BeforeStart()
@@ -88,6 +81,14 @@ public sealed class HybridInfoOverlay: CommonAbstractOverlay
     
     public sealed override void BeforeStop()
     {
+        Width = _config.Bar.Width + 1;
+        Height = _config.Bar.Height + 1;
+        
+        Height += _font.Height * 1;
+
+        RefreshRateHz = 30;
+        _config.GenericConfiguration.AllowRescale = true;
+        
         _cachedBackground?.Dispose();
         _cachedEnergyStage1?.Dispose();
         _cachedEnergyStage2?.Dispose();
