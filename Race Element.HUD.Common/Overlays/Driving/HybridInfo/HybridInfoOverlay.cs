@@ -18,7 +18,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.HybridInfo;
     Game = Game.iRacing
 )]
 
-public class HybridInfoOverlay: CommonAbstractOverlay
+public sealed class HybridInfoOverlay: CommonAbstractOverlay
 {
     private readonly HybridInfoConfiguration _config = new();
     
@@ -47,8 +47,6 @@ public class HybridInfoOverlay: CommonAbstractOverlay
     
     public sealed override void BeforeStart()
     {
-        try
-        {
             int cornerRadius = (int)(_config.Bar.Roundness * Scale);
 
             _cachedBackground = new CachedBitmap((int)(_config.Bar.Width * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
@@ -79,11 +77,6 @@ public class HybridInfoOverlay: CommonAbstractOverlay
                 using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, 0, cornerRadius, cornerRadius, 0);
                 g.FillPath(new SolidBrush(Color.FromArgb(_config.Colors.ThresholdLowOpacity, _config.Colors.ThresholdLowColor)), path);
             });
-        }
-        catch (Exception e)
-        {
-            Debug.WriteLine(e);
-        }
     }
     
     public sealed override void BeforeStop()
@@ -96,7 +89,7 @@ public class HybridInfoOverlay: CommonAbstractOverlay
         _font?.Dispose();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         _cachedBackground?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
         float energyLevel = GetEnergyLevel();

@@ -4,7 +4,7 @@ using RaceElement.HUD.Overlay.Configuration;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.HybridInfo;
 
-public class HybridInfoConfiguration: OverlayConfiguration
+public sealed class HybridInfoConfiguration: OverlayConfiguration
 {
     [ConfigGrouping("Bar", "Adjust bar behavior.")]
     public BarGrouping Bar { get; init; } = new();
