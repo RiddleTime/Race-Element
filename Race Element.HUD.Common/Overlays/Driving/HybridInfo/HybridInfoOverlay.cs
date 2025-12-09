@@ -100,16 +100,12 @@ public sealed class HybridInfoOverlay: CommonAbstractOverlay
     public sealed override void Render(Graphics g)
     {
         _cachedBackground?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
-        float energyLevel = GetEnergyLevel();
+        float energyLevel = SimDataProvider.LocalCar.Electronics.PushToPassLevel;
         
         DrawEnergyBar(g, energyLevel);
         DrawEnergyText(g, energyLevel);
     }
-
-    private float GetEnergyLevel()
-    {
-        return SimDataProvider.LocalCar.Electronics.PushToPassLevel;
-    }
+    
     
     private void DrawEnergyBar(Graphics g, float energyLevel)
     {
@@ -140,7 +136,7 @@ public sealed class HybridInfoOverlay: CommonAbstractOverlay
             drawWidth.ClipMin(1);
 
             g.SetClip(new Rectangle(0, 0, (int)drawWidth, _config.Bar.Height));
-            _cachedEnergyStage1?.Draw(g, 0, 0, width, _config.Bar.Height);
+            _cachedEnergyStage3?.Draw(g, 0, 0, width, _config.Bar.Height);
             g.ResetClip();
         }
         
