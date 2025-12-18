@@ -54,10 +54,8 @@ internal sealed class DsxJob(DsxOverlay? overlay) : AbstractLoopJob
         }
     }
 
-
-
     public override void AfterCancel()
     {
-        StopClient();
+        overlay?.StopClient();
     }
 }
