@@ -81,6 +81,18 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
         _endPoint = new IPEndPoint(Triggers.localhost, _config.UDP.Port);
     }
 
+    internal void StopClient()
+    {
+        _hasSetLighting = false;
+        DsxPacket resetPacket = new();
+        resetPacket.AddResetToPacket(0);
+        Send(resetPacket);
+
+        _client?.Close();
+        _client?.Dispose();
+        _client = null;
+    }
+
     internal void Send(DsxPacket data)
     {
         string packet = Triggers.PacketToJson(data);
