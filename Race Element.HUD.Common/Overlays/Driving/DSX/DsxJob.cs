@@ -1,14 +1,33 @@
 ﻿using RaceElement.Core.Jobs.Loop;
+using RaceElement.Data.Games;
 using static RaceElement.HUD.Common.Overlays.Driving.DSX.Resources;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
 
 internal sealed class DsxJob(DsxOverlay overlay) : AbstractLoopJob
 {
+    private bool _hasSetLighting = false;
+
     public sealed override void RunAction()
     {
         //if (!overlay.ShouldRender())
         //    return;
+
+        if (!GameManager.IsGameRunning)
+        {
+            overlay?._client?.Close();
+            overlay?._client?.Dispose();
+
+
+            if (overlay._hasSetLighting)
+            {
+                DsxPacket resetPacket = new();
+                resetPacket.AddResetToPacket(0);
+                overlay.Send(resetPacket);
+                overlay._hasSetLighting = false;
+            }
+            return;
+        }
 
         if (overlay._client == null)
         {

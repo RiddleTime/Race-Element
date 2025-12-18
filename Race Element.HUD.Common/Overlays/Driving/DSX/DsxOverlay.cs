@@ -26,6 +26,8 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
     internal UdpClient _client;
     internal IPEndPoint _endPoint;
 
+    internal bool _hasSetLighting = false;
+
     public DsxOverlay(Rectangle rectangle) : base(rectangle, "DSX")
     {
         Width = 1; Height = 1;
@@ -70,6 +72,7 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
         {
             HandleResponse(lightingReponse);
         }
+        _hasSetLighting = true;
     }
 
     internal void CreateEndPoint()
