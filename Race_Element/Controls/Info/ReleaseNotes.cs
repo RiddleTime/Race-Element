@@ -8,7 +8,7 @@ public static class ReleaseNotes
     {
         {"2.5.3.0", "DSX"+
                     "\n- Race Element now disconnects from DSX if there is no supported game running."+
-                    "\niRacing"+
+                    "\n\niRacing"+
                     "\n- Lap Delta Bar HUD: Added 3 sources for delta calculation: Session Best, Last Lap and Optimal Lap. (By ConnorMolz)"
         },
         {"2.5.1.0", "Race Element"+
