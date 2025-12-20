@@ -98,6 +98,13 @@ internal sealed class ProjectMotorRacingDataProvider : AbstractSimDataProvider
             telemetry.m_wheels[3].m_slipAngle,
         ];
 
+        localCar.Tyres.Pressure = [
+            telemetry.m_wheels[0].m_pressure,
+            telemetry.m_wheels[1].m_pressure,
+            telemetry.m_wheels[2].m_pressure,
+            telemetry.m_wheels[3].m_pressure,
+        ];
+
         // handle game pausing by checking acceleration
         if (localCar.Physics.Acceleration == _lastGForces)
         {

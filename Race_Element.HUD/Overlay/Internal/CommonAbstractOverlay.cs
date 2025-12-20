@@ -21,6 +21,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
     public virtual void BeforeStop() { }
     public virtual bool ShouldRender() => DefaultShouldRender();
 
+    private readonly Lock _lock = new();
 
     protected CommonAbstractOverlay(Rectangle rectangle, string Name)
     {
@@ -314,7 +315,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         if (!AllowReposition)
             return;
 
-        lock (this)
+        lock (_lock)
         {
             try
             {

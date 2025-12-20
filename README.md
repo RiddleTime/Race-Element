@@ -13,7 +13,7 @@
 [Download Latest Release](https://github.com/RiddleTime/Race-Element/releases/latest)
 
 
-## App Requires .NET 10
+## App Requires .NET 10 Desktop Runtime
 https://dotnet.microsoft.com/en-us/download/dotnet/thank-you/runtime-desktop-10.0.0-windows-x64-installer
 
 ### App
@@ -35,10 +35,10 @@ Free code signing provided by [SignPath.io](https://signpath.io?utm_source=found
 - [iFuSiiOnzZ](https://github.com/iFuSiiOnzZ)
 - [KrisV147](https://github.com/KrisV147)
 - [floriwan](https://github.com/floriwan)
+- [ConnorMolz](https://github.com/ConnorMolz)
 - [Andrei-Jianu](https://github.com/Andrei-Jianu)
 - [Dirk](https://github.com/Dirk)
 - [Florian](https://github.com/Florian)
-- [ConnorMolz](https://github.com/ConnorMolz)
 - [goeflo](https://github.com/goeflo)
 - [GitHub-Action](https://github.com/GitHub-Action)
 - [Andi-Maier](https://github.com/Andi-Maier)

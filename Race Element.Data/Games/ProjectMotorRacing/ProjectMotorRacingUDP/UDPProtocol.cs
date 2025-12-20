@@ -267,7 +267,7 @@ public sealed class UDPVehicleTelemetryWheel
     UDPVec3 m_forceLS;
     UDPVec3 m_momentLS;
     float m_contactRadius = 0.0f;
-    float m_pressure = 0.0f;
+    public float m_pressure = 0.0f;
     float m_inclination = 0.0f;
     public float m_slipRatio = 0.0f;
     public float m_slipAngle = 0.0f;
@@ -275,10 +275,10 @@ public sealed class UDPVehicleTelemetryWheel
     // thermodynamics data
     UDPVec3 m_tread;
     float m_carcass = 0.0f;
-    float m_internalAir = 0.0f;
-    float m_wellAir = 0.0f;
-    float m_rim = 0.0f;
-    float m_brake = 0.0f;
+    public float m_internalAir = 0.0f;
+    public float m_wellAir = 0.0f;
+    public float m_rim = 0.0f;
+    public float m_brake = 0.0f;
 
     // suspension data
     float m_springStrain = 0.0f;
