@@ -5,6 +5,7 @@ using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Text;
 
@@ -28,10 +29,10 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
 
     public AccelerationTester(Rectangle rectangle) : base(rectangle, "Acceleration Tester")
     {
-        Width = 400;
-        Height = 400;
+        Width = 600;
+        Height = 300;
 
-        _infoPanel = new InfoPanel(12, 400);
+        _infoPanel = new InfoPanel(12, 600);
         _timingJob = new AccelerationTimingJob() { IntervalMillis = 10 };
     }
 
@@ -48,8 +49,12 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
 
     public override void Render(Graphics g)
     {
+        _infoPanel.AddLine("Phase", _timingJob?.PhaseDescriptions[_timingJob.Phase]);
+        _infoPanel.AddLine("0-100 km/h", _timingJob?.RecordedTimes[AccelerationTypes.ZeroToHundred] == default ? "-" : _timingJob.RecordedTimes[AccelerationTypes.ZeroToHundred].ToString(@"s\.fff") + " s");
+        _infoPanel.AddLine("100-200 km/h", _timingJob?.RecordedTimes[AccelerationTypes.HundredToTwoHundred] == default ? "-" : _timingJob.RecordedTimes[AccelerationTypes.HundredToTwoHundred].ToString(@"s\.fff") + " s");
+        _infoPanel.AddLine("200-300 km/h", _timingJob?.RecordedTimes[AccelerationTypes.TwoHundredToThreeHundred] == default ? "-" : _timingJob.RecordedTimes[AccelerationTypes.TwoHundredToThreeHundred].ToString(@"s\.fff") + " s");
+        _infoPanel.Draw(g);
     }
-
 
     internal enum AccelerationPhase
     {
@@ -78,7 +83,7 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
         public Dictionary<AccelerationPhase, string> PhaseDescriptions = new()
         {
             { AccelerationPhase.Reset, "Release handbrake and stop the car." },
-            { AccelerationPhase.HandbrakePulled, "Keep holding the handbrake for 1 second." },
+            { AccelerationPhase.HandbrakePulled, "Hold the handbrake for 1 second." },
             { AccelerationPhase.Ready, "Ready! Release the handbrake to start accelerating." },
             { AccelerationPhase.Accelerating, "Accelerating..." },
             { AccelerationPhase.Completed, "Completed!" }
@@ -100,6 +105,7 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
 
         public override void RunAction()
         {
+            Debug.WriteLine(Phase);
             switch (Phase)
             {
                 case AccelerationPhase.Reset:
@@ -108,25 +114,27 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
                         RecordedTimes[AccelerationTypes.HundredToTwoHundred] = default;
                         RecordedTimes[AccelerationTypes.TwoHundredToThreeHundred] = default;
 
-
-                        if (!IsHandBrakePulled || SimDataProvider.LocalCar.Physics.Velocity > 0.5f)
-                            Phase = AccelerationPhase.Reset;
-                        else if (IsHandBrakePulled)
+                        if (IsHandBrakePulled && SimDataProvider.LocalCar.Physics.Velocity < 0.5f)
+                        {
+                            _lastHandbrakePullTime = TimeProvider.System.GetTimestamp();
                             Phase = AccelerationPhase.HandbrakePulled;
+                        }
+
                         break;
                     }
                 case AccelerationPhase.HandbrakePulled:
                     {
-                        if (IsHandBrakePulled && SimDataProvider.LocalCar.Physics.Velocity < 0.5f)
+                        if (!IsHandBrakePulled)
                         {
-                            if (_lastHandbrakePullTime == default)
-                                _lastHandbrakePullTime = TimeProvider.System.GetTimestamp();
-                            else if (TimeProvider.System.GetElapsedTime(_lastHandbrakePullTime) >= TimeSpan.FromSeconds(1))
-                                Phase = AccelerationPhase.HandbrakePulled;
-                        }
-                        else
                             _lastHandbrakePullTime = default;
+                            Phase = AccelerationPhase.Reset;
+                        }
 
+                        if (SimDataProvider.LocalCar.Physics.Velocity < 0.1f)
+                        {
+                            if (TimeProvider.System.GetElapsedTime(_lastHandbrakePullTime) >= TimeSpan.FromSeconds(1))
+                                Phase = AccelerationPhase.Ready;
+                        }
                         break;
                     }
                 case AccelerationPhase.Ready:
@@ -135,15 +143,19 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
                         {
                             Phase = AccelerationPhase.Accelerating;
                             _accelerationStartTime = TimeProvider.System.GetTimestamp();
-                            Phase = AccelerationPhase.Accelerating;
                             break;
                         }
-                        else if (IsHandBrakePulled)
-                            Phase = AccelerationPhase.Reset;
+
                         break;
                     }
                 case AccelerationPhase.Accelerating:
                     {
+                        if (SimDataProvider.LocalCar.Inputs.Throttle < 0.1f)
+                        {
+                            Phase = AccelerationPhase.Reset;
+                            break;
+                        }
+
                         if (RecordedTimes[AccelerationTypes.ZeroToHundred] == default && SimDataProvider.LocalCar.Physics.Velocity >= 100f)
                         {
                             RecordedTimes[AccelerationTypes.ZeroToHundred] = TimeProvider.System.GetElapsedTime(_accelerationStartTime);
@@ -164,6 +176,10 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
                     }
                 case AccelerationPhase.Completed:
                     {
+                        if (SimDataProvider.LocalCar.Physics.Velocity < 1 && IsHandBrakePulled)
+                        {
+                            Phase = AccelerationPhase.Reset;
+                        }
                         break;
                     }
             }
