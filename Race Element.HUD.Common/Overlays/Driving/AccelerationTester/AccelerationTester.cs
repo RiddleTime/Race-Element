@@ -1,13 +1,9 @@
 ﻿using RaceElement.Core.Jobs.Loop;
 using RaceElement.Data.Common;
-using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.AccelerationTester;
 
@@ -22,11 +18,6 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
 
     private readonly AccelerationTimingJob _timingJob;
 
-    private class AccelerationTesterConfiguration : OverlayConfiguration
-    {
-
-    }
-
     public AccelerationTester(Rectangle rectangle) : base(rectangle, "Acceleration Tester")
     {
         Width = 600;
@@ -36,23 +27,24 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
         _timingJob = new AccelerationTimingJob() { IntervalMillis = 10 };
     }
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         _timingJob?.Run();
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _infoPanel?.Dispose();
         _timingJob?.CancelJoin();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         _infoPanel.AddLine("Phase", _timingJob?.PhaseDescriptions[_timingJob.Phase]);
-        _infoPanel.AddLine("0-100 km/h", _timingJob?.RecordedTimes[AccelerationTypes.ZeroToHundred] == default ? "-" : _timingJob.RecordedTimes[AccelerationTypes.ZeroToHundred].ToString(@"s\.fff") + " s");
-        _infoPanel.AddLine("100-200 km/h", _timingJob?.RecordedTimes[AccelerationTypes.HundredToTwoHundred] == default ? "-" : _timingJob.RecordedTimes[AccelerationTypes.HundredToTwoHundred].ToString(@"s\.fff") + " s");
-        _infoPanel.AddLine("200-300 km/h", _timingJob?.RecordedTimes[AccelerationTypes.TwoHundredToThreeHundred] == default ? "-" : _timingJob.RecordedTimes[AccelerationTypes.TwoHundredToThreeHundred].ToString(@"s\.fff") + " s");
+
+        foreach (var accType in Enum.GetValues<AccelerationTypes>())
+            _infoPanel.AddLine(_timingJob?.AccelerationTypeDescriptions[accType], _timingJob?.RecordedTimes[accType] == default ? "-" : _timingJob?.RecordedTimes[accType].ToString(@"s\.fff") + " s");
+
         _infoPanel.Draw(g);
     }
 
@@ -70,9 +62,10 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
         ZeroToHundred,
         HundredToTwoHundred,
         TwoHundredToThreeHundred,
+        ThreeHundredToFourHundred,
     }
 
-    private class AccelerationTimingJob : AbstractLoopJob
+    private sealed class AccelerationTimingJob : AbstractLoopJob
     {
         private long _lastHandbrakePullTime = default;
         private long _accelerationStartTime = default;
@@ -82,9 +75,9 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
 
         public Dictionary<AccelerationPhase, string> PhaseDescriptions = new()
         {
-            { AccelerationPhase.Reset, "Release handbrake and stop the car." },
-            { AccelerationPhase.HandbrakePulled, "Hold the handbrake for 1 second." },
-            { AccelerationPhase.Ready, "Ready! Release the handbrake to start accelerating." },
+            { AccelerationPhase.Reset, "Release Handbrake & Stop car" },
+            { AccelerationPhase.HandbrakePulled, "Hold Handbrake for 1 Sec" },
+            { AccelerationPhase.Ready, "Ready? Release Handbrake!" },
             { AccelerationPhase.Accelerating, "Accelerating..." },
             { AccelerationPhase.Completed, "Completed!" }
         };
@@ -94,6 +87,7 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
             { AccelerationTypes.ZeroToHundred, "0-100 km/h" },
             { AccelerationTypes.HundredToTwoHundred, "100-200 km/h" },
             { AccelerationTypes.TwoHundredToThreeHundred, "200-300 km/h" },
+            { AccelerationTypes.ThreeHundredToFourHundred, "300-400 km/h" },
         };
 
         public Dictionary<AccelerationTypes, TimeSpan> RecordedTimes = new()
@@ -101,9 +95,10 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
             { AccelerationTypes.ZeroToHundred, default },
             { AccelerationTypes.HundredToTwoHundred, default },
             { AccelerationTypes.TwoHundredToThreeHundred, default },
+            { AccelerationTypes.ThreeHundredToFourHundred, default },
         };
 
-        public override void RunAction()
+        public sealed override void RunAction()
         {
             Debug.WriteLine(Phase);
             switch (Phase)
@@ -150,10 +145,9 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
                     }
                 case AccelerationPhase.Accelerating:
                     {
-                        if (SimDataProvider.LocalCar.Inputs.Throttle < 0.1f)
+                        if (SimDataProvider.LocalCar.Physics.Velocity < 1 && IsHandBrakePulled)
                         {
                             Phase = AccelerationPhase.Reset;
-                            break;
                         }
 
                         if (RecordedTimes[AccelerationTypes.ZeroToHundred] == default && SimDataProvider.LocalCar.Physics.Velocity >= 100f)
