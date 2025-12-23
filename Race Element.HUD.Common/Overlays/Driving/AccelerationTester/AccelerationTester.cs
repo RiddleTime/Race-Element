@@ -15,22 +15,18 @@ namespace RaceElement.HUD.Common.Overlays.Driving.AccelerationTester;
 internal sealed class AccelerationTester : CommonAbstractOverlay
 {
     private readonly InfoPanel _infoPanel;
-
     private readonly AccelerationTimingJob _timingJob;
 
     public AccelerationTester(Rectangle rectangle) : base(rectangle, "Acceleration Tester")
     {
-        Width = 600;
+        Width = 400;
         Height = 300;
 
-        _infoPanel = new InfoPanel(12, 600);
-        _timingJob = new AccelerationTimingJob() { IntervalMillis = 10 };
+        _infoPanel = new InfoPanel(12, 400);
+        _timingJob = new AccelerationTimingJob() { IntervalMillis = 5 };
     }
 
-    public sealed override void BeforeStart()
-    {
-        _timingJob?.Run();
-    }
+    public sealed override void BeforeStart() => _timingJob?.Run();
 
     public sealed override void BeforeStop()
     {
@@ -40,10 +36,22 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
 
     public sealed override void Render(Graphics g)
     {
+        if (_timingJob == null)
+            return;
+
         _infoPanel.AddLine("Phase", _timingJob?.PhaseDescriptions[_timingJob.Phase]);
 
+        TimeSpan previous = TimeSpan.Zero;
         foreach (var accType in Enum.GetValues<AccelerationTypes>())
-            _infoPanel.AddLine(_timingJob?.AccelerationTypeDescriptions[accType], _timingJob?.RecordedTimes[accType] == default ? "-" : _timingJob?.RecordedTimes[accType].ToString(@"s\.fff") + " s");
+        {
+            TimeSpan fromZero = _timingJob.RecordedTimes[accType];
+            TimeSpan fromPrevious = fromZero - previous;
+            if (accType != AccelerationTypes.ZeroToHundred) // show delta times
+                _infoPanel.AddLine(_timingJob.DeltaAccelerationTypeDescriptions[accType], _timingJob.RecordedTimes[accType] == default ? "-" : fromPrevious.ToString(@"s\.fff") + " s");
+
+            _infoPanel.AddLine(_timingJob.ZeroToAccelerationTypeDescriptions[accType], _timingJob.RecordedTimes[accType] == default ? "-" : fromZero.ToString(@"s\.fff") + " s");
+            previous += fromPrevious;
+        }
 
         _infoPanel.Draw(g);
     }
@@ -75,19 +83,27 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
 
         public Dictionary<AccelerationPhase, string> PhaseDescriptions = new()
         {
-            { AccelerationPhase.Reset, "Release Handbrake & Stop car" },
+            { AccelerationPhase.Reset, "Stop car & Hold Handbrake" },
             { AccelerationPhase.HandbrakePulled, "Hold Handbrake for 1 Sec" },
             { AccelerationPhase.Ready, "Ready? Release Handbrake!" },
             { AccelerationPhase.Accelerating, "Accelerating..." },
             { AccelerationPhase.Completed, "Completed!" }
         };
 
-        public Dictionary<AccelerationTypes, string> AccelerationTypeDescriptions = new()
+        public Dictionary<AccelerationTypes, string> DeltaAccelerationTypeDescriptions = new()
         {
             { AccelerationTypes.ZeroToHundred, "0-100 km/h" },
             { AccelerationTypes.HundredToTwoHundred, "100-200 km/h" },
             { AccelerationTypes.TwoHundredToThreeHundred, "200-300 km/h" },
             { AccelerationTypes.ThreeHundredToFourHundred, "300-400 km/h" },
+        };
+
+        public Dictionary<AccelerationTypes, string> ZeroToAccelerationTypeDescriptions = new()
+        {
+            { AccelerationTypes.ZeroToHundred, "0-100 km/h" },
+            { AccelerationTypes.HundredToTwoHundred, "0-200 km/h" },
+            { AccelerationTypes.TwoHundredToThreeHundred, "0-300 km/h" },
+            { AccelerationTypes.ThreeHundredToFourHundred, "0-400 km/h" },
         };
 
         public Dictionary<AccelerationTypes, TimeSpan> RecordedTimes = new()
@@ -98,16 +114,22 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
             { AccelerationTypes.ThreeHundredToFourHundred, default },
         };
 
+        public Dictionary<AccelerationTypes, float> AccelerationTresholds = new()
+        {
+            { AccelerationTypes.ZeroToHundred, 100 },
+            { AccelerationTypes.HundredToTwoHundred, 200 },
+            { AccelerationTypes.TwoHundredToThreeHundred, 300 },
+            { AccelerationTypes.ThreeHundredToFourHundred, 400 },
+        };
+
         public sealed override void RunAction()
         {
-            Debug.WriteLine(Phase);
             switch (Phase)
             {
                 case AccelerationPhase.Reset:
                     {
-                        RecordedTimes[AccelerationTypes.ZeroToHundred] = default;
-                        RecordedTimes[AccelerationTypes.HundredToTwoHundred] = default;
-                        RecordedTimes[AccelerationTypes.TwoHundredToThreeHundred] = default;
+                        foreach (var accType in Enum.GetValues<AccelerationTypes>())
+                            RecordedTimes[accType] = default;
 
                         if (IsHandBrakePulled && SimDataProvider.LocalCar.Physics.Velocity < 0.5f)
                         {
@@ -134,7 +156,7 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
                     }
                 case AccelerationPhase.Ready:
                     {
-                        if (!IsHandBrakePulled)
+                        if (!IsHandBrakePulled && SimDataProvider.LocalCar.Physics.Velocity > 0.1f)
                         {
                             Phase = AccelerationPhase.Accelerating;
                             _accelerationStartTime = TimeProvider.System.GetTimestamp();
@@ -150,21 +172,10 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
                             Phase = AccelerationPhase.Reset;
                         }
 
-                        if (RecordedTimes[AccelerationTypes.ZeroToHundred] == default && SimDataProvider.LocalCar.Physics.Velocity >= 100f)
-                        {
-                            RecordedTimes[AccelerationTypes.ZeroToHundred] = TimeProvider.System.GetElapsedTime(_accelerationStartTime);
-                        }
-
-                        if (RecordedTimes[AccelerationTypes.HundredToTwoHundred] == default && SimDataProvider.LocalCar.Physics.Velocity >= 200f)
-                        {
-                            RecordedTimes[AccelerationTypes.HundredToTwoHundred] = TimeProvider.System.GetElapsedTime(_accelerationStartTime) - RecordedTimes[AccelerationTypes.ZeroToHundred];
-                        }
-
-                        if (RecordedTimes[AccelerationTypes.TwoHundredToThreeHundred] == default && SimDataProvider.LocalCar.Physics.Velocity >= 300f)
-                        {
-                            RecordedTimes[AccelerationTypes.TwoHundredToThreeHundred] = TimeProvider.System.GetElapsedTime(_accelerationStartTime) - RecordedTimes[AccelerationTypes.ZeroToHundred] - RecordedTimes[AccelerationTypes.HundredToTwoHundred];
-                            Phase = AccelerationPhase.Completed;
-                        }
+                        foreach (var accType in Enum.GetValues<AccelerationTypes>())
+                            foreach (var treshold in AccelerationTresholds)
+                                if (accType == treshold.Key && RecordedTimes[accType] == default && SimDataProvider.LocalCar.Physics.Velocity >= treshold.Value)
+                                    RecordedTimes[accType] = TimeProvider.System.GetElapsedTime(_accelerationStartTime);
 
                         break;
                     }
