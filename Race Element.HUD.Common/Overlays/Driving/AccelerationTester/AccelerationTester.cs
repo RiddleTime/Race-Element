@@ -20,7 +20,7 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
     public AccelerationTester(Rectangle rectangle) : base(rectangle, "Acceleration Tester")
     {
         Width = 400;
-        Height = 300;
+        Height = 200;
 
         _infoPanel = new InfoPanel(12, 400);
         _timingJob = new AccelerationTimingJob() { IntervalMillis = 5 };
@@ -176,6 +176,9 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
                             foreach (var treshold in AccelerationTresholds)
                                 if (accType == treshold.Key && RecordedTimes[accType] == default && SimDataProvider.LocalCar.Physics.Velocity >= treshold.Value)
                                     RecordedTimes[accType] = TimeProvider.System.GetElapsedTime(_accelerationStartTime);
+
+                        if (SimDataProvider.LocalCar.Inputs.Brake > 0)
+                            Phase = AccelerationPhase.Completed;
 
                         break;
                     }
