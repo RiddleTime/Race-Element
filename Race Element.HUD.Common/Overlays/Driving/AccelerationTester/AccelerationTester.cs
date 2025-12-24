@@ -2,14 +2,14 @@
 using RaceElement.Data.Common;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
-using System.Diagnostics;
 using System.Drawing;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.AccelerationTester;
 
 [Overlay(
     Name = "Acceleration Tester",
-    Description = "Pull the handbrake for 1 second",
+    Description = "Ready? Set! Go! The Acceleration Tester." +
+    "\nPrecision is Limited to Simulator Specification.",
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class AccelerationTester : CommonAbstractOverlay
