@@ -7,7 +7,7 @@ using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
-namespace RaceElement.HUD.Common.Overlays.Driving.Accellerometer;
+namespace RaceElement.HUD.Common.Overlays.Driving.Accelerometer;
 
 [Overlay(
     Name = "Accelerometer",

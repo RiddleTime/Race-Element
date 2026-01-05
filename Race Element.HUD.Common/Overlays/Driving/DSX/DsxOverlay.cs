@@ -26,6 +26,8 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
     internal UdpClient _client;
     internal IPEndPoint _endPoint;
 
+    internal bool _hasSetLighting = false;
+
     public DsxOverlay(Rectangle rectangle) : base(rectangle, "DSX")
     {
         Width = 1; Height = 1;
@@ -70,12 +72,25 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
         {
             HandleResponse(lightingReponse);
         }
+        _hasSetLighting = true;
     }
 
     internal void CreateEndPoint()
     {
         _client = new UdpClient();
         _endPoint = new IPEndPoint(Triggers.localhost, _config.UDP.Port);
+    }
+
+    internal void StopClient()
+    {
+        _hasSetLighting = false;
+        DsxPacket resetPacket = new();
+        resetPacket.AddResetToPacket(0);
+        Send(resetPacket);
+
+        _client?.Close();
+        _client?.Dispose();
+        _client = null;
     }
 
     internal void Send(DsxPacket data)
