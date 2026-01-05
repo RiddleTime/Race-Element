@@ -1,5 +1,4 @@
 using System.Drawing;
-using RaceElement.HUD.Common.Overlays.Driving.LapDeltaBar;
 using RaceElement.HUD.Overlay.Configuration;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.HybridInfo;
@@ -55,9 +54,6 @@ public sealed class HybridInfoConfiguration: OverlayConfiguration
         public Color ThresholdLowColor { get; init; } = Color.FromArgb(255, Color.OrangeRed);
         [IntRange(75, 255, 1)]
         public int ThresholdLowOpacity { get; init; } = 255;
-        [IntRange(1, 99, 1)]
-        public int ThresholdLowLevel { get; init; } = 10;
-        
     }
     
 }
