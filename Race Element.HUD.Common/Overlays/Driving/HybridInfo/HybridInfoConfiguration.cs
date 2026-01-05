@@ -6,7 +6,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.HybridInfo;
 
 public sealed class HybridInfoConfiguration: OverlayConfiguration
 {
-    GenericConfig Generic { get; init; } = new();
+    public HybridInfoConfiguration() => GenericConfiguration.AllowRescale = true;
     
     [ConfigGrouping("Bar", "Adjust bar behavior.")]
     public BarGrouping Bar { get; init; } = new();

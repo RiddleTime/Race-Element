@@ -84,7 +84,6 @@ public sealed class HybridInfoOverlay: CommonAbstractOverlay
             Height += _font.Height * 1;
 
             RefreshRateHz = 30;
-            _config.GenericConfiguration.AllowRescale = true;
     }
     
     public sealed override void BeforeStop()
