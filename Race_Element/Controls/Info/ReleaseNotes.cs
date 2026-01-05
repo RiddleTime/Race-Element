@@ -6,7 +6,9 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
-        {"2.5.2.0", "iRacing"+
+        {"2.5.3.0", "DSX"+
+                    "\n- Race Element now disconnects from DSX if there is no supported game running."+
+                    "\n\niRacing"+
                     "\n- Lap Delta Bar HUD: Added 3 sources for delta calculation: Session Best, Last Lap and Optimal Lap. (By ConnorMolz)"
         },
         {"2.5.1.0", "Race Element"+

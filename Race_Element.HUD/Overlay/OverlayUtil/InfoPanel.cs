@@ -1,4 +1,5 @@
 ﻿using RaceElement.HUD.Overlay.OverlayUtil;
+using RaceElement.Util;
 using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
@@ -73,6 +74,12 @@ public sealed class InfoPanel
 
     public void Draw(Graphics g)
     {
+        if (_font == null)
+        {
+            LogWriter.WriteToLog("InfoPanel font is null, cannot draw panel.");
+            return;
+        }
+
         if (!MaxTitleWidthSet)
         {
             UpdateMaxTitleWidth(g);

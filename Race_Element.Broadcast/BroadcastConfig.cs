@@ -19,7 +19,7 @@ public sealed class BroadcastConfig
         public string CommandPassword { get; set; }
     }
 
-    private readonly static Lock _lock = new();
+    private static readonly Lock _lock = new();
 
     public static Root GetConfiguration()
     {
