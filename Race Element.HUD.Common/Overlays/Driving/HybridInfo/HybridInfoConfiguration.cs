@@ -3,10 +3,10 @@ using RaceElement.HUD.Overlay.Configuration;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.HybridInfo;
 
-public sealed class HybridInfoConfiguration: OverlayConfiguration
+public sealed class HybridInfoConfiguration : OverlayConfiguration
 {
     public HybridInfoConfiguration() => GenericConfiguration.AllowRescale = true;
-    
+
     [ConfigGrouping("Bar", "Adjust bar behavior.")]
     public BarGrouping Bar { get; init; } = new();
     public sealed class BarGrouping
@@ -21,17 +21,29 @@ public sealed class HybridInfoConfiguration: OverlayConfiguration
 
         [IntRange(1, 9, 1)]
         public int Roundness { get; init; } = 5;
-        
+
         [ToolTip("Sets the size of the font.")]
         [IntRange(12, 30, 2)]
         public int FontSize { get; init; } = 20;
-        
+
         [ToolTip("Maximum decimal position for energy value.")]
         [IntRange(0, 3, 1)]
         public int Decimals { get; init; } = 1;
+
+        [ToolTip("Sets the refreshrate of the HUD.\nHigher values will add more cpu usage.")]
+        [IntRange(10, 60, 1)]
+        public int RefreshRate { get; init; } = 30;
     }
-    
-    
+
+    [ConfigGrouping("Preview Data", "Adjust the energy level shown in the preview.")]
+    public PreviewGrouping Preview { get; init; } = new();
+    public sealed class PreviewGrouping
+    {
+        [FloatRange(0f, 100f, 0.001f, 3)]
+        public float EnergyLevel { get; init; } = 69.000f;
+    }
+
+
     [ConfigGrouping("Colors and thresholds", "Adjust Colors and thresholds.")]
     public ColorsGrouping Colors { get; init; } = new();
     public sealed class ColorsGrouping
@@ -42,18 +54,18 @@ public sealed class HybridInfoConfiguration: OverlayConfiguration
         public int ThresholdHighOpacity { get; init; } = 255;
         [IntRange(1, 99, 1)]
         public int ThresholdHighLevel { get; init; } = 70;
-        
+
         [ToolTip("Sets the color and threshold for the medium energy stage.")]
         public Color ThresholdMediumColor { get; init; } = Color.FromArgb(255, Color.Yellow);
         [IntRange(75, 255, 1)]
         public int ThresholdMediumOpacity { get; init; } = 255;
         [IntRange(1, 99, 1)]
         public int ThresholdMediumLevel { get; init; } = 40;
-        
+
         [ToolTip("Sets the color and threshold for the low energy stage.")]
         public Color ThresholdLowColor { get; init; } = Color.FromArgb(255, Color.OrangeRed);
         [IntRange(75, 255, 1)]
         public int ThresholdLowOpacity { get; init; } = 255;
     }
-    
+
 }
