@@ -50,33 +50,32 @@ public sealed class HybridInfoOverlay : CommonAbstractOverlay
             Color bgColor = Color.FromArgb(185, 0, 0, 0);
             HatchBrush hatchBrush = new(HatchStyle.LightUpwardDiagonal, bgColor, Color.FromArgb(bgColor.A - 50, bgColor));
             g.FillRoundedRectangle(hatchBrush, new Rectangle(0, 0, (int)(_config.Bar.Width * Scale), (int)(_config.Bar.Height * Scale)), cornerRadius);
-            g.DrawRoundedRectangle(new Pen(Color.Black, 1 * Scale), new Rectangle(0, 0, (int)(_config.Bar.Width * Scale), (int)(_config.Bar.Height * Scale)), cornerRadius);
+
+            using Pen pen = new(Color.Black, 1 * Scale);
+            g.DrawRoundedRectangle(pen, new Rectangle(0, 0, (int)(_config.Bar.Width * Scale), (int)(_config.Bar.Height * Scale)), cornerRadius);
         });
 
         _cachedEnergyStage1 = new CachedBitmap((int)(_config.Bar.Width / 2 * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
         {
             Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * Scale), (int)(_config.Bar.Height * Scale));
-            using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, cornerRadius, 0, 0, cornerRadius);
-            using SolidBrush brush = new(Color.FromArgb(_config.Colors.ThresholdHighOpacity,
-                _config.Colors.ThresholdHighColor));
+            using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, cornerRadius, cornerRadius, cornerRadius, cornerRadius);
+            using SolidBrush brush = new(Color.FromArgb(_config.Colors.ThresholdHighOpacity, _config.Colors.ThresholdHighColor));
             g.FillPath(brush, path);
         });
 
         _cachedEnergyStage2 = new CachedBitmap((int)(_config.Bar.Width / 2 * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
         {
             Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * Scale), (int)(_config.Bar.Height * Scale));
-            using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, 0, cornerRadius, cornerRadius, 0);
-            using SolidBrush brush = new(Color.FromArgb(_config.Colors.ThresholdMediumOpacity,
-                _config.Colors.ThresholdMediumColor));
+            using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, cornerRadius, cornerRadius, cornerRadius, cornerRadius);
+            using SolidBrush brush = new(Color.FromArgb(_config.Colors.ThresholdMediumOpacity, _config.Colors.ThresholdMediumColor));
             g.FillPath(brush, path);
         });
 
         _cachedEnergyStage3 = new CachedBitmap((int)(_config.Bar.Width / 2 * Scale + 1), (int)(_config.Bar.Height * Scale + 1), g =>
         {
             Rectangle rect = new(0, 0, (int)(_config.Bar.Width / 2 * Scale), (int)(_config.Bar.Height * Scale));
-            using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, 0, cornerRadius, cornerRadius, 0);
-            using SolidBrush brush = new(Color.FromArgb(_config.Colors.ThresholdLowOpacity,
-                _config.Colors.ThresholdLowColor));
+            using GraphicsPath path = GraphicsExtensions.CreateRoundedRectangle(rect, cornerRadius, cornerRadius, cornerRadius, cornerRadius);
+            using SolidBrush brush = new(Color.FromArgb(_config.Colors.ThresholdLowOpacity, _config.Colors.ThresholdLowColor));
             g.FillPath(brush, path);
         });
 
@@ -105,17 +104,17 @@ public sealed class HybridInfoOverlay : CommonAbstractOverlay
         if (!IsPreviewing)
             _energyLevel = SimDataProvider.LocalCar.Electronics.PushToPassLevel;
 
-        DrawEnergyBar(g, _energyLevel);
-        DrawEnergyText(g, _energyLevel);
+        DrawEnergyBar(g);
+        DrawEnergyText(g);
     }
 
-    private void DrawEnergyBar(Graphics g, float energyLevel)
+    private void DrawEnergyBar(Graphics g)
     {
         int width = _config.Bar.Width;
-        float fillPercent = energyLevel / 100f;
+        float fillPercent = _energyLevel / 100f;
         float drawWidth = _config.Bar.Width * fillPercent;
 
-        if (energyLevel >= _config.Colors.ThresholdHighLevel)
+        if (_energyLevel >= _config.Colors.ThresholdHighLevel)
         {
 
             drawWidth.ClipMin(1);
@@ -124,7 +123,7 @@ public sealed class HybridInfoOverlay : CommonAbstractOverlay
             _cachedEnergyStage1?.Draw(g, 0, 0, width, _config.Bar.Height);
             g.ResetClip();
         }
-        else if (energyLevel > _config.Colors.ThresholdMediumLevel)
+        else if (_energyLevel > _config.Colors.ThresholdMediumLevel)
         {
             drawWidth.ClipMin(1);
 
@@ -142,9 +141,9 @@ public sealed class HybridInfoOverlay : CommonAbstractOverlay
         }
     }
 
-    private void DrawEnergyText(Graphics g, float energyLevel)
+    private void DrawEnergyText(Graphics g)
     {
-        string currentEnergyLevel = $"{energyLevel.ToString($"F{_config.Bar.Decimals}")}";
+        string currentEnergyLevel = $"{_energyLevel.ToString($"F{_config.Bar.Decimals}")}";
 
         currentEnergyLevel.FillStart(_config.Bar.Decimals + 3, ' '); // (+3) = ('-' or '+') plus "0."
 
