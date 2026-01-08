@@ -1,5 +1,6 @@
 ﻿using RaceElement.Core.Jobs.Loop;
 using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
@@ -10,6 +11,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.AccelerationTester;
     Name = "Acceleration Tester",
     Description = "Ready? Set! Go! The Acceleration Tester." +
     "\nPrecision is Limited to Simulator Specification.",
+    Game = Game.iRacing,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class AccelerationTester : CommonAbstractOverlay
