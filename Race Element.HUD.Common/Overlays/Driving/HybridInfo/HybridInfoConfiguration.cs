@@ -43,7 +43,6 @@ public sealed class HybridInfoConfiguration : OverlayConfiguration
         public float EnergyLevel { get; init; } = 69.000f;
     }
 
-
     [ConfigGrouping("Colors and thresholds", "Adjust Colors and thresholds.")]
     public ColorsGrouping Colors { get; init; } = new();
     public sealed class ColorsGrouping
@@ -67,5 +66,4 @@ public sealed class HybridInfoConfiguration : OverlayConfiguration
         [IntRange(75, 255, 1)]
         public int ThresholdLowOpacity { get; init; } = 255;
     }
-
 }

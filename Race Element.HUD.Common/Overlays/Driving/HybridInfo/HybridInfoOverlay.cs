@@ -12,7 +12,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.HybridInfo;
 
 [Overlay(
     Name = "Hybrid Info",
-    Description = "A overlay that shows the current hybrid energy status",
+    Description = "Displays Hybrid Energy Status with an energy bar and the status percentage in text.",
     Authors = ["Connor Molz"],
     Game = Game.iRacing
 )]
@@ -116,7 +116,6 @@ public sealed class HybridInfoOverlay : CommonAbstractOverlay
 
         if (_energyLevel >= _config.Colors.ThresholdHighLevel)
         {
-
             drawWidth.ClipMin(1);
 
             g.SetClip(new Rectangle(0, 0, (int)drawWidth, _config.Bar.Height));
