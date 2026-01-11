@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.5.4.0", "Forza Horizon 5:"+
+                    "\n- Added Acceleration Tester"
+                    },
         {"2.5.3.0", "DSX"+
                     "\n- Race Element now disconnects from DSX if there is no supported game running."+
                     "\n\niRacing"+
