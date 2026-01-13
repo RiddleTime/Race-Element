@@ -55,6 +55,8 @@ internal static class LocalCarMapper
             (float)vehicleTelemetry.mRearRideHeight,
             (float)vehicleTelemetry.mRearRideHeight
         ];
+
+        localCar.Electronics.PushToPassLevel = (float)vehicleTelemetry.mBatteryChargeFraction * 100f;
     }
 
     private static float CalculateWheelSlipRatio(RF2Wheel wheel)

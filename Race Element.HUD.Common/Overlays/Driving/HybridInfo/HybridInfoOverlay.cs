@@ -14,7 +14,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.HybridInfo;
     Name = "Hybrid Info",
     Description = "Displays Hybrid Energy Status with an energy bar and the status percentage in text.",
     Authors = ["Connor Molz"],
-    Game = Game.iRacing
+    Game = Game.iRacing | Game.LeMansUltimate
 )]
 
 public sealed class HybridInfoOverlay : CommonAbstractOverlay
