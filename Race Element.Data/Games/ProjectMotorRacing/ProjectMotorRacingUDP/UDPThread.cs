@@ -23,18 +23,30 @@ internal sealed class UDPThread
         m_multiCast = GetOptionValue(args, "multicast", true);
         int port = GetOptionValue(args, "port", m_defaultPort);
         string multicastGroup = GetOptionValue(args, "multicast_group", m_defaultMulticastGroup);
+        m_multicastGroup = IPAddress.Parse(multicastGroup);
+
+        // Create the client without immediate binding
+        m_udpClient = new();
+
+        // Allow multiple apps to bind to the same port
+        m_udpClient.ExclusiveAddressUse = false; // Recommended, though the next line is the key on Windows
+        m_udpClient.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true);
 
         if (m_multiCast)
         {
-            m_udpClient = new UdpClient(port);
-            m_multicastGroup = IPAddress.Parse(multicastGroup);
-            m_endPoint = new IPEndPoint(m_multicastGroup, port);
+            // Bind explicitly to Any + port
+            m_udpClient.Client.Bind(new IPEndPoint(IPAddress.Any, port));
+
+            // Join the multicast group AFTER binding
             m_udpClient.JoinMulticastGroup(m_multicastGroup);
+
+            m_endPoint = new IPEndPoint(m_multicastGroup, port);
         }
-        else
+        else // unicast mode
         {
             m_endPoint = new IPEndPoint(IPAddress.Any, port);
-            m_udpClient = new UdpClient(m_endPoint);
+            m_udpClient.Client.Bind(m_endPoint);
+            // No JoinMulticastGroup needed for unicast
         }
     }
 
@@ -96,11 +108,11 @@ internal sealed class UDPThread
             }
             catch (Exception e)
             {
-             
+
             }
         }
         Debug.WriteLine("--- Stopping PMR UDP thread");
-       
+
     }
 
 
