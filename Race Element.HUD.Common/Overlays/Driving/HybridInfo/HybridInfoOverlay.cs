@@ -102,7 +102,7 @@ public sealed class HybridInfoOverlay : CommonAbstractOverlay
         _cachedBackground?.Draw(g, 0, 0, _config.Bar.Width, _config.Bar.Height);
 
         if (!IsPreviewing)
-            _energyLevel = SimDataProvider.LocalCar.Electronics.PushToPassLevel;
+            _energyLevel = SimDataProvider.LocalCar.Electronics.HybridEnergy;
 
         DrawEnergyBar(g);
         DrawEnergyText(g);

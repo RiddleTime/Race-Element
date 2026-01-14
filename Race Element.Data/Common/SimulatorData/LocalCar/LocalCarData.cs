@@ -227,6 +227,8 @@ public sealed record ElectronicsData
     /// Amount of KERS left (0 to 100%) / ERS
     /// </summary>
     public float PushToPassLevel { get; internal set; }
+    
+    public float HybridEnergy { get; internal set; }
 }
 
 
