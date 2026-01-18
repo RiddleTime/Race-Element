@@ -45,12 +45,12 @@ Free code signing provided by [SignPath.io](https://signpath.io?utm_source=found
 - [dirkaw](https://github.com/dirkaw)
 - [Mominon](https://github.com/Mominon)
 - [RST](https://github.com/RST)
+- [Connor-Molz](https://github.com/Connor-Molz)
 - [Marco-De-Fanti](https://github.com/Marco-De-Fanti)
 - [Glen-Germaine](https://github.com/Glen-Germaine)
 - [Balzs-Fehr](https://github.com/Balzs-Fehr)
 - [mreininger23](https://github.com/mreininger23)
 - [Kris](https://github.com/Kris)
 - [Dirk-W](https://github.com/Dirk-W)
-- [Connor-Molz](https://github.com/Connor-Molz)
 - [Andreas-Willich](https://github.com/Andreas-Willich)
 <!-- END_CONTRIBUTORS -->
