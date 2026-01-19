@@ -10,7 +10,7 @@ internal sealed class UDPThread
     static IPAddress m_multicastGroup = null;
     static UdpClient m_udpClient = null;
     static bool m_multiCast = true;
-    static int m_defaultPort = 7576;
+    static int m_defaultPort = 7577;
     static string m_defaultMulticastGroup = "224.0.0.150";
     public static ushort m_expectedVersion = 1;
 
