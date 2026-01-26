@@ -23,7 +23,7 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
     internal override void Start()
     {
         GamePortSettings gamePortSettings = new();
-        gamePortSettings.Get().GamePorts.TryGetValue(Game.ForzaHorizon5, out FORZA_DATA_OUT_PORT);
+        gamePortSettings.Get().GamePorts.TryGetValue(GameManager.CurrentGame, out FORZA_DATA_OUT_PORT);
 
         _isRunning = true;
         try
