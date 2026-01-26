@@ -62,6 +62,7 @@ public partial class GameSettingsTab : UserControl
                 Text = game.Key.ToFriendlyName(),
                 Tag = game.Key,
                 VerticalAlignment = VerticalAlignment.Center,
+                Margin = new(10, 0, 0, 0)
             };
             grid.Children.Add(title);
             Grid.SetColumn(title, 0);
@@ -70,7 +71,7 @@ public partial class GameSettingsTab : UserControl
             TextBox textBox = new()
             {
                 Tag = game,
-                Margin = new Thickness(10, 0, 0, 0),
+                Margin = new Thickness(10, 0, 10, 0),
                 ToolTip = $"Default port for {game.Key.ToFriendlyName()} is: {game.Value}"
             };
             if (settings.GamePorts.TryGetValue(game.Key, out int port))
