@@ -16,8 +16,18 @@ internal sealed class UDPThread
 
     private DataStore m_dataStore = null;
 
+
+
     public UDPThread(DataStore ds, string[] args)
     {
+
+        GamePortSettings gamePortSettings = new();
+        gamePortSettings.Get().GamePorts.TryGetValue(Game.ProjectMotorRacing, out m_defaultPort);
+        //// TODO: Make port these configurable via args
+        ///
+
+
+
         m_dataStore = ds;
 
         m_multiCast = GetOptionValue(args, "multicast", true);
