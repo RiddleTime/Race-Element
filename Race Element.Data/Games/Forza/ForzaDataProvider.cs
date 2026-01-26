@@ -10,7 +10,7 @@ namespace RaceElement.Data.Games.Forza;
 
 public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
 {
-    private const int FORZA_DATA_OUT_PORT = 5300;
+    private int FORZA_DATA_OUT_PORT = 5300;
     private UdpClient? _udpClient;
     private Task? _receiverTask;
     private bool _isRunning;
@@ -22,6 +22,9 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
 
     internal override void Start()
     {
+        GamePortSettings gamePortSettings = new();
+        gamePortSettings.Get().GamePorts.TryGetValue(Game.ForzaHorizon5, out FORZA_DATA_OUT_PORT);
+
         _isRunning = true;
         try
         {

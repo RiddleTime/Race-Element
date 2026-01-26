@@ -10,14 +10,24 @@ internal sealed class UDPThread
     static IPAddress m_multicastGroup = null;
     static UdpClient m_udpClient = null;
     static bool m_multiCast = true;
-    static int m_defaultPort = 7576;
+    static int m_defaultPort = 7577;
     static string m_defaultMulticastGroup = "224.0.0.150";
     public static ushort m_expectedVersion = 1;
 
     private DataStore m_dataStore = null;
 
+
+
     public UDPThread(DataStore ds, string[] args)
     {
+
+        GamePortSettings gamePortSettings = new();
+        gamePortSettings.Get().GamePorts.TryGetValue(Game.ProjectMotorRacing, out m_defaultPort);
+        //// TODO: Make port these configurable via args
+        ///
+
+
+
         m_dataStore = ds;
 
         m_multiCast = GetOptionValue(args, "multicast", true);
