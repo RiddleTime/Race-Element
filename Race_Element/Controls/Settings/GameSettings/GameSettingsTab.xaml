@@ -7,7 +7,13 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-        <StackPanel Orientation="Vertical" x:Name="stackPanelSettings" HorizontalAlignment="Stretch">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Height="35" VerticalAlignment="Top" x:Name="buttonRestartApp">Apply Settings (Restarts Race Element)</Button>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" x:Name="stackPanelSettings" HorizontalAlignment="Stretch">
 
         </StackPanel>
     </Grid>
