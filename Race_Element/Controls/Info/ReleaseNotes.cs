@@ -9,7 +9,7 @@ public static class ReleaseNotes
         {"2.5.4.0", "Race Element"+
                     "\n- Added Settings for Custom Game Ports, see Settings -> Games."+
                     "\n\niRacing"+
-                    "\nAdd hybrid info overlay( By ConnorMolz): Displays Hybrid Energy Status with an energy bar and the status percentage in text."+
+                    "\n- Added hybrid info overlay( By ConnorMolz): Displays Hybrid Energy Status with an energy bar and the status percentage in text."+
                     "\n\nForza Horizon 5"+
                     "\n- Added new Acceleration Tester HUD."
                     },
