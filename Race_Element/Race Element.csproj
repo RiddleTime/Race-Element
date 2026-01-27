@@ -1,183 +1,183 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net10.0-windows</TargetFramework>
-        <OutputType>WinExe</OutputType>
-        <RootNamespace>RaceElement</RootNamespace>
-        <AssemblyName>RaceElement</AssemblyName>
-        <IsWebBootstrapper>false</IsWebBootstrapper>
-        <PublishUrl>publish\</PublishUrl>
-        <MapFileExtensions>false</MapFileExtensions>
-        <ProductName>Race Element</ProductName>
-        <PublisherName>Reinier Klarenberg</PublisherName>
-        <SuiteName>Race Element</SuiteName>
-        <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
-        <DisallowUrlActivation>true</DisallowUrlActivation>
-        <ApplicationVersion>2.5.3.0</ApplicationVersion>
-        <AssemblyVersion>2.5.3.0</AssemblyVersion>
-        <Version>2.5.3.0</Version>
-        <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
-        <UseWindowsForms>true</UseWindowsForms>
-        <UseWPF>true</UseWPF>
-        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-        <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
-        <Copyright>Copyright © Reinier Klarenberg 2022</Copyright>
-    </PropertyGroup>
-    <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-        <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
-        <RunCodeAnalysis>false</RunCodeAnalysis>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
-        <PlatformTarget>x64</PlatformTarget>
-        <ProduceReferenceAssembly>True</ProduceReferenceAssembly>
-        <Title>Race Element</Title>
-        <PackageIcon>race element icon 2.png</PackageIcon>
-        <Authors>Element Future</Authors>
-        <Product>Race Element</Product>
-    </PropertyGroup>
-    <PropertyGroup>
-        <StartupObject>RaceElement.App</StartupObject>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ApplicationIcon>Resources\race element icon 2.ico</ApplicationIcon>
-    </PropertyGroup>
-    <PropertyGroup>
-        <SignManifests>false</SignManifests>
-    </PropertyGroup>
-    <PropertyGroup>
-        <DelaySign>false</DelaySign>
-    </PropertyGroup>
-    <PropertyGroup>
-        <AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ManifestCertificateThumbprint>9FBE825EC0ACCC58542DA8C54DA8899183BDE274</ManifestCertificateThumbprint>
-    </PropertyGroup>
-    <PropertyGroup>
-        <ManifestKeyFile>ACCSetupApp_TemporaryKey.pfx</ManifestKeyFile>
-    </PropertyGroup>
-    <PropertyGroup>
-        <GenerateManifests>false</GenerateManifests>
-    </PropertyGroup>
-    <PropertyGroup>
-        <TargetZone>Custom</TargetZone>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net10.0-windows</TargetFramework>
+		<OutputType>WinExe</OutputType>
+		<RootNamespace>RaceElement</RootNamespace>
+		<AssemblyName>RaceElement</AssemblyName>
+		<IsWebBootstrapper>false</IsWebBootstrapper>
+		<PublishUrl>publish\</PublishUrl>
+		<MapFileExtensions>false</MapFileExtensions>
+		<ProductName>Race Element</ProductName>
+		<PublisherName>Reinier Klarenberg</PublisherName>
+		<SuiteName>Race Element</SuiteName>
+		<OpenBrowserOnPublish>false</OpenBrowserOnPublish>
+		<DisallowUrlActivation>true</DisallowUrlActivation>
+		<ApplicationVersion>2.5.4.0</ApplicationVersion>
+		<AssemblyVersion>2.5.4.0</AssemblyVersion>
+		<Version>2.5.4.0</Version>
+		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
+		<UseWindowsForms>true</UseWindowsForms>
+		<UseWPF>true</UseWPF>
+		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+		<ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
+		<Copyright>Copyright © Reinier Klarenberg 2022</Copyright>
+	</PropertyGroup>
+	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+		<RunCodeAnalysis>false</RunCodeAnalysis>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ApplicationManifest>Properties\app.manifest</ApplicationManifest>
+		<PlatformTarget>x64</PlatformTarget>
+		<ProduceReferenceAssembly>True</ProduceReferenceAssembly>
+		<Title>Race Element</Title>
+		<PackageIcon>race element icon 2.png</PackageIcon>
+		<Authors>Element Future</Authors>
+		<Product>Race Element</Product>
+	</PropertyGroup>
+	<PropertyGroup>
+		<StartupObject>RaceElement.App</StartupObject>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ApplicationIcon>Resources\race element icon 2.ico</ApplicationIcon>
+	</PropertyGroup>
+	<PropertyGroup>
+		<SignManifests>false</SignManifests>
+	</PropertyGroup>
+	<PropertyGroup>
+		<DelaySign>false</DelaySign>
+	</PropertyGroup>
+	<PropertyGroup>
+		<AssemblyOriginatorKeyFile>key.snk</AssemblyOriginatorKeyFile>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ManifestCertificateThumbprint>9FBE825EC0ACCC58542DA8C54DA8899183BDE274</ManifestCertificateThumbprint>
+	</PropertyGroup>
+	<PropertyGroup>
+		<ManifestKeyFile>ACCSetupApp_TemporaryKey.pfx</ManifestKeyFile>
+	</PropertyGroup>
+	<PropertyGroup>
+		<GenerateManifests>false</GenerateManifests>
+	</PropertyGroup>
+	<PropertyGroup>
+		<TargetZone>Custom</TargetZone>
+	</PropertyGroup>
 
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Minimized|AnyCPU'">
-        <DebugSymbols>true</DebugSymbols>
-        <OutputPath>bin\Debug Minimized\</OutputPath>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    </PropertyGroup>
-    <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="12.0.1" />
-        <PackageReference Include="DdsFileTypePlusHack" Version="1.2.1" />
-        <PackageReference Include="LiteDB" Version="5.0.21" />
-        <PackageReference Include="MaterialDesignColors" Version="2.1.4" />
-        <PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
-        <PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
-        <PackageReference Include="Octokit" Version="9.1.0" />
-        <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
-        <PackageReference Include="ScottPlot" Version="4.1.69" />
-        <PackageReference Include="ScottPlot.WPF" Version="4.1.69" />
-        <PackageReference Include="SharpCompress" Version="0.42.0" />
-        <PackageReference Include="SLOBSharp" Version="1.1.4" />
-        <PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
-        <PackageReference Include="System.Net.Http" Version="4.3.4" />
-        <PackageReference Include="System.Reactive" Version="6.1.0" />
-        <PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
-        <PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
-        <PackageReference Include="Websocket.Client" Version="5.0.0" />
-        <PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
-        <PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Logging.EventSource" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Options" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.1" />
-        <PackageReference Include="Microsoft.Extensions.Primitives" Version="10.0.1" />
-        <PackageReference Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
-        <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-        <PackageReference Include="System.Collections.Immutable" Version="10.0.1" />
-        <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="10.0.1" />
-        <PackageReference Include="System.Drawing.Common" Version="10.0.1" />
-        <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
-        <PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.1" />
-        <PackageReference Include="System.Text.Encodings.Web" Version="10.0.1" />
-        <PackageReference Include="System.Text.Json" Version="10.0.1" />
-        <PackageReference Include="System.Threading.Channels" Version="10.0.1" />
-        <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
-    </ItemGroup>
-    <ItemGroup>
-        <None Include="..\.editorconfig">
-            <Link>.editorconfig</Link>
-        </None>
-        <None Include="..\other resources\race element icon 2.png">
-            <Pack>True</Pack>
-            <PackagePath>\</PackagePath>
-        </None>
-        <Resource Include="Fonts\ConthraxSb.ttf" />
-    </ItemGroup>
-    <ItemGroup>
-        <BootstrapperPackage Include=".NETFramework,Version=v4.8">
-            <Visible>False</Visible>
-            <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
-            <Install>true</Install>
-        </BootstrapperPackage>
-        <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-            <Visible>False</Visible>
-            <ProductName>.NET Framework 3.5 SP1</ProductName>
-            <Install>false</Install>
-        </BootstrapperPackage>
-    </ItemGroup>
-    <ItemGroup>
-      <Content Include="Resources\race element icon 2.ico" />
-    </ItemGroup>
-    <ItemGroup>
-        <Resource Include="race-element-icon-2.ico" />
-    </ItemGroup>
-    <ItemGroup>
-        <Resource Include="Resources\race element icon 2.ico" />
-    </ItemGroup>
-    <ItemGroup>
-        <ProjectReference Include="..\Race Element.HUD.Common\Race Element.HUD.Common.csproj" />
-        <ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj" />
-        <ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj" />
-        <ProjectReference Include="..\Race_Element.Hardware\Race Element.Hardware.csproj" />
-        <ProjectReference Include="..\Race_Element.HUD.ACC\Race Element.HUD.ACC.csproj" />
-        <ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj" />
-        <ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj" />
-        <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj" />
-    </ItemGroup>
-    <ItemGroup>
-        <Compile Update="Properties\Settings.Designer.cs">
-            <DesignTimeSharedInput>True</DesignTimeSharedInput>
-            <AutoGen>True</AutoGen>
-            <DependentUpon>Settings.settings</DependentUpon>
-        </Compile>
-    </ItemGroup>
-    <ItemGroup>
-        <None Update="Properties\Settings.settings">
-            <Generator>SettingsSingleFileGenerator</Generator>
-            <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-        </None>
-    </ItemGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug Minimized|AnyCPU'">
+		<DebugSymbols>true</DebugSymbols>
+		<OutputPath>bin\Debug Minimized\</OutputPath>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="AutoMapper" Version="12.0.1" />
+		<PackageReference Include="DdsFileTypePlusHack" Version="1.2.1" />
+		<PackageReference Include="LiteDB" Version="5.0.21" />
+		<PackageReference Include="MaterialDesignColors" Version="2.1.4" />
+		<PackageReference Include="MaterialDesignThemes" Version="4.9.0" />
+		<PackageReference Include="obs-websocket-dotnet" Version="5.0.0.3" />
+		<PackageReference Include="Octokit" Version="9.1.0" />
+		<PackageReference Include="Riok.Mapperly" Version="4.1.1" />
+		<PackageReference Include="ScottPlot" Version="4.1.69" />
+		<PackageReference Include="ScottPlot.WPF" Version="4.1.69" />
+		<PackageReference Include="SharpCompress" Version="0.42.0" />
+		<PackageReference Include="SLOBSharp" Version="1.1.4" />
+		<PackageReference Include="System.ComponentModel.Annotations" Version="5.0.0" />
+		<PackageReference Include="System.Net.Http" Version="4.3.4" />
+		<PackageReference Include="System.Reactive" Version="6.1.0" />
+		<PackageReference Include="System.Runtime.Handles" Version="4.3.0" />
+		<PackageReference Include="System.Text.RegularExpressions" Version="4.3.1" />
+		<PackageReference Include="Websocket.Client" Version="5.0.0" />
+		<PackageReference Include="WebSocketSharp-netstandard" Version="1.0.1" />
+		<PackageReference Include="Microsoft.Bcl.AsyncInterfaces" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.CommandLine" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Configuration" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.EventLog" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Logging.EventSource" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Options" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Primitives" Version="10.0.1" />
+		<PackageReference Include="Microsoft.NETCore.Platforms" Version="8.0.0-preview.7.23375.6" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
+		<PackageReference Include="System.Collections.Immutable" Version="10.0.1" />
+		<PackageReference Include="System.Diagnostics.DiagnosticSource" Version="10.0.1" />
+		<PackageReference Include="System.Drawing.Common" Version="10.0.1" />
+		<PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
+		<PackageReference Include="System.Text.Encoding.CodePages" Version="10.0.1" />
+		<PackageReference Include="System.Text.Encodings.Web" Version="10.0.1" />
+		<PackageReference Include="System.Text.Json" Version="10.0.1" />
+		<PackageReference Include="System.Threading.Channels" Version="10.0.1" />
+		<PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.1" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Include="..\.editorconfig">
+			<Link>.editorconfig</Link>
+		</None>
+		<None Include="..\other resources\race element icon 2.png">
+			<Pack>True</Pack>
+			<PackagePath>\</PackagePath>
+		</None>
+		<Resource Include="Fonts\ConthraxSb.ttf" />
+	</ItemGroup>
+	<ItemGroup>
+		<BootstrapperPackage Include=".NETFramework,Version=v4.8">
+			<Visible>False</Visible>
+			<ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
+			<Install>true</Install>
+		</BootstrapperPackage>
+		<BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+			<Visible>False</Visible>
+			<ProductName>.NET Framework 3.5 SP1</ProductName>
+			<Install>false</Install>
+		</BootstrapperPackage>
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="Resources\race element icon 2.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="race-element-icon-2.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<Resource Include="Resources\race element icon 2.ico" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Race Element.HUD.Common\Race Element.HUD.Common.csproj" />
+		<ProjectReference Include="..\Race_Element.Broadcast\Race Element.Broadcast.csproj" />
+		<ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj" />
+		<ProjectReference Include="..\Race_Element.Hardware\Race Element.Hardware.csproj" />
+		<ProjectReference Include="..\Race_Element.HUD.ACC\Race Element.HUD.ACC.csproj" />
+		<ProjectReference Include="..\Race_Element.HUD\Race Element.HUD.csproj" />
+		<ProjectReference Include="..\Race_Element.SharedMemory\Race Element.SharedMemory.csproj" />
+		<ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj" />
+	</ItemGroup>
+	<ItemGroup>
+		<Compile Update="Properties\Settings.Designer.cs">
+			<DesignTimeSharedInput>True</DesignTimeSharedInput>
+			<AutoGen>True</AutoGen>
+			<DependentUpon>Settings.settings</DependentUpon>
+		</Compile>
+	</ItemGroup>
+	<ItemGroup>
+		<None Update="Properties\Settings.settings">
+			<Generator>SettingsSingleFileGenerator</Generator>
+			<LastGenOutput>Settings.Designer.cs</LastGenOutput>
+		</None>
+	</ItemGroup>
 </Project>

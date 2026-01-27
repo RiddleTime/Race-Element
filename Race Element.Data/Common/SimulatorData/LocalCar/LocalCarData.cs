@@ -224,7 +224,7 @@ public sealed record ElectronicsData
     /// </summary>
     public bool PushToPassActive { get; internal set; }
     /// <summary>
-    /// Amount of KERS left (0 to 100%)
+    /// Amount of KERS left (0 to 100%) / ERS
     /// </summary>
     public float PushToPassLevel { get; internal set; }
 }
