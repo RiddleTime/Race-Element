@@ -11,7 +11,7 @@ public static class ReleaseNotes
                     "\n\niRacing"+
                     "\nAdd hybrid info overlay( By ConnorMolz): Displays Hybrid Energy Status with an energy bar and the status percentage in text."+
                     "\n\nForza Horizon 5"+
-                    "\n- Added Acceleration Tester."
+                    "\n- Added new Acceleration Tester HUD."
                     },
         {"2.5.3.0", "DSX"+
                     "\n- Race Element now disconnects from DSX if there is no supported game running."+
