@@ -3,6 +3,7 @@ using Newtonsoft.Json.Converters;
 using Newtonsoft.Json.Serialization;
 using RaceElement.Data.ACC.SetupParser;
 using RaceElement.LiveryParser;
+using RaceElement.Util;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -89,7 +90,7 @@ public partial class LiveryCreator : UserControl
 
         LiveryTreeCar liveryTreeCar = new()
         {
-            CarsFile = new FileInfo($"{RaceElement.Util.FileUtil.CarsPath}{Guid.NewGuid()}.json"),
+            CarsFile = new FileInfo($"{FileUtil.CarsPath}{Guid.NewGuid()}.json"),
             CarsRoot = new CarsJson.Root()
             {
                 CarModelType = ConversionFactory.IdsToCarModel.FirstOrDefault(x => x.Value == selectedModel).Key,
@@ -119,7 +120,7 @@ public partial class LiveryCreator : UserControl
 
         Debug.WriteLine(JsonConvert.SerializeObject(liveryTreeCar, Formatting.Indented, new JsonConverter[] { new StringEnumConverter() }));
 
-        DirectoryInfo carFolder = new($"{RaceElement.Util.FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}");
+        DirectoryInfo carFolder = new($"{FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}");
         if (carFolder.Exists)
         {
             MainWindow.Instance.EnqueueSnackbarMessage($"Custom livery name already exists.");
@@ -138,7 +139,7 @@ public partial class LiveryCreator : UserControl
         string[] sponsorAndDecals = ["sponsors.json", "decals.json"];
         foreach (string fileName in sponsorAndDecals)
         {
-            FileInfo sponsorsJson = new($"{RaceElement.Util.FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}\\{fileName}");
+            FileInfo sponsorsJson = new($"{FileUtil.LiveriesPath}{liveryTreeCar.CarsRoot.CustomSkinName}\\{fileName}");
             PaintDetailsJson.Root paintDetailsJson = new();
             string json = JsonConvert.SerializeObject(paintDetailsJson, Formatting.Indented, jsonSettings);
             File.WriteAllText(sponsorsJson.FullName, json);

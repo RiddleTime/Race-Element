@@ -6,10 +6,12 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
-        {"2.5.4.0", "iRacing:"+
-                    "\nAdd hybrid info overlay( By ConnorMolz): Displays Hybrid Energy Status with an energy bar and the status percentage in text."+
-                    "\n\nForza Horizon 5:"+
-                    "\n- Added Acceleration Tester."
+        {"2.5.4.0", "Race Element"+
+                    "\n- Added Settings for Custom Game Ports, see Settings -> Games."+
+                    "\n\niRacing"+
+                    "\n- Added hybrid info overlay( By ConnorMolz): Displays Hybrid Energy Status with an energy bar and the status percentage in text."+
+                    "\n\nForza Horizon 5"+
+                    "\n- Added new Acceleration Tester HUD."
                     },
         {"2.5.3.0", "DSX"+
                     "\n- Race Element now disconnects from DSX if there is no supported game running."+
