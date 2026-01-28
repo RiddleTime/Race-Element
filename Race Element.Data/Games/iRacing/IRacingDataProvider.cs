@@ -160,7 +160,14 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
         isInGarageDatum = _iRacingSDK.Data.TelemetryDataProperties["IsInGarage"];
         isReplayPlayingDatum = _iRacingSDK.Data.TelemetryDataProperties["IsReplayPlaying"];
         playerCarIdxDatum = _iRacingSDK.Data.TelemetryDataProperties["PlayerCarIdx"];
-        pushToPassLevelDatum = _iRacingSDK.Data.TelemetryDataProperties["EnergyERSBatteryPct"];
+        try
+        {
+            pushToPassLevelDatum = _iRacingSDK.Data.TelemetryDataProperties["EnergyERSBatteryPct"];
+        }
+        catch (Exception ex)
+        {
+            // Can be ignored because its thrown if the car has no hybrid System
+        }
 
         datumsInitialized = true;
     }
@@ -314,8 +321,11 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
             float steeringRadians = -_iRacingSDK.Data.GetFloat(steeringWheelAngleDatum) * 2;
             float steeringPercentage = Single.RadiansToDegrees(steeringRadians) / localCar.Inputs.MaxSteeringAngle;
             localCar.Inputs.Steering = Math.Clamp(steeringPercentage, -1, 1);
-            localCar.Electronics.PushToPassLevel = _iRacingSDK.Data.GetFloat(pushToPassLevelDatum) * 100f; // 0-1 to 0-100%
+            if (pushToPassLevelDatum != null)
+            {
 
+                localCar.Electronics.PushToPassLevel = _iRacingSDK.Data.GetFloat(pushToPassLevelDatum) * 100f; // 0-1 to 0-100%
+            }
 
             SessionData.Instance.LapDeltaToSessionBestLapMs = _iRacingSDK.Data.GetFloat(lapDeltaToSessionBestLapDatum);
             SessionData.Instance.LapDeltaToLastLapMs = _iRacingSDK.Data.GetFloat(lapDeltaToSessionLastLapDatum);
