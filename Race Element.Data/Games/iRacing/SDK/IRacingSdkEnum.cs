@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Data.Games.iRacing.SDK;
 
-public class IRacingSdkEnum
+public sealed class IRacingSdkEnum
 {
     public enum StatusField
     {
