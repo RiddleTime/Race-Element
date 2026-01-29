@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Data.Games.iRacing.SDK;
 
-public class IRSDKSharper
+public sealed class IRSDKSharper
 {
     private const string MapName = "Local\\IRSDKMemMapFileName";
     private const string EventName = "Local\\IRSDKDataValidEvent";

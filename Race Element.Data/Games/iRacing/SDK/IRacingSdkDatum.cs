@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Data.Games.iRacing.SDK;
 
-public class IRacingSdkDatum
+public sealed class IRacingSdkDatum
 {
     public const int MaxNameLength = 32;
     public const int MaxDescLength = 64;
