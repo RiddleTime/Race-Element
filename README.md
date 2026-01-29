@@ -48,6 +48,7 @@ Free code signing provided by [SignPath.io](https://signpath.io?utm_source=found
 - [Connor-Molz](https://github.com/Connor-Molz)
 - [Marco-De-Fanti](https://github.com/Marco-De-Fanti)
 - [Glen-Germaine](https://github.com/Glen-Germaine)
+- [Connor-Molz](https://github.com/Connor-Molz)
 - [Balzs-Fehr](https://github.com/Balzs-Fehr)
 - [mreininger23](https://github.com/mreininger23)
 - [Kris](https://github.com/Kris)
