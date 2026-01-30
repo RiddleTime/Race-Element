@@ -28,12 +28,18 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
         _timingJob = new AccelerationTimingJob() { IntervalMillis = 5 };
     }
 
-    public sealed override void BeforeStart() => _timingJob?.Run();
+    public sealed override void BeforeStart()
+    {
+        if (!IsPreviewing)
+            _timingJob?.Run();
+    }
+
 
     public sealed override void BeforeStop()
     {
         _infoPanel?.Dispose();
-        _timingJob?.CancelJoin();
+        if (!IsPreviewing)
+            _timingJob?.CancelJoin();
     }
 
     public sealed override void Render(Graphics g)
@@ -44,11 +50,11 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
         _infoPanel.AddLine("Phase", _timingJob?.PhaseDescriptions[_timingJob.Phase]);
 
         TimeSpan previous = TimeSpan.Zero;
-        foreach (var accType in Enum.GetValues<AccelerationTypes>())
+        foreach (var accType in Enum.GetValues<AccelerationTimingJob.AccelerationTypes>())
         {
             TimeSpan fromZero = _timingJob.RecordedTimes[accType];
             TimeSpan fromPrevious = fromZero - previous;
-            if (accType != AccelerationTypes.ZeroToHundred) // show delta times
+            if (accType != AccelerationTimingJob.AccelerationTypes.ZeroToHundred) // show delta times
                 _infoPanel.AddLine(_timingJob.DeltaAccelerationTypeDescriptions[accType], _timingJob.RecordedTimes[accType] == default ? "-" : fromPrevious.ToString(@"s\.fff") + " s");
 
             _infoPanel.AddLine(_timingJob.ZeroToAccelerationTypeDescriptions[accType], _timingJob.RecordedTimes[accType] == default ? "-" : fromZero.ToString(@"s\.fff") + " s");
@@ -56,23 +62,6 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
         }
 
         _infoPanel.Draw(g);
-    }
-
-    internal enum AccelerationPhase
-    {
-        Reset,
-        HandbrakePulled,
-        Ready,
-        Accelerating,
-        Completed
-    }
-
-    internal enum AccelerationTypes
-    {
-        ZeroToHundred,
-        HundredToTwoHundred,
-        TwoHundredToThreeHundred,
-        ThreeHundredToFourHundred,
     }
 
     private sealed class AccelerationTimingJob : AbstractLoopJob
@@ -83,7 +72,25 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
 
         public AccelerationPhase Phase = AccelerationPhase.Reset;
 
-        public Dictionary<AccelerationPhase, string> PhaseDescriptions = new()
+        public enum AccelerationPhase
+        {
+            Reset,
+            HandbrakePulled,
+            Ready,
+            Accelerating,
+            Completed
+        }
+
+        public enum AccelerationTypes
+        {
+            ZeroToHundred,
+            HundredToTwoHundred,
+            TwoHundredToThreeHundred,
+            ThreeHundredToFourHundred,
+        }
+
+
+        public readonly Dictionary<AccelerationPhase, string> PhaseDescriptions = new()
         {
             { AccelerationPhase.Reset, "Stop car & Hold Handbrake" },
             { AccelerationPhase.HandbrakePulled, "Hold Handbrake for 1 Sec" },
@@ -92,7 +99,7 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
             { AccelerationPhase.Completed, "Completed!" }
         };
 
-        public Dictionary<AccelerationTypes, string> DeltaAccelerationTypeDescriptions = new()
+        public readonly Dictionary<AccelerationTypes, string> DeltaAccelerationTypeDescriptions = new()
         {
             { AccelerationTypes.ZeroToHundred, "0-100 km/h" },
             { AccelerationTypes.HundredToTwoHundred, "100-200 km/h" },
@@ -100,7 +107,7 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
             { AccelerationTypes.ThreeHundredToFourHundred, "300-400 km/h" },
         };
 
-        public Dictionary<AccelerationTypes, string> ZeroToAccelerationTypeDescriptions = new()
+        public readonly Dictionary<AccelerationTypes, string> ZeroToAccelerationTypeDescriptions = new()
         {
             { AccelerationTypes.ZeroToHundred, "0-100 km/h" },
             { AccelerationTypes.HundredToTwoHundred, "0-200 km/h" },
@@ -108,7 +115,7 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
             { AccelerationTypes.ThreeHundredToFourHundred, "0-400 km/h" },
         };
 
-        public Dictionary<AccelerationTypes, TimeSpan> RecordedTimes = new()
+        public readonly Dictionary<AccelerationTypes, TimeSpan> RecordedTimes = new()
         {
             { AccelerationTypes.ZeroToHundred, default },
             { AccelerationTypes.HundredToTwoHundred, default },
@@ -116,7 +123,7 @@ internal sealed class AccelerationTester : CommonAbstractOverlay
             { AccelerationTypes.ThreeHundredToFourHundred, default },
         };
 
-        public Dictionary<AccelerationTypes, float> AccelerationTresholds = new()
+        public readonly Dictionary<AccelerationTypes, float> AccelerationTresholds = new()
         {
             { AccelerationTypes.ZeroToHundred, 100 },
             { AccelerationTypes.HundredToTwoHundred, 200 },
