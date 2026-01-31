@@ -119,52 +119,53 @@ public sealed class IRacingDataProvider : AbstractSimDataProvider
     {
         if (datumsInitialized) return;
 
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("CarIdxLapDistPct", out carIdxLapDistPctDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("CarIdxPosition", out carIdxPositionDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("CarIdxClassPosition", out carIdxClassPositionDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("CarIdxTrackSurface", out carIdxTrackSurfaceDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("CarIdxOnPitRoad", out carIdxOnPitRoadDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("CarIdxLap", out carIdxLapDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("CarIdxEstTime", out carIdxEstTimeDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("CarIdxF2Time", out carIdxF2TimeDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("PlayerCarPosition", out playerCarPositionDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("FuelLevel", out fuelLevelDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("RPM", out rPMDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("Speed", out speedDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("LongAccel", out longitudinalAccelDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("LatAccel", out lateralAccelDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("VertAccel", out vertAccelDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("YawNorth", out yawNorthDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("Pitch", out pitchDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("Roll", out rollDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("Gear", out gearDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("Brake", out brakeDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("Throttle", out throttleDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("SteeringWheelAngle", out steeringWheelAngleDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("SteeringWheelAngleMax", out steeringWheelAngleMaxDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("LapDeltaToSessionBestLap", out lapDeltaToSessionBestLapDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("LapDeltaToSessionLastlLap", out lapDeltaToSessionLastLapDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("LapDeltaToOptimalLap", out lapDeltaToSessionOptimalLapDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("AirTemp", out airTempDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("WindVel", out windVelDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("WindDir", out windDirDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("TrackTempCrew", out trackTempCrewDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("FuelLevelPct", out fuelLevelPctDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("SessionTimeRemain", out sessionTimeRemainDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("CarLeftRight", out carLeftRightDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("BrakeABSactive", out brakeABSactiveDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("SessionNum", out sessionNumDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("SessionState", out sessionStateDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("IsOnTrackCar", out isOnTrackCarDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("IsOnTrack", out isOnTrackDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("IsInGarage", out isInGarageDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("IsReplayPlaying", out isReplayPlayingDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("PlayerCarIdx", out playerCarIdxDatum);
-        _iRacingSDK.Data.TelemetryDataProperties.TryGetValue("EnergyERSBatteryPct", out pushToPassLevelDatum);
+        Dictionary<string, IRacingSdkDatum> props = _iRacingSDK.Data.TelemetryDataProperties;
+
+        props.TryGetValue("CarIdxLapDistPct", out carIdxLapDistPctDatum);
+        props.TryGetValue("CarIdxPosition", out carIdxPositionDatum);
+        props.TryGetValue("CarIdxClassPosition", out carIdxClassPositionDatum);
+        props.TryGetValue("CarIdxTrackSurface", out carIdxTrackSurfaceDatum);
+        props.TryGetValue("CarIdxOnPitRoad", out carIdxOnPitRoadDatum);
+        props.TryGetValue("CarIdxLap", out carIdxLapDatum);
+        props.TryGetValue("CarIdxEstTime", out carIdxEstTimeDatum);
+        props.TryGetValue("CarIdxF2Time", out carIdxF2TimeDatum);
+        props.TryGetValue("PlayerCarPosition", out playerCarPositionDatum);
+        props.TryGetValue("FuelLevel", out fuelLevelDatum);
+        props.TryGetValue("RPM", out rPMDatum);
+        props.TryGetValue("Speed", out speedDatum);
+        props.TryGetValue("LongAccel", out longitudinalAccelDatum);
+        props.TryGetValue("LatAccel", out lateralAccelDatum);
+        props.TryGetValue("VertAccel", out vertAccelDatum);
+        props.TryGetValue("YawNorth", out yawNorthDatum);
+        props.TryGetValue("Pitch", out pitchDatum);
+        props.TryGetValue("Roll", out rollDatum);
+        props.TryGetValue("Gear", out gearDatum);
+        props.TryGetValue("Brake", out brakeDatum);
+        props.TryGetValue("Throttle", out throttleDatum);
+        props.TryGetValue("SteeringWheelAngle", out steeringWheelAngleDatum);
+        props.TryGetValue("SteeringWheelAngleMax", out steeringWheelAngleMaxDatum);
+        props.TryGetValue("LapDeltaToSessionBestLap", out lapDeltaToSessionBestLapDatum);
+        props.TryGetValue("LapDeltaToSessionLastlLap", out lapDeltaToSessionLastLapDatum);
+        props.TryGetValue("LapDeltaToOptimalLap", out lapDeltaToSessionOptimalLapDatum);
+        props.TryGetValue("AirTemp", out airTempDatum);
+        props.TryGetValue("WindVel", out windVelDatum);
+        props.TryGetValue("WindDir", out windDirDatum);
+        props.TryGetValue("TrackTempCrew", out trackTempCrewDatum);
+        props.TryGetValue("FuelLevelPct", out fuelLevelPctDatum);
+        props.TryGetValue("SessionTimeRemain", out sessionTimeRemainDatum);
+        props.TryGetValue("CarLeftRight", out carLeftRightDatum);
+        props.TryGetValue("BrakeABSactive", out brakeABSactiveDatum);
+        props.TryGetValue("SessionNum", out sessionNumDatum);
+        props.TryGetValue("SessionState", out sessionStateDatum);
+        props.TryGetValue("IsOnTrackCar", out isOnTrackCarDatum);
+        props.TryGetValue("IsOnTrack", out isOnTrackDatum);
+        props.TryGetValue("IsInGarage", out isInGarageDatum);
+        props.TryGetValue("IsReplayPlaying", out isReplayPlayingDatum);
+        props.TryGetValue("PlayerCarIdx", out playerCarIdxDatum);
+        props.TryGetValue("EnergyERSBatteryPct", out pushToPassLevelDatum);
 
         datumsInitialized = true;
     }
-
 
     /// <summary>
     /// Handle update of telemetry. That means update the data that can be retrieved with calls to _iRacingSDK.Data.GetXXX 
