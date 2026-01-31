@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.5.4.2", "iRacing"+
+                    "\n- Fixed Data Provider."
+        },
         {"2.5.4.0", "Race Element"+
                     "\n- Added Settings for Custom Game Ports, see Settings -> Games."+
                     "\n\niRacing"+
