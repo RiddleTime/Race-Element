@@ -145,10 +145,10 @@ internal sealed class DataGraphTestOverlay : CommonAbstractOverlay
     private static void AddStats(InfoPanel panel, List<double> data)
     {
         var (min, max, mean, median, std) = CalculateMetrics(data);
-        panel.AddLine("Min", $"{min:F4}");
-        panel.AddLine("Avg", $"{mean:F4}");
-        panel.AddLine("Max", $"{max:F4}");
-        panel.AddLine("Median", $"{median:F4}");
-        panel.AddLine("StDev", $"{std:F4}");
+        panel.AddLine("Min", $"{min:F4} ms");
+        panel.AddLine("Avg", $"{mean:F4} ms");
+        panel.AddLine("Max", $"{max:F4} ms");
+        panel.AddLine("Median", $"{median:F4} ms");
+        panel.AddLine("StDev", $"{std:F4} ms");
     }
 }

@@ -10,7 +10,7 @@ using YamlDotNet.Serialization;
 
 namespace RaceElement.Data.Games.iRacing.SDK;
 
-public class IRacingSdkData
+public sealed class IRacingSdkData
 {
     public readonly Dictionary<string, IRacingSdkDatum> TelemetryDataProperties = new();
     public string SessionInfoYaml { get; private set; } = string.Empty;
@@ -192,11 +192,15 @@ public class IRacingSdkData
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public char GetChar(IRacingSdkDatum datum, int index = 0)
+    public char GetChar(IRacingSdkDatum? datum, int index = 0)
     {
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index, IRacingSdkEnum.VarType.Char);
+        if (datum == null)
+        {
+            return char.MinValue;
+        }
 
         return memoryMappedViewAccessor.ReadChar(Offset + datum.Offset + index);
     }
@@ -222,11 +226,15 @@ public class IRacingSdkData
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public bool GetBool(IRacingSdkDatum datum, int index = 0)
+    public bool GetBool(IRacingSdkDatum? datum, int index = 0)
     {
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index, IRacingSdkEnum.VarType.Bool);
+        if (datum == null)
+        {
+            return false;
+        }
 
         return memoryMappedViewAccessor.ReadBoolean(Offset + datum.Offset + index);
     }
@@ -247,6 +255,11 @@ public class IRacingSdkData
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index + count - 1, IRacingSdkEnum.VarType.Bool);
+        if (datum == null)
+        {
+            array = [];
+            return 0;
+        }
 
         return memoryMappedViewAccessor.ReadArray(Offset + datum.Offset, array, index, count);
     }
@@ -262,11 +275,15 @@ public class IRacingSdkData
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetInt(IRacingSdkDatum datum, int index = 0)
+    public int GetInt(IRacingSdkDatum? datum, int index = 0)
     {
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index, IRacingSdkEnum.VarType.Int);
+        if (datum == null)
+        {
+            return 0;
+        }
 
         return memoryMappedViewAccessor.ReadInt32(Offset + datum.Offset + index * 4);
     }
@@ -282,11 +299,16 @@ public class IRacingSdkData
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetIntArray(IRacingSdkDatum datum, int[] array, int index, int count)
+    public int GetIntArray(IRacingSdkDatum? datum, int[] array, int index, int count)
     {
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index + count - 1, IRacingSdkEnum.VarType.Int);
+        if (datum == null)
+        {
+            array = [];
+            return 0;
+        }
 
         return memoryMappedViewAccessor.ReadArray(Offset + datum.Offset, array, index, count);
     }
@@ -302,11 +324,15 @@ public class IRacingSdkData
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public uint GetBitField(IRacingSdkDatum datum, int index = 0)
+    public uint GetBitField(IRacingSdkDatum? datum, int index = 0)
     {
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index, IRacingSdkEnum.VarType.BitField);
+        if (datum == null)
+        {
+            return 0;
+        }
 
         return memoryMappedViewAccessor.ReadUInt32(Offset + datum.Offset + index * 4);
     }
@@ -322,11 +348,16 @@ public class IRacingSdkData
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetBitFieldArray(IRacingSdkDatum datum, uint[] array, int index, int count)
+    public int GetBitFieldArray(IRacingSdkDatum? datum, uint[] array, int index, int count)
     {
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index + count - 1, IRacingSdkEnum.VarType.BitField);
+        if (datum == null)
+        {
+            array = [];
+            return 0;
+        }
 
         return memoryMappedViewAccessor.ReadArray(Offset + datum.Offset, array, index, count);
     }
@@ -342,11 +373,15 @@ public class IRacingSdkData
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public float GetFloat(IRacingSdkDatum datum, int index = 0)
+    public float GetFloat(IRacingSdkDatum? datum, int index = 0)
     {
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index, IRacingSdkEnum.VarType.Float);
+        if (datum == null)
+        {
+            return 0;
+        }
 
         return memoryMappedViewAccessor.ReadSingle(Offset + datum.Offset + index * 4);
     }
@@ -362,11 +397,16 @@ public class IRacingSdkData
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetFloatArray(IRacingSdkDatum datum, float[] array, int index, int count)
+    public int GetFloatArray(IRacingSdkDatum? datum, float[] array, int index, int count)
     {
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index + count - 1, IRacingSdkEnum.VarType.Float);
+        if (datum == null)
+        {
+            array = [];
+            return 0;
+        }
 
         return memoryMappedViewAccessor.ReadArray(Offset + datum.Offset, array, index, count);
     }
@@ -382,11 +422,16 @@ public class IRacingSdkData
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public double GetDouble(IRacingSdkDatum datum, int index = 0)
+    public double GetDouble(IRacingSdkDatum? datum, int index = 0)
     {
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index, IRacingSdkEnum.VarType.Double);
+
+        if (datum == null)
+        {
+            return 0;
+        }
 
         return memoryMappedViewAccessor.ReadDouble(Offset + datum.Offset + index * 8);
     }
@@ -402,11 +447,16 @@ public class IRacingSdkData
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    public int GetDoubleArray(IRacingSdkDatum datum, double[] array, int index, int count)
+    public int GetDoubleArray(IRacingSdkDatum? datum, double[] array, int index, int count)
     {
         Debug.Assert(memoryMappedViewAccessor != null);
 
         Validate(datum, index + count - 1, IRacingSdkEnum.VarType.Double);
+        if (datum == null)
+        {
+            array = [];
+            return 0;
+        }
 
         return memoryMappedViewAccessor.ReadArray(Offset + datum.Offset, array, index, count);
     }
@@ -452,8 +502,13 @@ public class IRacingSdkData
     }
 
     [Conditional("DEBUG")]
-    private void Validate(IRacingSdkDatum datum, int index, IRacingSdkEnum.VarType? type)
+    private void Validate(IRacingSdkDatum? datum, int index, IRacingSdkEnum.VarType? type)
     {
+        if (datum == null)
+        {
+            Debug.WriteLine($"Datum is null, {index}!");
+        }
+
         if (index >= datum.Count)
         {
             throw new Exception($"{datum.Name}, {index}: index >= TelemetryDataProperties[ name ].count");

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Data.Games.iRacing.SDK;
 
-public class IRacingSdkConst
+public sealed class IRacingSdkConst
 {
     public const int MaxNumCars = 64;
     public const int UnlimitedLaps = 32767;

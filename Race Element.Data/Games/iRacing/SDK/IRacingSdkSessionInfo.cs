@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RaceElement.Data.Games.iRacing.SDK;
 
-public class IRacingSdkSessionInfo
+public sealed class IRacingSdkSessionInfo
 {
     public WeekendInfoModel WeekendInfo { get; set; }
     public SessionInfoModel SessionInfo { get; set; }
@@ -18,7 +18,7 @@ public class IRacingSdkSessionInfo
 
     public CarSetupModel CarSetup { get; set; }
 
-    public class WeekendInfoModel
+    public sealed class WeekendInfoModel
     {
         public string TrackName { get; set; }
         public int TrackID { get; set; }
@@ -75,7 +75,7 @@ public class IRacingSdkSessionInfo
         public WeekendOptionsModel WeekendOptions { get; set; }
         public TelemetryOptionsModel TelemetryOptions { get; set; }
 
-        public class WeekendOptionsModel
+        public sealed class WeekendOptionsModel
         {
             public int NumStarters { get; set; }
             public string StartingGrid { get; set; }
@@ -107,18 +107,18 @@ public class IRacingSdkSessionInfo
             public int GreenWhiteCheckeredLimit { get; set; }
         }
 
-        public class TelemetryOptionsModel
+        public sealed class TelemetryOptionsModel
         {
             public string TelemetryDiskFile { get; set; }
         }
 
     }
 
-    public class SessionInfoModel
+    public sealed class SessionInfoModel
     {
         public List<SessionModel> Sessions { get; set; }
 
-        public class SessionModel
+        public sealed class SessionModel
         {
             public int SessionNum { get; set; }
             public string SessionLaps { get; set; }
@@ -142,7 +142,7 @@ public class IRacingSdkSessionInfo
             public List<FastestLapModel> ResultsFastestLap { get; set; }
             public List<QualifyPositionModel> QualifyPositions { get; set; }
 
-            public class PositionModel
+            public sealed class PositionModel
             {
                 public int Position { get; set; }
                 public int ClassPosition { get; set; }
@@ -161,14 +161,14 @@ public class IRacingSdkSessionInfo
                 public string ReasonOutStr { get; set; }
             }
 
-            public class FastestLapModel
+            public sealed class FastestLapModel
             {
                 public int CarIdx { get; set; }
                 public int FastestLap { get; set; }
                 public float FastestTime { get; set; }
             }
 
-            public class QualifyPositionModel
+            public sealed class QualifyPositionModel
             {
                 public int Position { get; set; }
                 public int ClassPosition { get; set; }
@@ -179,11 +179,11 @@ public class IRacingSdkSessionInfo
         }
     }
 
-    public class QualifyResultsInfoModel
+    public sealed class QualifyResultsInfoModel
     {
         public List<ResultModel> Results { get; set; }
 
-        public class ResultModel
+        public sealed class ResultModel
         {
             public int Position { get; set; }
             public int ClassPosition { get; set; }
@@ -193,11 +193,11 @@ public class IRacingSdkSessionInfo
         }
     }
 
-    public class CameraInfoModel
+    public sealed class CameraInfoModel
     {
         public List<GroupModel> Groups { get; set; }
 
-        public class GroupModel
+        public sealed class GroupModel
         {
             public int GroupNum { get; set; }
             public string GroupName { get; set; }
@@ -205,7 +205,7 @@ public class IRacingSdkSessionInfo
 
             public List<CameraModel> Cameras { get; set; }
 
-            public class CameraModel
+            public sealed class CameraModel
             {
                 public int CameraNum { get; set; }
                 public string CameraName { get; set; }
@@ -213,13 +213,13 @@ public class IRacingSdkSessionInfo
         }
     }
 
-    public class RadioInfoModel
+    public sealed class RadioInfoModel
     {
         public int SelectedRadioNum { get; set; }
 
         public List<RadioModel> Radios { get; set; }
 
-        public class RadioModel
+        public sealed class RadioModel
         {
             public int RadioNum { get; set; }
             public int HopCount { get; set; }
@@ -246,7 +246,7 @@ public class IRacingSdkSessionInfo
         }
     }
 
-    public class DriverInfoModel
+    public sealed class DriverInfoModel
     {
         public int DriverCarIdx { get; set; }
         public int DriverUserID { get; set; }
@@ -279,7 +279,7 @@ public class IRacingSdkSessionInfo
 
         public List<DriverModel> Drivers { get; set; }
 
-        public class DriverModel
+        public sealed class DriverModel
         {
             public int CarIdx { get; set; }
             public string UserName { get; set; }
@@ -331,18 +331,18 @@ public class IRacingSdkSessionInfo
         }
     }
 
-    public class SplitTimeInfoModel
+    public sealed class SplitTimeInfoModel
     {
         public List<SectorModel> Sectors { get; set; }
 
-        public class SectorModel
+        public sealed class SectorModel
         {
             public int SectorNum { get; set; }
             public float SectorStartPct { get; set; }
         }
     }
 
-    public class CarSetupModel
+    public sealed class CarSetupModel
     {
         public int UpdateCount { get; set; }
 
@@ -351,7 +351,7 @@ public class IRacingSdkSessionInfo
         public SuspensionModel Suspension { get; set; }
         public TireModel Tires { get; set; }
 
-        public class ChassisModel
+        public sealed class ChassisModel
         {
             public FrontModel Front { get; set; }
             public FrontArbModel FrontArb { get; set; }
@@ -362,7 +362,7 @@ public class IRacingSdkSessionInfo
             public RightFrontModel RightFront { get; set; }
             public RightRearModel RightRear { get; set; }
 
-            public class FrontModel
+            public sealed class FrontModel
             {
                 public string AttachLeftSide { get; set; }
                 public string ArbArms { get; set; }
@@ -389,7 +389,7 @@ public class IRacingSdkSessionInfo
                 public string WingWicker { get; set; }
             }
 
-            public class FrontArbModel
+            public sealed class FrontArbModel
             {
                 public string Attach { get; set; }
                 public string ArbArm { get; set; }
@@ -401,7 +401,7 @@ public class IRacingSdkSessionInfo
                 public string Preload { get; set; }
             }
 
-            public class LeftFrontModel
+            public sealed class LeftFrontModel
             {
                 public string BumpStiffness { get; set; }
                 public string Camber { get; set; }
@@ -428,7 +428,7 @@ public class IRacingSdkSessionInfo
                 public string ToeIn { get; set; }
             }
 
-            public class LeftRearModel
+            public sealed class LeftRearModel
             {
                 public string BumpStiffness { get; set; }
                 public string Camber { get; set; }
@@ -459,12 +459,12 @@ public class IRacingSdkSessionInfo
                 public string TruckArmMount { get; set; }
             }
 
-            public class OtherModel
+            public sealed class OtherModel
             {
                 public string DashDisplayPage { get; set; }
             }
 
-            public class RightFrontModel
+            public sealed class RightFrontModel
             {
                 public string BumpStiffness { get; set; }
                 public string Camber { get; set; }
@@ -491,7 +491,7 @@ public class IRacingSdkSessionInfo
                 public string ToeIn { get; set; }
             }
 
-            public class RightRearModel
+            public sealed class RightRearModel
             {
                 public string BumpStiffness { get; set; }
                 public string Camber { get; set; }
@@ -523,7 +523,7 @@ public class IRacingSdkSessionInfo
                 public string TruckArmPreload { get; set; }
             }
 
-            public class RearModel
+            public sealed class RearModel
             {
                 public string ArbArm { get; set; }
                 public string ArbDiameter { get; set; }
@@ -546,12 +546,12 @@ public class IRacingSdkSessionInfo
             }
         }
 
-        public class DrivetrainModel
+        public sealed class DrivetrainModel
         {
             public DifferentialModel Differential { get; set; }
             public TransmissionModel Transmission { get; set; }
 
-            public class DifferentialModel
+            public sealed class DifferentialModel
             {
                 public string ClutchPlates { get; set; }
                 public string CoastRampAngle { get; set; }
@@ -559,7 +559,7 @@ public class IRacingSdkSessionInfo
                 public string Preload { get; set; }
             }
 
-            public class TransmissionModel
+            public sealed class TransmissionModel
             {
                 public string FifthGear { get; set; }
                 public string FinalDrive { get; set; }
@@ -570,7 +570,7 @@ public class IRacingSdkSessionInfo
             }
         }
 
-        public class SuspensionModel
+        public sealed class SuspensionModel
         {
             public FrontModel Front { get; set; }
             public LeftFrontModel LeftFront { get; set; }
@@ -579,7 +579,7 @@ public class IRacingSdkSessionInfo
             public RightRearModel RightRear { get; set; }
             public RearModel Rear { get; set; }
 
-            public class FrontModel
+            public sealed class FrontModel
             {
                 public string AntiRollBar { get; set; }
                 public string BrakeBias { get; set; }
@@ -587,7 +587,7 @@ public class IRacingSdkSessionInfo
                 public string ToeIn { get; set; }
             }
 
-            public class LeftFrontModel
+            public sealed class LeftFrontModel
             {
                 public string BumpStiffness { get; set; }
                 public string Camber { get; set; }
@@ -602,7 +602,7 @@ public class IRacingSdkSessionInfo
                 public string SpringPerchOffset { get; set; }
             }
 
-            public class LeftRearModel
+            public sealed class LeftRearModel
             {
                 public string BumpStiffness { get; set; }
                 public string Camber { get; set; }
@@ -616,7 +616,7 @@ public class IRacingSdkSessionInfo
                 public string SpringPerchOffset { get; set; }
             }
 
-            public class RightFrontModel
+            public sealed class RightFrontModel
             {
                 public string BumpStiffness { get; set; }
                 public string Camber { get; set; }
@@ -631,7 +631,7 @@ public class IRacingSdkSessionInfo
                 public string SpringPerchOffset { get; set; }
             }
 
-            public class RightRearModel
+            public sealed class RightRearModel
             {
                 public string BumpStiffness { get; set; }
                 public string Camber { get; set; }
@@ -645,7 +645,7 @@ public class IRacingSdkSessionInfo
                 public string SpringPerchOffset { get; set; }
             }
 
-            public class RearModel
+            public sealed class RearModel
             {
                 public string AntiRollBar { get; set; }
                 public string FuelLevel { get; set; }
@@ -653,14 +653,14 @@ public class IRacingSdkSessionInfo
             }
         }
 
-        public class TireModel
+        public sealed class TireModel
         {
             public LeftTireModel LeftFront { get; set; }
             public LeftTireModel LeftRear { get; set; }
             public RightTireModel RightFront { get; set; }
             public RightTireModel RightRear { get; set; }
 
-            public class LeftTireModel
+            public sealed class LeftTireModel
             {
                 public string ColdPressure { get; set; }
                 public string LastHotPressure { get; set; }
@@ -668,7 +668,7 @@ public class IRacingSdkSessionInfo
                 public string TreadRemaining { get; set; }
             }
 
-            public class RightTireModel
+            public sealed class RightTireModel
             {
                 public string ColdPressure { get; set; }
                 public string LastHotPressure { get; set; }
