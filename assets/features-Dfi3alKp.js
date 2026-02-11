@@ -15,6 +15,7 @@ description: General features
 <li>Assetto Corsa Rally</li>
 <li>American Truck Simulator</li>
 <li>Automobilista 2</li>
+<li>Dirt Rally 2.0</li>
 <li>Euro Truck Simulator 2</li>
 <li>Forza Horizon 5</li>
 <li>Forza Motorsport 8</li>
