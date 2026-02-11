@@ -7,9 +7,9 @@ public static class ReleaseNotes
     internal static readonly Dictionary<string, string> Notes = new()
     {
         {"2.5.5.0", "Race Element"+
-                    "\n- Added support for Dirt Rally 2.0, see the multi-sim guide on the website."+
+                    "\n- Added support for DiRT Rally 2.0, see the multi-sim guide on the website."+
                     "\n\nDSX"+
-                    "\n- Added support for Dirt Rally 2.0, depending on the car adjust the thresholds for braking and throttle."
+                    "\n- Added support for DiRT Rally 2.0, depending on the car adjust the thresholds for braking and throttle."
         },
         {"2.5.4.2", "iRacing"+
                     "\n- Fixed Data Provider."
