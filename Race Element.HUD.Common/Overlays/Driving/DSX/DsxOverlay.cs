@@ -15,7 +15,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Drive,
     Game = Game.RaceRoom | Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations
-            | Game.ForzaMotorsport | Game.AssettoCorsaRally | Game.ProjectMotorRacing,
+            | Game.ForzaMotorsport | Game.AssettoCorsaRally | Game.ProjectMotorRacing | Game.DirtRally2,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class DsxOverlay : CommonAbstractOverlay

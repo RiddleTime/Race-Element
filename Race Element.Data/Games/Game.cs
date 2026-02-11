@@ -94,7 +94,7 @@ public static class GameExtensions
             { "forza_steamworks_release_final", Game.ForzaMotorsport },
             { "acr", Game.AssettoCorsaRally },
             { "ProjectMotorRacingGame", Game.ProjectMotorRacing },
-            { "TODO", Game.DirtRally2 },
+            { "dirtrally2", Game.DirtRally2 },
         }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
         public static readonly Lazy<ImmutableArray<string>> All = new(() => ImmutableArray.Create(ProcessMap.Select(x => x.Key).ToArray()));

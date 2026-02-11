@@ -1,6 +1,7 @@
 ﻿using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.DirtRally2.UDP;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
@@ -99,16 +100,19 @@ internal sealed class DirtRally2DataProvider : AbstractSimDataProvider
                         }
                     }
                 }
-                catch (SocketException) when (!_isRunning)
+                catch (SocketException se) when (!_isRunning)
                 {
+                    Debug.WriteLine($"Socket closed, stopping listener: {se}");
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
+                    Debug.WriteLine($"Error receiving telemetry: {ex}");
                 }
             }
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Debug.WriteLine(e);
         }
         finally
         {
