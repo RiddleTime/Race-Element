@@ -14,7 +14,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
     Description = "Adds active triggers for the DualSense Controller using DSX on steam.\n See Guide in the Discord of Race Element for instructions.",
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Drive,
-    Game = Game.RaceRoom | Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations
+    SupportedGames = Game.RaceRoom | Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations
             | Game.ForzaMotorsport | Game.AssettoCorsaRally | Game.ProjectMotorRacing | Game.DirtRally2,
     Authors = ["Reinier Klarenberg"]
 )]

@@ -2,7 +2,10 @@
 
 namespace RaceElement.Data.Games.DirtRally2.UDP;
 
-
+/// <summary>
+/// https://github.com/BuiltClever/DirtRally2TelemetryData/blob/main/ExtractingTheDataInCode/Telemetry.cs
+/// Except this is a sequential layout, looks nicer and should be easier to maintain.
+/// </summary>
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Ansi, Pack = 1, Size = 264)]
 public struct DirtRally2Data
 {
@@ -40,9 +43,9 @@ public struct DirtRally2Data
     // ---------------------------------------------------------------------
     // Velocity in world space [meters per second]
     // the speed at which the car is moving along each axis
-    public Single Xv; // (Horizontal left - right)
-    public Single Yv; // (vertical up - down)
-    public Single Zv; // (depth forward - backward)
+    public Single VelX; // (Horizontal left - right)
+    public Single VelY; // (vertical up - down)
+    public Single VelZ; // (depth forward - backward)
                       // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
@@ -58,9 +61,9 @@ public struct DirtRally2Data
     // World space forward direction [decimal 0 to 1] (normalised)
     // Represents the car's forward direction relative to the world space positions X,Y,Z
     // helps with speed, heading, and yaw-related calculations.
-    public Single Xd;
-    public Single Yd;
-    public Single Zd;
+    public Single PitchVecX;
+    public Single PitchVecY;
+    public Single PitchVecZ;
     // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
@@ -85,10 +88,10 @@ public struct DirtRally2Data
     // ---------------------------------------------------------------------
     // Velocity of Wheels [meters per second]
     // ---------------------------------------------------------------------
-    public Single Wheel_speed_bl; // Velocity of Wheel Rear Left
-    public Single Wheel_speed_br; // Velocity of Wheel Rear Right
-    public Single Wheel_speed_fl; // Velocity of Wheel Front Left
-    public Single Wheel_speed_fr; // Velocity of Wheel Front Right
+    public Single WheelSpeedRL; // Velocity of Wheel Rear Left
+    public Single WheelSpeedRR; // Velocity of Wheel Rear Right
+    public Single WheelSpeedFL; // Velocity of Wheel Front Left
+    public Single WheelSpeedFR; // Velocity of Wheel Front Right
                                   // ---------------------------------------------------------------------
 
     // Throttle Position [0 (off) to 1 (full)]
@@ -108,8 +111,8 @@ public struct DirtRally2Data
 
     // ---------------------------------------------------------------------
     // G-Forces - where 1g is equivalent to Earth's gravitational acceleration (9.81 m/s²)
-    public Single Gforce_lat; // G-Force Lateral [G-forces (g)]
-    public Single Gforce_lon; // G-Force Longitudinal [G-forces (g)]
+    public Single GforceLat; // G-Force Lateral [G-forces (g)]
+    public Single GforceLong; // G-Force Longitudinal [G-forces (g)]
                               // ---------------------------------------------------------------------
 
     // Lap_RX: [number]
@@ -185,10 +188,10 @@ public struct DirtRally2Data
     public Single Last_lap_time;
 
     // [NOT USED always 0] cars max RPM, at which point the rev limiter will kick in 
-    public Single Max_rpm; //
+    public Single MaxRpm; //
 
     // [NOT USED always 0] cars idle RPM 
-    public Single Idle_rpm;
+    public Single Rpm;
 
     // CurrentLap_RX [number]
     // Rally: [NOT USED always 0]

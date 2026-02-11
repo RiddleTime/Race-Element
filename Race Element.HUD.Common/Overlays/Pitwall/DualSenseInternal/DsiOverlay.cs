@@ -10,7 +10,7 @@ namespace RaceElement.HUD.Common.Overlays.Pitwall.DualSenseInternal;
     Description = "Adds active triggers for the DualSense Controller.",
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Drive,
-    Game = Game.RaceRoom | Game.AssettoCorsa1 | Game.AssettoCorsaEvo,
+    SupportedGames = Game.RaceRoom | Game.AssettoCorsa1 | Game.AssettoCorsaEvo,
     Authors = ["Reinier Klarenberg"]
 )]
 #endif

@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
+using System.Diagnostics;
 using System.Reflection;
 using System.Windows.Input;
 
@@ -21,9 +22,18 @@ public static class CommonHuds
             if (overlayType != null && !AbstractOverlays.ContainsKey(overlayType.Name))
             {
                 // extra filter for game specific overlays
-                if (overlayType.Game != Game.Any)
+                if (overlayType.SupportedGames != Game.Any)
                 {
-                    if (!overlayType.Game.HasFlag(GameManager.CurrentGame))
+                    if (!overlayType.SupportedGames.HasFlag(GameManager.CurrentGame))
+                    {
+                        continue;
+                    }
+                }
+
+                if (overlayType.UnsupportedGames != Game.Any)
+                {
+                    ;
+                    if (overlayType.UnsupportedGames.HasFlag(GameManager.CurrentGame))
                     {
                         continue;
                     }

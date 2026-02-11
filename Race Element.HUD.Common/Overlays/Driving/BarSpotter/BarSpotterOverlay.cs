@@ -16,7 +16,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.BarSpotter;
     Version = 1.00,
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Driving,
-    Game = Game.iRacing,
+    SupportedGames = Game.iRacing,
     Authors = ["Dirk Wolf"])]
 internal sealed class BarSpotterOverlay : CommonAbstractOverlay
 {

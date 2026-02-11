@@ -11,7 +11,9 @@ public class OverlayAttribute : Attribute
 
 
 
-    public Game Game { get; set; } = Game.Any;
+    public Game SupportedGames { get; set; } = Game.Any;
+    public Game UnsupportedGames { get; set; } = Game.Any;
+
     public OverlayCategory OverlayCategory { get; set; } = OverlayCategory.All;
 
     public double Version { get; set; }

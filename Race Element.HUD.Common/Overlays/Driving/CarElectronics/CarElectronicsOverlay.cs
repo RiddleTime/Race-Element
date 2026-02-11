@@ -14,7 +14,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.CarElectronics;
 [Overlay(
     Name = "Car Electronics",
     Description = "Shows the Brake Bias, optionally ABS and TC.",
-    Game = Game.Automobilista2,
+    SupportedGames = Game.Automobilista2,
     Authors = ["Connor Molz, Reinier Klarenberg"]
 )]
 public sealed class CarElectronicsOverlay : CommonAbstractOverlay

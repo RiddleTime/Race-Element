@@ -12,7 +12,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.TrackBar;
 [Overlay(
     Name = "Track Bar",
     Description = "A bar displaying a flat and zoomed in version of the Track Circle HUD.",
-    Game = Game.iRacing | Game.AssettoCorsa1,
+    SupportedGames = Game.iRacing | Game.AssettoCorsa1,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class TrackBarOverlay : CommonAbstractOverlay

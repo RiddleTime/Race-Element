@@ -7,7 +7,6 @@ using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.Automobilista2;
 using RaceElement.Data.Games.EuroTruckSimulator2;
 using RaceElement.Data.Games.AssettoCorsaEvo;
-using RaceElement.Data.Common.Graph;
 using RaceElement.Graph;
 using RaceElement.Data.Games.Forza;
 using RaceElement.Data.Games.rFactor2;

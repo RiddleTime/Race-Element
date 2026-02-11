@@ -23,7 +23,7 @@ internal sealed class DirtRally2DataProvider : AbstractSimDataProvider
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         var data = _latestData;
-        if (data.PosZ == 0)
+        if (data.Z == 0)
         {
             localCar = new();
             sessionData = new();
@@ -36,16 +36,24 @@ internal sealed class DirtRally2DataProvider : AbstractSimDataProvider
         }
 
         // Map to LocalCarData (assuming standard fields; adjust based on exact definitions)
-        localCar.Physics.Location = new(data.PosX, data.PosY, data.PosZ);
+        localCar.Physics.Location = new(data.X, data.Y, data.Z);
         localCar.Physics.Velocity = data.Speed * 3.6f;
-        localCar.Physics.Acceleration = new(-data.GLat / 9.81f, 0, -data.GLong / 9.81f);
+        localCar.Physics.Acceleration = new(-data.GforceLat / 9.81f, 0, -data.GforceLong / 9.81f);
         localCar.Inputs.Throttle = data.Throttle;
         localCar.Inputs.Brake = data.Brake;
         localCar.Inputs.Clutch = data.Clutch;
         localCar.Inputs.Steering = data.Steer;
-        localCar.Inputs.Gear = (sbyte)data.Gear + 1; // Assuming Gear is sbyte
-        localCar.Engine.Rpm = (int)(data.EngineRPM); // Assuming full RPM value in DR2
-        localCar.Engine.MaxRpm = (int)(data.MaxRPM);
+
+        localCar.Inputs.Gear = data.Gear switch
+        {
+            10 => 0, // Reverse
+            _ => (int)data.Gear + 1 // Neutraal + Forward gears
+        };
+        {
+        }
+
+        localCar.Engine.Rpm = (int)(data.Rpm); // Assuming full RPM value in DR2
+        localCar.Engine.MaxRpm = (int)(data.MaxRpm);
         localCar.Engine.IsRunning = localCar.Engine.Rpm > 0;
         localCar.Tyres.SlipRatio = [SlipCalc.Ratio(data.WheelSpeedFL, data.Speed),
                                     SlipCalc.Ratio(data.WheelSpeedFR, data.Speed),

@@ -21,7 +21,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.Standings;
     Version = 1.00,
     Description = "Shows race standings table for different car classes. (ALPHA)",
     OverlayType = OverlayType.Drive,
-    Game = Game.iRacing | Game.AssettoCorsa1,
+    SupportedGames = Game.iRacing | Game.AssettoCorsa1,
     Authors = ["FG", "Dirk Wolf"])]
 #endif
 internal sealed class StandingsOverlay : CommonAbstractOverlay

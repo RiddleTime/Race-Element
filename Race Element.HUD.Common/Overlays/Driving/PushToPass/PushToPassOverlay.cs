@@ -19,7 +19,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.PushToPass;
     Description = "Shows the amount of energy left for push to pass.\n(In AMS2 this is called Temporary Boost)",
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Inputs,
-    Game = Game.Automobilista2,
+    SupportedGames = Game.Automobilista2,
     Authors = ["Reinier Klarenberg"]
     )]
 internal sealed class PushToPassOverlay : CommonAbstractOverlay

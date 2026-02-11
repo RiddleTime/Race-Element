@@ -14,7 +14,7 @@ namespace RaceElement.HUD.Common.Overlays.Pitwall.LocalCarData;
     Description = "Provides info about the common local car data.",
     OverlayType = OverlayType.Pitwall,
     Authors = ["Reinier Klarenberg"],
-    Game = Data.Games.Game.Any
+    SupportedGames = Data.Games.Game.Any
 )]
 internal sealed class GameDataOverlay : CommonAbstractOverlay
 {
