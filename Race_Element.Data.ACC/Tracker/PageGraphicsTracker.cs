@@ -1,5 +1,4 @@
-﻿using RaceElement.Data.ACC.Core;
-using RaceElement.Data.ACC.EntryList;
+﻿using RaceElement.Data.ACC.EntryList;
 using RaceElement.Data.Games;
 using RaceElement.Util;
 using System;

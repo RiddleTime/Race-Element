@@ -17,7 +17,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.LapDeltaBar;
     Version = 1,
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Lap,
-    Game = Game.RaceRoom | Game.iRacing,
+    SupportedGames = Game.RaceRoom | Game.iRacing,
     Authors = ["Reinier Klarenberg", "Dirk Wolf", "Connor Molz"])]
 internal sealed class LapDeltaOverlay : CommonAbstractOverlay
 {

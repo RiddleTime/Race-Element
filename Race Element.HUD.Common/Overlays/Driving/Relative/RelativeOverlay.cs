@@ -14,7 +14,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.Relative;
     Version = 1.00,
     Description = "Shows drivers next to player.",
     OverlayType = OverlayType.Drive,
-    Game = Game.iRacing | Game.AssettoCorsa1,
+    SupportedGames = Game.iRacing | Game.AssettoCorsa1,
     Authors = ["Dirk Wolf"]
 )]
 internal sealed class RelativeOverlay : AbstractTableOverlay

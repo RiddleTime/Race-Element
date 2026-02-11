@@ -19,7 +19,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.LowFuelMotorsport;
     Version = 1.10,
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.All,
-    Game = Game.Automobilista2,
+    SupportedGames = Game.Automobilista2,
     Authors = ["Andrei Jianu"]
 )]
 

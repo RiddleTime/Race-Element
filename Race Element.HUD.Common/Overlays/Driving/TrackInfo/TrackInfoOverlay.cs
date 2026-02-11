@@ -13,7 +13,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.TrackInfo;
 [Overlay(
     Name = "Track Info",
     Description = "This Overlay is used to display track information, basic weather information and the current waved flag.",
-    Game = Game.Automobilista2,
+    SupportedGames = Game.Automobilista2,
     Authors = ["Reinier Klarenberg", "Connor Molz"]
 )]
 public class TrackInfoOverlay : CommonAbstractOverlay

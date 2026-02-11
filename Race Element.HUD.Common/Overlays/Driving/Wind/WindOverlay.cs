@@ -14,7 +14,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.Wind;
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Track,
     Version = 1.00,
-    Game = Game.iRacing,
+    SupportedGames = Game.iRacing,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class WindDirectionOverlay : CommonAbstractOverlay
 {

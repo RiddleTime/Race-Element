@@ -7,13 +7,13 @@ using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Games.Automobilista2;
 using RaceElement.Data.Games.EuroTruckSimulator2;
 using RaceElement.Data.Games.AssettoCorsaEvo;
-using RaceElement.Data.Common.Graph;
 using RaceElement.Graph;
 using RaceElement.Data.Games.Forza;
 using RaceElement.Data.Games.rFactor2;
 using RaceElement.Data.Games.WRC_Generations;
 using RaceElement.Data.Games.AssettoCorsaRally;
 using RaceElement.Data.Games.ProjectMotorRacing;
+using RaceElement.Data.Games.DirtRally2;
 
 namespace RaceElement.Data.Common;
 
@@ -160,6 +160,14 @@ public static class SimDataProvider
                     _localCarEventLoop.Run();
                     break;
                 }
+            case Game.DirtRally2:
+                {
+                    Instance ??= new DirtRally2DataProvider();
+                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                    _localCarEventLoop.Run();
+                    break;
+                }
+
             default: { break; }
         }
     }
