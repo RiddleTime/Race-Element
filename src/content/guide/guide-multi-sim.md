@@ -34,6 +34,16 @@ Both simulators require a plugin to be installed before any data can be read fro
 10. If you see anything else than `null` as text in this file go to step 11. Else please read: https://community.lemansultimate.com/index.php?threads/shared-memory-plugin-not-loading.3705/#post-24870 and install the C++ redistributable(https://aka.ms/highdpimfc2013x64enu). Then launch and exit the game.
 11. Set the rFactor2SharedMemoryMapPlugin64.dll to `" Enabled": 1,` and Save. 
 
+# DiRT Rally 2.0
+1. Open Windows Explorer
+2. Paste `%userprofile%\Documents\My Games\DiRT Rally 2.0\hardwaresettings` in the address bar and hit Enter.
+3. Open the `hardware_settings_config.xml` with a text editor like notepad.
+4. Find the category that starts with `<motion_platform>`
+5. Find the line that starts with `<udp...`
+6. set enabled to true and extradata to 3
+7. Make sure it looks like this `<udp enabled="true" extradata="3" ip="127.0.0.1" port="20777" delay="1" />`
+8. Save the file and start the DiRT Rally 2.0.
+
 # Forza Horizon 5
 1. Go to Options
 2. Go to HUD AND GAMEPLAY
