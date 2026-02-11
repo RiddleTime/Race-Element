@@ -1,0 +1,72 @@
+﻿using System.Runtime.InteropServices;
+
+namespace RaceElement.Data.Games.DirtRally2.UDP;
+
+[StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+internal struct DirtRally2Data
+{
+    public float Time;
+    public float LapTime;
+    public float LapDistance;
+    public float TotalDistance;
+    public float PosX;
+    public float PosY;
+    public float PosZ;
+    public float Speed;
+    public float VelX;
+    public float VelY;
+    public float VelZ;
+    public float RollVecX;
+    public float RollVecY;
+    public float RollVecZ;
+    public float PitchVecX;
+    public float PitchVecY;
+    public float PitchVecZ;
+    public float SuspPosRL;
+    public float SuspPosRR;
+    public float SuspPosFL;
+    public float SuspPosFR;
+    public float SuspVelRL;
+    public float SuspVelRR;
+    public float SuspVelFL;
+    public float SuspVelFR;
+    public float WheelSpeedRL;
+    public float WheelSpeedRR;
+    public float WheelSpeedFL;
+    public float WheelSpeedFR;
+    public float Throttle;
+    public float Steer;
+    public float Brake;
+    public float Clutch;
+    public float Gear;
+    public float GLat;
+    public float GLong;
+    public float CurrentLapNum;
+    public float EngineRPM;
+    public float Unused1;
+    public float CarPosition;
+    public float Unused2;
+    public float Unused3;
+    public float Unused4;
+    public float Unused5;
+    public float Unused6;
+    public float Unused7;
+    public float Unused8;
+    public float Unused9;
+    public float Sector;
+    public float Sector1Time;
+    public float Sector2Time;
+    public float BrakeTempRL;
+    public float BrakeTempRR;
+    public float BrakeTempFL;
+    public float BrakeTempFR;
+    public float TyrePressRL;
+    public float TyrePressRR;
+    public float TyrePressFL;
+    public float TyrePressFR;
+    public float Unused10;
+    public float TotalLaps;
+    public float TrackLength;
+    public float LastLapTime;
+    public float MaxRPM;
+}
