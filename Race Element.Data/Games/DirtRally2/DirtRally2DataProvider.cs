@@ -54,7 +54,7 @@ internal sealed class DirtRally2DataProvider : AbstractSimDataProvider
 
         localCar.Engine.Rpm = (int)(data.Rpm); // Assuming full RPM value in DR2
         localCar.Engine.MaxRpm = (int)(data.MaxRpm);
-        localCar.Engine.IsRunning = localCar.Engine.Rpm > 0;
+        localCar.Engine.IsRunning = localCar.Physics.Velocity != 0f;
         localCar.Tyres.SlipRatio = [SlipCalc.Ratio(data.WheelSpeedFL, data.Speed),
                                     SlipCalc.Ratio(data.WheelSpeedFR, data.Speed),
                                     SlipCalc.Ratio(data.WheelSpeedRL, data.Speed),
