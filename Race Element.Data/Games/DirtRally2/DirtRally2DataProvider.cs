@@ -38,7 +38,7 @@ internal sealed class DirtRally2DataProvider : AbstractSimDataProvider
         // Map to LocalCarData (assuming standard fields; adjust based on exact definitions)
         localCar.Physics.Location = new(data.X, data.Y, data.Z);
         localCar.Physics.Velocity = data.Speed * 3.6f;
-        localCar.Physics.Acceleration = new(-data.GforceLat / 9.81f, 0, -data.GforceLong / 9.81f);
+        localCar.Physics.Acceleration = new(data.GforceLat, 0, data.GforceLong);
         localCar.Inputs.Throttle = data.Throttle;
         localCar.Inputs.Brake = data.Brake;
         localCar.Inputs.Clutch = data.Clutch;
