@@ -47,7 +47,7 @@ public static class GameExtensions
             { Game.ForzaMotorsport, "Forza Motorsport" },
             { Game.AssettoCorsaRally, "Assetto Corsa Rally" },
             { Game.ProjectMotorRacing, "Project Motor Racing" },
-            { Game.DirtRally2, "Dirt Rally 2.0" },
+            { Game.DirtRally2, "DiRT Rally 2.0" },
         }.ToImmutableDictionary();
     }
 
