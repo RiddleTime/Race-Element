@@ -40,8 +40,8 @@ Both simulators require a plugin to be installed before any data can be read fro
 3. Open the `hardware_settings_config.xml` with a text editor like notepad.
 4. Find the category that starts with `<motion_platform>`
 5. Find the line that starts with `<udp...`
-6. set enabled to true and extradata to 3
-7. Make sure it looks like this `<udp enabled="true" extradata="3" ip="127.0.0.1" port="20777" delay="1" />`
+6. Make sure it looks like this `<udp enabled="true" extradata="3" ip="127.0.0.1" port="20777" delay="1" />`
+7. `enabled` should be `true` and `extradata` should be `3`
 8. Save the file and start the DiRT Rally 2.0.
 
 # Forza Horizon 5
