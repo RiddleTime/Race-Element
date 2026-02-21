@@ -21,6 +21,7 @@
       <None Remove="Games\Resources\Icons\ACE.ico" />
       <None Remove="Games\Resources\Icons\ACR.ico" />
       <None Remove="Games\Resources\Icons\ATS.ico" />
+      <None Remove="Games\Resources\Icons\BeamNG.ico" />
       <None Remove="Games\Resources\Icons\DR2.ico" />
       <None Remove="Games\Resources\Icons\FH5.ico" />
       <None Remove="Games\Resources\Icons\FM.ico" />
@@ -31,6 +32,7 @@
       <None Remove="Games\Resources\Logos\ACE.jpg" />
       <None Remove="Games\Resources\Logos\ACR.jpg" />
       <None Remove="Games\Resources\Logos\ATS.jpg" />
+      <None Remove="Games\Resources\Logos\BeamNG.jpg" />
       <None Remove="Games\Resources\Logos\DR2.jpg" />
       <None Remove="Games\Resources\Logos\FH5.jpg" />
       <None Remove="Games\Resources\Logos\FM.jpg" />
@@ -71,6 +73,7 @@
       <EmbeddedResource Include="Games\Resources\Icons\ACR.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\AMS2.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\ATS.ico" />
+      <EmbeddedResource Include="Games\Resources\Icons\BeamNG.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\DR2.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\ETS2.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\FH5.ico" />
@@ -87,6 +90,7 @@
       <EmbeddedResource Include="Games\Resources\Logos\ACR.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\AMS2.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\ATS.jpg" />
+      <EmbeddedResource Include="Games\Resources\Logos\BeamNG.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\DR2.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\ETS2.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\FH5.jpg" />
@@ -97,6 +101,10 @@
       <EmbeddedResource Include="Games\Resources\Logos\RaceRoom.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\rF2.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\WRCG.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Games\BeamNG\" />
     </ItemGroup>
 
 </Project>

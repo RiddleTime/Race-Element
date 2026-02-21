@@ -24,6 +24,7 @@ public enum Game : int
     AssettoCorsaRally = 1 << 14,
     ProjectMotorRacing = 1 << 15,
     DirtRally2 = 1 << 16,
+    BeamNG = 1 << 17,
 }
 
 public static class GameExtensions
@@ -48,6 +49,7 @@ public static class GameExtensions
             { Game.AssettoCorsaRally, "Assetto Corsa Rally" },
             { Game.ProjectMotorRacing, "Project Motor Racing" },
             { Game.DirtRally2, "DiRT Rally 2.0" },
+            { Game.BeamNG, "BeamNG.drive" },
         }.ToImmutableDictionary();
     }
 
@@ -71,6 +73,7 @@ public static class GameExtensions
             { Game.AssettoCorsaRally, "ACR" },
             { Game.ProjectMotorRacing, "PMR" },
             { Game.DirtRally2, "DR2" },
+            { Game.BeamNG, "BeamNG" },
         }.ToImmutableDictionary();
     }
 
@@ -95,6 +98,7 @@ public static class GameExtensions
             { "acr", Game.AssettoCorsaRally },
             { "ProjectMotorRacingGame", Game.ProjectMotorRacing },
             { "dirtrally2", Game.DirtRally2 },
+            { "BeamNG.drive", Game.BeamNG },
         }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
         public static readonly Lazy<ImmutableArray<string>> All = new(() => ImmutableArray.Create(ProcessMap.Select(x => x.Key).ToArray()));
@@ -120,6 +124,7 @@ public static class GameExtensions
             { Game.AssettoCorsaRally, 3917090 },
             { Game.ProjectMotorRacing, 299970 },
             { Game.DirtRally2, 690790 },
+            { Game.BeamNG, 284160 },
         }.ToImmutableDictionary();
     }
 
