@@ -103,8 +103,4 @@
       <EmbeddedResource Include="Games\Resources\Logos\WRCG.jpg" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Games\BeamNG\" />
-    </ItemGroup>
-
 </Project>

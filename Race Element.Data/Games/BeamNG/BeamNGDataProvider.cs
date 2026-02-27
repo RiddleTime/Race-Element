@@ -33,7 +33,7 @@ internal sealed class BeamNGDataProvider : AbstractSimDataProvider
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         // Use MotionSim for physics/location if available, fallback to basics
-        if (_latestMotionSim.format[0] != 'B' || _latestMotionSim.format[1] != 'N' || _latestMotionSim.format[2] != 'G' || _latestMotionSim.format[3] != '1')
+        if (_latestMotionSim.format?[0] != 'B' || _latestMotionSim.format?[1] != 'N' || _latestMotionSim.format?[2] != 'G' || _latestMotionSim.format?[3] != '1')
         {
             // No valid MotionSim data → consider paused/no sim
             localCar = new();
@@ -56,9 +56,9 @@ internal sealed class BeamNGDataProvider : AbstractSimDataProvider
 
         // Acceleration (gravity not included, per docs)
         localCar.Physics.Acceleration = new(
-            _latestMotionSim.accX / 9.81f,   // lateral-ish, but actually world axes → approximate
-            _latestMotionSim.accY / 9.81f,
-            _latestMotionSim.accZ / 9.81f);
+            _latestMotionSim.accX / -9.81f,   // lateral-ish, but actually world axes → approximate
+            _latestMotionSim.accZ / 9.81f,
+            _latestMotionSim.accY / 9.81f);
 
         // From OutGauge (inputs, rpm, gear, etc.)
         localCar.Inputs.Throttle = _latestOutGauge.throttle;
@@ -66,12 +66,8 @@ internal sealed class BeamNGDataProvider : AbstractSimDataProvider
         localCar.Inputs.Clutch = _latestOutGauge.clutch;
         localCar.Inputs.Steering = 0f; // Not in basic OutGauge
 
-        // Gear mapping: 0 = Reverse, 1 = Neutral, 2+ = forward gears
-        sbyte gearMapped = (sbyte)_latestOutGauge.gear;
-        if (gearMapped == 0) gearMapped = -1; // common convention: -1 = R
-        else if (gearMapped == 1) gearMapped = 0; // Neutral
-        else gearMapped -= 1; // 2→1, 3→2, etc.
-        localCar.Inputs.Gear = gearMapped;
+
+        localCar.Inputs.Gear = (sbyte)_latestOutGauge.Gear;
 
         localCar.Engine.Rpm = (int)_latestOutGauge.rpm;
         //localCar.Engine.MaxRpm = 8000; // BeamNG varies; no field → placeholder
@@ -109,7 +105,7 @@ internal sealed class BeamNGDataProvider : AbstractSimDataProvider
         try
         {
             _outGaugeClient = new UdpClient(OutGaugePort);
-            IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
+            IPEndPoint remote = new(IPAddress.Any, 0);
 
             while (_isRunning)
             {
@@ -139,7 +135,7 @@ internal sealed class BeamNGDataProvider : AbstractSimDataProvider
         try
         {
             _motionSimClient = new UdpClient(MotionSimPort);
-            IPEndPoint remote = new IPEndPoint(IPAddress.Any, 0);
+            IPEndPoint remote = new(IPAddress.Any, 0);
 
             while (_isRunning)
             {
@@ -165,16 +161,16 @@ internal sealed class BeamNGDataProvider : AbstractSimDataProvider
     }
 }
 
-[StructLayout(LayoutKind.Sequential, Pack = 1)]
+[StructLayout(LayoutKind.Sequential, Pack = 1, CharSet = CharSet.Ansi)]
 internal struct OutGaugePacket
 {
-    public uint time;               // ms, usually 0
+    public uint Time;               // ms, usually 0
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
-    public char[] car;              // "beam"
-    public ushort flags;
-    public char gear;
+    public char[] Car;              // "beam"
+    public ushort Flags;
+    public char Gear;
     public char plid;               // usually 0
-    public float speed;             // m/s
+    public float Speed;             // m/s
     public float rpm;
     public float turbo;             // bar
     public float engTemp;           // °C
