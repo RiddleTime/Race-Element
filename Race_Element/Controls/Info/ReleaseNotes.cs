@@ -6,6 +6,7 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.5.6.0", "Input Trace HUD: Added Clutch, it's OFF by Default, you will need to enable it if you want it." },
         {"2.5.5.0", "Race Element"+
                     "\n- Added support for DiRT Rally 2.0, see the multi-sim guide on the website."+
                     "\n\nDSX"+
