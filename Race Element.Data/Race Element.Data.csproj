@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
         <TargetFramework>net10.0</TargetFramework>
         <RootNamespace>RaceElement.Data</RootNamespace>
@@ -29,6 +29,7 @@
       <None Remove="Games\Resources\Icons\PMR.ico" />
       <None Remove="Games\Resources\Icons\rF2.ico" />
       <None Remove="Games\Resources\Icons\WRCG.ico" />
+      <None Remove="Games\Resources\Icons\RBR.ico" />
       <None Remove="Games\Resources\Logos\ACE.jpg" />
       <None Remove="Games\Resources\Logos\ACR.jpg" />
       <None Remove="Games\Resources\Logos\ATS.jpg" />
@@ -40,6 +41,7 @@
       <None Remove="Games\Resources\Logos\PMR.jpg" />
       <None Remove="Games\Resources\Logos\rF2.jpg" />
       <None Remove="Games\Resources\Logos\WRCG.jpg" />
+      <None Remove="Games\Resources\Logos\RBR.jpg" />
       <None Remove="Games\SCS2\scs-telemetry.dll" />
       <None Remove="Games\Resources\Icons\AC.ico" />
       <None Remove="Games\Resources\Icons\ACC.ico" />
@@ -84,6 +86,7 @@
       <EmbeddedResource Include="Games\Resources\Icons\RaceRoom.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\rF2.ico" />
       <EmbeddedResource Include="Games\Resources\Icons\WRCG.ico" />
+      <EmbeddedResource Include="Games\Resources\Icons\RBR.ico" />
       <EmbeddedResource Include="Games\Resources\Logos\AC.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\ACC.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\ACE.jpg" />
@@ -101,6 +104,7 @@
       <EmbeddedResource Include="Games\Resources\Logos\RaceRoom.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\rF2.jpg" />
       <EmbeddedResource Include="Games\Resources\Logos\WRCG.jpg" />
+      <EmbeddedResource Include="Games\Resources\Logos\RBR.jpg" />
     </ItemGroup>
 
 </Project>
