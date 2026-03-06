@@ -18,6 +18,7 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
     private bool _isRunning;
     private bool _hasReceivedData;
     private const int Port = 6776;
+    private RBRMemoryReader? _memoryReader;
 
     public sealed override List<string> GetCarClasses() => ["Group A", "Group B", "Group N", "WRC", "Kit Car", "F2"];
 
@@ -62,13 +63,40 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
         localCar.Engine.MaxRpm = 8000;
         localCar.Engine.IsRunning = data.EngineRpm > 500;
 
-        // SlipRatio - RBR NGP UDP does not provide wheel slip; use input-based approximation for DSX trigger haptics
-        float brake = data.ControlBrake;
-        float throttle = data.ControlThrottle;
-        float longAccG = data.AccSurge / 9.80665f;
-        float brakeSlip = brake * (0.7f + Math.Min(0.3f, Math.Abs(longAccG)));
-        float throttleSlip = throttle * (0.7f + Math.Min(0.3f, Math.Max(0, longAccG)));
-        localCar.Tyres.SlipRatio = [brakeSlip, brakeSlip, throttleSlip, throttleSlip];
+        // SlipRatio - Use memory reading for accurate wheel speeds (based on Adaptive_Trigger_RBR.py)
+        _memoryReader ??= new RBRMemoryReader();
+        
+        if (_memoryReader.TryReadWheelSpeeds(out var wheelSpeeds))
+        {
+            // Calculate real slip ratio using actual wheel speeds
+            // ground_speed is in km/h, wheel speeds are in km/h
+            float groundSpeedKmh = MathF.Sqrt(data.VelSurge * data.VelSurge + data.VelSway * data.VelSway + data.VelHeave * data.VelHeave) * 3.6f;
+            
+            if (groundSpeedKmh > 5.0f) // Only calculate when moving > 5 km/h
+            {
+                // Slip ratio = ((wheel_speed / ground_speed) - 1) * 100
+                float flSlip = ((wheelSpeeds.FrontLeft / groundSpeedKmh) - 1.0f) * 100.0f;
+                float frSlip = ((wheelSpeeds.FrontRight / groundSpeedKmh) - 1.0f) * 100.0f;
+                float rlSlip = ((wheelSpeeds.RearLeft / groundSpeedKmh) - 1.0f) * 100.0f;
+                float rrSlip = ((wheelSpeeds.RearRight / groundSpeedKmh) - 1.0f) * 100.0f;
+                
+                localCar.Tyres.SlipRatio = [flSlip, frSlip, rlSlip, rrSlip];
+            }
+            else
+            {
+                localCar.Tyres.SlipRatio = [0, 0, 0, 0];
+            }
+        }
+        else
+        {
+            // Fallback: use input-based approximation if memory reading fails
+            float brake = data.ControlBrake;
+            float throttle = data.ControlThrottle;
+            float longAccG = data.AccSurge / 9.80665f;
+            float brakeSlip = brake * (0.7f + Math.Min(0.3f, Math.Abs(longAccG)));
+            float throttleSlip = throttle * (0.7f + Math.Min(0.3f, Math.Max(0, longAccG)));
+            localCar.Tyres.SlipRatio = [brakeSlip, brakeSlip, throttleSlip, throttleSlip];
+        }
     }
 
     internal override int PollingRate() => 60;
@@ -89,6 +117,8 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
         _isRunning = false;
         _udpClient?.Close();
         _listenerThread?.Join(1000);
+        _memoryReader?.Dispose();
+        _memoryReader = null;
     }
 
     private void ListenForTelemetry()
