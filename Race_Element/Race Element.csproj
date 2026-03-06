@@ -25,11 +25,6 @@
 	<PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
 		<CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
 		<RunCodeAnalysis>false</RunCodeAnalysis>
-		<!-- 单文件发布：打包成单个 exe -->
-		<PublishSingleFile>true</PublishSingleFile>
-		<IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
-		<SelfContained>false</SelfContained>
-		<PublishTrimmed>false</PublishTrimmed>
 	</PropertyGroup>
 	<PropertyGroup>
 		<ApplicationManifest>Properties\app.manifest</ApplicationManifest>
