@@ -7,27 +7,19 @@ namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
 
 internal static class TriggerHaptics
 {
-    public static DsxPacket HandleBraking(DsxConfiguration config)
+    public static DsxPacket HandleBraking(DsxConfiguration config) => GameManager.CurrentGame switch
     {
-        // Route to game-specific implementation
-        if (GameManager.CurrentGame == Game.RBR)
-            return HandleBraking_RBR(config);
-        else
-            return HandleBraking_Generic(config);
-    }
+        Game.RBR => HandleBrakingRBR(config),
+        _ => HandleBrakingGeneric(config)
+    };
 
-    public static DsxPacket HandleAcceleration(DsxConfiguration config)
+    public static DsxPacket HandleAcceleration(DsxConfiguration config) => GameManager.CurrentGame switch
     {
-        // Route to game-specific implementation
-        if (GameManager.CurrentGame == Game.RBR)
-            return HandleAcceleration_RBR(config);
-        else
-            return HandleAcceleration_Generic(config);
-    }
+        Game.RBR => HandleAccelerationRBR(config),
+        _ => HandleAccelerationGeneric(config)
+    };
 
-    #region Generic Implementation (Original for all non-RBR games)
-    
-    private static DsxPacket HandleBraking_Generic(DsxConfiguration config)
+    private static DsxPacket HandleBrakingGeneric(DsxConfiguration config)
     {
         DsxPacket p = new();
         int controllerIndex = 0;
@@ -69,7 +61,7 @@ internal static class TriggerHaptics
         return p;
     }
 
-    private static DsxPacket HandleAcceleration_Generic(DsxConfiguration config)
+    private static DsxPacket HandleAccelerationGeneric(DsxConfiguration config)
     {
         DsxPacket p = new();
         int controllerIndex = 0;
@@ -107,25 +99,21 @@ internal static class TriggerHaptics
         return p;
     }
 
-    #endregion
-
-    #region RBR-Specific Implementation (Real wheel speeds with percentage slip ratios)
-
     /// <summary>
     /// RBR brake trigger haptics using real wheel speeds and percentage-based slip ratios.
     /// SlipRatio in RBR represents actual percentage: -10.5 = 10.5% wheel lock (brake), +10.5 = 10.5% wheel spin (throttle)
     /// Thresholds should be configured in percentage (e.g., 5.0 = 5% slip)
     /// </summary>
-    private static DsxPacket HandleBraking_RBR(DsxConfiguration config)
+    private static DsxPacket HandleBrakingRBR(DsxConfiguration config)
     {
         DsxPacket p = new();
         int controllerIndex = 0;
 
-        float brake = SimDataProvider.LocalCar.Inputs.Brake * 100f; // Convert to percentage
+        float brakePercentage = SimDataProvider.LocalCar.Inputs.Brake * 100f; // Convert to percentage
         float groundSpeedKmh = SimDataProvider.LocalCar.Physics.Velocity;
-        
+
         // Use GUI configured brake threshold
-        if (brake > config.BrakeSlip.BrakeThreshold && groundSpeedKmh > 5f)
+        if (brakePercentage > config.BrakeSlip.BrakeThreshold && groundSpeedKmh > 5f)
         {
             float[] slipRatios = SimDataProvider.LocalCar.Tyres.SlipRatio;
 
@@ -133,7 +121,7 @@ internal static class TriggerHaptics
             {
                 float flSlip = slipRatios[0];
                 float frSlip = slipRatios[1];
-                
+
                 // For RBR: threshold is in percentage (5.0 = 5% slip)
                 float wheelSlipThreshold = config.BrakeSlip.FrontSlipThreshold;
 
@@ -142,13 +130,13 @@ internal static class TriggerHaptics
                 {
                     // Calculate max lock severity
                     float maxLock = Math.Min(flSlip, frSlip); // More negative = more lock
-                    
+
                     // Strength: base 2, increases with lock severity, scaled by FeedbackStrength (1-8)
                     // FeedbackStrength acts as 0-1 multiplier: 7/8 = 0.875
                     float baseStrength = Math.Min(8f, 2f + Math.Abs(maxLock) / 10f);
                     float strength = baseStrength * (config.BrakeSlip.FeedbackStrength / 8.0f);
                     int strengthInt = Math.Max(1, Math.Min(8, (int)Math.Round(strength)));
-                    
+
                     // Use VibrateTriggerPulse mode for direct lock feedback
                     p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Left, TriggerMode.VibrateTriggerPulse, [strengthInt, 0, 0]);
                 }
@@ -188,7 +176,7 @@ internal static class TriggerHaptics
     /// RBR throttle trigger haptics for wheel spin and handbrake drift scenarios.
     /// Detects: 1) Wheel spin on any driven wheels, 2) Handbrake drift with throttle
     /// </summary>
-    private static DsxPacket HandleAcceleration_RBR(DsxConfiguration config)
+    private static DsxPacket HandleAccelerationRBR(DsxConfiguration config)
     {
         DsxPacket p = new();
         int controllerIndex = 0;
@@ -205,7 +193,7 @@ internal static class TriggerHaptics
                 // Use separate thresholds for front/rear (supports FWD/RWD/AWD)
                 float frontSlipThreshold = config.ThrottleSlip.FrontSlipThreshold;
                 float rearSlipThreshold = config.ThrottleSlip.RearSlipThreshold;
-                
+
                 // Find maximum wheel spin across all wheels (positive slip = spin)
                 float maxSpin = Math.Max(
                     Math.Max(slipRatios[0] > frontSlipThreshold ? slipRatios[0] : 0, slipRatios[1] > frontSlipThreshold ? slipRatios[1] : 0),
@@ -218,7 +206,7 @@ internal static class TriggerHaptics
                     float baseStrength = Math.Min(8f, 2f + maxSpin / 10f);
                     float strength = baseStrength * (config.ThrottleSlip.FeedbackStrength / 8.0f);
                     int strengthInt = Math.Max(1, Math.Min(8, (int)Math.Round(strength)));
-                    
+
                     p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Right, TriggerMode.VibrateTriggerPulse, [strengthInt, 0, 0]);
                 }
                 else
@@ -252,23 +240,23 @@ internal static class TriggerHaptics
         {
             float handbrake = SimDataProvider.LocalCar.Inputs.HandBrake * 100f;
             float brake = SimDataProvider.LocalCar.Inputs.Brake * 100f;
-            
+
             float[] slipRatios = SimDataProvider.LocalCar.Tyres.SlipRatio;
             if (slipRatios.Length == 4)
             {
                 float rlSlip = slipRatios[2];
                 float rrSlip = slipRatios[3];
                 float wheelSlipThreshold = config.ThrottleSlip.RearSlipThreshold;
-                
+
                 // Rear wheel lock with handbrake/brake + throttle (Scandinavian flick, etc.)
-                if ((rlSlip < -wheelSlipThreshold || rrSlip < -wheelSlipThreshold) && 
+                if ((rlSlip < -wheelSlipThreshold || rrSlip < -wheelSlipThreshold) &&
                     (handbrake > 30f || brake > 80f) && throttle > 30f)
                 {
                     float maxLock = Math.Min(rlSlip, rrSlip);
                     float baseStrength = Math.Min(8f, 2f + Math.Abs(maxLock) / 10f);
                     float strength = baseStrength * (config.ThrottleSlip.FeedbackStrength / 8.0f);
                     int strengthInt = Math.Max(1, Math.Min(8, (int)Math.Round(strength)));
-                    
+
                     p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Right, TriggerMode.VibrateTriggerPulse, [strengthInt, 0, 0]);
                 }
             }
@@ -278,6 +266,4 @@ internal static class TriggerHaptics
 
         return p;
     }
-
-    #endregion
 }
