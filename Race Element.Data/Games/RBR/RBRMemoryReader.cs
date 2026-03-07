@@ -36,6 +36,11 @@ internal sealed class RBRMemoryReader : IDisposable
     private const int PROCESS_VM_READ = 0x0010;
     private const int PROCESS_QUERY_INFORMATION = 0x0400;
 
+    /// <summary>
+    /// Wheel speeds in km/h
+    /// </summary>
+    internal readonly record struct WheelSpeeds(float FrontLeft, float FrontRight, float RearLeft, float RearRight);
+
     public RBRMemoryReader()
     {
         TryConnect();
@@ -140,20 +145,19 @@ internal sealed class RBRMemoryReader : IDisposable
             // Python code lines 2594-2597:
             // wheel_speed_fl = rbr_memory_reader.read_float(num5 + 988) * 3.6
             IntPtr baseWheelAddr = new IntPtr(ptr3);
-            
+
             if (!ReadFloat(baseWheelAddr + WheelSpeedFL, out float fl)) return false;
             if (!ReadFloat(baseWheelAddr + WheelSpeedFR, out float fr)) return false;
             if (!ReadFloat(baseWheelAddr + WheelSpeedRL, out float rl)) return false;
             if (!ReadFloat(baseWheelAddr + WheelSpeedRR, out float rr)) return false;
 
             // Convert from m/s to km/h
-            wheelSpeeds = new WheelSpeeds
-            {
-                FrontLeft = fl * 3.6f,
-                FrontRight = fr * 3.6f,
-                RearLeft = rl * 3.6f,
-                RearRight = rr * 3.6f
-            };
+            wheelSpeeds = new WheelSpeeds(
+                fl * 3.6f,
+                fr * 3.6f,
+                rl * 3.6f,
+                rr * 3.6f
+            );
 
             return true;
         }
@@ -174,15 +178,4 @@ internal sealed class RBRMemoryReader : IDisposable
         }
         _isConnected = false;
     }
-}
-
-/// <summary>
-/// Wheel speeds in km/h
-/// </summary>
-internal struct WheelSpeeds
-{
-    public float FrontLeft;
-    public float FrontRight;
-    public float RearLeft;
-    public float RearRight;
 }

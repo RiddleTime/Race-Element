@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Runtime.InteropServices;
+using static RaceElement.Data.Games.RBR.RBRMemoryReader;
 
 namespace RaceElement.Data.Games.RBR;
 
@@ -63,15 +64,15 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
         localCar.Engine.MaxRpm = 8000;
         localCar.Engine.IsRunning = data.EngineRpm > 500;
 
+
         // SlipRatio - Use memory reading for accurate wheel speeds (based on Adaptive_Trigger_RBR.py)
         _memoryReader ??= new RBRMemoryReader();
-        
-        if (_memoryReader.TryReadWheelSpeeds(out var wheelSpeeds))
+        if (_memoryReader.TryReadWheelSpeeds(out WheelSpeeds wheelSpeeds))
         {
             // Calculate real slip ratio using actual wheel speeds
             // ground_speed is in km/h, wheel speeds are in km/h
             float groundSpeedKmh = MathF.Sqrt(data.VelSurge * data.VelSurge + data.VelSway * data.VelSway + data.VelHeave * data.VelHeave) * 3.6f;
-            
+
             if (groundSpeedKmh > 5.0f) // Only calculate when moving > 5 km/h
             {
                 // Slip ratio = ((wheel_speed / ground_speed) - 1) * 100
@@ -79,7 +80,7 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
                 float frSlip = ((wheelSpeeds.FrontRight / groundSpeedKmh) - 1.0f) * 100.0f;
                 float rlSlip = ((wheelSpeeds.RearLeft / groundSpeedKmh) - 1.0f) * 100.0f;
                 float rrSlip = ((wheelSpeeds.RearRight / groundSpeedKmh) - 1.0f) * 100.0f;
-                
+
                 localCar.Tyres.SlipRatio = [flSlip, frSlip, rlSlip, rrSlip];
             }
             else
