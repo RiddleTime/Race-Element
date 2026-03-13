@@ -1,14 +1,14 @@
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 
-namespace RaceElement.Data.Games.RBR;
+namespace RaceElement.Data.Games.RichardBurnsRally;
 
 /// <summary>
 /// Memory reader for RBR (Richard Burns Rally) to extract wheel speed data.
 /// Based on Adaptive_Trigger_RBR.py memory reading implementation.
 /// Process: RichardBurnsRally_SSE.exe
 /// </summary>
-internal sealed class RBRMemoryReader : IDisposable
+internal sealed partial class RBRMemoryReader : IDisposable
 {
     private const string ProcessName = "RichardBurnsRally_SSE";
     private IntPtr _processHandle = IntPtr.Zero;
@@ -24,14 +24,16 @@ internal sealed class RBRMemoryReader : IDisposable
     private const int WheelSpeedRL = 2364;
     private const int WheelSpeedRR = 3052;
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern IntPtr OpenProcess(int dwDesiredAccess, bool bInheritHandle, int dwProcessId);
+    [LibraryImport("kernel32.dll", SetLastError = true)]
+    private static partial IntPtr OpenProcess(int dwDesiredAccess, [MarshalAs(UnmanagedType.Bool)] bool bInheritHandle, int dwProcessId);
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int dwSize, out int lpNumberOfBytesRead);
+    [LibraryImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool ReadProcessMemory(IntPtr hProcess, IntPtr lpBaseAddress, byte[] lpBuffer, int dwSize, out int lpNumberOfBytesRead);
 
-    [DllImport("kernel32.dll", SetLastError = true)]
-    private static extern bool CloseHandle(IntPtr hObject);
+    [LibraryImport("kernel32.dll", SetLastError = true)]
+    [return: MarshalAs(UnmanagedType.Bool)]
+    private static partial bool CloseHandle(IntPtr hObject);
 
     private const int PROCESS_VM_READ = 0x0010;
     private const int PROCESS_QUERY_INFORMATION = 0x0400;

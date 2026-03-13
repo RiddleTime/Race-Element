@@ -15,7 +15,7 @@ using RaceElement.Data.Games.AssettoCorsaRally;
 using RaceElement.Data.Games.ProjectMotorRacing;
 using RaceElement.Data.Games.DirtRally2;
 using RaceElement.Data.Games.BeamNG;
-using RaceElement.Data.Games.RBR;
+using RaceElement.Data.Games.RichardBurnsRally;
 
 namespace RaceElement.Data.Common;
 

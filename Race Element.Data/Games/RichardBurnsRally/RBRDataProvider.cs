@@ -1,15 +1,14 @@
 using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
-using RaceElement.Data.Games.RBR.UDP;
-using Game = RaceElement.Data.Games.Game;
+using RaceElement.Data.Games.RichardBurnsRally.UDP;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Numerics;
 using System.Runtime.InteropServices;
-using static RaceElement.Data.Games.RBR.RBRMemoryReader;
+using static RaceElement.Data.Games.RichardBurnsRally.RBRMemoryReader;
 
-namespace RaceElement.Data.Games.RBR;
+namespace RaceElement.Data.Games.RichardBurnsRally;
 
 internal sealed class RBRDataProvider : AbstractSimDataProvider
 {
@@ -42,7 +41,7 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
 
         // Physics - RBR Car.Speed is in m/s, convert to km/h
         localCar.Physics.Location = new(data.CarPositionX, data.CarPositionY, data.CarPositionZ);
-        localCar.Physics.Velocity = data.CarSpeed * 3.6f;
+        localCar.Physics.Velocity = data.CarSpeed;
         localCar.Physics.Acceleration = new(data.AccSway / 9.80665f, data.AccHeave / 9.80665f, data.AccSurge / 9.80665f);
         localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(
             data.CarYaw * (MathF.PI / 180f),

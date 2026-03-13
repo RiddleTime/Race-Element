@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace RaceElement.Data.Games.RBR.UDP;
+namespace RaceElement.Data.Games.RichardBurnsRally.UDP;
 
 /// <summary>
 /// RBR NGP (Next Generation Physics) UDP telemetry packet structure.
