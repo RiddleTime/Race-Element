@@ -42,7 +42,7 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
         // Physics - RBR Car.Speed is in m/s, convert to km/h
         localCar.Physics.Location = new(data.CarPositionX, data.CarPositionY, data.CarPositionZ);
         localCar.Physics.Velocity = data.CarSpeed;
-        localCar.Physics.Acceleration = new(data.AccSway / 9.80665f, data.AccHeave / 9.80665f, data.AccSurge / 9.80665f);
+        localCar.Physics.Acceleration = new(-data.AccSway, data.AccHeave, data.AccSurge);
         localCar.Physics.Rotation = Quaternion.CreateFromYawPitchRoll(
             data.CarYaw * (MathF.PI / 180f),
             data.CarPitch * (MathF.PI / 180f),
