@@ -29,6 +29,7 @@ internal static partial class LocalCarMapper
         commonData.Tyres.CoreTemperature = pagePhysics.TyreCoreTemperature;
         commonData.Tyres.Pressure = pagePhysics.WheelPressure;
         commonData.Tyres.SlipRatio = pagePhysics.WheelSlip;
+        commonData.Tyres.SlipAngle = pagePhysics.SlipAngle;
         commonData.Tyres.Velocity = pagePhysics.Velocity;
 
         commonData.Brakes.DiscTemperature = pagePhysics.BrakeTemperature;
