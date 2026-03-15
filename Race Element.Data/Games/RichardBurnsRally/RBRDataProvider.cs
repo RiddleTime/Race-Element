@@ -22,7 +22,7 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
 
     public sealed override List<string> GetCarClasses() => ["Group A", "Group B", "Group N", "WRC", "Kit Car", "F2"];
 
-    public sealed override bool HasTelemetry() => false;
+    internal override int PollingRate() => 300;
 
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
@@ -99,8 +99,6 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
         }
     }
 
-    internal override int PollingRate() => 60;
-
     internal override void Start()
     {
         _isRunning = true;
@@ -167,4 +165,6 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
             _udpClient?.Close();
         }
     }
+
+    public sealed override bool HasTelemetry() => false;
 }
