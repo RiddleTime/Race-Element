@@ -52,6 +52,7 @@ Free code signing provided by [SignPath.io](https://signpath.io?utm_source=found
 - [mreininger23](https://github.com/mreininger23)
 - [Kris](https://github.com/Kris)
 - [Dirk-W](https://github.com/Dirk-W)
+- [CrayzyCray](https://github.com/CrayzyCray)
 - [CannaMan](https://github.com/CannaMan)
 - [Andreas-Willich](https://github.com/Andreas-Willich)
 <!-- END_CONTRIBUTORS -->

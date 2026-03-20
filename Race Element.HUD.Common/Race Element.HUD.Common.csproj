@@ -26,6 +26,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="16.1.1" />
         <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
         <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
