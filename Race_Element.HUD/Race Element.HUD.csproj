@@ -36,6 +36,7 @@
         <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj" />
     </ItemGroup>
     <ItemGroup>
+        <PackageReference Include="AutoMapper" Version="16.1.1" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
         <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />

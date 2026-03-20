@@ -81,6 +81,7 @@
     <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\zolder.bin" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
     <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
     <PackageReference Include="InputSimulatorStandard" Version="1.0.0" />
     <PackageReference Include="MouseKeyHook" Version="5.7.1" />
