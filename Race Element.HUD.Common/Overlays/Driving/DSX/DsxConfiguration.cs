@@ -1,4 +1,4 @@
-﻿using RaceElement.HUD.Overlay.Configuration;
+using RaceElement.HUD.Overlay.Configuration;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
 
@@ -39,7 +39,7 @@ internal sealed class DsxConfiguration : OverlayConfiguration
         public int Amplitude { get; init; } = 8;
 
         [ToolTip("Sets the min frequency of the vibration effect in the trigger.")]
-        [IntRange(1, 10, 1)]
+        [IntRange(1, 50, 1)]
         public int MinFrequency { get; init; } = 3;
 
         [ToolTip("Sets the max frequency of the vibration effect in the trigger.")]
@@ -75,7 +75,7 @@ internal sealed class DsxConfiguration : OverlayConfiguration
         public int Amplitude { get; init; } = 7;
 
         [ToolTip("Sets the min frequency of the vibration effect in the trigger.")]
-        [IntRange(1, 10, 1)]
+        [IntRange(1, 50, 1)]
         public int MinFrequency { get; init; } = 6;
 
         [ToolTip("Sets the max frequency of the vibration effect in the trigger.")]

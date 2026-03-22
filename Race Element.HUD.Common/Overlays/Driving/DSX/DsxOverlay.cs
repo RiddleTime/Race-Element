@@ -1,4 +1,4 @@
-﻿using RaceElement.Data.Games;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using System.Diagnostics;
 using System.Drawing;
@@ -15,7 +15,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Drive,
     SupportedGames = Game.RaceRoom | Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations
-            | Game.ForzaMotorsport | Game.AssettoCorsaRally | Game.ProjectMotorRacing | Game.DirtRally2,
+            | Game.ForzaMotorsport | Game.AssettoCorsaRally | Game.ProjectMotorRacing | Game.DirtRally2 | Game.RBR,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class DsxOverlay : CommonAbstractOverlay
