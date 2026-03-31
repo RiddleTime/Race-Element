@@ -169,13 +169,13 @@ public static class SimDataProvider
                     _localCarEventLoop.Run();
                     break;
                 }
-            case Game.BeamNG:
-                {
-                    Instance ??= new BeamNGDataProvider();
-                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
-                    _localCarEventLoop.Run();
-                    break;
-                }
+        //  case Game.BeamNG:
+        //      {
+        //          Instance ??= new BeamNGDataProvider();
+        //          Instance.Update(ref _localCarData, ref _session, ref _gameData);
+        //          _localCarEventLoop.Run();
+        //          break;
+        //      }
             case Game.RBR:
                 {
                     Instance ??= new RBRDataProvider();
