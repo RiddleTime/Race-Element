@@ -102,7 +102,7 @@
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Abstractions" Version="10.0.5" />
 		<PackageReference Include="Microsoft.Extensions.FileProviders.Physical" Version="10.0.5" />
 		<PackageReference Include="Microsoft.Extensions.FileSystemGlobbing" Version="10.0.5" />
-		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="10.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Hosting.Abstractions" Version="10.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Logging" Version="10.0.5" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="10.0.5" />
