@@ -6,10 +6,12 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
-        {"2.6.0.0", "Race Element:"+
-                    "\n- Added support for Richard Burns Rally. (by Aaronfang). See Multi-Sim guide on website for instructions."+
-                    "\n\nCommon HUDs:"+
-                    "\nInput Trace HUD: Added Clutch Inputs."},
+        {"2.6.0.0", "Race Element"+
+                    "\n- Added support for Richard Burns Rally( by Aaronfang). See Multi-Sim guide on website for instructions."+
+                    "\n\nCommon HUDs"+
+                    "\nInput Trace HUD: Added Clutch Inputs."+
+                    "\n\nDSX"+
+                    "\n- Added support for Richard Burns Rally( by Aaronfang). See Multi-sim & DSX guides on website for instructions."},
         {"2.5.5.0", "Race Element"+
                     "\n- Added support for DiRT Rally 2.0, see the multi-sim guide on the website."+
                     "\n\nDSX"+
