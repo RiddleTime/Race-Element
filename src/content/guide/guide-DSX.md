@@ -17,6 +17,7 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 - Forza Motorsport 8
 - Le Mans Ultimate
 - Project Motor Racing
+- Richard Burns Rally
 - RaceRoom
 - rFactor 2
 - WRC Generations
