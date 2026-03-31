@@ -21,19 +21,6 @@ Both simulators require a plugin to be installed before any data can be read fro
 2. Go to System Options
 3. Enable Telemetry
 
-# Le Mans Ultimate
-1. Open the installation folder of Le Mans Ultimate
-2. Go to `Plugins`
-3. Download the shared memory plugin https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file
-4. Open the downloaded zip file and look for the `rFactor2SharedMemoryMapPlugin64.dll`
-5. Extract that .dll file to the folder you've opened
-6. Launch the game and exit it
-7. Open the installation folder of Le Mans Ultimate
-8. Go to `UserData\player`
-9. Open `CustomPluginVariables.json` with a text editor like notepad
-10. If you see anything else than `null` as text in this file go to step 11. Else please read: https://community.lemansultimate.com/index.php?threads/shared-memory-plugin-not-loading.3705/#post-24870 and install the C++ redistributable(https://aka.ms/highdpimfc2013x64enu). Then launch and exit the game.
-11. Set the rFactor2SharedMemoryMapPlugin64.dll to `" Enabled": 1,` and Save. 
-
 # DiRT Rally 2.0
 1. Open Windows Explorer
 2. Paste `%userprofile%\Documents\My Games\DiRT Rally 2.0\hardwaresettings` in the address bar and hit Enter.
@@ -63,6 +50,19 @@ Both simulators require a plugin to be installed before any data can be read fro
 6. Set Data Out Port to: `5300`
 7. Set Data Out Packet Format to: `Car Dash`
 
+# Le Mans Ultimate
+1. Open the installation folder of Le Mans Ultimate
+2. Go to `Plugins`
+3. Download the shared memory plugin https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file
+4. Open the downloaded zip file and look for the `rFactor2SharedMemoryMapPlugin64.dll`
+5. Extract that .dll file to the folder you've opened
+6. Launch the game and exit it
+7. Open the installation folder of Le Mans Ultimate
+8. Go to `UserData\player`
+9. Open `CustomPluginVariables.json` with a text editor like notepad
+10. If you see anything else than `null` as text in this file go to step 11. Else please read: https://community.lemansultimate.com/index.php?threads/shared-memory-plugin-not-loading.3705/#post-24870 and install the C++ redistributable(https://aka.ms/highdpimfc2013x64enu). Then launch and exit the game.
+11. Set the rFactor2SharedMemoryMapPlugin64.dll to `" Enabled": 1,` and Save. 
+
 # Project Motor Racing
 1. Start Project Motor Racing
 2. Go to Options (X on keyboard)
@@ -72,6 +72,14 @@ Both simulators require a plugin to be installed before any data can be read fro
 6. UDP Port should be `7576`
 7. UDP Host should be `224.0.0.150`
 8. Save (spacebar on keyboard)
+
+# Richard Burns Rally( RSF)
+1. Open the RSF Launcher
+2. Enable the Adanced optionss
+3. Go to the Telemetry Tab
+4. The telemetry should be set to `127.0.0.1` : `6776`
+5. Enable the `UDP Telemetry` checkbox.
+6. Launch the game
 
 # rFactor 2
 1. Open the installation folder of rFactor 2
