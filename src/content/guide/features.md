@@ -22,6 +22,7 @@ Race Element is a lightweight application for racing simulators which is designe
 - iRacing
 - Le Mans Ultimate
 - Project Motor Racing
+- Richard Burns Rally
 - RaceRoom
 - rFactor 2
 - WRC Generations
