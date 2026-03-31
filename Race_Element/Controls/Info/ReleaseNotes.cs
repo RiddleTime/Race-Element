@@ -8,7 +8,6 @@ public static class ReleaseNotes
     {
         {"2.6.0.0", "Race Element:"+
                     "\n- Added support for Richard Burns Rally. (by Aaronfang). See Multi-Sim guide on website for instructions."+
-                    "\n- Added support for Beam.NG. See Multi-Sim guide on website for instructions."+
                     "\n\nCommon HUDs:"+
                     "\nInput Trace HUD: Added Clutch, it's OFF by Default, Enable it if you want it."},
         {"2.5.5.0", "Race Element"+
