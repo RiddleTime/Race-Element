@@ -9,7 +9,8 @@ public static class ReleaseNotes
         {"2.6.0.0", "Race Element"+
                     "\n- Added support for Richard Burns Rally( by Aaronfang). See Multi-Sim guide on website for instructions."+
                     "\n\nCommon HUDs"+
-                    "\nInput Trace HUD: Added Clutch Inputs."+
+                    "\n- Input Trace HUD: Added Clutch Inputs."+
+                    "\n- Wheel Slip HUD: Added wheel slip angle support for Assetto Corsa EVO( by CrazyCray)."+
                     "\n\nDSX"+
                     "\n- Added support for Richard Burns Rally( by Aaronfang). See Multi-sim & DSX guides on website for instructions."},
         {"2.5.5.0", "Race Element"+
