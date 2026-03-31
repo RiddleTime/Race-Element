@@ -22,20 +22,6 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Go to System Options</li>
 <li>Enable Telemetry</li>
 </ol>
-<h1 id="le-mans-ultimate">Le Mans Ultimate</h1>
-<ol>
-<li>Open the installation folder of Le Mans Ultimate</li>
-<li>Go to <code>Plugins</code></li>
-<li>Download the shared memory plugin <a href="https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file">https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file</a></li>
-<li>Open the downloaded zip file and look for the <code>rFactor2SharedMemoryMapPlugin64.dll</code></li>
-<li>Extract that .dll file to the folder you&#39;ve opened</li>
-<li>Launch the game and exit it</li>
-<li>Open the installation folder of Le Mans Ultimate</li>
-<li>Go to <code>UserData\\player</code></li>
-<li>Open <code>CustomPluginVariables.json</code> with a text editor like notepad</li>
-<li>If you see anything else than <code>null</code> as text in this file go to step 11. Else please read: <a href="https://community.lemansultimate.com/index.php?threads/shared-memory-plugin-not-loading.3705/#post-24870">https://community.lemansultimate.com/index.php?threads/shared-memory-plugin-not-loading.3705/#post-24870</a> and install the C++ redistributable(<a href="https://aka.ms/highdpimfc2013x64enu">https://aka.ms/highdpimfc2013x64enu</a>). Then launch and exit the game.</li>
-<li>Set the rFactor2SharedMemoryMapPlugin64.dll to <code>&quot; Enabled&quot;: 1,</code> and Save.</li>
-</ol>
 <h1 id="dirt-rally-20">DiRT Rally 2.0</h1>
 <ol>
 <li>Open Windows Explorer</li>
@@ -68,6 +54,20 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Set Data Out Port to: <code>5300</code></li>
 <li>Set Data Out Packet Format to: <code>Car Dash</code></li>
 </ol>
+<h1 id="le-mans-ultimate">Le Mans Ultimate</h1>
+<ol>
+<li>Open the installation folder of Le Mans Ultimate</li>
+<li>Go to <code>Plugins</code></li>
+<li>Download the shared memory plugin <a href="https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file">https://www.mediafire.com/file/s6ojcr9zrs6q9ls/rf2_sm_tools_3.7.15.1.zip/file</a></li>
+<li>Open the downloaded zip file and look for the <code>rFactor2SharedMemoryMapPlugin64.dll</code></li>
+<li>Extract that .dll file to the folder you&#39;ve opened</li>
+<li>Launch the game and exit it</li>
+<li>Open the installation folder of Le Mans Ultimate</li>
+<li>Go to <code>UserData\\player</code></li>
+<li>Open <code>CustomPluginVariables.json</code> with a text editor like notepad</li>
+<li>If you see anything else than <code>null</code> as text in this file go to step 11. Else please read: <a href="https://community.lemansultimate.com/index.php?threads/shared-memory-plugin-not-loading.3705/#post-24870">https://community.lemansultimate.com/index.php?threads/shared-memory-plugin-not-loading.3705/#post-24870</a> and install the C++ redistributable(<a href="https://aka.ms/highdpimfc2013x64enu">https://aka.ms/highdpimfc2013x64enu</a>). Then launch and exit the game.</li>
+<li>Set the rFactor2SharedMemoryMapPlugin64.dll to <code>&quot; Enabled&quot;: 1,</code> and Save.</li>
+</ol>
 <h1 id="project-motor-racing">Project Motor Racing</h1>
 <ol>
 <li>Start Project Motor Racing</li>
@@ -78,6 +78,15 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>UDP Port should be <code>7576</code></li>
 <li>UDP Host should be <code>224.0.0.150</code></li>
 <li>Save (spacebar on keyboard)</li>
+</ol>
+<h1 id="richard-burns-rally-rsf">Richard Burns Rally( RSF)</h1>
+<ol>
+<li>Open the RSF Launcher</li>
+<li>Enable the Adanced optionss</li>
+<li>Go to the Telemetry Tab</li>
+<li>The telemetry should be set to <code>127.0.0.1</code> : <code>6776</code></li>
+<li>Enable the <code>UDP Telemetry</code> checkbox.</li>
+<li>Launch the game</li>
 </ol>
 <h1 id="rfactor-2">rFactor 2</h1>
 <ol>
