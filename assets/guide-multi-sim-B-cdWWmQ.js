@@ -82,7 +82,7 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <h1 id="richard-burns-rally-rsf">Richard Burns Rally( RSF)</h1>
 <ol>
 <li>Open the RSF Launcher</li>
-<li>Enable the Adanced optionss</li>
+<li>Enable the Adanced options</li>
 <li>Go to the Telemetry Tab</li>
 <li>The telemetry should be <code>127.0.0.1</code> : <code>6776</code></li>
 <li>Enable the <code>UDP Telemetry</code> checkbox.</li>
