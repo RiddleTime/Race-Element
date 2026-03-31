@@ -18,6 +18,7 @@ type: guide
 <li>Forza Motorsport 8</li>
 <li>Le Mans Ultimate</li>
 <li>Project Motor Racing</li>
+<li>Richard Burns Rally</li>
 <li>RaceRoom</li>
 <li>rFactor 2</li>
 <li>WRC Generations</li>
