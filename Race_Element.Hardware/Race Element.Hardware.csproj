@@ -13,6 +13,7 @@
     <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
     <PackageReference Include="Hid.Net" Version="4.2.1" />
     <PackageReference Include="hidlibrary" Version="3.3.40" />
     <PackageReference Include="Device.Net" Version="4.2.1" />

@@ -1,4 +1,4 @@
-﻿using RaceElement.Data.Common;
+using RaceElement.Data.Common;
 using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
@@ -17,7 +17,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.WheelSlip;
     OverlayCategory = OverlayCategory.Physics,
     OverlayType = OverlayType.Drive,
     SupportedGames = Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.AssettoCorsaRally | Game.RaceRoom | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations
-            | Game.ForzaMotorsport | Game.ProjectMotorRacing | Game.DirtRally2
+            | Game.ForzaMotorsport | Game.ProjectMotorRacing | Game.DirtRally2 | Game.RBR
 )]
 internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 {
@@ -58,7 +58,7 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 
     private WheelSlipModel _wheelSlipModel;
 
-    private const Game GamesWithSlipAngle = Game.ForzaHorizon5;
+    private const Game GamesWithSlipAngle = Game.ForzaHorizon5 | Game.AssettoCorsaEvo;
     private readonly struct WheelSlipModel(float[] slipRatios, float[] slipAngles)
     {
         public readonly float[] SlipRatios = slipRatios;
@@ -166,7 +166,7 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 
         if (GamesWithSlipAngle.HasFlag(this.GameWhenStarted))
         {
-            float slipAngle = (float)(_wheelSlipModel.SlipAngles[(int)wheel] * 180d / Math.PI / 4) - 90;
+            float slipAngle = (float)(_wheelSlipModel.SlipAngles[(int)wheel] * 180d / Math.PI) - 90;
             g.DrawArc(_wheelPen, wheelRect, slipAngle - 10, 20);
         }
     }

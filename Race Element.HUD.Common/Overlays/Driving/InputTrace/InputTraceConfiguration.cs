@@ -36,6 +36,9 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         [ToolTip("Displays the steering input as a white line in the trace.")]
         public bool SteeringInput { get; init; } = true;
 
+        [ToolTip("Displays the clutch input as a line in the trace, color customizable in the colors section.")]
+        public bool ClutchInput { get; init; } = true;
+
         [ToolTip("Show horizontal grid lines.")]
         public bool GridLines { get; init; } = true;
 
@@ -80,6 +83,10 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         public Color BrakeColor { get; init; } = Color.FromArgb(255, 0, 0);
         [IntRange(70, 255, 1)]
         public int BrakeOpacity { get; init; } = 255;
+
+        public Color ClutchColor { get; init; } = Color.FromArgb(0, 255, 255);
+        [IntRange(70, 255, 1)]
+        public int ClutchOpacity { get; init; } = 255;
 
         public Color SteeringColor { get; init; } = Color.FromArgb(255, 255, 255);
         [IntRange(70, 255, 1)]

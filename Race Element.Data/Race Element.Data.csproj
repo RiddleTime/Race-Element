@@ -1,102 +1,110 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
-        <TargetFramework>net10.0</TargetFramework>
-        <RootNamespace>RaceElement.Data</RootNamespace>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-        <Copyright>Copyright © Reinier Klarenberg 2024</Copyright>
-        <AssemblyVersion>1.0.0.0</AssemblyVersion>
-        <FileVersion>1.0.0.0</FileVersion>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <IsAotCompatible>False</IsAotCompatible>
-      <IsTrimmable>False</IsTrimmable>
-    </PropertyGroup>
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <IsAotCompatible>False</IsAotCompatible>
-      <IsTrimmable>False</IsTrimmable>
-    </PropertyGroup>
-    <ItemGroup>
-      <None Remove="Games\Resources\Icons\ACE.ico" />
-      <None Remove="Games\Resources\Icons\ACR.ico" />
-      <None Remove="Games\Resources\Icons\ATS.ico" />
-      <None Remove="Games\Resources\Icons\DR2.ico" />
-      <None Remove="Games\Resources\Icons\FH5.ico" />
-      <None Remove="Games\Resources\Icons\FM.ico" />
-      <None Remove="Games\Resources\Icons\LMU.ico" />
-      <None Remove="Games\Resources\Icons\PMR.ico" />
-      <None Remove="Games\Resources\Icons\rF2.ico" />
-      <None Remove="Games\Resources\Icons\WRCG.ico" />
-      <None Remove="Games\Resources\Logos\ACE.jpg" />
-      <None Remove="Games\Resources\Logos\ACR.jpg" />
-      <None Remove="Games\Resources\Logos\ATS.jpg" />
-      <None Remove="Games\Resources\Logos\DR2.jpg" />
-      <None Remove="Games\Resources\Logos\FH5.jpg" />
-      <None Remove="Games\Resources\Logos\FM.jpg" />
-      <None Remove="Games\Resources\Logos\LMU.jpg" />
-      <None Remove="Games\Resources\Logos\PMR.jpg" />
-      <None Remove="Games\Resources\Logos\rF2.jpg" />
-      <None Remove="Games\Resources\Logos\WRCG.jpg" />
-      <None Remove="Games\SCS2\scs-telemetry.dll" />
-      <None Remove="Games\Resources\Icons\AC.ico" />
-      <None Remove="Games\Resources\Icons\ACC.ico" />
-      <None Remove="Games\Resources\Icons\AMS2.ico" />
-      <None Remove="Games\Resources\Icons\ETS2.ico" />
-      <None Remove="Games\Resources\Icons\iRacing.ico" />
-      <None Remove="Games\Resources\Icons\RaceRoom.ico" />
-      <None Remove="Games\Resources\Logos\AC.jpg" />
-      <None Remove="Games\Resources\Logos\ACC.jpg" />
-      <None Remove="Games\Resources\Logos\AMS2.jpg" />
-      <None Remove="Games\Resources\Logos\ETS2.jpg" />
-      <None Remove="Games\Resources\Logos\iRacing.jpg" />
-      <None Remove="Games\Resources\Logos\RaceRoom.jpg" />
-    </ItemGroup>
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<TargetFramework>net10.0</TargetFramework>
+		<RootNamespace>RaceElement.Data</RootNamespace>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<Copyright>Copyright © Reinier Klarenberg 2024</Copyright>
+		<AssemblyVersion>1.0.0.0</AssemblyVersion>
+		<FileVersion>1.0.0.0</FileVersion>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+		<IsAotCompatible>False</IsAotCompatible>
+		<IsTrimmable>False</IsTrimmable>
+	</PropertyGroup>
+	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+		<IsAotCompatible>False</IsAotCompatible>
+		<IsTrimmable>False</IsTrimmable>
+	</PropertyGroup>
+	<ItemGroup>
+		<None Remove="Games\Resources\Icons\ACE.ico" />
+		<None Remove="Games\Resources\Icons\ACR.ico" />
+		<None Remove="Games\Resources\Icons\ATS.ico" />
+		<None Remove="Games\Resources\Icons\BeamNG.ico" />
+		<None Remove="Games\Resources\Icons\DR2.ico" />
+		<None Remove="Games\Resources\Icons\FH5.ico" />
+		<None Remove="Games\Resources\Icons\FM.ico" />
+		<None Remove="Games\Resources\Icons\LMU.ico" />
+		<None Remove="Games\Resources\Icons\PMR.ico" />
+		<None Remove="Games\Resources\Icons\rF2.ico" />
+		<None Remove="Games\Resources\Icons\WRCG.ico" />
+		<None Remove="Games\Resources\Icons\RBR.ico" />
+		<None Remove="Games\Resources\Logos\ACE.jpg" />
+		<None Remove="Games\Resources\Logos\ACR.jpg" />
+		<None Remove="Games\Resources\Logos\ATS.jpg" />
+		<None Remove="Games\Resources\Logos\BeamNG.jpg" />
+		<None Remove="Games\Resources\Logos\DR2.jpg" />
+		<None Remove="Games\Resources\Logos\FH5.jpg" />
+		<None Remove="Games\Resources\Logos\FM.jpg" />
+		<None Remove="Games\Resources\Logos\LMU.jpg" />
+		<None Remove="Games\Resources\Logos\PMR.jpg" />
+		<None Remove="Games\Resources\Logos\rF2.jpg" />
+		<None Remove="Games\Resources\Logos\WRCG.jpg" />
+		<None Remove="Games\Resources\Logos\RBR.jpg" />
+		<None Remove="Games\SCS2\scs-telemetry.dll" />
+		<None Remove="Games\Resources\Icons\AC.ico" />
+		<None Remove="Games\Resources\Icons\ACC.ico" />
+		<None Remove="Games\Resources\Icons\AMS2.ico" />
+		<None Remove="Games\Resources\Icons\ETS2.ico" />
+		<None Remove="Games\Resources\Icons\iRacing.ico" />
+		<None Remove="Games\Resources\Icons\RaceRoom.ico" />
+		<None Remove="Games\Resources\Logos\AC.jpg" />
+		<None Remove="Games\Resources\Logos\ACC.jpg" />
+		<None Remove="Games\Resources\Logos\AMS2.jpg" />
+		<None Remove="Games\Resources\Logos\ETS2.jpg" />
+		<None Remove="Games\Resources\Logos\iRacing.jpg" />
+		<None Remove="Games\Resources\Logos\RaceRoom.jpg" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="DeepCopy" Version="1.0.3" />
-        <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
-        <PackageReference Include="YamlDotNet" Version="15.1.1" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="DeepCopy" Version="1.0.3" />
+		<PackageReference Include="Riok.Mapperly" Version="4.1.1" />
+		<PackageReference Include="YamlDotNet" Version="15.1.1" />
+	</ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj" />
-      <ProjectReference Include="..\Race Element.Graph\Race Element.Graph.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj" />
+		<ProjectReference Include="..\Race Element.Graph\Race Element.Graph.csproj" />
+	</ItemGroup>
 
-    <ItemGroup>
-      <EmbeddedResource Include="Games\Resources\Icons\AC.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\ACC.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\ACE.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\ACR.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\AMS2.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\ATS.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\DR2.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\ETS2.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\FH5.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\FM.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\iRacing.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\LMU.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\PMR.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\RaceRoom.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\rF2.ico" />
-      <EmbeddedResource Include="Games\Resources\Icons\WRCG.ico" />
-      <EmbeddedResource Include="Games\Resources\Logos\AC.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\ACC.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\ACE.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\ACR.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\AMS2.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\ATS.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\DR2.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\ETS2.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\FH5.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\FM.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\iRacing.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\LMU.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\PMR.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\RaceRoom.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\rF2.jpg" />
-      <EmbeddedResource Include="Games\Resources\Logos\WRCG.jpg" />
-    </ItemGroup>
+	<ItemGroup>
+		<EmbeddedResource Include="Games\Resources\Icons\AC.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\ACC.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\ACE.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\ACR.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\AMS2.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\ATS.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\BeamNG.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\DR2.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\ETS2.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\FH5.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\FM.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\iRacing.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\LMU.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\PMR.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\RaceRoom.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\rF2.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\WRCG.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\RBR.ico" />
+		<EmbeddedResource Include="Games\Resources\Logos\AC.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\ACC.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\ACE.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\ACR.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\AMS2.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\ATS.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\BeamNG.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\DR2.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\ETS2.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\FH5.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\FM.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\iRacing.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\LMU.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\PMR.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\RaceRoom.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\rF2.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\WRCG.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\RBR.jpg" />
+	</ItemGroup>
 
 </Project>

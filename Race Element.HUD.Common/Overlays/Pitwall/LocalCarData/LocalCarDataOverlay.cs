@@ -33,6 +33,7 @@ internal sealed class GameDataOverlay : CommonAbstractOverlay
             public bool Inputs { get; init; } = true;
             public bool Tyres { get; init; } = true;
             public bool Brakes { get; init; } = true;
+            public bool Suspension { get; init; } = true;
             public bool Electronics { get; init; } = true;
             public bool RaceData { get; init; } = true;
             public bool TimingData { get; init; } = true;
@@ -83,6 +84,9 @@ internal sealed class GameDataOverlay : CommonAbstractOverlay
 
         if (_config.VisibleMember.Brakes)
             currentY += DrawObject(SimDataProvider.LocalCar.Brakes, "Brakes", currentY, g).Height;
+
+        if (_config.VisibleMember.Suspension)
+            currentY += DrawObject(SimDataProvider.LocalCar.Suspension, "Suspension", currentY, g).Height;
 
         if (_config.VisibleMember.Electronics)
             currentY += DrawObject(SimDataProvider.LocalCar.Electronics, "Electronics", currentY, g).Height;

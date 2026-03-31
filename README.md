@@ -49,8 +49,12 @@ Free code signing provided by [SignPath.io](https://signpath.io?utm_source=found
 - [Glen-Germaine](https://github.com/Glen-Germaine)
 - [Connor-Molz](https://github.com/Connor-Molz)
 - [Balzs-Fehr](https://github.com/Balzs-Fehr)
+- [Aaron-Fang](https://github.com/Aaron-Fang)
 - [mreininger23](https://github.com/mreininger23)
+- [aaronfang](https://github.com/aaronfang)
 - [Kris](https://github.com/Kris)
 - [Dirk-W](https://github.com/Dirk-W)
+- [CrayzyCray](https://github.com/CrayzyCray)
+- [CannaMan](https://github.com/CannaMan)
 - [Andreas-Willich](https://github.com/Andreas-Willich)
 <!-- END_CONTRIBUTORS -->

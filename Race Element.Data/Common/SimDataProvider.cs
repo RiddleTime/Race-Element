@@ -1,4 +1,4 @@
-﻿using RaceElement.Data.Common.SimulatorData;
+using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Games;
 using RaceElement.Data.Games.AssettoCorsa;
 using RaceElement.Data.Games.iRacing;
@@ -14,6 +14,8 @@ using RaceElement.Data.Games.WRC_Generations;
 using RaceElement.Data.Games.AssettoCorsaRally;
 using RaceElement.Data.Games.ProjectMotorRacing;
 using RaceElement.Data.Games.DirtRally2;
+using RaceElement.Data.Games.BeamNG;
+using RaceElement.Data.Games.RichardBurnsRally;
 
 namespace RaceElement.Data.Common;
 
@@ -167,7 +169,20 @@ public static class SimDataProvider
                     _localCarEventLoop.Run();
                     break;
                 }
-
+        //  case Game.BeamNG:
+        //      {
+        //          Instance ??= new BeamNGDataProvider();
+        //          Instance.Update(ref _localCarData, ref _session, ref _gameData);
+        //          _localCarEventLoop.Run();
+        //          break;
+        //      }
+            case Game.RBR:
+                {
+                    Instance ??= new RBRDataProvider();
+                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                    _localCarEventLoop.Run();
+                    break;
+                }
             default: { break; }
         }
     }

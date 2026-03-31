@@ -81,6 +81,7 @@
     <EmbeddedResource Include="Overlays\Driving\TrackMap\Data\ACC\zolder.bin" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="16.1.1" />
     <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
     <PackageReference Include="InputSimulatorStandard" Version="1.0.0" />
     <PackageReference Include="MouseKeyHook" Version="5.7.1" />
@@ -89,9 +90,9 @@
     <PackageReference Include="ScottPlot">
       <Version>4.1.69</Version>
     </PackageReference>
-    <PackageReference Include="System.Collections.Immutable" Version="10.0.1" />
+    <PackageReference Include="System.Collections.Immutable" Version="10.0.5" />
     <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
-    <PackageReference Include="System.Speech" Version="10.0.1" />
+    <PackageReference Include="System.Speech" Version="10.0.5" />
     <PackageReference Include="TwitchLib.Client" Version="3.3.1" />
   </ItemGroup>
   <ItemGroup>

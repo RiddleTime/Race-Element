@@ -31,7 +31,7 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
 
         _graph = new InputGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, this._config);
 
-        for (int i = 0; i < _config.Chart.Width - 1; i++) _dataQueue.Enqueue(new(0, 0, 50, false, false));
+        for (int i = 0; i < _config.Chart.Width - 1; i++) _dataQueue.Enqueue(new(0, 0, 50, 0, false, false));
 
         if (!IsPreviewing)
         {
@@ -63,7 +63,7 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
     public sealed override void Render(Graphics g) => _graph?.Draw(g, _dataQueue);
 }
 
-internal readonly record struct InputsData(int Throttle, int Brake, int Steering, bool TractionControlActivation, bool AbsActivation);
+internal readonly record struct InputsData(int Throttle, int Brake, int Steering, int Clutch, bool TractionControlActivation, bool AbsActivation);
 internal sealed class DataCollector : AbstractCollectionJob<InputsData>
 {
     public sealed override InputsData Collect => new()
@@ -71,6 +71,7 @@ internal sealed class DataCollector : AbstractCollectionJob<InputsData>
         Throttle = (int)(SimDataProvider.LocalCar.Inputs.Throttle * 100f),
         Brake = (int)(SimDataProvider.LocalCar.Inputs.Brake * 100),
         Steering = (int)(((SimDataProvider.LocalCar.Inputs.Steering + 1.0f) / 2f) * 100f),
+        Clutch = (int)(SimDataProvider.LocalCar.Inputs.Clutch * 100f),
         TractionControlActivation = SimDataProvider.LocalCar.Electronics.TractionControlActivation > 0,
         AbsActivation = SimDataProvider.LocalCar.Electronics.AbsActivation > 0,
     };

@@ -14,13 +14,16 @@ internal sealed class InputGraph : IDisposable
     private readonly CachedBitmap _cachedBackground;
     private readonly Pen _throttlePen;
     private readonly Pen _brakePen;
+    private readonly Pen _clutchPen;
     private readonly Pen _steeringPen;
     private readonly Pen _tractionControlPen;
     private readonly Pen _absPen;
 
+
     // Reusable buffers to avoid per-frame allocations
     private readonly List<int> _throttleBuffer = [];
     private readonly List<int> _brakeBuffer = [];
+    private readonly List<int> _clutchBuffer = [];
     private readonly List<int> _steeringBuffer = [];
     private readonly List<bool> _tractionControlBuffer = [];
     private readonly List<bool> _absBuffer = [];
@@ -36,6 +39,7 @@ internal sealed class InputGraph : IDisposable
 
         _throttlePen = new Pen(Color.FromArgb(_config.Colors.ThrottleOpacity, _config.Colors.ThrottleColor), _config.Chart.LineThickness);
         _brakePen = new Pen(Color.FromArgb(_config.Colors.BrakeOpacity, _config.Colors.BrakeColor), _config.Chart.LineThickness);
+        _clutchPen = new Pen(Color.FromArgb(_config.Colors.ClutchOpacity, _config.Colors.ClutchColor), _config.Chart.LineThickness);
         _steeringPen = new Pen(Color.FromArgb(_config.Colors.SteeringOpacity, _config.Colors.SteeringColor), _config.Chart.LineThickness);
         _tractionControlPen = new Pen(Color.FromArgb(_config.TractionControl.TractionControlOpacity, _config.TractionControl.TractionControlColor), 1);
         _absPen = new Pen(Color.FromArgb(_config.Abs.AbsOpacity, _config.Abs.AbsColor), 1);
@@ -72,6 +76,7 @@ internal sealed class InputGraph : IDisposable
 
         _throttleBuffer.Clear();
         _brakeBuffer.Clear();
+        _clutchBuffer.Clear();
         _steeringBuffer.Clear();
         _tractionControlBuffer.Clear();
         _absBuffer.Clear();
@@ -80,9 +85,15 @@ internal sealed class InputGraph : IDisposable
         {
             _throttleBuffer.Add(item.Throttle);
             _brakeBuffer.Add(item.Brake);
+            _clutchBuffer.Add(item.Clutch);
             _steeringBuffer.Add(item.Steering);
             _tractionControlBuffer.Add(item.TractionControlActivation);
             _absBuffer.Add(item.AbsActivation);
+        }
+
+        if (_config.Chart.ClutchInput)
+        {
+            DrawData(g, _clutchBuffer, _clutchPen);
         }
 
         if (_config.Chart.SteeringInput)
@@ -159,6 +170,7 @@ internal sealed class InputGraph : IDisposable
         _cachedBackground?.Dispose();
         _throttlePen?.Dispose();
         _brakePen?.Dispose();
+        _clutchPen?.Dispose();
         _steeringPen?.Dispose();
         _tractionControlPen?.Dispose();
         _absPen?.Dispose();
