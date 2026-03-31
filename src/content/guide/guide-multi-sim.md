@@ -77,7 +77,7 @@ Both simulators require a plugin to be installed before any data can be read fro
 1. Open the RSF Launcher
 2. Enable the Adanced optionss
 3. Go to the Telemetry Tab
-4. The telemetry should be set to `127.0.0.1` : `6776`
+4. The telemetry should be `127.0.0.1` : `6776`
 5. Enable the `UDP Telemetry` checkbox.
 6. Launch the game
 
