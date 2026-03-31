@@ -9,7 +9,7 @@ public static class ReleaseNotes
         {"2.6.0.0", "Race Element:"+
                     "\n- Added support for Richard Burns Rally. (by Aaronfang). See Multi-Sim guide on website for instructions."+
                     "\n\nCommon HUDs:"+
-                    "\nInput Trace HUD: Added Clutch, it's OFF by Default, Enable it if you want it."},
+                    "\nInput Trace HUD: Added Clutch Inputs."},
         {"2.5.5.0", "Race Element"+
                     "\n- Added support for DiRT Rally 2.0, see the multi-sim guide on the website."+
                     "\n\nDSX"+

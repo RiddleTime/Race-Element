@@ -37,7 +37,7 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         public bool SteeringInput { get; init; } = true;
 
         [ToolTip("Displays the clutch input as a line in the trace, color customizable in the colors section.")]
-        public bool ClutchInput { get; init; } = false;
+        public bool ClutchInput { get; init; } = true;
 
         [ToolTip("Show horizontal grid lines.")]
         public bool GridLines { get; init; } = true;
