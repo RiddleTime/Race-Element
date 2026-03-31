@@ -24,9 +24,28 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
 
     internal override int PollingRate() => 300;
 
+
+    private uint _lastStep = uint.MinValue;
+    private long _sameStepBuffer = 0;
+    private const long _maxBufferCount = 100;
     public override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
-        if (!_hasReceivedData)
+        RBRTelemetryData data = _latestData;
+
+        bool isSameStep = false;
+        if (data.TotalSteps == _lastStep)
+        {
+            _sameStepBuffer++;
+            if (_sameStepBuffer > _maxBufferCount)
+                isSameStep = true;
+        }
+        else
+        {
+            _lastStep = data.TotalSteps;
+            _sameStepBuffer = 0;
+        }
+
+        if (!_hasReceivedData || isSameStep)
         {
             localCar = new();
             sessionData = new();
@@ -36,8 +55,6 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
 
         gameData.IsGamePaused = false;
         gameData.Name = Game.RBR.ToShortName();
-
-        var data = _latestData;
 
         // Physics - RBR Car.Speed is in m/s, convert to km/h
         localCar.Physics.Location = new(data.CarPositionX, data.CarPositionY, data.CarPositionZ);
