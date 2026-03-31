@@ -75,7 +75,7 @@ Both simulators require a plugin to be installed before any data can be read fro
 
 # Richard Burns Rally( RSF)
 1. Open the RSF Launcher
-2. Enable the Adanced optionss
+2. Enable the Adanced options
 3. Go to the Telemetry Tab
 4. The telemetry should be `127.0.0.1` : `6776`
 5. Enable the `UDP Telemetry` checkbox.
