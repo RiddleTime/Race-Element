@@ -1,6 +1,7 @@
 ﻿using System.Numerics;
 
 namespace RaceElement.Data.Common.SimulatorData.LocalCar;
+
 public sealed record LocalCarData
 {
     public CarModelData CarModel { get; internal set; } = new();
@@ -256,12 +257,12 @@ public sealed record TimingData
     /// Current best lap, -1 is invalid.
     /// </summary>
     public int LapTimeBestMs { get; internal set; } = -1;
-    
+
     /// <summary>
     /// Delta to last laptime in milliseconds (Reported by iRacing)
     /// </summary>
-    public int LapTimeDeltaLastMs {get; internal set;} = 0;
-    
+    public int LapTimeDeltaLastMs { get; internal set; } = 0;
+
     /// <summary>
     /// Delta to personal optimal laptime in milliseconds (Reported by iRacing)
     /// </summary>

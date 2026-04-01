@@ -42,7 +42,6 @@ internal static partial class R3ELocalCarMapper
         localCarData.Engine.Rpm = (int)Utilities.RpsToRpm(sharedData.EngineRps);
         localCarData.Engine.ShiftUpRpm = (int)Utilities.RpsToRpm(sharedData.UpshiftRps);
         localCarData.Engine.IsPitLimiterOn = sharedData.PitLimiter == 1;
-        localCarData.Engine.IsRunning = sharedData.EngineRps > 0;
         localCarData.Engine.VirtualEnergy = sharedData.VirtualEnergyLeft;
         localCarData.Engine.MaxVirtualEnergy = sharedData.VirtualEnergyCapacity;
         localCarData.Engine.VirtualEnergyXLap = sharedData.VirtualEnergyPerLap;

@@ -32,6 +32,10 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
 #endif
     }
 
+    private float _lastVelocity = default;
+    private int _velocityBuffer = 0;
+    private const int _maxVelocityBuffer = 400;
+
     public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         if (!_isGameRunning)
@@ -55,6 +59,23 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
 
                 // Local Car Data
                 R3ELocalCarMapper.AddR3SharedMemory(sharedMemory, localCar);
+
+
+                if (_lastVelocity == localCar.Physics.Location.X && localCar.Physics.Velocity < 0.1f)
+                {
+                    _velocityBuffer++;
+
+                    if (_velocityBuffer > _maxVelocityBuffer)
+                        localCar.Engine.IsRunning = false;
+                }
+                else
+                {
+                    _velocityBuffer = 0;
+                    localCar.Engine.IsRunning = true;
+                }
+
+                _lastVelocity = localCar.Physics.Location.X;
+
 
                 // Game Data
                 gameData.Name = Game.RaceRoom.ToShortName();
