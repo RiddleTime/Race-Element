@@ -1,12 +1,10 @@
 const e=`---
-undefined
----
-
-<h2 id="---title-multi-simslug-multi-simdescription-getting-race-element-ready-for-multi-simtype-guide"><img width="921" height="837" alt="image" src="https://github.com/user-attachments/assets/d9bf32a2-791b-4422-8319-ee24408b16dd" />---
-title: &quot;Multi-Sim&quot;
+title: "Multi-Sim"
 slug: multi-sim
 description: Getting Race Element Ready for Multi-Sim
-type: guide </h2>
+type: guide
+---
+
 <h1 id="auto-switching">Auto-switching</h1>
 <p>Race Element has an option in the main menu of the app that allows it to automatically switch itself to any supported running simulator. Without it you&#39;ll have to manually switch between games, you can do so by clicking the game selector in the left bottom of the app.</p>
 <h1 id="prequisites">Prequisites</h1>
