@@ -17,6 +17,7 @@ Race Element is a lightweight application for racing simulators which is designe
 - Automobilista 2
 - DiRT Rally 2.0
 - Euro Truck Simulator 2
+- Forza Horizon 4
 - Forza Horizon 5
 - Forza Motorsport 8
 - iRacing
