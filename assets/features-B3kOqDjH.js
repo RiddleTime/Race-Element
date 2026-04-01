@@ -17,6 +17,7 @@ description: General features
 <li>Automobilista 2</li>
 <li>DiRT Rally 2.0</li>
 <li>Euro Truck Simulator 2</li>
+<li>Forza Horizon 4</li>
 <li>Forza Horizon 5</li>
 <li>Forza Motorsport 8</li>
 <li>iRacing</li>
