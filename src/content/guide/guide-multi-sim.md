@@ -1,4 +1,4 @@
-<img width="921" height="837" alt="image" src="https://github.com/user-attachments/assets/d9bf32a2-791b-4422-8319-ee24408b16dd" />---
+---
 title: "Multi-Sim"
 slug: multi-sim
 description: Getting Race Element Ready for Multi-Sim
