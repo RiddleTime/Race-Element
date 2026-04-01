@@ -12,9 +12,9 @@
 		<SuiteName>Race Element</SuiteName>
 		<OpenBrowserOnPublish>false</OpenBrowserOnPublish>
 		<DisallowUrlActivation>true</DisallowUrlActivation>
-		<ApplicationVersion>2.6.0.0</ApplicationVersion>
-		<AssemblyVersion>2.6.0.0</AssemblyVersion>
-		<Version>2.6.0.0</Version>
+		<ApplicationVersion>2.6.1.0</ApplicationVersion>
+		<AssemblyVersion>2.6.1.0</AssemblyVersion>
+		<Version>2.6.1.0</Version>
 		<GenerateAssemblyInfo>True</GenerateAssemblyInfo>
 		<UseWindowsForms>true</UseWindowsForms>
 		<UseWPF>true</UseWPF>
@@ -39,7 +39,7 @@
 		<StartupObject>RaceElement.App</StartupObject>
 	</PropertyGroup>
 	<PropertyGroup>
-		<ApplicationIcon>Resources\race element icon 2.ico</ApplicationIcon>
+		<ApplicationIcon>race-element-icon-2.ico</ApplicationIcon>
 	</PropertyGroup>
 	<PropertyGroup>
 		<SignManifests>false</SignManifests>
@@ -149,7 +149,7 @@
 		</BootstrapperPackage>
 	</ItemGroup>
 	<ItemGroup>
-		<Content Include="Resources\race element icon 2.ico" />
+		<Content Include="race-element-icon-2.ico" />
 	</ItemGroup>
 	<ItemGroup>
 		<Resource Include="race-element-icon-2.ico" />

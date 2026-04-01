@@ -30,7 +30,7 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
         _panel = new InfoPanel(12, 550);
         Width = 550;
         Height = 250;
-        RefreshRateHz = 2;
+        RefreshRateHz = 3;
     }
 
     public sealed override void BeforeStop()
@@ -46,9 +46,9 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
 
         var graph = SimDataProvider.RacingGraph;
 
-        var allLapTimes = graph.Where(x => x is LapDataNode).Select(x => x as LapDataNode);
-        var allDrivers = graph.Where(x => x is DriverNode).Select(x => x as DriverNode);
-        var allCars = graph.Where(x => x is CarNode).Select(x => x as CarNode);
+        IEnumerable<LapDataNode?> allLapTimes = graph.Where(x => x is LapDataNode).Select(x => x as LapDataNode);
+        IEnumerable<DriverNode?> allDrivers = graph.Where(x => x is DriverNode).Select(x => x as DriverNode);
+        IEnumerable<CarNode?> allCars = graph.Where(x => x is CarNode).Select(x => x as CarNode);
 
         if (allLapTimes.Any())
         {

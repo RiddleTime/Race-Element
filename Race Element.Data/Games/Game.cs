@@ -25,7 +25,8 @@ public enum Game : int
     ProjectMotorRacing = 1 << 15,
     DirtRally2 = 1 << 16,
     //BeamNG = 1 << 17,
-    RBR = 1 << 18,
+    RichardBurnsRally = 1 << 18,
+    ForzaHorizon4 = 1 << 19,
 }
 
 public static class GameExtensions
@@ -43,6 +44,7 @@ public static class GameExtensions
             { Game.AmericanTruckSimulator, "American Truck Simulator" },
             { Game.AssettoCorsaEvo, "Assetto Corsa EVO" },
             { Game.ForzaHorizon5, "Forza Horizon 5" },
+            { Game.ForzaHorizon4, "Forza Horizon 4" },
             { Game.LeMansUltimate, "Le Mans Ultimate" },
             { Game.rFactor2, "rFactor 2" },
             { Game.WRC_Generations, "WRC Generations" },
@@ -51,7 +53,7 @@ public static class GameExtensions
             { Game.ProjectMotorRacing, "Project Motor Racing" },
             { Game.DirtRally2, "DiRT Rally 2.0" },
             //{ Game.BeamNG, "BeamNG.drive" },
-            { Game.RBR, "Richard Burns Rally" },
+            { Game.RichardBurnsRally, "Richard Burns Rally" },
         }.ToImmutableDictionary();
     }
 
@@ -67,6 +69,7 @@ public static class GameExtensions
             { Game.EuroTruckSimulator2, "ETS2" },
             { Game.AmericanTruckSimulator, "ATS" },
             { Game.AssettoCorsaEvo, "ACE" },
+            { Game.ForzaHorizon4, "FH4" },
             { Game.ForzaHorizon5, "FH5" },
             { Game.LeMansUltimate, "LMU" },
             { Game.rFactor2, "rF2" },
@@ -76,7 +79,7 @@ public static class GameExtensions
             { Game.ProjectMotorRacing, "PMR" },
             { Game.DirtRally2, "DR2" },
             //{ Game.BeamNG, "BeamNG" },
-            { Game.RBR, "RBR" },
+            { Game.RichardBurnsRally, "RBR" },
         }.ToImmutableDictionary();
     }
 
@@ -94,6 +97,7 @@ public static class GameExtensions
             { "eurotrucks2", Game.EuroTruckSimulator2 },
             { "amtrucks", Game.AmericanTruckSimulator },
             { "ForzaHorizon5", Game.ForzaHorizon5 },
+            { "ForzaHorizon4", Game.ForzaHorizon4 },
             { "Le Mans Ultimate", Game.LeMansUltimate },
             { "rFactor2", Game.rFactor2 },
             { "WRCG", Game.WRC_Generations },
@@ -102,8 +106,8 @@ public static class GameExtensions
             { "ProjectMotorRacingGame", Game.ProjectMotorRacing },
             { "dirtrally2", Game.DirtRally2 },
             //{ "BeamNG.drive", Game.BeamNG },
-            { "RichardBurnsRally_SSE", Game.RBR },
-            { "RichardBurnsRally", Game.RBR },
+            { "RichardBurnsRally_SSE", Game.RichardBurnsRally },
+            { "RichardBurnsRally", Game.RichardBurnsRally },
         }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
         public static readonly Lazy<ImmutableArray<string>> All = new(() => ImmutableArray.Create(ProcessMap.Select(x => x.Key).ToArray()));
@@ -122,6 +126,7 @@ public static class GameExtensions
             { Game.AmericanTruckSimulator, 270880 },
             { Game.AssettoCorsaEvo, 3058630 },
             { Game.ForzaHorizon5, 1551360 },
+            { Game.ForzaHorizon4, 1293830 },
             { Game.LeMansUltimate, 2399420 },
             { Game.rFactor2, 365960 },
             { Game.WRC_Generations, 1953520 },
@@ -130,7 +135,7 @@ public static class GameExtensions
             { Game.ProjectMotorRacing, 299970 },
             { Game.DirtRally2, 690790 },
             //{ Game.BeamNG, 284160 },
-            { Game.RBR, -1 },
+            { Game.RichardBurnsRally, -1 },
         }.ToImmutableDictionary();
     }
 

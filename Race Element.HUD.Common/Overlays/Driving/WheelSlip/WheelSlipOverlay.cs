@@ -17,7 +17,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.WheelSlip;
     OverlayCategory = OverlayCategory.Physics,
     OverlayType = OverlayType.Drive,
     SupportedGames = Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.AssettoCorsaRally | Game.RaceRoom | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations
-            | Game.ForzaMotorsport | Game.ProjectMotorRacing | Game.DirtRally2 | Game.RBR
+            | Game.ForzaMotorsport | Game.ProjectMotorRacing | Game.DirtRally2 | Game.RichardBurnsRally | Game.ForzaHorizon4
 )]
 internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 {
@@ -58,7 +58,7 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 
     private WheelSlipModel _wheelSlipModel;
 
-    private const Game GamesWithSlipAngle = Game.ForzaHorizon5 | Game.AssettoCorsaEvo;
+    private const Game GamesWithSlipAngle = Game.ForzaHorizon4 | Game.ForzaHorizon5 | Game.AssettoCorsaEvo;
     private readonly struct WheelSlipModel(float[] slipRatios, float[] slipAngles)
     {
         public readonly float[] SlipRatios = slipRatios;

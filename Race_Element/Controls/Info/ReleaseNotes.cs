@@ -6,6 +6,15 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.6.1.0", "Race Element"+
+                    "\n- Added support for Forza Horizon 4, see the multi-sim guide on the website for instructions."+
+                    "\n\nRichard Burns Rally"+
+                    "\n- Added adjustable UDP Port: Settings -> Games."+
+                    "\n\nRaceRoom"+
+                    "\n- Fixed detection for HUD auto hide."+
+                    "\n\nDSX"+
+                    "\n- Added support for Forza Horizon 4, see the multi-sim and DSX guides on the website for instructions."
+                    },
         {"2.6.0.0", "Race Element"+
                     "\n- Added support for Richard Burns Rally( by Aaronfang). See Multi-Sim guide on website for instructions."+
                     "\n\nCommon HUDs"+

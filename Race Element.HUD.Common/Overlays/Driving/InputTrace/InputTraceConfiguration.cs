@@ -47,7 +47,7 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         public int HudRefreshRate { get; init; } = 30;
     }
 
-    [HideForGame(Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.iRacing | Game.AmericanTruckSimulator | Game.EuroTruckSimulator2)]
+    [HideForGame(Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.iRacing | Game.AmericanTruckSimulator | Game.EuroTruckSimulator2 | Game.ForzaHorizon4 | Game.ForzaHorizon5 | Game.RichardBurnsRally | Game.ForzaMotorsport)]
     [ConfigGrouping("Traction Control", "Adjust settings related to Traction Control Activation.")]
     public TractionControlGrouping TractionControl { get; init; } = new();
     public sealed class TractionControlGrouping
@@ -60,7 +60,7 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         public int TractionControlOpacity { get; init; } = 90;
     }
 
-    [HideForGame(Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.AmericanTruckSimulator | Game.EuroTruckSimulator2)]
+    [HideForGame(Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.AmericanTruckSimulator | Game.EuroTruckSimulator2 | Game.ForzaHorizon4 | Game.ForzaHorizon5 | Game.RichardBurnsRally | Game.ForzaMotorsport)]
     [ConfigGrouping("ABS", "Adjust settings related to ABS Activation.")]
     public AbsGrouping Abs { get; init; } = new();
     public sealed class AbsGrouping
