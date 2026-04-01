@@ -1,4 +1,4 @@
----
+<img width="921" height="837" alt="image" src="https://github.com/user-attachments/assets/d9bf32a2-791b-4422-8319-ee24408b16dd" />---
 title: "Multi-Sim"
 slug: multi-sim
 description: Getting Race Element Ready for Multi-Sim
@@ -31,6 +31,17 @@ Both simulators require a plugin to be installed before any data can be read fro
 7. `enabled` should be `true` and `extradata` should be `3`
 8. Save the file and start the DiRT Rally 2.0.
 
+# Forza Horizon 4
+1. Go to Settings (Read Step 9 if you use Microsoft Store Version)
+2. Go to HUD AND GAMEPLAY
+3. Set Data Out to `On`
+4. Set Data Out IP Address to `127.0.0.1`
+5. Set Data Out Port to `5300`
+6. Restart Forza Horizon 5.
+7. Restart Race Element.
+8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Horizon 4.
+9. If run the game through Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: `CheckNetIsolation.exe LoopbackExempt -a -n=Microsoft.SunriseBaseGame_8wekyb3d8bbwe` it allows the game to send the UDP packets to your local computer.
+
 # Forza Horizon 5
 1. Go to Options
 2. Go to HUD AND GAMEPLAY
@@ -49,7 +60,8 @@ Both simulators require a plugin to be installed before any data can be read fro
 5. Set Data Out IP Address to: `127.0.0.1`
 6. Set Data Out Port to: `5300`
 7. Set Data Out Packet Format to: `Car Dash`
-
+8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Motorsport 8.
+9. 
 # Le Mans Ultimate
 1. Open the installation folder of Le Mans Ultimate
 2. Go to `Plugins`
