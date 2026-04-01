@@ -176,7 +176,7 @@ public static class SimDataProvider
         //          _localCarEventLoop.Run();
         //          break;
         //      }
-            case Game.RBR:
+            case Game.RichardBurnsRally:
                 {
                     Instance ??= new RBRDataProvider();
                     Instance.Update(ref _localCarData, ref _session, ref _gameData);

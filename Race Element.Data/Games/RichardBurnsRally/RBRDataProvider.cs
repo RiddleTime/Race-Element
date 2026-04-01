@@ -17,7 +17,7 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
     private RBRTelemetryData _latestData;
     private bool _isRunning;
     private bool _hasReceivedData;
-    private const int Port = 6776;
+    private int _udpPort = 6776;
     private RBRMemoryReader? _memoryReader;
 
     public sealed override List<string> GetCarClasses() => ["Group A", "Group B", "Group N", "WRC", "Kit Car", "F2"];
@@ -54,7 +54,7 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
         }
 
         gameData.IsGamePaused = false;
-        gameData.Name = Game.RBR.ToShortName();
+        gameData.Name = Game.RichardBurnsRally.ToShortName();
 
         // Physics - RBR Car.Speed is in m/s, convert to km/h
         localCar.Physics.Location = new(data.CarPositionX, data.CarPositionY, data.CarPositionZ);
@@ -118,6 +118,9 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
 
     internal override void Start()
     {
+        GamePortSettings gamePortSettings = new();
+        gamePortSettings.Get().GamePorts.TryGetValue(GameManager.CurrentGame, out _udpPort);
+
         _isRunning = true;
         _hasReceivedData = false;
         _listenerThread = new Thread(ListenForTelemetry)
@@ -140,7 +143,7 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
     {
         try
         {
-            _udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, Port));
+            _udpClient = new UdpClient(new IPEndPoint(IPAddress.Any, _udpPort));
             var remoteEndPoint = new IPEndPoint(IPAddress.Any, 0);
             var minSize = Marshal.SizeOf<RBRTelemetryData>();
 

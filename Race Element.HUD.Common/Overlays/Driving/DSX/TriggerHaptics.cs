@@ -9,13 +9,13 @@ internal static class TriggerHaptics
 {
     public static DsxPacket HandleBraking(DsxConfiguration config) => GameManager.CurrentGame switch
     {
-        Game.RBR => HandleBrakingRBR(config),
+        Game.RichardBurnsRally => HandleBrakingRBR(config),
         _ => HandleBrakingGeneric(config)
     };
 
     public static DsxPacket HandleAcceleration(DsxConfiguration config) => GameManager.CurrentGame switch
     {
-        Game.RBR => HandleAccelerationRBR(config),
+        Game.RichardBurnsRally => HandleAccelerationRBR(config),
         _ => HandleAccelerationGeneric(config)
     };
 

@@ -6,6 +6,8 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.6.1.0", "Richard Burns Rally"+
+                    "\n- Add adjust udp port: Settings -> Games."},
         {"2.6.0.0", "Race Element"+
                     "\n- Added support for Richard Burns Rally( by Aaronfang). See Multi-Sim guide on website for instructions."+
                     "\n\nCommon HUDs"+
