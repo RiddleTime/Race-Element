@@ -57,25 +57,15 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
             {
                 Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
 
+
+                PlayerData playerData = sharedMemory.Player;
                 // Local Car Data
                 R3ELocalCarMapper.AddR3SharedMemory(sharedMemory, localCar);
 
 
-                if (_lastLocationX == localCar.Physics.Location.X && localCar.Physics.Velocity < 0.1f)
-                {
-                    _velocityBuffer++;
-
-                    if (_velocityBuffer > _maxVelocityBuffer)
-                        localCar.Engine.IsRunning = false;
-                }
-                else
-                {
-                    _velocityBuffer = 0;
-                    localCar.Engine.IsRunning = true;
-                }
-
-                _lastLocationX = localCar.Physics.Location.X;
-
+                int playerId = sharedMemory.Player.UserId;
+                var playerCar = sharedMemory.DriverData.FirstOrDefault(x => x.DriverInfo.UserId == playerId);
+                localCar.Engine.IsRunning = playerCar.EngineState >= 1; // 1 = ignition on but not running, 2 = ignition on and starter running, 3 = ignition on and running
 
                 // Game Data
                 gameData.Name = Game.RaceRoom.ToShortName();
