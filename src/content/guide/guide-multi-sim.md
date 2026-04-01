@@ -40,7 +40,7 @@ Both simulators require a plugin to be installed before any data can be read fro
 6. Restart Forza Horizon 5.
 7. Restart Race Element.
 8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Horizon 4.
-9. If run the game through Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: `CheckNetIsolation.exe LoopbackExempt -a -n=Microsoft.SunriseBaseGame_8wekyb3d8bbwe` it allows the game to send the UDP packets to your local computer.
+9. If you run the gam from the Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: `CheckNetIsolation.exe LoopbackExempt -a -n=Microsoft.SunriseBaseGame_8wekyb3d8bbwe` it allows the game to send the UDP packets to your local computer.
 
 # Forza Horizon 5
 1. Go to Options
