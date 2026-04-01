@@ -113,6 +113,13 @@ public static class SimDataProvider
                     _localCarEventLoop.Run();
                     break;
                 }
+            case Game.ForzaHorizon4:
+                {
+                    Instance ??= new ForzaDataProvider(Game.ForzaHorizon4);
+                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                    _localCarEventLoop.Run();
+                    break;
+                }
             case Game.ForzaHorizon5:
                 {
                     Instance ??= new ForzaDataProvider(Game.ForzaHorizon5);
@@ -169,13 +176,13 @@ public static class SimDataProvider
                     _localCarEventLoop.Run();
                     break;
                 }
-        //  case Game.BeamNG:
-        //      {
-        //          Instance ??= new BeamNGDataProvider();
-        //          Instance.Update(ref _localCarData, ref _session, ref _gameData);
-        //          _localCarEventLoop.Run();
-        //          break;
-        //      }
+            //  case Game.BeamNG:
+            //      {
+            //          Instance ??= new BeamNGDataProvider();
+            //          Instance.Update(ref _localCarData, ref _session, ref _gameData);
+            //          _localCarEventLoop.Run();
+            //          break;
+            //      }
             case Game.RichardBurnsRally:
                 {
                     Instance ??= new RBRDataProvider();

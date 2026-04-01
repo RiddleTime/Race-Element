@@ -56,7 +56,7 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
             try
             {
                 Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
-
+    
 
                 PlayerData playerData = sharedMemory.Player;
                 // Local Car Data

@@ -17,7 +17,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.WheelSlip;
     OverlayCategory = OverlayCategory.Physics,
     OverlayType = OverlayType.Drive,
     SupportedGames = Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.AssettoCorsaRally | Game.RaceRoom | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations
-            | Game.ForzaMotorsport | Game.ProjectMotorRacing | Game.DirtRally2 | Game.RichardBurnsRally
+            | Game.ForzaMotorsport | Game.ProjectMotorRacing | Game.DirtRally2 | Game.RichardBurnsRally | Game.ForzaHorizon4
 )]
 internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 {

@@ -16,6 +16,7 @@ public sealed class GamePortSettings : AbstractSettingsJson<GamePortSettingsJson
         GamePorts = new Dictionary<Game, int>()
         {
             { Game.ProjectMotorRacing, 7576 },
+            { Game.ForzaHorizon4, 5300 },
             { Game.ForzaHorizon5, 5300 },
             { Game.ForzaMotorsport, 5300 },
             { Game.RichardBurnsRally, 6776 },
