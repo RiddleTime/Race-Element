@@ -6,7 +6,7 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
-        {"2.6.1.0", "Race Element"+
+        {"2.6.1.2", "Race Element"+
                     "\n- Added support for Forza Horizon 4, see the multi-sim guide on the website for instructions."+
                     "\n\nRichard Burns Rally"+
                     "\n- Added adjustable UDP Port: Settings -> Games."+
