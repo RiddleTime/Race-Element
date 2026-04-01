@@ -1,10 +1,12 @@
 const e=`---
-title: "Multi-Sim"
-slug: multi-sim
-description: Getting Race Element Ready for Multi-Sim
-type: guide
+undefined
 ---
 
+<h2 id="---title-multi-simslug-multi-simdescription-getting-race-element-ready-for-multi-simtype-guide"><img width="921" height="837" alt="image" src="https://github.com/user-attachments/assets/d9bf32a2-791b-4422-8319-ee24408b16dd" />---
+title: &quot;Multi-Sim&quot;
+slug: multi-sim
+description: Getting Race Element Ready for Multi-Sim
+type: guide </h2>
 <h1 id="auto-switching">Auto-switching</h1>
 <p>Race Element has an option in the main menu of the app that allows it to automatically switch itself to any supported running simulator. Without it you&#39;ll have to manually switch between games, you can do so by clicking the game selector in the left bottom of the app.</p>
 <h1 id="prequisites">Prequisites</h1>
@@ -33,6 +35,18 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li><code>enabled</code> should be <code>true</code> and <code>extradata</code> should be <code>3</code></li>
 <li>Save the file and start the DiRT Rally 2.0.</li>
 </ol>
+<h1 id="forza-horizon-4">Forza Horizon 4</h1>
+<ol>
+<li>Go to Settings (Read Step 9 if you use Microsoft Store Version)</li>
+<li>Go to HUD AND GAMEPLAY</li>
+<li>Set Data Out to <code>On</code></li>
+<li>Set Data Out IP Address to <code>127.0.0.1</code></li>
+<li>Set Data Out Port to <code>5300</code></li>
+<li>Restart Forza Horizon 5.</li>
+<li>Restart Race Element.</li>
+<li>If Windows asks permission for network access allow it else race element won&#39;t be able to receive data from Forza Horizon 4.</li>
+<li>If run the game through Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: <code>CheckNetIsolation.exe LoopbackExempt -a -n=Microsoft.SunriseBaseGame_8wekyb3d8bbwe</code> it allows the game to send the UDP packets to your local computer.</li>
+</ol>
 <h1 id="forza-horizon-5">Forza Horizon 5</h1>
 <ol>
 <li>Go to Options</li>
@@ -53,6 +67,8 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Set Data Out IP Address to: <code>127.0.0.1</code></li>
 <li>Set Data Out Port to: <code>5300</code></li>
 <li>Set Data Out Packet Format to: <code>Car Dash</code></li>
+<li>If Windows asks permission for network access allow it else race element won&#39;t be able to receive data from Forza Motorsport 8.</li>
+<li></li>
 </ol>
 <h1 id="le-mans-ultimate">Le Mans Ultimate</h1>
 <ol>
