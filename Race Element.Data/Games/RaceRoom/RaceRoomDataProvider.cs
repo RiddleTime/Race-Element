@@ -32,9 +32,9 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
 #endif
     }
 
-    private float _lastVelocity = default;
+    private float _lastLocationX = default;
     private int _velocityBuffer = 0;
-    private const int _maxVelocityBuffer = 400;
+    private const int _maxVelocityBuffer = 800;
 
     public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
@@ -61,7 +61,7 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
                 R3ELocalCarMapper.AddR3SharedMemory(sharedMemory, localCar);
 
 
-                if (_lastVelocity == localCar.Physics.Location.X && localCar.Physics.Velocity < 0.1f)
+                if (_lastLocationX == localCar.Physics.Location.X && localCar.Physics.Velocity < 0.1f)
                 {
                     _velocityBuffer++;
 
@@ -74,7 +74,7 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
                     localCar.Engine.IsRunning = true;
                 }
 
-                _lastVelocity = localCar.Physics.Location.X;
+                _lastLocationX = localCar.Physics.Location.X;
 
 
                 // Game Data
