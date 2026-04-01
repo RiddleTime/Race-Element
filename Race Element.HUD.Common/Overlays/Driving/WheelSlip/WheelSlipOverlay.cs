@@ -58,7 +58,7 @@ internal sealed class WheelSlipOverlay : CommonAbstractOverlay
 
     private WheelSlipModel _wheelSlipModel;
 
-    private const Game GamesWithSlipAngle = Game.ForzaHorizon5 | Game.AssettoCorsaEvo;
+    private const Game GamesWithSlipAngle = Game.ForzaHorizon4 | Game.ForzaHorizon5 | Game.AssettoCorsaEvo;
     private readonly struct WheelSlipModel(float[] slipRatios, float[] slipAngles)
     {
         public readonly float[] SlipRatios = slipRatios;
