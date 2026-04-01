@@ -75,7 +75,7 @@ internal static class R3EDataGraphMapper
                         if (sectors.Sum() <= 0)
                             continue;
 
-                        LapDataNode lapNode = new() { SectorTimesMs = sectors, LapIndex = raceCarNode.Laps, LapTimeMs = sectors.Sum() };
+                        LapDataNode lapNode = new() { SectorTimesMs = sectors, LapIndex = raceCarNode.Laps, LapTimeMs = sectors.Sum(), IsValid = driverData.CurrentLapValid == 1 };
                         Debug.WriteLine($"Added new lap for:\n- {raceCarNode}\n- {lapNode}");
                         graph.Add(lapNode);
 
