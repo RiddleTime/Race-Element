@@ -10,7 +10,8 @@ Description = "Live graph of oversteer in red and understeer in blue.",
 OverlayType = OverlayType.Drive,
 OverlayCategory = OverlayCategory.Physics,
 Version = 1.00,
-SupportedGames = Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.RaceRoom | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations | Game.ForzaMotorsport,
+SupportedGames = Game.AssettoCorsa1 | Game.AssettoCorsaEvo | Game.RaceRoom | Game.ForzaHorizon5 | Game.LeMansUltimate | Game.rFactor2 | Game.WRC_Generations | Game.ForzaMotorsport
+            | Game.ForzaHorizon4 | Game.RichardBurnsRally,
 Authors = ["Reinier Klarenberg"])]
 internal sealed class OversteerTraceOverlay : CommonAbstractOverlay
 {
