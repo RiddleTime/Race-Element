@@ -45,6 +45,9 @@ internal sealed class DsxConfiguration : OverlayConfiguration
         [ToolTip("Sets the max frequency of the vibration effect in the trigger.")]
         [IntRange(20, 150, 1)]
         public int MaxFrequency { get; init; } = 85;
+
+        [ToolTip("When enabled, higher slip produces lower frequency vibration instead of higher.")]
+        public bool InvertFrequency { get; init; } = false;
     }
 
     [ConfigGrouping("Throttle Slip", "Adjust the slip effect whilst applying the throttle.\nModify the threshold to increase or decrease sensitivity in different situations.")]
@@ -81,6 +84,9 @@ internal sealed class DsxConfiguration : OverlayConfiguration
         [ToolTip("Sets the max frequency of the vibration effect in the trigger.")]
         [IntRange(20, 150, 1)]
         public int MaxFrequency { get; init; } = 96;
+
+        [ToolTip("When enabled, higher slip produces lower frequency vibration instead of higher.")]
+        public bool InvertFrequency { get; init; } = false;
     }
 
     [ConfigGrouping("DSX UDP", "Adjust the port DSX uses, 6969 is default.")]

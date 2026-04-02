@@ -1,4 +1,4 @@
-﻿using RaceElement.Data.Common;
+using RaceElement.Data.Common;
 using RaceElement.Data.Games;
 using RaceElement.Util.SystemExtensions;
 using static RaceElement.HUD.Common.Overlays.Driving.DSX.Resources;
@@ -31,8 +31,39 @@ internal static class TriggerHaptics
 
             if (slipRatios.Length == 4)
             {
-                float slipRatioFront = Math.Max(slipRatios[0], slipRatios[1]);
-                float slipRatioRear = Math.Max(slipRatios[2], slipRatios[3]);
+                // Game-specific handling: Some games (like AMS2, rFactor2) use signed slip ratios,
+                // while others (like AC, ACC) provide unsigned absolute values.
+                // For signed games: negative = brake lock, positive = wheel spin
+                // For unsigned games: we rely on brake input to confirm this is brake slip
+                // rFactor2/LMU: the mapper already takes Math.Abs() before returning,
+                // so values are always unsigned — do NOT treat them as signed here.
+                bool useSignedSlip = GameManager.CurrentGame switch
+                {
+                    Game.Automobilista2 => true,
+                    _ => false
+                };
+
+                float slipRatioFrontLeft, slipRatioFrontRight, slipRatioRearLeft, slipRatioRearRight;
+
+                if (useSignedSlip)
+                {
+                    // For signed slip games: only use negative values (brake lock)
+                    slipRatioFrontLeft = slipRatios[0] < 0 ? Math.Abs(slipRatios[0]) : 0f;
+                    slipRatioFrontRight = slipRatios[1] < 0 ? Math.Abs(slipRatios[1]) : 0f;
+                    slipRatioRearLeft = slipRatios[2] < 0 ? Math.Abs(slipRatios[2]) : 0f;
+                    slipRatioRearRight = slipRatios[3] < 0 ? Math.Abs(slipRatios[3]) : 0f;
+                }
+                else
+                {
+                    // For unsigned slip games: use absolute values directly (already positive)
+                    slipRatioFrontLeft = Math.Abs(slipRatios[0]);
+                    slipRatioFrontRight = Math.Abs(slipRatios[1]);
+                    slipRatioRearLeft = Math.Abs(slipRatios[2]);
+                    slipRatioRearRight = Math.Abs(slipRatios[3]);
+                }
+
+                float slipRatioFront = Math.Max(slipRatioFrontLeft, slipRatioFrontRight);
+                float slipRatioRear = Math.Max(slipRatioRearLeft, slipRatioRearRight);
 
                 // TODO: add option for front and rear ratio threshold.
                 if (slipRatioFront > config.BrakeSlip.FrontSlipThreshold || slipRatioRear > config.BrakeSlip.RearSlipThreshold)
@@ -49,8 +80,7 @@ internal static class TriggerHaptics
                     if (percentage >= 0.05f)
                         p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Left, TriggerMode.FEEDBACK, [1, (int)(config.BrakeSlip.FeedbackStrength * percentage)]);
 
-                    int freq = (int)(config.BrakeSlip.MaxFrequency * percentage);
-                    freq.ClipMin(config.BrakeSlip.MinFrequency);
+                    int freq = CalculateFrequency(percentage, config.BrakeSlip.MinFrequency, config.BrakeSlip.MaxFrequency, config.BrakeSlip.InvertFrequency);
                     p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Left, TriggerMode.VIBRATION, [0, config.BrakeSlip.Amplitude, freq]);
                 }
             }
@@ -71,8 +101,39 @@ internal static class TriggerHaptics
             float[] slipRatios = SimDataProvider.LocalCar.Tyres.SlipRatio;
             if (slipRatios.Length == 4)
             {
-                float slipRatioFront = Math.Max(slipRatios[0], slipRatios[1]);
-                float slipRatioRear = Math.Max(slipRatios[2], slipRatios[3]);
+                // Game-specific handling: Some games (like AMS2, rFactor2) use signed slip ratios,
+                // while others (like AC, ACC) provide unsigned absolute values.
+                // For signed games: positive = wheel spin, negative = brake lock
+                // For unsigned games: we rely on throttle input to confirm this is throttle slip
+                // rFactor2/LMU: the mapper already takes Math.Abs() before returning,
+                // so values are always unsigned — do NOT treat them as signed here.
+                bool useSignedSlip = GameManager.CurrentGame switch
+                {
+                    Game.Automobilista2 => true,
+                    _ => false
+                };
+
+                float slipRatioFrontLeft, slipRatioFrontRight, slipRatioRearLeft, slipRatioRearRight;
+
+                if (useSignedSlip)
+                {
+                    // For signed slip games: only use positive values (wheel spin)
+                    slipRatioFrontLeft = slipRatios[0] > 0 ? slipRatios[0] : 0f;
+                    slipRatioFrontRight = slipRatios[1] > 0 ? slipRatios[1] : 0f;
+                    slipRatioRearLeft = slipRatios[2] > 0 ? slipRatios[2] : 0f;
+                    slipRatioRearRight = slipRatios[3] > 0 ? slipRatios[3] : 0f;
+                }
+                else
+                {
+                    // For unsigned slip games: use absolute values directly
+                    slipRatioFrontLeft = Math.Abs(slipRatios[0]);
+                    slipRatioFrontRight = Math.Abs(slipRatios[1]);
+                    slipRatioRearLeft = Math.Abs(slipRatios[2]);
+                    slipRatioRearRight = Math.Abs(slipRatios[3]);
+                }
+
+                float slipRatioFront = Math.Max(slipRatioFrontLeft, slipRatioFrontRight);
+                float slipRatioRear = Math.Max(slipRatioRearLeft, slipRatioRearRight);
 
                 if (slipRatioFront > config.ThrottleSlip.FrontSlipThreshold || slipRatioRear > config.ThrottleSlip.RearSlipThreshold)
                 {
@@ -87,8 +148,7 @@ internal static class TriggerHaptics
                     if (percentage >= 0.05f)
                         p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Right, TriggerMode.FEEDBACK, [1, (int)(config.ThrottleSlip.FeedbackStrength * percentage)]);
 
-                    int freq = (int)(config.ThrottleSlip.MaxFrequency * percentage);
-                    freq.ClipMin(config.ThrottleSlip.MinFrequency);
+                    int freq = CalculateFrequency(percentage, config.ThrottleSlip.MinFrequency, config.ThrottleSlip.MaxFrequency, config.ThrottleSlip.InvertFrequency);
                     p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Right, TriggerMode.VIBRATION, [0, config.ThrottleSlip.Amplitude, freq]);
                 }
             }
@@ -159,8 +219,7 @@ internal static class TriggerHaptics
                         if (percentage >= 0.05f)
                             p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Left, TriggerMode.FEEDBACK, [1, (int)(config.BrakeSlip.FeedbackStrength * percentage)]);
 
-                        int freq = (int)(config.BrakeSlip.MaxFrequency * percentage);
-                        freq.ClipMin(config.BrakeSlip.MinFrequency);
+                        int freq = CalculateFrequency(percentage, config.BrakeSlip.MinFrequency, config.BrakeSlip.MaxFrequency, config.BrakeSlip.InvertFrequency);
                         p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Left, TriggerMode.VIBRATION, [0, config.BrakeSlip.Amplitude, freq]);
                     }
                 }
@@ -228,8 +287,7 @@ internal static class TriggerHaptics
                         if (percentage >= 0.05f)
                             p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Right, TriggerMode.FEEDBACK, [1, (int)(config.ThrottleSlip.FeedbackStrength * percentage)]);
 
-                        int freq = (int)(config.ThrottleSlip.MaxFrequency * percentage);
-                        freq.ClipMin(config.ThrottleSlip.MinFrequency);
+                        int freq = CalculateFrequency(percentage, config.ThrottleSlip.MinFrequency, config.ThrottleSlip.MaxFrequency, config.ThrottleSlip.InvertFrequency);
                         p.AddAdaptiveTriggerToPacket(controllerIndex, Trigger.Right, TriggerMode.VIBRATION, [0, config.ThrottleSlip.Amplitude, freq]);
                     }
                 }
@@ -265,5 +323,27 @@ internal static class TriggerHaptics
         if (p.Instructions == null) p.AddAdaptiveTriggerToPacket(0, Trigger.Right, TriggerMode.Normal, []);
 
         return p;
+    }
+
+    /// <summary>
+    /// Calculates vibration frequency based on slip percentage with optional inversion.
+    /// When inverted, high slip produces low frequency; when normal, high slip produces high frequency.
+    /// </summary>
+    /// <param name="percentage">Slip ratio percentage (0.0 to 1.0)</param>
+    /// <param name="minFrequency">Minimum frequency value</param>
+    /// <param name="maxFrequency">Maximum frequency value</param>
+    /// <param name="invert">If true, high slip maps to low frequency; if false, high slip maps to high frequency</param>
+    /// <returns>Calculated frequency value clamped between minFrequency and maxFrequency</returns>
+    private static int CalculateFrequency(float percentage, int minFrequency, int maxFrequency, bool invert)
+    {
+        int freq;
+        if (invert)
+            freq = (int)(maxFrequency - (maxFrequency - minFrequency) * percentage);
+        else
+            freq = (int)(minFrequency + (maxFrequency - minFrequency) * percentage);
+
+        freq.ClipMin(minFrequency);
+        freq.ClipMax(maxFrequency);
+        return freq;
     }
 }
