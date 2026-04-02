@@ -79,6 +79,9 @@ internal sealed class RBRDataProvider : AbstractSimDataProvider
         localCar.Engine.Rpm = (int)data.EngineRpm;
         localCar.Engine.MaxRpm = 8000;
         localCar.Engine.IsRunning = data.EngineRpm > 500;
+        // RBR NGP temperatures are in Kelvin, convert to Celsius
+        localCar.Engine.WaterTemperature = data.EngineCoolantTemp - 273.15f;
+        localCar.Engine.OilTemperature = data.EngineTemp - 273.15f;
 
 
         // SlipRatio - Use memory reading for accurate wheel speeds (based on Adaptive_Trigger_RBR.py)

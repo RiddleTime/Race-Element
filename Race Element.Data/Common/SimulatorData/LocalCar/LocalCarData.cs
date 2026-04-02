@@ -81,6 +81,16 @@ public sealed record EngineData
     /// </summary>
     public int ShiftUpRpm { get; internal set; }
 
+    /// <summary>
+    /// Engine coolant (water) temperature in Celsius
+    /// </summary>
+    public float WaterTemperature { get; internal set; }
+
+    /// <summary>
+    /// Engine oil temperature in Celsius
+    /// </summary>
+    public float OilTemperature { get; internal set; }
+
     // Fuel info
     public float FuelLiters { get; internal set; }
     public float MaxFuelLiters { get; internal set; }
