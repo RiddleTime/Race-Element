@@ -99,7 +99,11 @@ internal static class Ams2Mapper
         // Car physics
         local.Physics.Rotation = System.Numerics.Quaternion.CreateFromYawPitchRoll(shared.mOrientation.Y, shared.mOrientation.X, shared.mOrientation.Z);
         local.Physics.Location = shared.mParticipantInfo[shared.mViewedParticipantIndex].mWorldPosition;
-        local.Physics.Acceleration = shared.mLocalAcceleration;
+        // Convert acceleration from m/s² to G-force (1G = 9.80665 m/s²)
+        local.Physics.Acceleration = new System.Numerics.Vector3(
+            shared.mLocalAcceleration.X / 9.80665f,
+            shared.mLocalAcceleration.Y / 9.80665f,
+            shared.mLocalAcceleration.Z / 9.80665f);
         local.Physics.Velocity = shared.mSpeed * 3.6f;
 
         // Car engine
@@ -161,6 +165,14 @@ internal static class Ams2Mapper
         local.Brakes.DiscTemperature[2] = shared.mBrakeTempCelsius.RL;
         local.Brakes.DiscTemperature[3] = shared.mBrakeTempCelsius.RR;
 
+        // Tyre slip ratio calculation
+        local.Tyres.SlipRatio = [
+            CalculateWheelSlipRatio(shared.mTyreRPS.FL, shared.mTyreY.FL, shared.mLocalVelocity.Z),
+            CalculateWheelSlipRatio(shared.mTyreRPS.FR, shared.mTyreY.FR, shared.mLocalVelocity.Z),
+            CalculateWheelSlipRatio(shared.mTyreRPS.RL, shared.mTyreY.RL, shared.mLocalVelocity.Z),
+            CalculateWheelSlipRatio(shared.mTyreRPS.RR, shared.mTyreY.RR, shared.mLocalVelocity.Z)
+        ];
+
         // Lap info
         local.Timing.CurrentLaptimeMS = (int)shared.mCurrentTime;
         local.Timing.LapTimeBestMs = (int)shared.mBestLapTime;
@@ -219,5 +231,55 @@ internal static class Ams2Mapper
         Constants.RaceState.RACESTATE_MAX => SessionPhase.ResultUI,
         _ => SessionPhase.NONE
     };
+
+    /// <summary>
+    /// Calculates wheel slip ratio from tire RPS and ground speed with sign preservation.
+    /// Uses tire effective radius calculated from tire Y position (height above ground).
+    /// </summary>
+    /// <param name="tyreRPS">Tire rotational speed (in radians per second)</param>
+    /// <param name="tyreY">Tire Y position (height in local space)</param>
+    /// <param name="groundSpeed">Longitudinal ground speed in m/s</param>
+    /// <returns>Signed slip ratio: positive = wheel spin (throttle), negative = wheel lock (brake), scaled by 10</returns>
+    private static float CalculateWheelSlipRatio(float tyreRPS, float tyreY, float groundSpeed)
+    {
+        // Ground speed and tire RPS might be negative depending on game coordinates or driving backward.
+        // Convert to absolute scalars first so we compare pure speed magnitudes.
+        float absGroundSpeed = Math.Abs(groundSpeed);
+        float absTyreRPS = Math.Abs(tyreRPS);
+
+        // Below speed threshold, no meaningful slip can be measured
+        const float minSpeedThreshold = 1.0f; // 1 m/s = 3.6 km/h
+        if (absGroundSpeed < minSpeedThreshold)
+            return 0f;
+
+        // Estimate tire radius from tire Y position (typical values range 0.3-0.35m)
+        // Using absolute value as a safety measure
+        float tireRadius = Math.Abs(tyreY);
+        
+        // If radius is unrealistic, use a default (0.33m is typical for most race cars)
+        if (tireRadius < 0.2f || tireRadius > 0.5f)
+            tireRadius = 0.33f;
+
+        // Calculate wheel tangential velocity magnitude (Vw = ω * r)
+        // mTyreRPS in Madness engine is typically radians per second, so no 2*PI is needed.
+        float wheelVelocity = absTyreRPS * tireRadius;
+
+        // Calculate SIGNED slip ratio to distinguish brake lock from wheel spin
+        // Positive: wheelVelocity > groundSpeed (wheel spin / throttle slip)
+        // Negative: wheelVelocity < groundSpeed (wheel lock / brake slip)
+        float velocityDifference = wheelVelocity - absGroundSpeed;
+        float maxVelocity = Math.Max(wheelVelocity, absGroundSpeed);
+        
+        // Avoid division by zero (should not happen due to speed threshold check above)
+        if (maxVelocity < 0.1f)
+            return 0f;
+
+        // Calculate slip ratio: (Vw - Vg) / max(|Vw|, |Vg|)
+        // Positive = wheel spin (oil/throttle), Negative = wheel lock (brake)
+        // Multiply by 10 to give a healthy range for haptics (real physical slip is around 0.05-0.15)
+        float slipRatio = (velocityDifference / maxVelocity) * 10f;
+        
+        return slipRatio;
+    }
 
 }
