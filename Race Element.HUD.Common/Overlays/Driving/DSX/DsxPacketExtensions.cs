@@ -1,4 +1,4 @@
-﻿using static RaceElement.HUD.Common.Overlays.Driving.DSX.Resources;
+using static RaceElement.HUD.Common.Overlays.Driving.DSX.Resources;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
 internal static class DsxPacketExtensions
@@ -85,10 +85,10 @@ internal static class DsxPacketExtensions
         combinedParameters[2] = triggerMode;
         combinedParameters[3] = valueMode;
 
-        // Copy the List<int> parameters into the combinedParameters array
+        // Copy the List<int> parameters into the combinedParameters array (starts at index 4, after valueMode)
         for (int i = 0; i < parameters.Count; i++)
         {
-            combinedParameters[3 + i] = parameters[i];
+            combinedParameters[4 + i] = parameters[i];
         }
 
         packet.Instructions[instCount] = new Instruction

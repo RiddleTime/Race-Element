@@ -1,4 +1,4 @@
-﻿using RaceElement.Util.SystemExtensions;
+using RaceElement.Util.SystemExtensions;
 using System;
 using System.Collections.Generic;
 using static RaceElement.ACCSharedMemory;
@@ -79,7 +79,7 @@ internal static class TriggerHaptics
 
         float rearLeftSlip = pagePhysics.SlipRatio[(int)Wheel.RearLeft];
         float rearRightSlip = pagePhysics.SlipRatio[(int)Wheel.RearRight];
-        float averageRearTyreSlip = rearLeftSlip + rearRightSlip / 2;
+        float averageRearTyreSlip = (rearLeftSlip + rearRightSlip) / 2;
 
         if (averageRearTyreSlip > 1)
         {
