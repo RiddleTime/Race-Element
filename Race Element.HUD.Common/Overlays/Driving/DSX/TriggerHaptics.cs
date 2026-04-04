@@ -31,39 +31,9 @@ internal static class TriggerHaptics
 
             if (slipRatios.Length == 4)
             {
-                // Game-specific handling: Some games (like AMS2, rFactor2) use signed slip ratios,
-                // while others (like AC, ACC) provide unsigned absolute values.
-                // For signed games: negative = brake lock, positive = wheel spin
-                // For unsigned games: we rely on brake input to confirm this is brake slip
-                // rFactor2/LMU: the mapper already takes Math.Abs() before returning,
-                // so values are always unsigned — do NOT treat them as signed here.
-                bool useSignedSlip = GameManager.CurrentGame switch
-                {
-                    Game.Automobilista2 => true,
-                    _ => false
-                };
-
-                float slipRatioFrontLeft, slipRatioFrontRight, slipRatioRearLeft, slipRatioRearRight;
-
-                if (useSignedSlip)
-                {
-                    // For signed slip games: only use negative values (brake lock)
-                    slipRatioFrontLeft = slipRatios[0] < 0 ? Math.Abs(slipRatios[0]) : 0f;
-                    slipRatioFrontRight = slipRatios[1] < 0 ? Math.Abs(slipRatios[1]) : 0f;
-                    slipRatioRearLeft = slipRatios[2] < 0 ? Math.Abs(slipRatios[2]) : 0f;
-                    slipRatioRearRight = slipRatios[3] < 0 ? Math.Abs(slipRatios[3]) : 0f;
-                }
-                else
-                {
-                    // For unsigned slip games: use absolute values directly (already positive)
-                    slipRatioFrontLeft = Math.Abs(slipRatios[0]);
-                    slipRatioFrontRight = Math.Abs(slipRatios[1]);
-                    slipRatioRearLeft = Math.Abs(slipRatios[2]);
-                    slipRatioRearRight = Math.Abs(slipRatios[3]);
-                }
-
-                float slipRatioFront = Math.Max(slipRatioFrontLeft, slipRatioFrontRight);
-                float slipRatioRear = Math.Max(slipRatioRearLeft, slipRatioRearRight);
+                // All data providers should return absolute slip values
+                float slipRatioFront = Math.Max(Math.Abs(slipRatios[0]), Math.Abs(slipRatios[1]));
+                float slipRatioRear = Math.Max(Math.Abs(slipRatios[2]), Math.Abs(slipRatios[3]));
 
                 // TODO: add option for front and rear ratio threshold.
                 if (slipRatioFront > config.BrakeSlip.FrontSlipThreshold || slipRatioRear > config.BrakeSlip.RearSlipThreshold)
@@ -101,39 +71,9 @@ internal static class TriggerHaptics
             float[] slipRatios = SimDataProvider.LocalCar.Tyres.SlipRatio;
             if (slipRatios.Length == 4)
             {
-                // Game-specific handling: Some games (like AMS2, rFactor2) use signed slip ratios,
-                // while others (like AC, ACC) provide unsigned absolute values.
-                // For signed games: positive = wheel spin, negative = brake lock
-                // For unsigned games: we rely on throttle input to confirm this is throttle slip
-                // rFactor2/LMU: the mapper already takes Math.Abs() before returning,
-                // so values are always unsigned — do NOT treat them as signed here.
-                bool useSignedSlip = GameManager.CurrentGame switch
-                {
-                    Game.Automobilista2 => true,
-                    _ => false
-                };
-
-                float slipRatioFrontLeft, slipRatioFrontRight, slipRatioRearLeft, slipRatioRearRight;
-
-                if (useSignedSlip)
-                {
-                    // For signed slip games: only use positive values (wheel spin)
-                    slipRatioFrontLeft = slipRatios[0] > 0 ? slipRatios[0] : 0f;
-                    slipRatioFrontRight = slipRatios[1] > 0 ? slipRatios[1] : 0f;
-                    slipRatioRearLeft = slipRatios[2] > 0 ? slipRatios[2] : 0f;
-                    slipRatioRearRight = slipRatios[3] > 0 ? slipRatios[3] : 0f;
-                }
-                else
-                {
-                    // For unsigned slip games: use absolute values directly
-                    slipRatioFrontLeft = Math.Abs(slipRatios[0]);
-                    slipRatioFrontRight = Math.Abs(slipRatios[1]);
-                    slipRatioRearLeft = Math.Abs(slipRatios[2]);
-                    slipRatioRearRight = Math.Abs(slipRatios[3]);
-                }
-
-                float slipRatioFront = Math.Max(slipRatioFrontLeft, slipRatioFrontRight);
-                float slipRatioRear = Math.Max(slipRatioRearLeft, slipRatioRearRight);
+                // All data providers should return absolute slip values
+                float slipRatioFront = Math.Max(Math.Abs(slipRatios[0]), Math.Abs(slipRatios[1]));
+                float slipRatioRear = Math.Max(Math.Abs(slipRatios[2]), Math.Abs(slipRatios[3]));
 
                 if (slipRatioFront > config.ThrottleSlip.FrontSlipThreshold || slipRatioRear > config.ThrottleSlip.RearSlipThreshold)
                 {

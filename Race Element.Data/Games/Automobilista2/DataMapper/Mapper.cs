@@ -165,12 +165,12 @@ internal static class Ams2Mapper
         local.Brakes.DiscTemperature[2] = shared.mBrakeTempCelsius.RL;
         local.Brakes.DiscTemperature[3] = shared.mBrakeTempCelsius.RR;
 
-        // Tyre slip ratio calculation
+        // Tyre slip ratio calculation (absolute values for HUD compatibility)
         local.Tyres.SlipRatio = [
-            CalculateWheelSlipRatio(shared.mTyreRPS.FL, shared.mTyreY.FL, shared.mLocalVelocity.Z),
-            CalculateWheelSlipRatio(shared.mTyreRPS.FR, shared.mTyreY.FR, shared.mLocalVelocity.Z),
-            CalculateWheelSlipRatio(shared.mTyreRPS.RL, shared.mTyreY.RL, shared.mLocalVelocity.Z),
-            CalculateWheelSlipRatio(shared.mTyreRPS.RR, shared.mTyreY.RR, shared.mLocalVelocity.Z)
+            Math.Abs(CalculateWheelSlipRatio(shared.mTyreRPS.FL, shared.mTyreY.FL, shared.mLocalVelocity.Z)),
+            Math.Abs(CalculateWheelSlipRatio(shared.mTyreRPS.FR, shared.mTyreY.FR, shared.mLocalVelocity.Z)),
+            Math.Abs(CalculateWheelSlipRatio(shared.mTyreRPS.RL, shared.mTyreY.RL, shared.mLocalVelocity.Z)),
+            Math.Abs(CalculateWheelSlipRatio(shared.mTyreRPS.RR, shared.mTyreY.RR, shared.mLocalVelocity.Z))
         ];
 
         // Lap info
