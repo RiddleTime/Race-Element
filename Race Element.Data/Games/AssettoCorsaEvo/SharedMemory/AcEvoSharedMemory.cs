@@ -135,7 +135,7 @@ public sealed unsafe class AcEvoSharedMemory
     #region Fixed-size inner structures
 
     /// <summary>Complete state of a single tyre corner. Embedded four times in SPageFileGraphicEvo (lf, rf, lr, rr). [256 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public struct SmevoTyreState
     {
         /// <summary>Combined tyre slip magnitude</summary>
@@ -180,7 +180,7 @@ public sealed unsafe class AcEvoSharedMemory
     }
 
     /// <summary>Structural damage level for each body zone of the car (0.0 = undamaged, 1.0 = destroyed). [128 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public struct SmevoDamageState
     {
         /// <summary>Damage on the front body / nose</summary>
@@ -207,7 +207,7 @@ public sealed unsafe class AcEvoSharedMemory
     }
 
     /// <summary>Status of each pit-stop service action. −1 = will not perform, 0 = completed, 1 = in progress. [64 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public struct SmevoPitInfo
     {
         /// <summary>Body-repair action state</summary>
@@ -228,7 +228,7 @@ public sealed unsafe class AcEvoSharedMemory
     }
 
     /// <summary>All driver-adjustable electronic aid and setup settings. [128 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public struct SmevoElectronics
     {
         /// <summary>Traction-control level (0 = off, higher = more aggressive)</summary>
@@ -281,7 +281,7 @@ public sealed unsafe class AcEvoSharedMemory
     }
 
     /// <summary>Cockpit light, display, and instrumentation panel states. [128 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public struct SmevoInstrumentation
     {
         /// <summary>Main exterior light stage (0 = off)</summary>
@@ -315,7 +315,7 @@ public sealed unsafe class AcEvoSharedMemory
     }
 
     /// <summary>Server-side session lifecycle information. [256 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public struct SmevoSessionState
     {
         /// <summary>Name of the current session phase (e.g. 'Race', 'Qualify')</summary>
@@ -362,7 +362,7 @@ public sealed unsafe class AcEvoSharedMemory
     }
 
     /// <summary>Lap timing and delta values displayed on the HUD. [256 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public struct SmevoTimingState
     {
         /// <summary>Current lap time as a formatted string</summary>
@@ -398,7 +398,7 @@ public sealed unsafe class AcEvoSharedMemory
     }
 
     /// <summary>Driver-assist settings currently active for the player car. [64 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public struct SmevoAssistsState
     {
         /// <summary>Automatic gearshift aid level (0 = off)</summary>
@@ -435,7 +435,7 @@ public sealed unsafe class AcEvoSharedMemory
     }
 
     /// <summary>Raw physics telemetry updated every simulation step. Contains all low-level vehicle dynamics data.</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public sealed class SPageFilePhysicsEvo
     {
         /// <summary>Incrementing counter — detect new data packets by comparing to previous value</summary>
@@ -614,7 +614,7 @@ public sealed unsafe class AcEvoSharedMemory
     }
 
     /// <summary>Main HUD and graphics telemetry page. Updated each rendered frame. Contains embedded sub-structs for tyres, damage, electronics, timing, and session state.</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public sealed class SPageFileGraphicEvo
     {
         /// <summary>Incrementing counter — detect new frames by comparing to previous value</summary>
@@ -942,7 +942,7 @@ public sealed unsafe class AcEvoSharedMemory
     }
 
     /// <summary>Static session metadata. Written once when a session loads and does not change while driving.</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
     public sealed class SPageFileStaticEvo
     {
         /// <summary>Shared-memory interface version string</summary>
