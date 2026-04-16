@@ -7,8 +7,8 @@ namespace RaceElement.Data.Games.AssettoCorsaEvo.DataMapper;
 [Mapper]
 internal static partial class GameDataMapper
 {
-    public static void WithStaticPage(SPageFileStatic pageStatic, GameData gameData)
+    public static void WithStaticPage(SPageFileStaticEvo pageStatic, GameData gameData)
     {
-        gameData.Version = pageStatic.AssettoCorsaVersion;
+        gameData.Version = pageStatic.AcEvoVersion;
     }
 }

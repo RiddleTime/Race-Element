@@ -5,17 +5,21 @@ using RaceElement.Data.SharedMemory;
 namespace RaceElement.Data.Games.AssettoCorsaEvo.SharedMemory;
 
 /// <summary>
-/// Used certain shared memory from https://github.com/gro-ove/actools
+/// AC EVO Shared Memory reader (updated for ACE_SharedFileOut_Documentation_v1.pdf)
+/// Maps: acevo_pmf_* (new naming)
+/// All inner structures have fixed sizes with explicit padding to match the C++ reference exactly.
+/// displayCurrentPageIndex is now [16] (was 9).
+/// All class/struct members use PascalCase with no underscores.
 /// </summary>
 public sealed unsafe class AcEvoSharedMemory
 {
-    private readonly string physicsMap = "Local\\acpmf_physics";
-    private readonly string graphicsMap = "Local\\acpmf_graphics";
-    private readonly string staticMap = "Local\\acpmf_static";
+    private readonly string physicsMap = "Local\\acevo_pmf_physics";
+    private readonly string graphicsMap = "Local\\acevo_pmf_graphics";
+    private readonly string staticMap = "Local\\acevo_pmf_static";
 
-    public SPageFileStatic PageFileStatic { get; private set; }
-    public SPageFilePhysics PageFilePhysics { get; private set; }
-    public SPageFileGraphic PageFileGraphic { get; private set; }
+    public SPageFileStaticEvo PageFileStatic { get; private set; }
+    public SPageFilePhysicsEvo PageFilePhysics { get; private set; }
+    public SPageFileGraphicEvo PageFileGraphic { get; private set; }
 
     private static AcEvoSharedMemory _instance;
     public static AcEvoSharedMemory Instance
@@ -23,7 +27,6 @@ public sealed unsafe class AcEvoSharedMemory
         get
         {
             _instance ??= new AcEvoSharedMemory();
-
             return _instance;
         }
     }
@@ -35,836 +38,1001 @@ public sealed unsafe class AcEvoSharedMemory
         ReadGraphicsPageFile();
     }
 
-    public enum AcStatus : int
+    #region Enums
+
+    /// <summary>Current operational state of the simulator.</summary>
+    public enum AcEvoStatus : int
     {
-        AC_OFF,
-        AC_REPLAY,
-        AC_LIVE,
-        AC_PAUSE,
+        /// <summary>Simulator is not running / no session active</summary>
+        AcOff = 0,
+        /// <summary>A replay is currently being played back</summary>
+        AcReplay = 1,
+        /// <summary>Live driving session is active</summary>
+        AcLive = 2,
+        /// <summary>Session is paused</summary>
+        AcPause = 3
     }
 
-    public enum AcSessionType : int
+    /// <summary>Type of racing session currently loaded.</summary>
+    public enum AcEvoSessionType : int
     {
-        AC_UNKNOWN = -1,
-        AC_PRACTICE = 0,
-        AC_QUALIFY = 1,
-        AC_RACE = 2,
-        AC_HOTLAP = 3,
-        AC_TIME_ATTACK = 4,
-        AC_DRIFT = 5,
-        AC_DRAG = 6,
-        AC_HOTSTINT = 7,
-        AC_HOTLAPSUPERPOLE = 8
+        /// <summary>Session type not yet determined</summary>
+        AcUnknown = -1,
+        /// <summary>Time attack / qualifying session</summary>
+        AcTimeAttack = 0,
+        /// <summary>Race session</summary>
+        AcRace = 1,
+        /// <summary>Hot-stint practice</summary>
+        AcHotStint = 2,
+        /// <summary>Untimed cruise</summary>
+        AcCruise = 3
     }
 
-
-    public static string SessionTypeToString(AcSessionType sessionType) => sessionType switch
+    /// <summary>Race flag currently shown to the driver.</summary>
+    public enum AcEvoFlagType : int
     {
-        AcSessionType.AC_UNKNOWN => "Unknown",
-        AcSessionType.AC_PRACTICE => "Practice",
-        AcSessionType.AC_QUALIFY => "Qualify",
-        AcSessionType.AC_RACE => "Race",
-        AcSessionType.AC_HOTLAP => "Hotlap",
-        AcSessionType.AC_TIME_ATTACK => "Time attack",
-        AcSessionType.AC_DRIFT => "Drift",
-        AcSessionType.AC_DRAG => "Drag",
-        AcSessionType.AC_HOTSTINT => "Hotstint",
-        AcSessionType.AC_HOTLAPSUPERPOLE => "Hotlap superpole",
-        _ => sessionType.ToString(),
-    };
-
-    public enum AcFlagType : int
-    {
-        AC_NO_FLAG,
-        AC_BLUE_FLAG,
-        AC_YELLOW_FLAG,
-        AC_BLACK_FLAG,
-        AC_WHITE_FLAG,
-        AC_CHECKERED_FLAG,
-        AC_PENALTY_FLAG,
-        AC_GREEN_FLAG,
-        AC_BLACK_FLAG_WITH_ORANGE_CIRCLE,
-
+        /// <summary>No flag displayed</summary>
+        AcNoFlag = 0,
+        /// <summary>Slow vehicle ahead on track</summary>
+        AcWhiteFlag = 1,
+        /// <summary>Track clear — racing resumed</summary>
+        AcGreenFlag = 2,
+        /// <summary>Session stopped due to incident or hazard</summary>
+        AcRedFlag = 3,
+        /// <summary>Lapped car must yield to the race leader</summary>
+        AcBlueFlag = 4,
+        /// <summary>Hazard present — no overtaking</summary>
+        AcYellowFlag = 5,
+        /// <summary>Driver disqualified / must pit immediately</summary>
+        AcBlackFlag = 6,
+        /// <summary>Warning for unsportsmanlike behaviour</summary>
+        AcBlackWhiteFlag = 7,
+        /// <summary>Session or race has ended</summary>
+        AcCheckeredFlag = 8,
+        /// <summary>Mechanical problem — car must pit</summary>
+        AcOrangeCircleFlag = 9,
+        /// <summary>Slippery surface ahead on track</summary>
+        AcRedYellowStripesFlag = 10
     }
 
-    public static string FlagTypeToString(AcFlagType flagType) => flagType switch
+    /// <summary>Where on the circuit the car is currently positioned.</summary>
+    public enum AcEvoCarLocation : int
     {
-        AcFlagType.AC_NO_FLAG => "Green",
-        AcFlagType.AC_BLUE_FLAG => "Blue",
-        AcFlagType.AC_YELLOW_FLAG => "Yellow",
-        AcFlagType.AC_BLACK_FLAG => "Black",
-        AcFlagType.AC_WHITE_FLAG => "White",
-        AcFlagType.AC_CHECKERED_FLAG => "Checkered",
-        AcFlagType.AC_PENALTY_FLAG => "Penalty",
-        AcFlagType.AC_GREEN_FLAG => "Green",
-        AcFlagType.AC_BLACK_FLAG_WITH_ORANGE_CIRCLE => "Orange",
-        _ => flagType.ToString(),
-    };
-
-    public enum PenaltyShortcut : int
-    {
-        None,
-        DriveThrough_Cutting,
-        StopAndGo_10_Cutting,
-        StopAndGo_20_Cutting,
-        StopAndGo_30_Cutting,
-        Disqualified_Cutting,
-        RemoveBestLaptime_Cutting,
-
-        DriveThrough_PitSpeeding,
-        StopAndGo_10_PitSpeeding,
-        StopAndGo_20_PitSpeeding,
-        StopAndGo_30_PitSpeeding,
-        Disqualified_PitSpeeding,
-        RemoveBestLaptime_PitSpeeding,
-
-        Disqualified_IgnoredMandatoryPit,
-
-        PostRaceTime,
-        Disqualified_Trolling,
-        Disqualified_PitEntry,
-        Disqualified_PitExit,
-        Disqualified_WrongWay,
-
-        DriveThrough_IgnoredDriverStint,
-        Disqualified_IgnoredDriverStint,
-
-        Disqualified_ExceededDriverStintLimit,
-    };
-
-    public enum AcTrackGripStatus : int
-    {
-        Green,
-        Fast,
-        Optimum,
-        Greasy,
-        Damp,
-        Wet,
-        Flooded
-    };
-
-    public enum AcRainIntensity : int
-    {
-        No_Rain,
-        Dew,
-        Light_Rain,
-        Medium_Rain,
-        Heavy_Rain,
-        Thunderstorm,
+        /// <summary>Position not yet determined</summary>
+        AcevoUnassigned = 0,
+        /// <summary>Car is inside the pit lane</summary>
+        AcevoPitlane = 1,
+        /// <summary>Car is at the pit-lane entry</summary>
+        AcevoPitentry = 2,
+        /// <summary>Car is at the pit-lane exit</summary>
+        AcevoPitexit = 3,
+        /// <summary>Car is on the racing circuit</summary>
+        AcevoTrack = 4
     }
 
-    public static string AcRainIntensityToString(AcRainIntensity intensity) => intensity switch
+    /// <summary>Powertrain type of the player car.</summary>
+    public enum AcEvoEngineType : int
     {
-        AcRainIntensity.No_Rain => "Dry",
-        AcRainIntensity.Dew => "Dew",
-        AcRainIntensity.Light_Rain => "Light",
-        AcRainIntensity.Medium_Rain => "Medium",
-        AcRainIntensity.Heavy_Rain => "Heavy",
-        AcRainIntensity.Thunderstorm => "Thunder",
-        _ => string.Empty,
-    };
+        /// <summary>Traditional petrol/diesel internal combustion engine</summary>
+        AcevoInternalCombustion = 0,
+        /// <summary>Fully electric powertrain</summary>
+        AcevoElectricMotor = 1
+    }
 
-
-    /// <summary>The following members are updated at each graphical step. They mostly refer to player’s car except for carCoordinates and carID, which refer to the cars currently on track.</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public sealed class SPageFileGraphic
+    /// <summary>Initial grip conditions at session start.</summary>
+    public enum AcEvoStartingGrip : int
     {
-        /// <summary>Current step index</summary>
-        public int PacketId;
-
-        /// <summary>See enums AcStatus</summary>
-        public AcStatus Status;
-
-        /// <summary>See enums AcSessionType</summary>
-        public AcSessionType SessionType;
-
-        /// <summary>Current lap time in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string CurrentTime;
-
-        /// <summary>Last lap time in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string LastTime;
-
-        /// <summary>Best lap time in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string BestTime;
-
-        /// <summary>Last split time in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string Split;
-
-        /// <summary>Number of completed laps</summary>
-        public int CompletedLaps;
-
-        /// <summary>Current player position</summary>
-        public int Position;
-
-        /// <summary>Current lap time in milliseconds</summary>
-        public int CurrentTimeMs;
-
-        /// <summary>Last lap time in milliseconds</summary>
-        public int LastTimeMs;
-
-        /// <summary>Best lap time in milliseconds</summary>
-        public int BestTimeMs;
-
-        /// <summary>Session time lef</summary>
-        public float SessionTimeLeft;
-
-        /// <summary>Distance travelled in the current stint</summary>
-        public float DistanceTraveled;
-
-        /// <summary>Car is pitting</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool IsInPits;
-
-        /// <summary>Current track sector</summary>
-        public int CurrentSectorIndex;
-
-        /// <summary>Last sector time in milliseconds</summary>
-        public int LastSectorTime;
-
-        /// <summary>Number of completed laps</summary>
-        public int NumberOfLaps;
-
-        /// <summary>Tyre compound used in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string TyreCompound;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public float ReplayTimeMultiplier;
-
-        /// <summary>Car position on track spline (0.0 start to 1.0 finish)</summary>
-        public float NormalizedCarPosition;
-
-        /// <summary>Number of cars on track</summary>
-        public int ActiveCars;
-
-        /// <summary>Coordinates of cars on track</summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)] public StructVector3[] CarCoordinates;
-
-        /// <summary>Car IDs of cars on track</summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)] public int[] CarIds;
-
-        /// <summary>Player Car ID</summary>
-        public int PlayerCarID;
-
-        /// <summary>Penalty time to wait</summary>
-        public float PenaltyTime;
-
-        /// <summary>See enums AcFlagType</summary>
-        public AcFlagType Flag;
-
-        /// <summary>See enums PenaltyShortcut</summary>
-        public PenaltyShortcut PenaltyType;
-
-        /// <summary>Ideal line on</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool IdealLineOn;
-
-        /// <summary>Car is in pit lane</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool IsInPitLane;
-
-        /// <summary>Ideal line friction coefficient</summary>
-        public float SurfaceGrip;
-
-        /// <summary>Mandatory pit is completed</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool MandatoryPitDone;
-
-        /// <summary>Wind speed in m/s</summary>
-        public float WindSpeed;
-
-        /// <summary>wind direction in radians</summary>
-        public float WindDirection;
-
-        /// <summary>Car is working on setup</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool IsSetupMenuVisible;
-
-        /// <summary>Current car main display index</summary>
-        public int MainDisplayIndex;
-
-        /// <summary>Current car secondary display index</summary>
-        public int SecondaryDisplayIndex;
-
-        /// <summary>Traction control level</summary>
-        public int TC;
-
-        /// <summary>Traction control cut level</summary>
-        public int TCCut;
-
-        /// <summary>Current engine map</summary>
-        public int EngineMap;
-
-        /// <summary>ABS level</summary>
-        public int ABS;
-
-        /// <summary>Average fuel consumed per lap in liters</summary>
-        public float FuelXLap;
-
-        /// <summary>Rain lights on</summary>
-        public int RainLights;
-
-        /// <summary>Flashing lights on</summary>
-        public int FlashingLights;
-
-        /// <summary>Current lights stage</summary>
-        public int LightsStage;
-
-        /// <summary>Exhaust temperature</summary>
-        public float ExhaustTemperature;
-
-        /// <summary>Current wiper stage</summary>
-        public int WiperLV;
-
-        /// <summary>Time the driver is allowed to drive/race (ms)</summary>
-        public int DriverStintTotalTimeLeft;
-
-        /// <summary>Time the driver is allowed to drive/stint (ms)</summary>
-        public int DriverStintTimeLeft;
-
-        /// <summary>Are rain tyres equipped</summary>
-        public int RainTyres;
-
-        /// <summary>[No info given by ACC docs on it]</summary>
-        public int SessionIndex;
-
-        /// <summary>Used fuel since last time refueling</summary>
-        public float UsedFuelSinceRefuel;
-
-        /// <summary>Delta time in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string DeltaLapTime;
-
-        /// <summary>Delta time in milliseconds</summary>
-        public int DeltaLapTimeMillis;
-
-        /// <summary>Estimated lap time in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string EstimatedLapTime;
-
-        /// <summary>Estimated lap time in milliseconds</summary>
-        public int EstimatedLapTimeMillis;
-
-        /// <summary>Delta positive (1) or negative (0)</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool IsDeltaPositive;
-
-        /// <summary>Last split time in milliseconds</summary>
-        public int SplitTimeMillis;
-
-        /// <summary>Check if Lap is valid for timing</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool IsValidLap;
-
-        /// <summary>Laps possible with current fuel level</summary>
-        public float FuelEstimatedLaps;
-
-        /// <summary>Status of track in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string TrackStatus;
-
-        /// <summary>Mandatory pitstops the player still has to do</summary>
-        public int MandatoryPitStopsLeft;
-
-        /// <summary>Time of day in seconds</summary>
-        public float ClockTimeDaySeconds;
-
-        /// <summary>Is Blinker left on</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool BlinkerLeftOn;
-
-        /// <summary>Is Blinker right on</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool BlinkerRightOn;
-
-        /// <summary>Yellow Flag is out?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool GlobalYellow;
-
-        /// <summary>Yellow Flag in Sector 1 is out?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool GlobalYellowSector1;
-
-        /// <summary>Yellow Flag in Sector 2 is out?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool GlobalYellowSector2;
-
-        /// <summary>Yellow Flag in Sector 3 is out?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool GlobalYellowSector3;
-
-        /// <summary>White Flag is out?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool GlobalWhite;
-
-        /// <summary>Green Flag is out?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool GreenFlag;
-
-        /// <summary>Checkered Flag is out?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool GlobalChequered;
-
-        /// <summary>Red Flag is out?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool GlobalRed;
-
-        /// <summary># of tyre set on the MFD</summary>
-        public int mfdTyreSet;
-
-        /// <summary>How much fuel to add on the MFD</summary>
-        public float mfdFuelToAdd;
-
-        /// <summary>Tyre pressure left front on the MFD</summary>
-        public float mfdTyrePressureLF;
-
-        /// <summary>Tyre pressure right front on the MFD</summary>
-        public float mfdTyrePressureRF;
-
-        /// <summary>Tyre pressure left rear on the MFD</summary>
-        public float mfdTyrePressureLR;
-
-        /// <summary>Tyre pressure right rear on the MFD</summary>
-        public float mfdTyrePressureRR;
-
-        /// <summary>See enums AcTrackGripStatus</summary>
-        public AcTrackGripStatus trackGripStatus;
-
-        /// <summary>See enums AcRainIntensity</summary>
-        public AcRainIntensity rainIntensity;
-
-        /// <summary>See enums AcRainIntensity</summary>
-        public AcRainIntensity rainIntensityIn10min;
-
-        /// <summary>See enums AcRainIntensity</summary>
-        public AcRainIntensity rainIntensityIn30min;
-
-        /// <summary>Tyre Set currently in use</summary>
-        public int currentTyreSet;
-
-        /// <summary>Next Tyre set per strategy</summary>
-        public int strategyTyreSet;
-
-        /// <summary>Distance in ms to car in front</summary>
-        public int gapAheadMillis;
-
-        /// <summary>Distance in ms to car behind</summary>
-        public int gapBehindMillis;
-
-        public static readonly int Size = Marshal.SizeOf(typeof(SPageFileGraphic));
-        public static readonly byte[] Buffer = new byte[Size];
-    };
-
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
+        /// <summary>Track grip at minimum</summary>
+        AcevoGreen = 0,
+        /// <summary>Track grip in advanced (fast) stage</summary>
+        AcevoFast = 1,
+        /// <summary>Track conditions starting at optimum grip</summary>
+        AcevoOptimum = 2
+    }
+
+    #endregion
+
+    #region Fixed-size inner structures
+
+    /// <summary>Complete state of a single tyre corner. Embedded four times in SPageFileGraphicEvo (lf, rf, lr, rr). [256 bytes]</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public struct SmevoTyreState
+    {
+        /// <summary>Combined tyre slip magnitude</summary>
+        public float Slip;
+        /// <summary>Tyre is locked under braking (true = locking)</summary>
+        public bool Lock;
+        /// <summary>Tyre inflation pressure (PSI)</summary>
+        public float TyrePression;
+        /// <summary>Average tyre carcass temperature in °C</summary>
+        public float TyreTemperatureC;
+        /// <summary>Brake disc temperature in °C</summary>
+        public float BrakeTemperatureC;
+        /// <summary>Hydraulic brake pressure applied at this corner</summary>
+        public float BrakePressure;
+        /// <summary>Inner-edge tyre temperature in °C</summary>
+        public float TyreTemperatureLeft;
+        /// <summary>Centre-tread tyre temperature in °C</summary>
+        public float TyreTemperatureCenter;
+        /// <summary>Outer-edge tyre temperature in °C</summary>
+        public float TyreTemperatureRight;
+        /// <summary>Name of the compound fitted on the front axle</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string TyreCompoundFront;
+        /// <summary>Name of the compound fitted on the rear axle</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string TyreCompoundRear;
+        /// <summary>Pressure as a 0–1 fraction of the target range</summary>
+        public float TyreNormalizedPressure;
+        /// <summary>Inner-edge temperature as a 0–1 fraction of optimal range</summary>
+        public float TyreNormalizedTemperatureLeft;
+        /// <summary>Centre temperature as a 0–1 fraction of optimal range</summary>
+        public float TyreNormalizedTemperatureCenter;
+        /// <summary>Outer-edge temperature as a 0–1 fraction of optimal range</summary>
+        public float TyreNormalizedTemperatureRight;
+        /// <summary>Brake temperature as a 0–1 fraction of optimal operating range</summary>
+        public float BrakeNormalizedTemperature;
+        /// <summary>Core tyre temperature as a 0–1 fraction of optimal range</summary>
+        public float TyreNormalizedTemperatureCore;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
+        private byte[] PlaceHolder; // Padding to ensure exactly 256 bytes
+    }
+
+    /// <summary>Structural damage level for each body zone of the car (0.0 = undamaged, 1.0 = destroyed). [128 bytes]</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public struct SmevoDamageState
+    {
+        /// <summary>Damage on the front body / nose</summary>
+        public float DamageFront;
+        /// <summary>Damage on the rear body / diffuser</summary>
+        public float DamageRear;
+        /// <summary>Damage on the left side of the body</summary>
+        public float DamageLeft;
+        /// <summary>Damage on the right side of the body</summary>
+        public float DamageRight;
+        /// <summary>Damage on the central / underfloor area</summary>
+        public float DamageCenter;
+        /// <summary>Damage on the front-left suspension</summary>
+        public float DamageSuspensionLf;
+        /// <summary>Damage on the front-right suspension</summary>
+        public float DamageSuspensionRf;
+        /// <summary>Damage on the rear-left suspension</summary>
+        public float DamageSuspensionLr;
+        /// <summary>Damage on the rear-right suspension</summary>
+        public float DamageSuspensionRr;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 92)]
+        private byte[] PlaceHolder; // Padding to ensure exactly 128 bytes
+    }
+
+    /// <summary>Status of each pit-stop service action. −1 = will not perform, 0 = completed, 1 = in progress. [64 bytes]</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public struct SmevoPitInfo
+    {
+        /// <summary>Body-repair action state</summary>
+        public sbyte Damage;
+        /// <summary>Refuelling action state</summary>
+        public sbyte Fuel;
+        /// <summary>Front-left tyre change state</summary>
+        public sbyte TyresLf;
+        /// <summary>Front-right tyre change state</summary>
+        public sbyte TyresRf;
+        /// <summary>Rear-left tyre change state</summary>
+        public sbyte TyresLr;
+        /// <summary>Rear-right tyre change state</summary>
+        public sbyte TyresRr;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 58)]
+        private byte[] PlaceHolder; // Padding to ensure exactly 64 bytes
+    }
+
+    /// <summary>All driver-adjustable electronic aid and setup settings. [128 bytes]</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public struct SmevoElectronics
+    {
+        /// <summary>Traction-control level (0 = off, higher = more aggressive)</summary>
+        public sbyte TcLevel;
+        /// <summary>TC throttle-cut aggressiveness level</summary>
+        public sbyte TcCutLevel;
+        /// <summary>ABS intervention level (0 = off)</summary>
+        public sbyte AbsLevel;
+        /// <summary>Electronic stability-control level (0 = off)</summary>
+        public sbyte EscLevel;
+        /// <summary>Electronic brake-balance adjustment level</summary>
+        public sbyte EbbLevel;
+        /// <summary>Front brake-bias ratio (e.g. 0.56 = 56 % front)</summary>
+        public float BrakeBias;
+        /// <summary>Engine map / power mode selection</summary>
+        public sbyte EngineMapLevel;
+        /// <summary>Turbo wastegate or boost target setting</summary>
+        public float TurboLevel;
+        /// <summary>ERS power-deployment strategy map</summary>
+        public sbyte ErsDeploymentMap;
+        /// <summary>ERS recharge aggressiveness setting</summary>
+        public float ErsRechargeMap;
+        /// <summary>ERS heat-based charging is enabled</summary>
+        public bool IsErsHeatChargingOn;
+        /// <summary>ERS overtake (maximum-deploy) mode is active</summary>
+        public bool IsErsOvertakeModeOn;
+        /// <summary>DRS flap is currently open</summary>
+        public bool IsDrsOpen;
+        /// <summary>Differential lock level under power</summary>
+        public sbyte DiffPowerLevel;
+        /// <summary>Differential lock level on lift / coast</summary>
+        public sbyte DiffCoastLevel;
+        /// <summary>Front bump (compression) damper stiffness level</summary>
+        public sbyte FrontBumpDamperLevel;
+        /// <summary>Front rebound damper stiffness level</summary>
+        public sbyte FrontReboundDamperLevel;
+        /// <summary>Rear bump (compression) damper stiffness level</summary>
+        public sbyte RearBumpDamperLevel;
+        /// <summary>Rear rebound damper stiffness level</summary>
+        public sbyte RearReboundDamperLevel;
+        /// <summary>Ignition switch is on</summary>
+        public bool IsIgnitionOn;
+        /// <summary>Pit-speed limiter is active</summary>
+        public bool IsPitlimiterOn;
+        /// <summary>Selected vehicle performance / power mode index</summary>
+        public sbyte ActivePerformanceMode;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 88)]
+        private byte[] PlaceHolder; // Padding to ensure exactly 128 bytes
+    }
+
+    /// <summary>Cockpit light, display, and instrumentation panel states. [128 bytes]</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public struct SmevoInstrumentation
+    {
+        /// <summary>Main exterior light stage (0 = off)</summary>
+        public sbyte MainLightStage;
+        /// <summary>Auxiliary / special lights level</summary>
+        public sbyte SpecialLightStage;
+        /// <summary>Interior cockpit illumination level</summary>
+        public sbyte CockpitLightStage;
+        /// <summary>Windscreen wiper speed (0 = off)</summary>
+        public sbyte WiperLevel;
+        /// <summary>Rear rain light is on</summary>
+        public bool RainLights;
+        /// <summary>Left turn indicator is active</summary>
+        public bool DirectionLightLeft;
+        /// <summary>Right turn indicator is active</summary>
+        public bool DirectionLightRight;
+        /// <summary>Flashing lights are active</summary>
+        public bool FlashingLights;
+        /// <summary>Hazard lights are illuminated</summary>
+        public bool WarningLights;
+        /// <summary>Index of the currently focused display device</summary>
+        public sbyte SelectedDisplayIndex;
+        /// <summary>Active page index on displays (array of 16 items)</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
+        public sbyte[] DisplayCurrentPageIndex;
+        /// <summary>Headlights are on and visible to other drivers</summary>
+        public bool AreHeadlightsVisible;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 101)]
+        private byte[] PlaceHolder; // Padding to ensure exactly 128 bytes
+    }
+
+    /// <summary>Server-side session lifecycle information. [256 bytes]</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public struct SmevoSessionState
+    {
+        /// <summary>Name of the current session phase (e.g. 'Race', 'Qualify')</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string PhaseName;
+        /// <summary>Formatted remaining session time (HH:MM:SS)</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string TimeLeft;
+        /// <summary>Remaining session time in milliseconds</summary>
+        public int TimeLeftMs;
+        /// <summary>Formatted wait time before session start</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string WaitTime;
+        /// <summary>Total laps scheduled for this session</summary>
+        public int TotalLap;
+        /// <summary>Current lap number being driven</summary>
+        public int CurrentLap;
+        /// <summary>Number of starting lights currently illuminated</summary>
+        public int LightsOn;
+        /// <summary>Starting-light sequence mode identifier</summary>
+        public int LightsMode;
+        /// <summary>Track lap length in kilometres</summary>
+        public float LapLengthKm;
+        /// <summary>Non-zero when the session is ending</summary>
+        public int EndSessionFlag;
+        /// <summary>Formatted countdown to the next session</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string TimeToNextSession;
+        /// <summary>Player has lost connection to the game server</summary>
+        public bool DisconnectedFromServer;
+        /// <summary>Season restart option is available to the player</summary>
+        public bool RestartSeasonEnabled;
+        /// <summary>Drive button is enabled in the UI</summary>
+        public bool UiEnableDrive;
+        /// <summary>Setup screen is accessible from the UI</summary>
+        public bool UiEnableSetup;
+        /// <summary>Ready-to-proceed indicator is blinking</summary>
+        public bool IsReadyToNextBlinking;
+        /// <summary>Waiting-for-players lobby screen is shown</summary>
+        public bool ShowWaitingForPlayers;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 140)]
+        private byte[] PlaceHolder; // Padding to ensure exactly 256 bytes
+    }
+
+    /// <summary>Lap timing and delta values displayed on the HUD. [256 bytes]</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public struct SmevoTimingState
+    {
+        /// <summary>Current lap time as a formatted string</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string CurrentLaptime;
+        /// <summary>Delta vs. current reference lap (formatted)</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string DeltaCurrent;
+        /// <summary>Sign of delta_current: +1 slower, −1 faster, 0 = hidden</summary>
+        public int DeltaCurrentP;
+        /// <summary>Last completed lap time as a formatted string</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string LastLaptime;
+        /// <summary>Delta vs. last lap (formatted)</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string DeltaLast;
+        /// <summary>Sign of delta_last: +1 slower, −1 faster, 0 = hidden</summary>
+        public int DeltaLastP;
+        /// <summary>Personal best lap time as a formatted string</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string BestLaptime;
+        /// <summary>Theoretical best lap (sum of best sectors) as a formatted string</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string IdealLaptime;
+        /// <summary>Total elapsed session time as a formatted string</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string TotalTime;
+        /// <summary>Current lap has been invalidated (track-limits violation, etc.)</summary>
+        public bool IsInvalid;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 137)]
+        private byte[] PlaceHolder; // Padding to ensure exactly 256 bytes
+    }
+
+    /// <summary>Driver-assist settings currently active for the player car. [64 bytes]</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public struct SmevoAssistsState
+    {
+        /// <summary>Automatic gearshift aid level (0 = off)</summary>
+        public byte AutoGear;
+        /// <summary>Automatic throttle blip on downshift (0 = off)</summary>
+        public byte AutoBlip;
+        /// <summary>Automatic clutch management (0 = off)</summary>
+        public byte AutoClutch;
+        /// <summary>Automatic clutch during the rolling start (0 = off)</summary>
+        public byte AutoClutchOnStart;
+        /// <summary>Manual ignition and electric start required (0 = automatic)</summary>
+        public byte ManualIgnitionEStart;
+        /// <summary>Pit-speed limiter activates automatically (0 = manual)</summary>
+        public byte AutoPitLimiter;
+        /// <summary>Standing-start launch assistance active (0 = off)</summary>
+        public byte StandingStartAssist;
+        /// <summary>Auto-steer correction strength (0.0 = off, 1.0 = maximum)</summary>
+        public float AutoSteer;
+        /// <summary>Arcade-style stability aid level (0.0 = off, 1.0 = maximum)</summary>
+        public float ArcadeStabilityControl;
+
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 48)]
+        private byte[] PlaceHolder; // Padding to ensure exactly 64 bytes
+    }
+
+    #endregion
+
+    [StructLayout(LayoutKind.Sequential, Pack = 4)]
     public struct StructVector3
     {
         public float X;
         public float Y;
         public float Z;
-
-        public override readonly string ToString() => $"X: {X}, Y: {Y}, Z: {Z}";
     }
 
-    /// <summary>The following members change at each graphic step. They all refer to the player’s car</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public sealed class SPageFilePhysics
+    /// <summary>Raw physics telemetry updated every simulation step. Contains all low-level vehicle dynamics data.</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public sealed class SPageFilePhysicsEvo
     {
-        /// <summary>Current step index</summary>
+        /// <summary>Incrementing counter — detect new data packets by comparing to previous value</summary>
         public int PacketId;
-
-        /// <summary>Gas pedal input value (from -0 to 1.0)</summary>
+        /// <summary>Throttle pedal position (0.0 = released, 1.0 = full throttle)</summary>
         public float Gas;
-
-        /// <summary>Brake pedal input value (from -0 to 1.0)</summary>
+        /// <summary>Brake pedal position (0.0 = released, 1.0 = full brake)</summary>
         public float Brake;
-
-        /// <summary>Amount of fuel remaining in kg</summary>
+        /// <summary>Remaining fuel in litres</summary>
         public float Fuel;
-
-        /// <summary>Current gear</summary>
+        /// <summary>Engaged gear: 0 = reverse, 1 = neutral, 2+ = forward gears</summary>
         public int Gear;
-
-        /// <summary>Engine revolutions per minute</summary>
+        /// <summary>Engine speed in revolutions per minute</summary>
         public int Rpms;
-
-        /// <summary>Steering input value (from -1.0 to 1.0)</summary>
+        /// <summary>Normalised steering angle (−1.0 = full left, +1.0 = full right)</summary>
         public float SteerAngle;
-
-        /// <summary>Car speed in km/h</summary>
+        /// <summary>Vehicle speed in km/h</summary>
         public float SpeedKmh;
-
-        /// <summary>Car velocity vector in global coordinates</summary>
+        /// <summary>World-space velocity vector [X, Y, Z] in m/s</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)] public float[] Velocity;
-
-        /// <summary>Car acceleration vector in global coordinates</summary>
+        /// <summary>Acceleration in G [lateral X, longitudinal Y, vertical Z]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)] public float[] AccG;
-
-        /// <summary>Tyre slip for each tyre [FL, FR, RL, RR]</summary>
+        /// <summary>Tyre slip value per wheel [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelSlip;
-
-        /// <summary>Wheel load for each tyre [FL, FR, RL, RR]</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelLoad;
-
-        /// <summary>Tyre pressure [FL, FR, RL, RR]</summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelPressure;
-
-        /// <summary>Wheel angular speed in rad/s [FL, FR, RL, RR]</summary>
+        /// <summary>Vertical tyre load in Newtons [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelLoad;
+        /// <summary>Tyre inflation pressure in PSI [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelsPressure;
+        /// <summary>Wheel rotational speed in rad/s [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] WheelAngularSpeed;
-
-        /// <summary>Tyre wear [FL, FR, RL, RR]</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreWear;
-
-        /// <summary>Dirt accumulated on tyre surface [FL, FR, RL, RR]</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreDirtyLevel;
-
-        /// <summary>Tyre rubber core temperature [FL, FR, RL, RR]</summary>
+        /// <summary>Tyre wear level (0.0 = new, 1.0 = fully worn) [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreWear;
+        /// <summary>Amount of dirt / debris on each tyre surface [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreDirtyLevel;
+        /// <summary>Core temperature of each tyre in °C [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreCoreTemperature;
-
-        /// <summary>Wheels camber in radians [FL, FR, RL, RR]</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] CamberRad;
-
-        /// <summary>Suspension travel [FL, FR, RL, RR]</summary>
+        /// <summary>Wheel camber angle in radians per corner [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] CamberRad;
+        /// <summary>Suspension compression travel in metres [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SuspensionTravel;
-
-        /// <summary>DRS on</summary>
-        [Obsolete] public float Drs;
-
-        /// <summary>TC in action</summary>
-        public float TC;
-
-        /// <summary>Car yaw orientation</summary>
+        /// <summary>DRS flap state (0.0 = closed, 1.0 = fully open)</summary>
+        public float Drs;
+        /// <summary>Traction control cut intensity (0.0 = inactive, 1.0 = maximum)</summary>
+        public float Tc;
+        /// <summary>Vehicle heading relative to world north in radians</summary>
         public float Heading;
-
-        /// <summary>Car pitch orientation</summary>
+        /// <summary>Chassis pitch angle in radians (positive = nose up)</summary>
         public float Pitch;
-
-        /// <summary>Car roll orientation</summary>
+        /// <summary>Chassis roll angle in radians (positive = right side down)</summary>
         public float Roll;
-
-        /// <summary>Centre of gravity height</summary>
-        [Obsolete] public float CgHeight;
-
-        /// <summary>Car damage: front 0, rear 1, left 2, right 3, centre 4</summary>
+        /// <summary>Height of the centre of gravity above the ground in metres</summary>
+        public float CgHeight;
+        /// <summary>Damage level per body zone [front, rear, left, right, centre] (0.0–1.0)</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 5)] public float[] CarDamage;
-
-        /// <summary>Number of tyres out of track</summary>
-        [Obsolete] public int NumberOfTyresOut;
-
-        /// <summary>Pit limiter is on</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool PitLimiterOn;
-
-        /// <summary>ABS in action</summary>
+        /// <summary>Number of tyres currently outside track limits</summary>
+        public int NumberOfTyresOut;
+        /// <summary>Pit-speed limiter active (0 = off, 1 = on)</summary>
+        public int PitLimiterOn;
+        /// <summary>ABS intervention intensity (0.0 = inactive, 1.0 = fully active)</summary>
         public float Abs;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public float KersCharge;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public float KersInput;
-
-        /// <summary>Automatic transmission on</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool AutoShifterOn;
-
-        /// <summary>Ride height: 0 front, 1 rear</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)] public float[] RideHeight;
-
-        /// <summary>Car turbo level</summary>
+        /// <summary>KERS/ERS battery state of charge (0.0–1.0)</summary>
+        public float KersCharge;
+        /// <summary>KERS/ERS power delivery level currently being deployed (0.0–1.0)</summary>
+        public float KersInput;
+        /// <summary>Automatic gearshift aid active (0 = manual, 1 = auto)</summary>
+        public int AutoShifterOn;
+        /// <summary>Ride height at front and rear axle in metres [front, rear]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)] public float[] RideHeight;
+        /// <summary>Current turbo boost pressure in bar</summary>
         public float TurboBoost;
-
-        /// <summary>Car ballast in kg / Not implemented</summary>
-        [Obsolete] public float Ballast;
-
-        /// <summary>Air density</summary>
+        /// <summary>Additional ballast added to the car in kg</summary>
+        public float Ballast;
+        /// <summary>Ambient air density in kg/m³</summary>
         public float AirDensity;
-
-        /// <summary>Air temperature</summary>
+        /// <summary>Ambient air temperature in °C</summary>
         public float AirTemp;
-
-        /// <summary>Road temperature</summary>
+        /// <summary>Road surface temperature in °C</summary>
         public float RoadTemp;
-
-        /// <summary>Car angular velocity vector in local coordinates</summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)] public float[] LocalAngularVelocity;
-
-        /// <summary>Force feedback signal</summary>
-        public float finalFF;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public float PerformanceMeter;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public int EngineBrake;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public int ErsRecoveryLevel;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public int ErsPowerLevel;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public int ErsHeatCharging;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public int ErsIsCharging;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public float KersCurrentKJ;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool DrsAvailable;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool DrsEnabled;
-
-        /// <summary>Brake discs temperatures</summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] BrakeTemperature;
-
-        /// <summary>Clutch pedal input value (from -0 to 1.0)</summary>
+        /// <summary>Angular velocity in the car's local frame [pitch, yaw, roll] in rad/s</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)] public float[] LocalAngularVel;
+        /// <summary>Final force-feedback torque value sent to the wheel (Nm)</summary>
+        public float FinalFf;
+        /// <summary>Real-time delta vs. best lap (positive = ahead of reference)</summary>
+        public float PerformanceMeter;
+        /// <summary>Engine-braking setting level (higher = more engine braking)</summary>
+        public int EngineBrake;
+        /// <summary>ERS energy-recovery intensity level</summary>
+        public int ErsRecoveryLevel;
+        /// <summary>ERS power-deployment level</summary>
+        public int ErsPowerLevel;
+        /// <summary>ERS heat-charging mode active (0 = off, 1 = on)</summary>
+        public int ErsHeatCharging;
+        /// <summary>ERS currently recovering energy (0 = deploying, 1 = charging)</summary>
+        public int ErsIsCharging;
+        /// <summary>Energy stored in the KERS/ERS battery in kilojoules</summary>
+        public float KersCurrentKj;
+        /// <summary>DRS can be activated (0 = no, 1 = yes)</summary>
+        public int DrsAvailable;
+        /// <summary>DRS is open and active (0 = closed, 1 = open)</summary>
+        public int DrsEnabled;
+        /// <summary>Brake disc temperature per corner in °C [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] BrakeTemp;
+        /// <summary>Clutch pedal position (0.0 = engaged, 1.0 = fully disengaged)</summary>
         public float Clutch;
-
-        /// <summary>Not shown in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempI;
-
-        /// <summary>Not shown in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempM;
-
-        /// <summary>Not shown in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempO;
-
-        /// <summary>Car is controlled by the AI</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool IsAiControlled;
-
-        /// <summary>Tyre contact point global coordinates [FL, FR, RL, RR]</summary>
+        /// <summary>Tyre inner-edge temperature per wheel in °C [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempI;
+        /// <summary>Tyre mid-tread temperature per wheel in °C [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempM;
+        /// <summary>Tyre outer-edge temperature per wheel in °C [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTempO;
+        /// <summary>Car is driven by AI (0 = player, 1 = AI)</summary>
+        public int IsAiControlled;
+        /// <summary>3-D world-space contact point of each tyre with the road [FL,FR,RL,RR][X,Y,Z]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public StructVector3[] TyreContactPoint;
-
-        /// <summary>Tyre contact normal [FL, FR, RL, RR]</summary>
+        /// <summary>Road-surface normal vector at each tyre contact point [FL,FR,RL,RR][X,Y,Z]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public StructVector3[] TyreContactNormal;
-
-        /// <summary>Tyre contact heading [FL, FR, RL, RR]</summary>
+        /// <summary>Heading vector at each tyre contact point [FL,FR,RL,RR][X,Y,Z]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public StructVector3[] TyreContactHeading;
-
-        /// <summary>Front brake bias</summary>
+        /// <summary>Front brake-bias ratio (e.g. 0.56 = 56 % front)</summary>
         public float BrakeBias;
-
-        /// <summary>Car velocity vector in local coordinates</summary>
+        /// <summary>Velocity in the car's local reference frame [X, Y, Z] in m/s</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 3)] public float[] LocalVelocity;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public int P2PActivations;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public int P2PStatus;
-
-        /// <summary>Maximum engine rpm</summary>
+        /// <summary>Remaining Push-to-Pass activations</summary>
+        public int P2pActivations;
+        /// <summary>Push-to-Pass status (0 = inactive, 1 = active)</summary>
+        public int P2pStatus;
+        /// <summary>Current rev-limiter ceiling in RPM</summary>
         public int CurrentMaxRpm;
-
-        /// <summary>Not shown in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] mz;
-
-        /// <summary>Not shown in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] fx;
-
-        /// <summary>Not shown in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] fy;
-
-        /// <summary>Tyre slip ratio [FL, FR, RL, RR] in radians</summary>
+        /// <summary>Self-aligning tyre torque (Mz) per wheel [FL, FR, RL, RR] in Nm</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] Mz;
+        /// <summary>Longitudinal tyre force (Fx) per wheel [FL, FR, RL, RR] in N</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] Fx;
+        /// <summary>Lateral tyre force (Fy) per wheel [FL, FR, RL, RR] in N</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] Fy;
+        /// <summary>Longitudinal slip ratio per tyre [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SlipRatio;
-
-        /// <summary>Tyre slip angle [FL, FR, RL, RR]</summary>
+        /// <summary>Lateral slip angle per tyre in radians [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SlipAngle;
-
-        /// <summary>TC in action</summary>
-        [Obsolete] public int TcinAction;
-
-        /// <summary>ABS in action</summary>
-        [Obsolete] public int AbsInAction;
-
-        /// <summary>Suspensions damage levels [FL, FR, RL, RR] (obsolete?)</summary>
+        /// <summary>Traction control currently cutting power (0 = no, 1 = yes)</summary>
+        public int TcinAction;
+        /// <summary>ABS currently modulating brakes (0 = no, 1 = yes)</summary>
+        public int AbsInAction;
+        /// <summary>Suspension structural damage per corner (0.0–1.0) [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SuspensionDamage;
-
-        /// <summary>Tyres core temperatures [FL, FR, RL, RR] (obsolete?)</summary>
+        /// <summary>Representative tyre surface temperature per wheel in °C [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreTemp;
-
-        /// <summary>Water Temperature</summary>
+        /// <summary>Engine coolant temperature in °C</summary>
         public float WaterTemp;
-
-        /// <summary>Brake pressure [FL, FR, RL, RR]</summary>
-        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] brakePressure;
-
-        /// <summary>Brake pad compund front</summary>
-        public int frontBrakeCompound;
-
-        /// <summary>Brake pad compund rear</summary>
-        public int rearBrakeCompound;
-
-        /// <summary>Brake pad wear [FL, FR, RL, RR]</summary>
+        /// <summary>Braking torque at each wheel in Nm [FL, FR, RL, RR]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] BrakeTorque;
+        /// <summary>Front brake-pad compound identifier</summary>
+        public int FrontBrakeCompound;
+        /// <summary>Rear brake-pad compound identifier</summary>
+        public int RearBrakeCompound;
+        /// <summary>Brake-pad remaining life per corner (0.0–1.0) [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] PadLife;
-
-        /// <summary>Brake disk wear [FL, FR, RL, RR]</summary>
+        /// <summary>Brake-disc remaining life per corner (0.0–1.0) [FL, FR, RL, RR]</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] DiscLife;
-
-        /// <summary>Ignition switch set to on?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool IgnitionOn;
-
-        /// <summary>Starter Switch set to on?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool StarterEngineOn;
-
-        /// <summary>Engine running?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool IsEngineRunning;
-
-        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
+        /// <summary>Ignition switch state (0 = off, 1 = on)</summary>
+        public int IgnitionOn;
+        /// <summary>Starter motor currently cranking (0 = no, 1 = yes)</summary>
+        public int StarterEngineOn;
+        /// <summary>Engine is running (0 = stopped, 1 = running)</summary>
+        public int IsEngineRunning;
+        /// <summary>Vibration intensity transmitted from kerb strikes</summary>
         public float KerbVibration;
-
-        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
+        /// <summary>Vibration intensity caused by tyre slip</summary>
         public float SlipVibrations;
-
-        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
-        public float Gvibrations;
-
-        /// <summary>Vibrations sent to the FFB, could be used for motion rigs</summary>
+        /// <summary>Vibration intensity from road surface texture</summary>
+        public float RoadVibrations;
+        /// <summary>Vibration intensity generated by ABS pulsing</summary>
         public float AbsVibrations;
 
-        public static readonly int Size = Marshal.SizeOf(typeof(SPageFilePhysics));
+        public static readonly int Size = Marshal.SizeOf(typeof(SPageFilePhysicsEvo));
         public static readonly byte[] Buffer = new byte[Size];
-    };
+    }
 
-    /// <summary>The following members are initialized when the instance starts and never changes until the instance is closed</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode), Serializable]
-    public sealed class SPageFileStatic
+    /// <summary>Main HUD and graphics telemetry page. Updated each rendered frame. Contains embedded sub-structs for tyres, damage, electronics, timing, and session state.</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public sealed class SPageFileGraphicEvo
     {
-        /// <summary>Shared memory version in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string SharedMemoryVersion;
+        /// <summary>Incrementing counter — detect new frames by comparing to previous value</summary>
+        public int PacketId;
+        /// <summary>Current simulator operational state (see AcEvoStatus)</summary>
+        public AcEvoStatus Status;
 
-        /// <summary>Assetto Corsa version in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)] public string AssettoCorsaVersion;
+        /// <summary>Unique ID of the car currently shown by the camera (low 64 bits)</summary>
+        public ulong FocusedCarIdA;
+        /// <summary>Unique ID of the car currently shown by the camera (high 64 bits)</summary>
+        public ulong FocusedCarIdB;
+        /// <summary>Unique ID of the player's own car (low 64 bits)</summary>
+        public ulong PlayerCarIdA;
+        /// <summary>Unique ID of the player's own car (high 64 bits)</summary>
+        public ulong PlayerCarIdB;
 
-        /// <summary>Number of sessions</summary>
+        /// <summary>Engine speed in RPM for HUD display</summary>
+        public ushort Rpm;
+
+        /// <summary>Rev limiter is cutting fuel / ignition (bouncing off limiter)</summary>
+        public bool IsRpmLimiterOn;
+        /// <summary>Engine RPM is in the upshift window</summary>
+        public bool IsChangeUpRpm;
+        /// <summary>Engine RPM is in the downshift window</summary>
+        public bool IsChangeDownRpm;
+        /// <summary>Traction control is actively intervening this frame</summary>
+        public bool TcActive;
+        /// <summary>ABS is actively modulating brake pressure this frame</summary>
+        public bool AbsActive;
+        /// <summary>Electronic stability control is intervening this frame</summary>
+        public bool EscActive;
+        /// <summary>Launch control system is engaged</summary>
+        public bool LaunchActive;
+        /// <summary>Ignition switch is on</summary>
+        public bool IsIgnitionOn;
+        /// <summary>Engine is running</summary>
+        public bool IsEngineRunning;
+        /// <summary>KERS/ERS battery is currently being charged</summary>
+        public bool KersIsCharging;
+        /// <summary>Car is travelling in the wrong direction on track</summary>
+        public bool IsWrongWay;
+        /// <summary>DRS activation is permitted in this section</summary>
+        public bool IsDrsAvailable;
+        /// <summary>High-voltage battery pack is in charging state</summary>
+        public bool BatteryIsCharging;
+        /// <summary>Maximum ERS deployment energy for this lap has been consumed</summary>
+        public bool IsMaxKjPerLapReached;
+        /// <summary>Maximum ERS charge energy for this lap has been stored</summary>
+        public bool IsMaxChargeKjPerLapReached;
+
+        /// <summary>Displayed speed in km/h</summary>
+        public short DisplaySpeedKmh;
+        /// <summary>Displayed speed in mph</summary>
+        public short DisplaySpeedMph;
+        /// <summary>Displayed speed in m/s</summary>
+        public short DisplaySpeedMs;
+
+        /// <summary>Speed delta vs. pit-lane limit (negative = under limit)</summary>
+        public float PitspeedingDelta;
+        /// <summary>Current gear as an integer (same encoding as physics gear)</summary>
+        public short GearInt;
+
+        /// <summary>Engine RPM as a fraction of redline (0.0–1.0)</summary>
+        public float RpmPercent;
+        /// <summary>Throttle pedal position as a fraction (0.0–1.0)</summary>
+        public float GasPercent;
+        /// <summary>Brake pressure as a fraction (0.0–1.0)</summary>
+        public float BrakePercent;
+        /// <summary>Handbrake engagement as a fraction (0.0–1.0)</summary>
+        public float HandbrakePercent;
+        /// <summary>Clutch disengagement as a fraction (1.0–0.0)</summary>
+        public float ClutchPercent;
+        /// <summary>Steering wheel position (−1.0 = full left, +1.0 = full right)</summary>
+        public float SteeringPercent;
+
+        /// <summary>Global force-feedback output strength</summary>
+        public float FfbStrength;
+        /// <summary>Per-car force-feedback gain multiplier</summary>
+        public float CarFfbMultiplier;
+
+        /// <summary>Coolant temperature as a fraction of optimal operating range</summary>
+        public float WaterTemperaturePercent;
+
+        /// <summary>Coolant system pressure in bar</summary>
+        public float WaterPressureBar;
+        /// <summary>Fuel system pressure in bar</summary>
+        public float FuelPressureBar;
+
+        /// <summary>Coolant temperature in °C</summary>
+        public sbyte WaterTemperatureC;
+        /// <summary>Ambient air temperature in °C</summary>
+        public sbyte AirTemperatureC;
+        /// <summary>Engine oil temperature in °C</summary>
+        public float OilTemperatureC;
+        /// <summary>Engine oil pressure in bar</summary>
+        public float OilPressureBar;
+        /// <summary>Exhaust gas temperature in °C</summary>
+        public float ExhaustTemperatureC;
+
+        /// <summary>Lateral G-force (positive = rightward)</summary>
+        public float GForcesX;
+        /// <summary>Longitudinal G-force (positive = under acceleration)</summary>
+        public float GForcesY;
+        /// <summary>Vertical G-force (positive = upward)</summary>
+        public float GForcesZ;
+
+        /// <summary>Absolute turbo boost pressure in bar</summary>
+        public float TurboBoost;
+        /// <summary>Current boost stage or map level</summary>
+        public float TurboBoostLevel;
+        /// <summary>Turbo boost as a fraction of maximum (0.0–1.0)</summary>
+        public float TurboBoostPerc;
+
+        /// <summary>Steering wheel rotation in degrees from centre</summary>
+        public int SteerDegrees;
+        /// <summary>Distance driven in the current session in km</summary>
+        public float CurrentKm;
+        /// <summary>Total odometer / career distance in km</summary>
+        public uint TotalKm;
+        /// <summary>Total driving time accumulated in seconds</summary>
+        public uint TotalDrivingTimeS;
+
+        /// <summary>In-game time of day — hours (0–23)</summary>
+        public int TimeOfDayHours;
+        /// <summary>In-game time of day — minutes (0–59)</summary>
+        public int TimeOfDayMinutes;
+        /// <summary>In-game time of day — seconds (0–59)</summary>
+        public int TimeOfDaySeconds;
+
+        /// <summary>Delta vs. reference lap in milliseconds (signed)</summary>
+        public int DeltaTimeMs;
+        /// <summary>Current lap time in milliseconds</summary>
+        public int CurrentLapTimeMs;
+        /// <summary>Predicted final lap time in milliseconds</summary>
+        public int PredictedLapTimeMs;
+
+        /// <summary>Fuel remaining in the tank in litres</summary>
+        public float FuelLiterCurrentQuantity;
+        /// <summary>Fuel remaining as a fraction of tank capacity</summary>
+        public float FuelLiterCurrentQuantityPercent;
+        /// <summary>Average fuel consumption rate in litres per km</summary>
+        public float FuelLiterPerKm;
+        /// <summary>Average fuel economy in km per litre</summary>
+        public float KmPerFuelLiter;
+
+        /// <summary>Engine output torque in Nm</summary>
+        public float CurrentTorque;
+        /// <summary>Engine output power in brake horsepower</summary>
+        public int CurrentBhp;
+
+        /// <summary>Full tyre state for the front-left corner</summary>
+        public SmevoTyreState TyreLf;
+        /// <summary>Full tyre state for the front-right corner</summary>
+        public SmevoTyreState TyreRf;
+        /// <summary>Full tyre state for the rear-left corner</summary>
+        public SmevoTyreState TyreLr;
+        /// <summary>Full tyre state for the rear-right corner</summary>
+        public SmevoTyreState TyreRr;
+
+        /// <summary>Normalised track position (0.0 = start/finish line, 1.0 = one full lap)</summary>
+        public float Npos;
+
+        /// <summary>KERS/ERS charge level as a fraction (0.0–1.0)</summary>
+        public float KersChargePerc;
+        /// <summary>KERS/ERS power currently being deployed as a fraction</summary>
+        public float KersCurrentPerc;
+
+        /// <summary>Seconds driver input remains locked (e.g. after collision penalty)</summary>
+        public float ControlLockTime;
+
+        /// <summary>Damage levels for each body zone of the car</summary>
+        public SmevoDamageState CarDamage;
+
+        /// <summary>Current track zone the car occupies (see AcEvoCarLocation)</summary>
+        public AcEvoCarLocation CarLocation;
+
+        /// <summary>Status of each pit-stop service item</summary>
+        public SmevoPitInfo PitInfo;
+
+        /// <summary>Fuel consumed since session start in litres</summary>
+        public float FuelLiterUsed;
+        /// <summary>Average fuel consumed per lap in litres</summary>
+        public float FuelLiterPerLap;
+        /// <summary>Estimated number of laps achievable with remaining fuel</summary>
+        public float LapsPossibleWithFuel;
+
+        /// <summary>High-voltage battery temperature in °C</summary>
+        public float BatteryTemperature;
+        /// <summary>High-voltage battery pack voltage in V</summary>
+        public float BatteryVoltage;
+
+        /// <summary>Instantaneous fuel consumption in litres per km</summary>
+        public float InstantaneousFuelLiterPerKm;
+        /// <summary>Instantaneous fuel economy in km per litre</summary>
+        public float InstantaneousKmPerFuelLiter;
+
+        /// <summary>How well current RPM suits the engaged gear (1.0 = ideal window)</summary>
+        public float GearRpmWindow;
+
+        /// <summary>Current state of all cockpit lights and displays</summary>
+        public SmevoInstrumentation Instrumentation;
+        /// <summary>Minimum allowed setting for each instrumentation item</summary>
+        public SmevoInstrumentation InstrumentationMinLimit;
+        /// <summary>Maximum allowed setting for each instrumentation item</summary>
+        public SmevoInstrumentation InstrumentationMaxLimit;
+
+        /// <summary>Current electronic aid and setup values</summary>
+        public SmevoElectronics Electronics;
+        /// <summary>Minimum allowed value for each electronics setting</summary>
+        public SmevoElectronics ElectronicsMinLimit;
+        /// <summary>Maximum allowed value for each electronics setting</summary>
+        public SmevoElectronics ElectronicsMaxLimit;
+        /// <summary>Flags which electronics fields the driver can adjust in-session</summary>
+        public SmevoElectronics ElectronicsIsModifiable;
+
+        /// <summary>Total laps completed in the session</summary>
+        public int TotalLapCount;
+        /// <summary>Current race position (1 = leader)</summary>
+        public uint CurrentPos;
+        /// <summary>Total number of cars in the session</summary>
+        public uint TotalDrivers;
+
+        /// <summary>Last completed lap time in milliseconds</summary>
+        public int LastLaptimeMs;
+        /// <summary>Personal best lap time in milliseconds</summary>
+        public int BestLaptimeMs;
+
+        /// <summary>Flag shown specifically to this driver</summary>
+        public AcEvoFlagType Flag;
+        /// <summary>Flag shown to all drivers on track</summary>
+        public AcEvoFlagType GlobalFlag;
+
+        /// <summary>Number of forward gears the car has</summary>
+        public uint MaxGears;
+        /// <summary>Powertrain type of the car (see AcEvoEngineType)</summary>
+        public AcEvoEngineType EngineType;
+        /// <summary>Car is equipped with a KERS/ERS system</summary>
+        public bool HasKers;
+        /// <summary>This is the final scheduled lap of the race</summary>
+        public bool IsLastLap;
+
+        /// <summary>Display name of the active vehicle performance / power mode</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string PerformanceModeName;
+
+        /// <summary>Raw differential coast-lock value from setup</summary>
+        public float DiffCoastRawValue;
+        /// <summary>Raw differential power-lock value from setup</summary>
+        public float DiffPowerRawValue;
+
+        /// <summary>Cumulative time penalty from track-limit cuts in ms</summary>
+        public int RaceCutGainedTimeMs;
+        /// <summary>Distance to the penalty trigger in metres</summary>
+        public int DistanceToDeadline;
+        /// <summary>Running delta time accrued from track-limit violations</summary>
+        public float RaceCutCurrentDelta;
+
+        /// <summary>Session lifecycle and countdown information</summary>
+        public SmevoSessionState SessionState;
+        /// <summary>HUD lap times and delta display values</summary>
+        public SmevoTimingState TimingState;
+
+        /// <summary>Network round-trip ping to the server in ms</summary>
+        public int PlayerPing;
+        /// <summary>Measured network latency in ms</summary>
+        public int PlayerLatency;
+        /// <summary>Client CPU usage in percent</summary>
+        public int PlayerCpuUsage;
+        /// <summary>Average client CPU usage in percent</summary>
+        public int PlayerCpuUsageAvg;
+        /// <summary>Network Quality-of-Service score</summary>
+        public int PlayerQos;
+        /// <summary>Average QoS score over the session</summary>
+        public int PlayerQosAvg;
+        /// <summary>Current rendered frames per second</summary>
+        public int PlayerFps;
+        /// <summary>Average FPS over the session</summary>
+        public int PlayerFpsAvg;
+
+        /// <summary>Driver's first name</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string DriverName;
+        /// <summary>Driver's surname</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string DriverSurname;
+        /// <summary>Identifier or display name of the car model</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string CarModel;
+
+        /// <summary>Car is stationary inside its assigned pit box</summary>
+        public bool IsInPitBox;
+        /// <summary>Car is anywhere within the pit lane</summary>
+        public bool IsInPitLane;
+        /// <summary>Current lap is valid and counts for timing</summary>
+        public bool IsValidLap;
+
+        /// <summary>World-space position of up to 60 cars [car_index][X, Y, Z]</summary>
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
+        public StructVector3[] CarCoordinates;
+
+        /// <summary>Time gap to the car immediately ahead in seconds</summary>
+        public float GapAhead;
+        /// <summary>Time gap to the car immediately behind in seconds</summary>
+        public float GapBehind;
+
+        /// <summary>Number of cars actively participating in the session</summary>
+        public byte ActiveCars;
+        /// <summary>Target fuel consumption per lap in litres</summary>
+        public float FuelPerLap;
+        /// <summary>Estimated laps remaining with current fuel</summary>
+        public float FuelEstimatedLaps;
+
+        /// <summary>All driver-assist levels currently active</summary>
+        public SmevoAssistsState AssistsState;
+
+        /// <summary>Maximum fuel tank capacity of the car in litres</summary>
+        public float MaxFuel;
+        /// <summary>Maximum turbo boost pressure in bar</summary>
+        public float MaxTurboBoost;
+        /// <summary>Car is restricted to a single tyre compound for both axles</summary>
+        public bool UseSingleCompound;
+
+        public static readonly int Size = Marshal.SizeOf(typeof(SPageFileGraphicEvo));
+        public static readonly byte[] Buffer = new byte[Size];
+    }
+
+    /// <summary>Static session metadata. Written once when a session loads and does not change while driving.</summary>
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
+    public sealed class SPageFileStaticEvo
+    {
+        /// <summary>Shared-memory interface version string</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string SmVersion;
+
+        /// <summary>AC Evo game build version string</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
+        public string AcEvoVersion;
+
+        /// <summary>Type of the current session (see AcEvoSessionType)</summary>
+        public AcEvoSessionType Session;
+
+        /// <summary>Human-readable session name (e.g. 'Race 1')</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string SessionName;
+
+        /// <summary>Unique identifier of the event within the championship</summary>
+        public byte EventId;
+        /// <summary>Unique identifier of this session within the event</summary>
+        public byte SessionId;
+
+        /// <summary>Tyre grip condition at session start (see AcEvoStartingGrip)</summary>
+        public AcEvoStartingGrip StartingGrip;
+        /// <summary>Ambient air temperature at session start in °C</summary>
+        public float StartingAmbientTemperatureC;
+        /// <summary>Road surface temperature at session start in °C</summary>
+        public float StartingGroundTemperatureC;
+
+        /// <summary>Weather is fixed and will not change during the session</summary>
+        public bool IsStaticWeather;
+        /// <summary>Session ends by elapsed time rather than lap count</summary>
+        public bool IsTimedRace;
+        /// <summary>Session is an online multiplayer event</summary>
+        public bool IsOnline;
+        /// <summary>Total sessions in this event (e.g. 3 = practice + qualify + race)</summary>
         public int NumberOfSessions;
 
-        /// <summary>Number of cars</summary>
-        public int NumberOfCars;
+        /// <summary>Country / nation name associated with the event or track</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string Nation;
 
-        /// <summary>Player car model in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string CarModel;
+        /// <summary>Geographic longitude of the track location in decimal degrees</summary>
+        public float Longitude;
+        /// <summary>Geographic latitude of the track location in decimal degrees</summary>
+        public float Latitude;
 
-        /// <summary>Track name in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string Track;
+        /// <summary>Track identifier or name</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string Track;
 
-        /// <summary>Player name in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string PlayerName;
+        /// <summary>Track layout variant or configuration name</summary>
+        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
+        public string TrackConfiguration;
 
-        /// <summary>Player surname in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string PlayerSurname;
+        /// <summary>Total lap length of the track in metres</summary>
+        public float TrackLengthM;
 
-        /// <summary>Player nickname in wide character</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string PlayerNickname;
-
-        /// <summary>Number of sectors</summary>
-        public int SectorCount;
-
-        /// <summary>Not shown in ACC</summary>
-        [Obsolete] public float MaxTorque;
-
-        /// <summary>Not shown in ACC</summary>
-        [Obsolete] public float MaxPower;
-
-        /// <summary>Maximum rpm</summary>
-        public int MaxRpm;
-
-        /// <summary>Maximum fuel tank capacity</summary>
-        public float MaxFuel;
-
-        /// <summary>Not shown in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] SuspensionMaxTravel;
-
-        /// <summary>Not shown in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)] public float[] TyreRadius;
-
-        /// <summary>Maximum turbo boost (obsolete?)</summary>
-        public float MaxTurboBoost;
-
-        /// <summary>[]</summary>
-        [Obsolete] public float AirTemperature;
-
-        /// <summary>[]</summary>
-        [Obsolete] public float RoadTemperature;
-
-        /// <summary>Penalties enabled?</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool PenaltiesEnabled;
-
-        /// <summary>Fuel consumption rate</summary>
-        public float AidFuelRate;
-
-        /// <summary>Tyre wear rate</summary>
-        public float AidTireRate;
-
-        /// <summary>Mechanical damage rate</summary>
-        public float AidMechanicalDamage;
-
-        /// <summary>Not allowed in Blancpain endurance series</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool AidAllowTyreBlankets;
-
-        /// <summary>Stability control used</summary>
-        public float AidStability;
-
-        /// <summary>Auto clutch used</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool AidAutoClutch;
-
-        /// <summary>Always true in ACC</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool AidAutoBlip;
-
-        /// <summary></summary>
-        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool HasDRS;
-
-        /// <summary></summary>
-        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool HasERS;
-
-        /// <summary></summary>
-        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool HasKERS;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public float KersMaxJoules;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public int EngineBrakeSettingsCount;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public int ErsPowerControllerCount;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public float TrackSplineLength;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string TrackConfiguration;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public float ErsMaxJ;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool IsTimedRace;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.Bool)] public bool HasExtraLap;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete][MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string CarSkin;
-
-        /// <summary>Not used in ACC</summary>
-        [Obsolete] public int ReversedGridPositions;
-
-        /// <summary>Pit window opening time</summary>
-        public int PitWindowStart;
-
-        /// <summary>Pit windows closing time</summary>
-        public int PitWindowEnd;
-
-        /// <summary>If is a multiplayer session</summary>
-        [MarshalAs(UnmanagedType.Bool)] public bool isOnline;
-
-        /// <summary>Name of the dry tyres</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string DryTyresName;
-
-        /// <summary>Name of the wet tyres</summary>
-        [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)] public string WetTyresName;
-
-        public static readonly int Size = Marshal.SizeOf(typeof(SPageFileStatic));
+        public static readonly int Size = Marshal.SizeOf(typeof(SPageFileStaticEvo));
         public static readonly byte[] Buffer = new byte[Size];
-    };
+    }
 
-    public SPageFileGraphic ReadGraphicsPageFile(bool fromCache = false)
+    #region Read methods
+
+    /// <summary>Reads the graphics (HUD) shared memory page.</summary>
+    public SPageFileGraphicEvo ReadGraphicsPageFile(bool fromCache = false)
     {
         if (fromCache) return PageFileGraphic;
-        return PageFileGraphic = StructExtension.ToStruct<SPageFileGraphic>(MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite), SPageFileGraphic.Buffer);
+        return PageFileGraphic = StructExtension.ToStruct<SPageFileGraphicEvo>(
+            MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite),
+            SPageFileGraphicEvo.Buffer);
     }
 
-    public SPageFileStatic ReadStaticPageFile(bool fromCache = false)
+    /// <summary>Reads the static session metadata shared memory page.</summary>
+    public SPageFileStaticEvo ReadStaticPageFile(bool fromCache = false)
     {
         if (fromCache) return PageFileStatic;
-        return PageFileStatic = StructExtension.ToStruct<SPageFileStatic>(MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite), SPageFileStatic.Buffer);
+        return PageFileStatic = StructExtension.ToStruct<SPageFileStaticEvo>(
+            MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite),
+            SPageFileStaticEvo.Buffer);
     }
 
-    public SPageFilePhysics ReadPhysicsPageFile(bool fromCache = false)
+    /// <summary>Reads the raw physics telemetry shared memory page.</summary>
+    public SPageFilePhysicsEvo ReadPhysicsPageFile(bool fromCache = false)
     {
         if (fromCache) return PageFilePhysics;
-        return PageFilePhysics = StructExtension.ToStruct<SPageFilePhysics>(MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite), SPageFilePhysics.Buffer);
+        return PageFilePhysics = StructExtension.ToStruct<SPageFilePhysicsEvo>(
+            MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite),
+            SPageFilePhysicsEvo.Buffer);
     }
+
+    #endregion
 }

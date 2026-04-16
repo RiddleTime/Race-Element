@@ -37,6 +37,10 @@ internal sealed class AssettoCorsaEvoDataProvider : AbstractSimDataProvider
 
         LocalCarMapper.AddPhysics(ref physicsPage, ref localCar, ref sessionData);
 
+
+        var graphicsPage = AcEvoSharedMemory.Instance.ReadGraphicsPageFile();
+        LocalCarMapper.AddGraphics(ref graphicsPage, ref localCar, ref sessionData);
+
         gameData.Name = GameName;
 
 

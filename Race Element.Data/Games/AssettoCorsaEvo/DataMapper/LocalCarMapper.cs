@@ -9,16 +9,16 @@ namespace RaceElement.Data.Games.AssettoCorsaEvo.DataMapper;
 [Mapper]
 internal static partial class LocalCarMapper
 {
-    internal static void AddPhysics(ref SPageFilePhysics pagePhysics, ref LocalCarData commonData, ref SessionData sessionData)
+    internal static void AddPhysics(ref SPageFilePhysicsEvo pagePhysics, ref LocalCarData commonData, ref SessionData sessionData)
     {
         commonData.Physics.Acceleration = new(pagePhysics.AccG[0], pagePhysics.AccG[1], pagePhysics.AccG[2]);
         commonData.Physics.Velocity = pagePhysics.SpeedKmh;
 
-        commonData.Engine.IsPitLimiterOn = pagePhysics.PitLimiterOn;
+        commonData.Engine.IsPitLimiterOn = pagePhysics.PitLimiterOn == 1;
         commonData.Engine.MaxRpm = pagePhysics.CurrentMaxRpm;
         commonData.Engine.Rpm = pagePhysics.Rpms;
 
-        commonData.Engine.IsRunning = commonData.Engine.Rpm > 0;
+        commonData.Engine.IsRunning = pagePhysics.IsEngineRunning == 1;
 
         commonData.Inputs.Steering = pagePhysics.SteerAngle;
         commonData.Inputs.Clutch = 1 - pagePhysics.Clutch;
@@ -27,15 +27,14 @@ internal static partial class LocalCarMapper
         commonData.Inputs.Gear = pagePhysics.Gear;
 
         commonData.Tyres.CoreTemperature = pagePhysics.TyreCoreTemperature;
-        commonData.Tyres.Pressure = pagePhysics.WheelPressure;
+        commonData.Tyres.Pressure = pagePhysics.WheelsPressure;
         commonData.Tyres.SlipRatio = pagePhysics.WheelSlip;
         commonData.Tyres.SlipAngle = pagePhysics.SlipAngle;
         commonData.Tyres.Velocity = pagePhysics.Velocity;
 
-        commonData.Brakes.DiscTemperature = pagePhysics.BrakeTemperature;
-        commonData.Brakes.Pressure = pagePhysics.brakePressure;
+        commonData.Brakes.DiscTemperature = pagePhysics.BrakeTemp;
 
-        commonData.Electronics.TractionControlLevel = (int)pagePhysics.TC;
+        commonData.Electronics.TractionControlLevel = (int)pagePhysics.Tc;
         commonData.Electronics.AbsLevel = (int)pagePhysics.Abs;
         commonData.Engine.FuelLiters = pagePhysics.Fuel;
 
@@ -43,23 +42,17 @@ internal static partial class LocalCarMapper
         sessionData.Weather.AirTemperature = pagePhysics.AirTemp;
     }
 
-    internal static void AddGraphics(ref SPageFileGraphic pageGraphics, ref LocalCarData commonData, ref SessionData sessionData)
+    internal static void AddGraphics(ref SPageFileGraphicEvo pageGraphics, ref LocalCarData commonData, ref SessionData sessionData)
     {
-        if (pageGraphics.CarCoordinates.Length >= pageGraphics.PlayerCarID)
+        commonData.Brakes.Pressure = new float[]
         {
-            var coords = pageGraphics.CarCoordinates[pageGraphics.PlayerCarID];
-            commonData.Physics.Location = new Vector3(coords.X * 10f, coords.Y, coords.Z);
-        }
+            pageGraphics.TyreLf.BrakePressure,
+            pageGraphics.TyreRf.BrakePressure,
+            pageGraphics.TyreLr.BrakePressure,
+            pageGraphics.TyreRr.BrakePressure
+        };
 
-        switch (pageGraphics.SessionType)
-        {
-            case AcSessionType.AC_HOTLAPSUPERPOLE: sessionData.SessionType = RaceSessionType.HotlapSuperpole; break;
-            case AcSessionType.AC_QUALIFY: sessionData.SessionType = RaceSessionType.Qualifying; break;
-            case AcSessionType.AC_HOTSTINT: sessionData.SessionType = RaceSessionType.Hotstint; break;
-            case AcSessionType.AC_PRACTICE: sessionData.SessionType = RaceSessionType.Practice; break;
-            case AcSessionType.AC_HOTLAP: sessionData.SessionType = RaceSessionType.Hotlap; break;
-            case AcSessionType.AC_RACE: sessionData.SessionType = RaceSessionType.Race; break;
-            default: sessionData.SessionType = RaceSessionType.Unknown; break;
-        }
+
+        commonData.Engine.IsRunning = commonData.Engine.Rpm > 0 && !pageGraphics.IsInPitBox && pageGraphics.;
     }
 }
