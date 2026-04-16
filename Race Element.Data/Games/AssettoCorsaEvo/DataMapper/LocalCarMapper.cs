@@ -33,7 +33,10 @@ internal static class LocalCarMapper
         commonData.Brakes.DiscTemperature = pagePhysics.BrakeTemp;
 
         commonData.Electronics.TractionControlLevel = (int)pagePhysics.Tc;
+        commonData.Electronics.TractionControlActivation = pagePhysics.TcinAction;
         commonData.Electronics.AbsLevel = (int)pagePhysics.Abs;
+        commonData.Electronics.AbsActivation = pagePhysics.AbsInAction;
+
         commonData.Engine.FuelLiters = pagePhysics.Fuel;
 
         ///
