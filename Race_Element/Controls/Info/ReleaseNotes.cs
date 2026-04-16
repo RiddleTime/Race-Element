@@ -6,6 +6,10 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.6.2.0", "Race Element"+
+                    "\n- Fixed Race Element icon in settings menu."+
+                    "\n\nAssetto Corsa EVO"+
+                    "\n- Added support for AC EVO 0.6 which added new shared memory interfaces."},
         {"2.6.1.2", "Race Element"+
                     "\n- Added support for Forza Horizon 4, see the multi-sim guide on the website for instructions."+
                     "\n\nRichard Burns Rally"+
