@@ -43,7 +43,7 @@ internal static class LocalCarMapper
         sessionData.Track.Temperature = pagePhysics.RoadTemp;
     }
 
-    internal static void AddGraphics(ref SPageFileGraphicEvo pageGraphics, ref LocalCarData commonData, ref SessionData sessionData)
+    internal static void AddGraphics(ref SPageFileGraphicEvo pageGraphics, ref LocalCarData commonData, ref SessionData sessionData, ref GameData gameData)
     {
         commonData.Brakes.Pressure =
         [
@@ -56,5 +56,9 @@ internal static class LocalCarMapper
         commonData.Electronics.Blinkers = (pageGraphics.Instrumentation.DirectionLightLeft ? BlinkerStatus.Left : BlinkerStatus.None) | (pageGraphics.Instrumentation.DirectionLightRight ? BlinkerStatus.Right : BlinkerStatus.None);
         if (pageGraphics.Instrumentation.WarningLights)
             commonData.Electronics.Blinkers = BlinkerStatus.Left | BlinkerStatus.Right;
+
+
+        if (pageGraphics.Status == AcEvoStatus.AcPause)
+            gameData.IsGamePaused = true;
     }
 }

@@ -23,6 +23,8 @@ internal sealed class AssettoCorsaEvoDataProvider : AbstractSimDataProvider
     public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         AcEvoSharedMemory.SPageFilePhysicsEvo physicsPage = AcEvoSharedMemory.Instance.ReadPhysicsPageFile();
+        AcEvoSharedMemory.SPageFileGraphicEvo graphicsPage = AcEvoSharedMemory.Instance.ReadGraphicsPageFile();
+
         if (lastPhysicsPacketId == physicsPage.PacketId) // no need to remap the physics page if packet is the same
         {
             _pollingBuffer++;
@@ -44,8 +46,7 @@ internal sealed class AssettoCorsaEvoDataProvider : AbstractSimDataProvider
         LocalCarMapper.AddPhysics(ref physicsPage, ref localCar, ref sessionData);
 
 
-        AcEvoSharedMemory.SPageFileGraphicEvo graphicsPage = AcEvoSharedMemory.Instance.ReadGraphicsPageFile();
-        LocalCarMapper.AddGraphics(ref graphicsPage, ref localCar, ref sessionData);
+        LocalCarMapper.AddGraphics(ref graphicsPage, ref localCar, ref sessionData, ref gameData);
 
         gameData.Name = GameName;
     }
