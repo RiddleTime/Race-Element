@@ -1,14 +1,11 @@
 ﻿using RaceElement.Data.Common.SimulatorData.LocalCar;
-using Riok.Mapperly.Abstractions;
-using System.Numerics;
 using RaceElement.Data.Common.SimulatorData;
 using static RaceElement.Data.Games.AssettoCorsaEvo.SharedMemory.AcEvoSharedMemory;
 using static RaceElement.Data.Common.SimulatorData.LocalCar.ElectronicsData;
 
 namespace RaceElement.Data.Games.AssettoCorsaEvo.DataMapper;
 
-[Mapper]
-internal static partial class LocalCarMapper
+internal static class LocalCarMapper
 {
     internal static void AddPhysics(ref SPageFilePhysicsEvo pagePhysics, ref LocalCarData commonData, ref SessionData sessionData)
     {
