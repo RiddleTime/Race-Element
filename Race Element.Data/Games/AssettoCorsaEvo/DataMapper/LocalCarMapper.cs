@@ -16,7 +16,7 @@ internal static class LocalCarMapper
         commonData.Engine.MaxRpm = pagePhysics.CurrentMaxRpm;
         commonData.Engine.Rpm = pagePhysics.Rpms;
 
-        commonData.Engine.IsRunning = pagePhysics.IsEngineRunning == 1;
+        commonData.Engine.IsRunning = pagePhysics.IgnitionOn == 1;
 
         commonData.Inputs.Steering = pagePhysics.SteerAngle;
         commonData.Inputs.Clutch = 1 - pagePhysics.Clutch;
@@ -58,6 +58,6 @@ internal static class LocalCarMapper
         if (pageGraphics.Instrumentation.WarningLights)
             commonData.Electronics.Blinkers = BlinkerStatus.Left | BlinkerStatus.Right;
 
-        commonData.Engine.IsRunning = commonData.Engine.Rpm > 0 && !pageGraphics.IsInPitBox;
+        //commonData.Engine.IsRunning = !pageGraphics.IsInPitBox;
     }
 }

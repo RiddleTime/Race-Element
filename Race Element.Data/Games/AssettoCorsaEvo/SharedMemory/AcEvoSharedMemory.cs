@@ -136,302 +136,302 @@ public sealed unsafe class AcEvoSharedMemory
 
     /// <summary>Complete state of a single tyre corner. Embedded four times in SPageFileGraphicEvo (lf, rf, lr, rr). [256 bytes]</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
-    public struct SmevoTyreState
+    public readonly struct SmevoTyreState
     {
         /// <summary>Combined tyre slip magnitude</summary>
-        public float Slip;
+        public readonly float Slip;
         /// <summary>Tyre is locked under braking (true = locking)</summary>
-        public bool Lock;
+        public readonly bool Lock;
         /// <summary>Tyre inflation pressure (PSI)</summary>
-        public float TyrePression;
+        public readonly float TyrePression;
         /// <summary>Average tyre carcass temperature in °C</summary>
-        public float TyreTemperatureC;
+        public readonly float TyreTemperatureC;
         /// <summary>Brake disc temperature in °C</summary>
-        public float BrakeTemperatureC;
+        public readonly float BrakeTemperatureC;
         /// <summary>Hydraulic brake pressure applied at this corner</summary>
-        public float BrakePressure;
+        public readonly float BrakePressure;
         /// <summary>Inner-edge tyre temperature in °C</summary>
-        public float TyreTemperatureLeft;
+        public readonly float TyreTemperatureLeft;
         /// <summary>Centre-tread tyre temperature in °C</summary>
-        public float TyreTemperatureCenter;
+        public readonly float TyreTemperatureCenter;
         /// <summary>Outer-edge tyre temperature in °C</summary>
-        public float TyreTemperatureRight;
+        public readonly float TyreTemperatureRight;
         /// <summary>Name of the compound fitted on the front axle</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string TyreCompoundFront;
+        public readonly string TyreCompoundFront;
         /// <summary>Name of the compound fitted on the rear axle</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string TyreCompoundRear;
+        public readonly string TyreCompoundRear;
         /// <summary>Pressure as a 0–1 fraction of the target range</summary>
-        public float TyreNormalizedPressure;
+        public readonly float TyreNormalizedPressure;
         /// <summary>Inner-edge temperature as a 0–1 fraction of optimal range</summary>
-        public float TyreNormalizedTemperatureLeft;
+        public readonly float TyreNormalizedTemperatureLeft;
         /// <summary>Centre temperature as a 0–1 fraction of optimal range</summary>
-        public float TyreNormalizedTemperatureCenter;
+        public readonly float TyreNormalizedTemperatureCenter;
         /// <summary>Outer-edge temperature as a 0–1 fraction of optimal range</summary>
-        public float TyreNormalizedTemperatureRight;
+        public readonly float TyreNormalizedTemperatureRight;
         /// <summary>Brake temperature as a 0–1 fraction of optimal operating range</summary>
-        public float BrakeNormalizedTemperature;
+        public readonly float BrakeNormalizedTemperature;
         /// <summary>Core tyre temperature as a 0–1 fraction of optimal range</summary>
-        public float TyreNormalizedTemperatureCore;
+        public readonly float TyreNormalizedTemperatureCore;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 128)]
-        private byte[] PlaceHolder; // Padding to ensure exactly 256 bytes
+        private readonly byte[] PlaceHolder; // Padding to ensure exactly 256 bytes
     }
 
     /// <summary>Structural damage level for each body zone of the car (0.0 = undamaged, 1.0 = destroyed). [128 bytes]</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
-    public struct SmevoDamageState
+    public readonly struct SmevoDamageState
     {
         /// <summary>Damage on the front body / nose</summary>
-        public float DamageFront;
+        public readonly float DamageFront;
         /// <summary>Damage on the rear body / diffuser</summary>
-        public float DamageRear;
+        public readonly float DamageRear;
         /// <summary>Damage on the left side of the body</summary>
-        public float DamageLeft;
+        public readonly float DamageLeft;
         /// <summary>Damage on the right side of the body</summary>
-        public float DamageRight;
+        public readonly float DamageRight;
         /// <summary>Damage on the central / underfloor area</summary>
-        public float DamageCenter;
+        public readonly float DamageCenter;
         /// <summary>Damage on the front-left suspension</summary>
-        public float DamageSuspensionLf;
+        public readonly float DamageSuspensionLf;
         /// <summary>Damage on the front-right suspension</summary>
-        public float DamageSuspensionRf;
+        public readonly float DamageSuspensionRf;
         /// <summary>Damage on the rear-left suspension</summary>
-        public float DamageSuspensionLr;
+        public readonly float DamageSuspensionLr;
         /// <summary>Damage on the rear-right suspension</summary>
-        public float DamageSuspensionRr;
+        public readonly float DamageSuspensionRr;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 92)]
-        private byte[] PlaceHolder; // Padding to ensure exactly 128 bytes
+        private readonly byte[] PlaceHolder; // Padding to ensure exactly 128 bytes
     }
 
     /// <summary>Status of each pit-stop service action. −1 = will not perform, 0 = completed, 1 = in progress. [64 bytes]</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
-    public struct SmevoPitInfo
+    public readonly struct SmevoPitInfo
     {
         /// <summary>Body-repair action state</summary>
-        public sbyte Damage;
+        public readonly sbyte Damage;
         /// <summary>Refuelling action state</summary>
-        public sbyte Fuel;
+        public readonly sbyte Fuel;
         /// <summary>Front-left tyre change state</summary>
-        public sbyte TyresLf;
+        public readonly sbyte TyresLf;
         /// <summary>Front-right tyre change state</summary>
-        public sbyte TyresRf;
+        public readonly sbyte TyresRf;
         /// <summary>Rear-left tyre change state</summary>
-        public sbyte TyresLr;
+        public readonly sbyte TyresLr;
         /// <summary>Rear-right tyre change state</summary>
-        public sbyte TyresRr;
+        public readonly sbyte TyresRr;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 58)]
-        private byte[] PlaceHolder; // Padding to ensure exactly 64 bytes
+        private readonly byte[] PlaceHolder; // Padding to ensure exactly 64 bytes
     }
 
     /// <summary>All driver-adjustable electronic aid and setup settings. [128 bytes]</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
-    public struct SmevoElectronics
+    public readonly struct SmevoElectronics
     {
         /// <summary>Traction-control level (0 = off, higher = more aggressive)</summary>
-        public sbyte TcLevel;
+        public readonly sbyte TcLevel;
         /// <summary>TC throttle-cut aggressiveness level</summary>
-        public sbyte TcCutLevel;
+        public readonly sbyte TcCutLevel;
         /// <summary>ABS intervention level (0 = off)</summary>
-        public sbyte AbsLevel;
+        public readonly sbyte AbsLevel;
         /// <summary>Electronic stability-control level (0 = off)</summary>
-        public sbyte EscLevel;
+        public readonly sbyte EscLevel;
         /// <summary>Electronic brake-balance adjustment level</summary>
-        public sbyte EbbLevel;
+        public readonly sbyte EbbLevel;
         /// <summary>Front brake-bias ratio (e.g. 0.56 = 56 % front)</summary>
-        public float BrakeBias;
+        public readonly float BrakeBias;
         /// <summary>Engine map / power mode selection</summary>
-        public sbyte EngineMapLevel;
+        public readonly sbyte EngineMapLevel;
         /// <summary>Turbo wastegate or boost target setting</summary>
-        public float TurboLevel;
+        public readonly float TurboLevel;
         /// <summary>ERS power-deployment strategy map</summary>
-        public sbyte ErsDeploymentMap;
+        public readonly sbyte ErsDeploymentMap;
         /// <summary>ERS recharge aggressiveness setting</summary>
-        public float ErsRechargeMap;
+        public readonly float ErsRechargeMap;
         /// <summary>ERS heat-based charging is enabled</summary>
-        public bool IsErsHeatChargingOn;
+        public readonly bool IsErsHeatChargingOn;
         /// <summary>ERS overtake (maximum-deploy) mode is active</summary>
-        public bool IsErsOvertakeModeOn;
+        public readonly bool IsErsOvertakeModeOn;
         /// <summary>DRS flap is currently open</summary>
-        public bool IsDrsOpen;
+        public readonly bool IsDrsOpen;
         /// <summary>Differential lock level under power</summary>
-        public sbyte DiffPowerLevel;
+        public readonly sbyte DiffPowerLevel;
         /// <summary>Differential lock level on lift / coast</summary>
-        public sbyte DiffCoastLevel;
+        public readonly sbyte DiffCoastLevel;
         /// <summary>Front bump (compression) damper stiffness level</summary>
-        public sbyte FrontBumpDamperLevel;
+        public readonly sbyte FrontBumpDamperLevel;
         /// <summary>Front rebound damper stiffness level</summary>
-        public sbyte FrontReboundDamperLevel;
+        public readonly sbyte FrontReboundDamperLevel;
         /// <summary>Rear bump (compression) damper stiffness level</summary>
-        public sbyte RearBumpDamperLevel;
+        public readonly sbyte RearBumpDamperLevel;
         /// <summary>Rear rebound damper stiffness level</summary>
-        public sbyte RearReboundDamperLevel;
+        public readonly sbyte RearReboundDamperLevel;
         /// <summary>Ignition switch is on</summary>
-        public bool IsIgnitionOn;
+        public readonly bool IsIgnitionOn;
         /// <summary>Pit-speed limiter is active</summary>
-        public bool IsPitlimiterOn;
+        public readonly bool IsPitlimiterOn;
         /// <summary>Selected vehicle performance / power mode index</summary>
-        public sbyte ActivePerformanceMode;
+        public readonly sbyte ActivePerformanceMode;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 88)]
-        private byte[] PlaceHolder; // Padding to ensure exactly 128 bytes
+        private readonly byte[] PlaceHolder; // Padding to ensure exactly 128 bytes
     }
 
     /// <summary>Cockpit light, display, and instrumentation panel states. [128 bytes]</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
-    public struct SmevoInstrumentation
+    public readonly struct SmevoInstrumentation
     {
         /// <summary>Main exterior light stage (0 = off)</summary>
-        public sbyte MainLightStage;
+        public readonly sbyte MainLightStage;
         /// <summary>Auxiliary / special lights level</summary>
-        public sbyte SpecialLightStage;
+        public readonly sbyte SpecialLightStage;
         /// <summary>Interior cockpit illumination level</summary>
-        public sbyte CockpitLightStage;
+        public readonly sbyte CockpitLightStage;
         /// <summary>Windscreen wiper speed (0 = off)</summary>
-        public sbyte WiperLevel;
+        public readonly sbyte WiperLevel;
         /// <summary>Rear rain light is on</summary>
-        public bool RainLights;
+        public readonly bool RainLights;
         /// <summary>Left turn indicator is active</summary>
-        public bool DirectionLightLeft;
+        public readonly bool DirectionLightLeft;
         /// <summary>Right turn indicator is active</summary>
-        public bool DirectionLightRight;
+        public readonly bool DirectionLightRight;
         /// <summary>Flashing lights are active</summary>
-        public bool FlashingLights;
+        public readonly bool FlashingLights;
         /// <summary>Hazard lights are illuminated</summary>
-        public bool WarningLights;
+        public readonly bool WarningLights;
         /// <summary>Index of the currently focused display device</summary>
-        public sbyte SelectedDisplayIndex;
+        public readonly sbyte SelectedDisplayIndex;
         /// <summary>Active page index on displays (array of 16 items)</summary>
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 16)]
-        public sbyte[] DisplayCurrentPageIndex;
+        public readonly sbyte[] DisplayCurrentPageIndex;
         /// <summary>Headlights are on and visible to other drivers</summary>
-        public bool AreHeadlightsVisible;
+        public readonly bool AreHeadlightsVisible;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 101)]
-        private byte[] PlaceHolder; // Padding to ensure exactly 128 bytes
+        private readonly byte[] PlaceHolder; // Padding to ensure exactly 128 bytes
     }
 
     /// <summary>Server-side session lifecycle information. [256 bytes]</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
-    public struct SmevoSessionState
+    public readonly struct SmevoSessionState
     {
         /// <summary>Name of the current session phase (e.g. 'Race', 'Qualify')</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 33)]
-        public string PhaseName;
+        public readonly string PhaseName;
         /// <summary>Formatted remaining session time (HH:MM:SS)</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string TimeLeft;
+        public readonly string TimeLeft;
         /// <summary>Remaining session time in milliseconds</summary>
-        public int TimeLeftMs;
+        public readonly int TimeLeftMs;
         /// <summary>Formatted wait time before session start</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string WaitTime;
+        public readonly string WaitTime;
         /// <summary>Total laps scheduled for this session</summary>
-        public int TotalLap;
+        public readonly int TotalLap;
         /// <summary>Current lap number being driven</summary>
-        public int CurrentLap;
+        public readonly int CurrentLap;
         /// <summary>Number of starting lights currently illuminated</summary>
-        public int LightsOn;
+        public readonly int LightsOn;
         /// <summary>Starting-light sequence mode identifier</summary>
-        public int LightsMode;
+        public readonly int LightsMode;
         /// <summary>Track lap length in kilometres</summary>
-        public float LapLengthKm;
+        public readonly float LapLengthKm;
         /// <summary>Non-zero when the session is ending</summary>
-        public int EndSessionFlag;
+        public readonly int EndSessionFlag;
         /// <summary>Formatted countdown to the next session</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string TimeToNextSession;
+        public readonly string TimeToNextSession;
         /// <summary>Player has lost connection to the game server</summary>
-        public bool DisconnectedFromServer;
+        public readonly bool DisconnectedFromServer;
         /// <summary>Season restart option is available to the player</summary>
-        public bool RestartSeasonEnabled;
+        public readonly bool RestartSeasonEnabled;
         /// <summary>Drive button is enabled in the UI</summary>
-        public bool UiEnableDrive;
+        public readonly bool UiEnableDrive;
         /// <summary>Setup screen is accessible from the UI</summary>
-        public bool UiEnableSetup;
+        public readonly bool UiEnableSetup;
         /// <summary>Ready-to-proceed indicator is blinking</summary>
-        public bool IsReadyToNextBlinking;
+        public readonly bool IsReadyToNextBlinking;
         /// <summary>Waiting-for-players lobby screen is shown</summary>
-        public bool ShowWaitingForPlayers;
+        public readonly bool ShowWaitingForPlayers;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 140)]
-        private byte[] PlaceHolder; // Padding to ensure exactly 256 bytes
+        private readonly byte[] PlaceHolder; // Padding to ensure exactly 256 bytes
     }
 
     /// <summary>Lap timing and delta values displayed on the HUD. [256 bytes]</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
-    public struct SmevoTimingState
+    public readonly struct SmevoTimingState
     {
         /// <summary>Current lap time as a formatted string</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string CurrentLaptime;
+        public readonly string CurrentLaptime;
         /// <summary>Delta vs. current reference lap (formatted)</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string DeltaCurrent;
+        public readonly string DeltaCurrent;
         /// <summary>Sign of delta_current: +1 slower, −1 faster, 0 = hidden</summary>
-        public int DeltaCurrentP;
+        public readonly int DeltaCurrentP;
         /// <summary>Last completed lap time as a formatted string</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string LastLaptime;
+        public readonly string LastLaptime;
         /// <summary>Delta vs. last lap (formatted)</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string DeltaLast;
+        public readonly string DeltaLast;
         /// <summary>Sign of delta_last: +1 slower, −1 faster, 0 = hidden</summary>
-        public int DeltaLastP;
+        public readonly int DeltaLastP;
         /// <summary>Personal best lap time as a formatted string</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string BestLaptime;
+        public readonly string BestLaptime;
         /// <summary>Theoretical best lap (sum of best sectors) as a formatted string</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string IdealLaptime;
+        public readonly string IdealLaptime;
         /// <summary>Total elapsed session time as a formatted string</summary>
         [MarshalAs(UnmanagedType.ByValTStr, SizeConst = 15)]
-        public string TotalTime;
+        public readonly string TotalTime;
         /// <summary>Current lap has been invalidated (track-limits violation, etc.)</summary>
-        public bool IsInvalid;
+        public readonly bool IsInvalid;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 137)]
-        private byte[] PlaceHolder; // Padding to ensure exactly 256 bytes
+        private readonly byte[] PlaceHolder; // Padding to ensure exactly 256 bytes
     }
 
     /// <summary>Driver-assist settings currently active for the player car. [64 bytes]</summary>
     [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
-    public struct SmevoAssistsState
+    public readonly struct SmevoAssistsState
     {
         /// <summary>Automatic gearshift aid level (0 = off)</summary>
-        public byte AutoGear;
+        public readonly byte AutoGear;
         /// <summary>Automatic throttle blip on downshift (0 = off)</summary>
-        public byte AutoBlip;
+        public readonly byte AutoBlip;
         /// <summary>Automatic clutch management (0 = off)</summary>
-        public byte AutoClutch;
+        public readonly byte AutoClutch;
         /// <summary>Automatic clutch during the rolling start (0 = off)</summary>
-        public byte AutoClutchOnStart;
+        public readonly byte AutoClutchOnStart;
         /// <summary>Manual ignition and electric start required (0 = automatic)</summary>
-        public byte ManualIgnitionEStart;
+        public readonly byte ManualIgnitionEStart;
         /// <summary>Pit-speed limiter activates automatically (0 = manual)</summary>
-        public byte AutoPitLimiter;
+        public readonly byte AutoPitLimiter;
         /// <summary>Standing-start launch assistance active (0 = off)</summary>
-        public byte StandingStartAssist;
+        public readonly byte StandingStartAssist;
         /// <summary>Auto-steer correction strength (0.0 = off, 1.0 = maximum)</summary>
-        public float AutoSteer;
+        public readonly float AutoSteer;
         /// <summary>Arcade-style stability aid level (0.0 = off, 1.0 = maximum)</summary>
-        public float ArcadeStabilityControl;
+        public readonly float ArcadeStabilityControl;
 
         [MarshalAs(UnmanagedType.ByValArray, SizeConst = 48)]
-        private byte[] PlaceHolder; // Padding to ensure exactly 64 bytes
+        private readonly byte[] PlaceHolder; // Padding to ensure exactly 64 bytes
     }
 
     #endregion
 
     [StructLayout(LayoutKind.Sequential, Pack = 4)]
-    public struct StructVector3
+    public readonly struct StructVector3
     {
-        public float X;
-        public float Y;
-        public float Z;
+        public readonly float X;
+        public readonly float Y;
+        public readonly float Z;
     }
 
     /// <summary>Raw physics telemetry updated every simulation step. Contains all low-level vehicle dynamics data.</summary>
