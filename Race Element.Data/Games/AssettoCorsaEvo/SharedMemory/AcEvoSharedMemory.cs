@@ -4,14 +4,7 @@ using RaceElement.Data.SharedMemory;
 
 namespace RaceElement.Data.Games.AssettoCorsaEvo.SharedMemory;
 
-/// <summary>
-/// AC EVO Shared Memory reader (updated for ACE_SharedFileOut_Documentation_v1.pdf)
-/// Maps: acevo_pmf_* (new naming)
-/// All inner structures have fixed sizes with explicit padding to match the C++ reference exactly.
-/// displayCurrentPageIndex is now [16] (was 9).
-/// All class/struct members use PascalCase with no underscores.
-/// </summary>
-public sealed unsafe class AcEvoSharedMemory
+public sealed class AcEvoSharedMemory
 {
     private readonly string physicsMap = "Local\\acevo_pmf_physics";
     private readonly string graphicsMap = "Local\\acevo_pmf_graphics";

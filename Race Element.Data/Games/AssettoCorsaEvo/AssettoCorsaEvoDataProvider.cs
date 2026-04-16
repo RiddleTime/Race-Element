@@ -7,7 +7,6 @@ using RaceElement.Data.Games.AssettoCorsaEvo.DataMapper;
 using RaceElement.Data.Games.AssettoCorsaEvo.SharedMemory;
 using System.Diagnostics;
 using System.Drawing;
-using System.Text.RegularExpressions;
 
 namespace RaceElement.Data.Games.AssettoCorsaEvo;
 
