@@ -3,6 +3,7 @@ using Riok.Mapperly.Abstractions;
 using System.Numerics;
 using RaceElement.Data.Common.SimulatorData;
 using static RaceElement.Data.Games.AssettoCorsaEvo.SharedMemory.AcEvoSharedMemory;
+using static RaceElement.Data.Common.SimulatorData.LocalCar.ElectronicsData;
 
 namespace RaceElement.Data.Games.AssettoCorsaEvo.DataMapper;
 
@@ -52,6 +53,9 @@ internal static partial class LocalCarMapper
             pageGraphics.TyreRr.BrakePressure
         };
 
+        commonData.Electronics.Blinkers = (pageGraphics.Instrumentation.DirectionLightLeft ? BlinkerStatus.Left : BlinkerStatus.None) | (pageGraphics.Instrumentation.DirectionLightRight ? BlinkerStatus.Right : BlinkerStatus.None);
+        if (pageGraphics.Instrumentation.WarningLights)
+            commonData.Electronics.Blinkers = BlinkerStatus.Left | BlinkerStatus.Right;
 
         commonData.Engine.IsRunning = commonData.Engine.Rpm > 0 && !pageGraphics.IsInPitBox;
     }
