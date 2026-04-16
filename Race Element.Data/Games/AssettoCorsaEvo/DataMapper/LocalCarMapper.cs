@@ -39,25 +39,22 @@ internal static class LocalCarMapper
 
         commonData.Engine.FuelLiters = pagePhysics.Fuel;
 
-        ///
         sessionData.Weather.AirTemperature = pagePhysics.AirTemp;
         sessionData.Track.Temperature = pagePhysics.RoadTemp;
     }
 
     internal static void AddGraphics(ref SPageFileGraphicEvo pageGraphics, ref LocalCarData commonData, ref SessionData sessionData)
     {
-        commonData.Brakes.Pressure = new float[]
-        {
+        commonData.Brakes.Pressure =
+        [
             pageGraphics.TyreLf.BrakePressure,
             pageGraphics.TyreRf.BrakePressure,
             pageGraphics.TyreLr.BrakePressure,
             pageGraphics.TyreRr.BrakePressure
-        };
+        ];
 
         commonData.Electronics.Blinkers = (pageGraphics.Instrumentation.DirectionLightLeft ? BlinkerStatus.Left : BlinkerStatus.None) | (pageGraphics.Instrumentation.DirectionLightRight ? BlinkerStatus.Right : BlinkerStatus.None);
         if (pageGraphics.Instrumentation.WarningLights)
             commonData.Electronics.Blinkers = BlinkerStatus.Left | BlinkerStatus.Right;
-
-        //commonData.Engine.IsRunning = !pageGraphics.IsInPitBox;
     }
 }
