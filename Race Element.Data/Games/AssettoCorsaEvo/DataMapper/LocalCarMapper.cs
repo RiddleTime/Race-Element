@@ -53,6 +53,6 @@ internal static partial class LocalCarMapper
         };
 
 
-        commonData.Engine.IsRunning = commonData.Engine.Rpm > 0 && !pageGraphics.IsInPitBox && pageGraphics.;
+        commonData.Engine.IsRunning = commonData.Engine.Rpm > 0 && !pageGraphics.IsInPitBox;
     }
 }
