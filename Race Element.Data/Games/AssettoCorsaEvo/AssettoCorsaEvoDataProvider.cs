@@ -15,7 +15,7 @@ internal sealed class AssettoCorsaEvoDataProvider : AbstractSimDataProvider
     static int lastPhysicsPacketId = -1;
 
 
-    internal override int PollingRate() => 200;
+    internal override int PollingRate() => 250;
 
     private static string GameName => Game.AssettoCorsaEvo.ToShortName();
 
