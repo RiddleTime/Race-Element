@@ -60,5 +60,6 @@ internal static class LocalCarMapper
 
         if (pageGraphics.Status == AcEvoStatus.AcPause)
             gameData.IsGamePaused = true;
+        else gameData.IsGamePaused = false;
     }
 }

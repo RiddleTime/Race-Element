@@ -173,7 +173,7 @@ public sealed class AcEvoSharedMemory
     }
 
     /// <summary>Structural damage level for each body zone of the car (0.0 = undamaged, 1.0 = destroyed). [128 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
     public readonly struct SmevoDamageState
     {
         /// <summary>Damage on the front body / nose</summary>
@@ -200,7 +200,7 @@ public sealed class AcEvoSharedMemory
     }
 
     /// <summary>Status of each pit-stop service action. −1 = will not perform, 0 = completed, 1 = in progress. [64 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
     public readonly struct SmevoPitInfo
     {
         /// <summary>Body-repair action state</summary>
@@ -221,7 +221,7 @@ public sealed class AcEvoSharedMemory
     }
 
     /// <summary>All driver-adjustable electronic aid and setup settings. [128 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
     public readonly struct SmevoElectronics
     {
         /// <summary>Traction-control level (0 = off, higher = more aggressive)</summary>
@@ -274,7 +274,7 @@ public sealed class AcEvoSharedMemory
     }
 
     /// <summary>Cockpit light, display, and instrumentation panel states. [128 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
     public readonly struct SmevoInstrumentation
     {
         /// <summary>Main exterior light stage (0 = off)</summary>
@@ -308,7 +308,7 @@ public sealed class AcEvoSharedMemory
     }
 
     /// <summary>Server-side session lifecycle information. [256 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
     public readonly struct SmevoSessionState
     {
         /// <summary>Name of the current session phase (e.g. 'Race', 'Qualify')</summary>
@@ -355,7 +355,7 @@ public sealed class AcEvoSharedMemory
     }
 
     /// <summary>Lap timing and delta values displayed on the HUD. [256 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
     public readonly struct SmevoTimingState
     {
         /// <summary>Current lap time as a formatted string</summary>
@@ -391,7 +391,7 @@ public sealed class AcEvoSharedMemory
     }
 
     /// <summary>Driver-assist settings currently active for the player car. [64 bytes]</summary>
-    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Unicode)]
+    [StructLayout(LayoutKind.Sequential, Pack = 4, CharSet = CharSet.Ansi)]
     public readonly struct SmevoAssistsState
     {
         /// <summary>Automatic gearshift aid level (0 = off)</summary>
