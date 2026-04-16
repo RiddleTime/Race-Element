@@ -41,6 +41,7 @@ internal static class LocalCarMapper
 
         ///
         sessionData.Weather.AirTemperature = pagePhysics.AirTemp;
+        sessionData.Track.Temperature = pagePhysics.RoadTemp;
     }
 
     internal static void AddGraphics(ref SPageFileGraphicEvo pageGraphics, ref LocalCarData commonData, ref SessionData sessionData)
