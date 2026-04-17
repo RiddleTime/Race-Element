@@ -19,17 +19,13 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
 
     internal sealed override void Start()
     {
-#if DEBUG
         _graphjob = new(this) { IntervalMillis = 500 };
         _graphjob.Run();
-#endif
     }
 
     internal sealed override void Stop()
     {
-#if DEBUG
         _graphjob.CancelJoin();
-#endif
     }
 
     private float _lastLocationX = default;
@@ -56,7 +52,7 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
             try
             {
                 Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
-    
+
 
                 PlayerData playerData = sharedMemory.Player;
                 // Local Car Data

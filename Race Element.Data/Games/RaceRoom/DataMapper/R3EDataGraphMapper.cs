@@ -62,7 +62,7 @@ internal static class R3EDataGraphMapper
                     if (raceCarNode.Position != driverData.Place)
                         raceCarNode.Position = driverData.Place;
 
-                    if (raceCarNode.Laps < driverData.CompletedLaps && graph.Edges.Any())
+                    if (raceCarNode.Laps < driverData.CompletedLaps && !graph.Edges.IsEmpty)
                     {
                         raceCarNode.Laps = driverData.CompletedLaps;
 
@@ -81,7 +81,7 @@ internal static class R3EDataGraphMapper
 
                         graph.TryGetEdgesFrom(raceCarNode, out var carEdgesFrom);
 
-                        DriverNode driverNode = (DriverNode)existingDrivers.First(x => carEdgesFrom.Select(x => x.ChildId).Contains(x.Id));
+                        DriverNode driverNode = existingDrivers.First(x => carEdgesFrom.Select(x => x.ChildId).Contains(x.Id));
 
 
                         graph.TryAddEdge(new OwnsEdge() { ParentId = driverNode.Id, ChildId = lapNode.Id });
