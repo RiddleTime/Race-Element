@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common.Graph;
+using RaceElement.Data.Games;
 using RaceElement.Graph;
 using RaceElement.Graph.Edge;
 using RaceElement.HUD.Overlay.Internal;
@@ -15,7 +16,8 @@ namespace RaceElement.HUD.Common.Overlays.Pitwall.DataGraphTest;
 [Overlay(
     Name = "Data Graph Test",
     Description = "This is a performance test for the Data Graph.",
-    Authors = ["Reinier Klarenberg"]
+    Authors = ["Reinier Klarenberg"],
+    SupportedGames = Game.RaceRoom
 )]
 internal sealed class DataGraphTestOverlay : CommonAbstractOverlay
 {
