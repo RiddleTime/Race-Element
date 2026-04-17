@@ -17,6 +17,7 @@ namespace RaceElement.HUD.Common.Overlays.Pitwall.DataGraphLeaderBoard;
     Name = "Data Graph Leaderboard",
     Description = "A data test for the data-graph.",
     Authors = ["Reinier Klarenberg"],
+    OverlayType = OverlayType.Pitwall,
     SupportedGames = Game.RaceRoom
 )]
 internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Data Graph Leaderboard")

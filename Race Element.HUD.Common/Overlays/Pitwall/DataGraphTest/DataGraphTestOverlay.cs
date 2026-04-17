@@ -17,6 +17,7 @@ namespace RaceElement.HUD.Common.Overlays.Pitwall.DataGraphTest;
     Name = "Data Graph Test",
     Description = "This is a performance test for the Data Graph.",
     Authors = ["Reinier Klarenberg"],
+    OverlayType = OverlayType.Pitwall,
     SupportedGames = Game.RaceRoom
 )]
 internal sealed class DataGraphTestOverlay : CommonAbstractOverlay
