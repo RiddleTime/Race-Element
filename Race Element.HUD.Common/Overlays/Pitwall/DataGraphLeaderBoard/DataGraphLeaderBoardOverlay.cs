@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.Common;
 using RaceElement.Data.Common.Graph;
+using RaceElement.Data.Games;
 using RaceElement.Graph;
 using RaceElement.Graph.Edge;
 using RaceElement.HUD.Overlay.Internal;
@@ -12,13 +13,12 @@ using System.Text.Json;
 
 namespace RaceElement.HUD.Common.Overlays.Pitwall.DataGraphLeaderBoard;
 
-#if DEBUG
 [Overlay(
     Name = "Data Graph Leaderboard",
-    Description = "",
-    Authors = ["Reinier Klarenberg"]
+    Description = "A data test for the data-graph.",
+    Authors = ["Reinier Klarenberg"],
+    SupportedGames = Game.RaceRoom
 )]
-#endif
 internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Data Graph Leaderboard")
 {
     private InfoPanel _panel;
