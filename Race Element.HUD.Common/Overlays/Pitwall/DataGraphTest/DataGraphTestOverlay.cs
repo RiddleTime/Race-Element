@@ -11,13 +11,12 @@ using System.Text.Json;
 
 namespace RaceElement.HUD.Common.Overlays.Pitwall.DataGraphTest;
 
-#if DEBUG
+
 [Overlay(
     Name = "Data Graph Test",
-    Description = "",
+    Description = "This is a performance test for the Data Graph.",
     Authors = ["Reinier Klarenberg"]
 )]
-#endif
 internal sealed class DataGraphTestOverlay : CommonAbstractOverlay
 {
     private readonly DataGraph _graph;
