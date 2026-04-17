@@ -47,33 +47,45 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
 
         var graph = SimDataProvider.RacingGraph;
 
-        IEnumerable<LapDataNode?> allLapTimes = graph.Where(x => x is LapDataNode).Select(x => x as LapDataNode);
+        IEnumerable<LapDataNode?> allValidLapTimes = graph.Where(x => x is LapDataNode).Select(x => x as LapDataNode);
         IEnumerable<DriverNode?> allDrivers = graph.Where(x => x is DriverNode).Select(x => x as DriverNode);
         IEnumerable<CarNode?> allCars = graph.Where(x => x is CarNode).Select(x => x as CarNode);
 
-        if (allLapTimes.Any())
+        if (allValidLapTimes.Any())
         {
-            LapDataNode? fastestLap = allLapTimes.MinBy(x => x?.LapTimeMs);
-
-            _ = graph.TryGetEdgesTo(fastestLap.Id, out var fastestLapEdges);
-            if (fastestLapEdges.Count != 0)
+            LapDataNode? fastestLap = allValidLapTimes.Where(x => x.IsValid).MinBy(x => x?.LapTimeMs);
+            if (fastestLap != null)
             {
-                var fastestDriverId = fastestLapEdges.First().ParentId;
-                var fastestDriver = allDrivers.First(x => x?.Id == fastestDriverId);
+                _ = graph.TryGetEdgesTo(fastestLap.Id, out var fastestLapEdges);
+                if (fastestLapEdges.Count != 0)
+                {
+                    var fastestDriverId = fastestLapEdges.First().ParentId;
+                    var fastestDriver = allDrivers.First(x => x?.Id == fastestDriverId);
 
-                _ = graph.TryGetEdgesTo(fastestDriverId, out var driverEdgesTo);
+                    _ = graph.TryGetEdgesTo(fastestDriverId, out var driverEdgesTo);
 
-                CarNode fastestCar = allCars.First(x => driverEdgesTo.Select(x => x.ParentId).Contains(x.Id));
-                _panel.AddLine("Fastest", $"#{fastestCar.CarNumber} - {fastestDriver.Name} - L{fastestLap.LapIndex}");
-                _panel.AddLine("Fastest Lap", $"{TimeSpan.FromMilliseconds(fastestLap.LapTimeMs):mm\\:ss\\.fff}");
+                    CarNode fastestCar = allCars.First(x => driverEdgesTo.Select(x => x.ParentId).Contains(x.Id));
+                    _panel.AddLine("Fastest", $"#{fastestCar.CarNumber} - {fastestDriver.Name} - L{fastestLap.LapIndex}");
+
+                    _panel.AddLine("Fastest Lap", $"{TimeSpan.FromMilliseconds(fastestLap.LapTimeMs):mm\\:ss\\.fff} ");
+
+                    StringBuilder sectorTimes = new();
+                    for (int i = 0; i < fastestLap.SectorTimesMs.Length; i++)
+                    {
+                        _ = sectorTimes.Append($"S{i + 1}: {TimeSpan.FromMilliseconds(fastestLap.SectorTimesMs[i]):mm\\:ss\\.fff}");
+                        if (i < fastestLap.SectorTimesMs.Length - 1)
+                            _ = sectorTimes.Append(", ");
+                    }
+                    _panel.AddLine("Sectors", $" {sectorTimes}");
+                }
             }
         }
 
 
-        if (allLapTimes.Any())
+        if (allValidLapTimes.Any())
         {
-            _panel.AddLine("Laps", $"{allLapTimes.Count()}");
-            int[] avgLapTimeMs = allLapTimes.Select(x => x.LapTimeMs).ToArray();
+            _panel.AddLine("Laps", $"{allValidLapTimes.Count()}");
+            int[] avgLapTimeMs = allValidLapTimes.Select(x => x.LapTimeMs).ToArray();
             AddTimeStats(_panel, [.. avgLapTimeMs]);
         }
 

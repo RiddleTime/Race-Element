@@ -66,17 +66,24 @@ internal static class R3EDataGraphMapper
                     {
                         raceCarNode.Laps = driverData.CompletedLaps;
 
-                        int[] sectors = [
-                            (int)(driverData.SectorTimePreviousSelf.Sector1 * 1000f),
-                            (int)((driverData.SectorTimePreviousSelf.Sector2 - driverData.SectorTimePreviousSelf.Sector1) * 1000f),
-                            (int)((driverData.SectorTimePreviousSelf.Sector3 - driverData.SectorTimePreviousSelf.Sector2) * 1000f),
-                        ];
 
-                        if (sectors.Sum() <= 0)
+                        int[] sectors = [
+                            (int)Math.Abs(driverData.SectorTimePreviousSelf.Sector1 * 1000f),
+                            (int)Math.Abs((driverData.SectorTimePreviousSelf.Sector2 - driverData.SectorTimePreviousSelf.Sector1) * 1000f),
+                            (int)Math.Abs((driverData.SectorTimePreviousSelf.Sector3 - driverData.SectorTimePreviousSelf.Sector2) * 1000f),
+                        ];
+                        int lapTimeMs = sectors.Sum();
+
+
+
+                        if (lapTimeMs == 1000 || lapTimeMs <= 0)
                             continue;
 
-                        LapDataNode lapNode = new() { SectorTimesMs = sectors, LapIndex = raceCarNode.Laps, LapTimeMs = sectors.Sum(), IsValid = driverData.CurrentLapValid == 1 };
+                        bool isValid = driverData.CurrentLapValid == 1;
+
+                        LapDataNode lapNode = new() { SectorTimesMs = sectors, LapIndex = raceCarNode.Laps, LapTimeMs = lapTimeMs, IsValid = isValid };
                         Debug.WriteLine($"Added new lap for:\n- {raceCarNode}\n- {lapNode}");
+
                         graph.Add(lapNode);
 
                         graph.TryGetEdgesFrom(raceCarNode, out var carEdgesFrom);
