@@ -42,25 +42,25 @@ namespace RaceElement.HUD.Overlay.OverlayUtil
         /// Get the names and lenths for the overall header (e.g. race info and labels for all cells)
         /// </summary>
         /// <returns></returns>
-        abstract public List<HeaderLabel> GetOverallHeader();
+        public abstract List<HeaderLabel> GetOverallHeader();
 
         /// <summary>
         /// Get names and length for intermediate headers for a section (e.g. class headers)
         /// </summary>
         /// <returns></returns>
-        abstract public List<HeaderLabel> GetSectionHeaders();
+        public abstract List<HeaderLabel> GetSectionHeaders();
 
         /// <summary>
         /// Get the row values for a 
         /// </summary>
         /// <param name="section"></param>
         /// <returns></returns>
-        abstract public List<List<CellValue>> GetCellRows(int section);
+        public abstract List<List<CellValue>> GetCellRows(int section);
 
         /// <summary>
         /// Get metadata for the rows in the sections
         /// </summary>        
-        abstract public List<ColumnMetaData> GetColumnMetaData();
+        public abstract List<ColumnMetaData> GetColumnMetaData();
 
         public override void Render(Graphics g)
         {
