@@ -97,8 +97,8 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
         }
 
         _panel.AddLine("", "---- Graph Stats ----");
-        _panel.AddLine("Nodes", $"{graph.Count}");
-        _panel.AddLine("Edges", $"{graph.Edges.Count}");
+        _panel.AddLine("Drivers/Laps", $"{allDrivers.Count()}/{allLapTimes.Count()}");
+        _panel.AddLine("Edges/Nodes", $"{graph.Edges.Count}/{graph.Count}");
 
         _panel.Draw(g);
     }
