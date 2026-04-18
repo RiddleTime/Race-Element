@@ -85,11 +85,11 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
         }
     breakFastestLapData:
 
-        _panel.AddLine("", "Valid Lap Stats");
 
         IEnumerable<LapDataNode> allValidLapTimes = allLapTimes.Where(x => x.IsValid);
         if (allValidLapTimes.Any())
         {
+            _panel.AddLine("", "Valid Lap Stats");
             _panel.AddLine("Laps", $"{allValidLapTimes.Count()}");
             int[] avgLapTimeMs = allValidLapTimes.Select(x => x.LapTimeMs).ToArray();
             AddTimeStats(_panel, [.. avgLapTimeMs]);
