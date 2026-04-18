@@ -83,19 +83,20 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
                 }
             }
         }
-    breakFastestLapData:
-
+    breakFastestLapData: // used to "return" in the previous encoupling if section. needs to be decoupled eventually.. now a nifty "return nothing" solution.
 
         IEnumerable<LapDataNode> allValidLapTimes = allLapTimes.Where(x => x.IsValid);
+        int validLapTimeCount = allValidLapTimes.Count();
+        int invalidLapTimeCount = allLapTimes.Count() - validLapTimeCount;
+        _panel.AddLine("Laps", $"Valid: {validLapTimeCount},  Invalid: {invalidLapTimeCount}");
         if (allValidLapTimes.Any())
         {
-            _panel.AddLine("", "Valid Lap Stats");
-            _panel.AddLine("Laps", $"{allValidLapTimes.Count()}");
+            _panel.AddLine("", "---- Valid Laps ----");
             int[] avgLapTimeMs = allValidLapTimes.Select(x => x.LapTimeMs).ToArray();
             AddTimeStats(_panel, [.. avgLapTimeMs]);
         }
 
-        _panel.AddLine("", "Graph Stats");
+        _panel.AddLine("", "---- Graph Stats ----");
         _panel.AddLine("Nodes", $"{graph.Count}");
         _panel.AddLine("Edges", $"{graph.Edges.Count}");
 
