@@ -68,18 +68,24 @@ internal static class R3EDataGraphMapper
 
 
                         int[] sectors = [
-                            (int)Math.Abs(driverData.SectorTimePreviousSelf.Sector1 * 1000f),
-                            (int)Math.Abs((driverData.SectorTimePreviousSelf.Sector2 - driverData.SectorTimePreviousSelf.Sector1) * 1000f),
-                            (int)Math.Abs((driverData.SectorTimePreviousSelf.Sector3 - driverData.SectorTimePreviousSelf.Sector2) * 1000f),
+                            (int)Math.Round(Math.Abs(driverData.SectorTimePreviousSelf.Sector1 * 1000.000f)),
+                            (int)Math.Round(Math.Abs((driverData.SectorTimePreviousSelf.Sector2 - driverData.SectorTimePreviousSelf.Sector1) * 1000.000f)),
+                            (int)Math.Round(Math.Abs((driverData.SectorTimePreviousSelf.Sector3 - driverData.SectorTimePreviousSelf.Sector2) * 1000.000f)),
                         ];
                         int lapTimeMs = sectors.Sum();
 
+                        bool hasInvalidSectors = false;
+                        foreach (int sector in sectors)
+                            if (sector == 0)
+                            {
+                                hasInvalidSectors = true;
+                                break;
+                            }
 
-
-                        if (lapTimeMs == 1000 || lapTimeMs <= 0)
+                        if (lapTimeMs <= 0)
                             continue;
 
-                        bool isValid = driverData.CurrentLapValid == 1;
+                        bool isValid = driverData.CurrentLapValid == 1 && !hasInvalidSectors;
 
                         LapDataNode lapNode = new() { SectorTimesMs = sectors, LapIndex = raceCarNode.Laps, LapTimeMs = lapTimeMs, IsValid = isValid };
                         Debug.WriteLine($"Added new lap for:\n- {raceCarNode}\n- {lapNode}");
