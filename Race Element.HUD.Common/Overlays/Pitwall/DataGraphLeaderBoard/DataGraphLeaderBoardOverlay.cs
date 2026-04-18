@@ -47,13 +47,13 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
 
         var graph = SimDataProvider.RacingGraph;
 
-        IEnumerable<LapDataNode?> allValidLapTimes = graph.Where(x => x is LapDataNode).Select(x => x as LapDataNode);
+        IEnumerable<LapDataNode?> allLapTimes = graph.Where(x => x is LapDataNode).Select(x => x as LapDataNode);
         IEnumerable<DriverNode?> allDrivers = graph.Where(x => x is DriverNode).Select(x => x as DriverNode);
         IEnumerable<CarNode?> allCars = graph.Where(x => x is CarNode).Select(x => x as CarNode);
 
-        if (allValidLapTimes.Any())
+        if (allLapTimes.Any())
         {
-            LapDataNode? fastestLap = allValidLapTimes.Where(x => x.IsValid).MinBy(x => x?.LapTimeMs);
+            LapDataNode? fastestLap = allLapTimes.Where(x => x.IsValid).MinBy(x => x?.LapTimeMs);
             if (fastestLap != null)
             {
                 _ = graph.TryGetEdgesTo(fastestLap.Id, out var fastestLapEdges);
@@ -64,7 +64,10 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
 
                     _ = graph.TryGetEdgesTo(fastestDriverId, out var driverEdgesTo);
 
-                    CarNode fastestCar = allCars.First(x => driverEdgesTo.Select(x => x.ParentId).Contains(x.Id));
+                    CarNode? fastestCar = allCars.FirstOrDefault(x => driverEdgesTo.Select(x => x.ParentId).Contains(x.Id));
+                    if (fastestCar == null)
+                        goto breakFastestLapData;
+
                     _panel.AddLine("Fastest", $"#{fastestCar.CarNumber} - {fastestDriver.Name} - L{fastestLap.LapIndex}");
 
                     _panel.AddLine("Fastest Lap", $"{TimeSpan.FromMilliseconds(fastestLap.LapTimeMs):mm\\:ss\\.fff} ");
@@ -80,8 +83,11 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
                 }
             }
         }
+    breakFastestLapData:
 
+        _panel.AddLine("", "Valid Lap Stats");
 
+        IEnumerable<LapDataNode> allValidLapTimes = allLapTimes.Where(x => x.IsValid);
         if (allValidLapTimes.Any())
         {
             _panel.AddLine("Laps", $"{allValidLapTimes.Count()}");
@@ -89,6 +95,7 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
             AddTimeStats(_panel, [.. avgLapTimeMs]);
         }
 
+        _panel.AddLine("", "Graph Stats");
         _panel.AddLine("Nodes", $"{graph.Count}");
         _panel.AddLine("Edges", $"{graph.Edges.Count}");
 
