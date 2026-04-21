@@ -32,7 +32,7 @@
 .analog-markdown {
   line-height: 1.4rem;
   @apply md:text-base;
-  @apply select-none;
+  @apply select-text;
 
   >h1 {
     @apply md:text-xl;
