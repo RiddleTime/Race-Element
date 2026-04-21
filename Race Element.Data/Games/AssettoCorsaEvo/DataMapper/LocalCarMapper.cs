@@ -29,6 +29,7 @@ internal static class LocalCarMapper
         commonData.Tyres.SlipRatio = pagePhysics.WheelSlip;
         commonData.Tyres.SlipAngle = pagePhysics.SlipAngle;
         commonData.Tyres.Velocity = pagePhysics.Velocity;
+        commonData.Tyres.Wear = [pagePhysics.TyreWear[0] * 100.000f, pagePhysics.TyreWear[1] * 100.000f, pagePhysics.TyreWear[2] * 100.000f, pagePhysics.TyreWear[3] * 100.000f];
 
         commonData.Brakes.DiscTemperature = pagePhysics.BrakeTemp;
 
