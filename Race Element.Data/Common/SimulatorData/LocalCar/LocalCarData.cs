@@ -138,6 +138,20 @@ public sealed record BrakesData
     /// </summary>
     public float[] DiscTemperature { get; internal set; } = new float[4];
 
+
+    /// <summary>
+    /// The amount of wear for each of the brake discs, in percentage (0 to 100%). 
+    /// 0% means a new brake disc, 100% means a fully worn brake disc. Note that the wear percentage is not necessarily linear with the actual wear of the brake disc, and can vary between games.
+    /// </summary>
+    public float[] DiscWear { get; internal set; } = new float[4];
+
+
+    /// <summary>
+    /// The amount of wear for each of the brake 'pad', in percentage (0 to 100%). 
+    /// 0% means a new brake 'pad', 100% means a fully destroyed 'pad'. Note that the wear percentage is not necessarily linear with the actual wear of the brake 'pad', and can vary between games.
+    /// </summary>
+    public float[] PadWear { get; internal set; } = new float[4];
+
     /// <summary>
     /// The amount of pressure applied to each of the brake pads
     /// </summary>
