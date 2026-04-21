@@ -32,7 +32,9 @@ internal static class LocalCarMapper
         commonData.Tyres.Wear = [pagePhysics.TyreWear[0] * 100.000f, pagePhysics.TyreWear[1] * 100.000f, pagePhysics.TyreWear[2] * 100.000f, pagePhysics.TyreWear[3] * 100.000f];
 
         commonData.Brakes.DiscTemperature = pagePhysics.BrakeTemp;
-
+        commonData.Brakes.DiscWear = [pagePhysics.DiscLife[0] * 100.000f, pagePhysics.DiscLife[1] * 100.000f, pagePhysics.DiscLife[2] * 100.000f, pagePhysics.DiscLife[3] * 100.000f];
+        commonData.Brakes.PadWear = [pagePhysics.PadLife[0] * 100.000f, pagePhysics.PadLife[1] * 100.000f, pagePhysics.PadLife[2] * 100.000f, pagePhysics.PadLife[3] * 100.000f];
+        
         commonData.Electronics.TractionControlLevel = (int)pagePhysics.Tc;
         commonData.Electronics.TractionControlActivation = pagePhysics.TcinAction;
         commonData.Electronics.AbsLevel = (int)pagePhysics.Abs;
