@@ -18,7 +18,7 @@ import { Meta } from '@angular/platform-browser';
          {{post.attributes.title}}
       </h1>
       <div class="container dark:bg-[#050505] pl-3 pr-[1em] pt-2 rounded-br-xl">
-        <analog-markdown class="whitespace-pre-line select-text" [content]="post.content" />
+        <analog-markdown class="whitespace-pre-line" [content]="post.content" />
       </div>
     </article>
     }
