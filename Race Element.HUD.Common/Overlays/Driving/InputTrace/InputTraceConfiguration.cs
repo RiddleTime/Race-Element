@@ -60,7 +60,7 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         public int TractionControlOpacity { get; init; } = 90;
     }
 
-    [HideForGame(Game.AssettoCorsa1 | Game.AssettoCorsaRally | Game.AmericanTruckSimulator | Game.EuroTruckSimulator2 | Game.ForzaHorizon4 | Game.ForzaHorizon5 | Game.RichardBurnsRally | Game.ForzaMotorsport)]
+    [HideForGame(Game.AssettoCorsa1 | Game.AssettoCorsaRally | Game.AmericanTruckSimulator | Game.Automobilista2 | Game.EuroTruckSimulator2 | Game.ForzaHorizon4 | Game.ForzaHorizon5 | Game.RichardBurnsRally | Game.ForzaMotorsport)]
     [ConfigGrouping("ABS", "Adjust settings related to ABS Activation.")]
     public AbsGrouping Abs { get; init; } = new();
     public sealed class AbsGrouping
