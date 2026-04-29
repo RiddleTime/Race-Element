@@ -6,6 +6,11 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.6.3.0", "Common HUDs"+
+                    "\n- Input Trace HUD: Increase max refresh rate to 60 Hz with 2 step intervals."+
+                    "\n\nAssetto Corsa Competizione"+
+                    "\n- Input Trace HUD: Increase max refresh rate to 60 Hz with 2 step intervals."
+                    },
         {"2.6.2.0", "Race Element"+
                     "\n- Fixed Race Element icon in settings menu."+
                     "\n\nAssetto Corsa EVO"+

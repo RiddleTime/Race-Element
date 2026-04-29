@@ -16,7 +16,7 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         public int Herz { get; init; } = 70;
 
         [ToolTip("Sets the drawing refresh rate.")]
-        [IntRange(12, 30, 6)]
+        [IntRange(10, 60, 2)]
         public int HudRefreshRate { get; init; } = 30;
     }
 
