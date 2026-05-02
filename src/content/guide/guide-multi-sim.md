@@ -62,6 +62,7 @@ Both simulators require a plugin to be installed before any data can be read fro
 6. Set Data Out Port to: `5300`
 7. Set Data Out Packet Format to: `Car Dash`
 8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Motorsport 8.
+9. If you run the game from the Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: `CheckNetIsolation.exe LoopbackExempt -a -n=microsoft.apollobasegame_8wekyb3d8bbw1` it allows the game to send the UDP packets to your local computer.
 
 # Le Mans Ultimate
 1. Open the installation folder of Le Mans Ultimate
