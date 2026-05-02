@@ -43,7 +43,7 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Restart Forza Horizon 5.</li>
 <li>Restart Race Element.</li>
 <li>If Windows asks permission for network access allow it else race element won&#39;t be able to receive data from Forza Horizon 4.</li>
-<li>If you run the gam from the Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: <code>CheckNetIsolation.exe LoopbackExempt -a -n=Microsoft.SunriseBaseGame_8wekyb3d8bbwe</code> it allows the game to send the UDP packets to your local computer.</li>
+<li>If you run the game from the Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: <code>CheckNetIsolation.exe LoopbackExempt -a -n=Microsoft.SunriseBaseGame_8wekyb3d8bbwe</code> it allows the game to send the UDP packets to your local computer.</li>
 </ol>
 <h1 id="forza-horizon-5">Forza Horizon 5</h1>
 <ol>
@@ -55,6 +55,7 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Restart Forza Horizon 5.</li>
 <li>Restart Race Element.</li>
 <li>If Windows asks permission for network access allow it else race element won&#39;t be able to receive data from Forza Horizon 5.</li>
+<li>If you run the game from the Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: <code>CheckNetIsolation.exe LoopbackExempt -a -n=microsoft.624F8B84B80_8wekyb3d8bbwe</code> it allows the game to send the UDP packets to your local computer.</li>
 </ol>
 <h1 id="forza-motorsport-8">Forza Motorsport 8</h1>
 <ol>
@@ -66,7 +67,6 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Set Data Out Port to: <code>5300</code></li>
 <li>Set Data Out Packet Format to: <code>Car Dash</code></li>
 <li>If Windows asks permission for network access allow it else race element won&#39;t be able to receive data from Forza Motorsport 8.</li>
-<li></li>
 </ol>
 <h1 id="le-mans-ultimate">Le Mans Ultimate</h1>
 <ol>
