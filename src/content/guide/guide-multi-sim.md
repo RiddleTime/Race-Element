@@ -40,7 +40,7 @@ Both simulators require a plugin to be installed before any data can be read fro
 6. Restart Forza Horizon 5.
 7. Restart Race Element.
 8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Horizon 4.
-9. If you run the gam from the Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: `CheckNetIsolation.exe LoopbackExempt -a -n=Microsoft.SunriseBaseGame_8wekyb3d8bbwe` it allows the game to send the UDP packets to your local computer.
+9. If you run the game from the Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: `CheckNetIsolation.exe LoopbackExempt -a -n=Microsoft.SunriseBaseGame_8wekyb3d8bbwe` it allows the game to send the UDP packets to your local computer.
 
 # Forza Horizon 5
 1. Go to Options
@@ -51,6 +51,7 @@ Both simulators require a plugin to be installed before any data can be read fro
 6. Restart Forza Horizon 5.
 7. Restart Race Element.
 8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Horizon 5.
+9. If you run the game from the Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: `CheckNetIsolation.exe LoopbackExempt -a -n=microsoft.624F8B84B80_8wekyb3d8bbwe` it allows the game to send the UDP packets to your local computer.
 
 # Forza Motorsport 8
 1. Start Forza Motorsport 8
@@ -61,7 +62,7 @@ Both simulators require a plugin to be installed before any data can be read fro
 6. Set Data Out Port to: `5300`
 7. Set Data Out Packet Format to: `Car Dash`
 8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Motorsport 8.
-9. 
+
 # Le Mans Ultimate
 1. Open the installation folder of Le Mans Ultimate
 2. Go to `Plugins`
