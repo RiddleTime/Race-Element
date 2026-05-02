@@ -67,6 +67,7 @@ Below you can find a guide for each game that requires a setup. If you can&#39;t
 <li>Set Data Out Port to: <code>5300</code></li>
 <li>Set Data Out Packet Format to: <code>Car Dash</code></li>
 <li>If Windows asks permission for network access allow it else race element won&#39;t be able to receive data from Forza Motorsport 8.</li>
+<li>If you run the game from the Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: <code>CheckNetIsolation.exe LoopbackExempt -a -n=microsoft.apollobasegame_8wekyb3d8bbw1</code> it allows the game to send the UDP packets to your local computer.</li>
 </ol>
 <h1 id="le-mans-ultimate">Le Mans Ultimate</h1>
 <ol>
