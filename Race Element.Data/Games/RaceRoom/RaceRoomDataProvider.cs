@@ -28,10 +28,6 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
         _graphjob.CancelJoin();
     }
 
-    private float _lastLocationX = default;
-    private int _velocityBuffer = 0;
-    private const int _maxVelocityBuffer = 800;
-
     public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
         if (!_isGameRunning)
