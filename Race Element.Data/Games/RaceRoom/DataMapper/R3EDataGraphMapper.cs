@@ -69,7 +69,7 @@ internal static class R3EDataGraphMapper
                     if (raceCarNode.Position != driverData.Place)
                         raceCarNode.Position = driverData.Place;
 
-                    MapTrackStateChangeForDriver(ref graph, ref raceCarNode, ref driverData);
+                    MapTrackStateChangeForDriver(ref graph, ref raceCarNode, driverData);
 
                     if (raceCarNode.Laps < driverData.CompletedLaps && !graph.Edges.IsEmpty)
                     {
@@ -119,8 +119,20 @@ internal static class R3EDataGraphMapper
     /// <param name="graph"></param>
     /// <param name="raceCarNode"></param>
     /// <param name="driverData"></param>
-    private static void MapTrackStateChangeForDriver(ref DataGraph graph, ref RaceCarNode raceCarNode, ref DriverData driverData)
+    private static void MapTrackStateChangeForDriver(ref DataGraph graph, ref RaceCarNode raceCarNode, DriverData driverData)
     {
+        if (raceCarNode.TrackState == TrackStates.None)
+        {
+            Debug.WriteLine($"\nCar #{raceCarNode.CarNumber} current:{raceCarNode.TrackState}  inPitLane={driverData.InPitlane} - S{driverData.TrackSector}");
+
+            TrackStates targetState = driverData.InPitlane == 1 ? TrackStates.Pitlane : TrackStates.Track;
+
+            Debug.WriteLine($"Set car #{raceCarNode.CarNumber} from {raceCarNode.TrackState} to {TrackStates.Pitlane}");
+
+            graph.TryAddEdge(new TrackStateEdge() { ParentId = raceCarNode.Id, State = targetState });
+            raceCarNode.TrackState = targetState;
+            return;
+        }
 
         if (driverData.InPitlane == 1 && raceCarNode.TrackState != TrackStates.Pitlane)
         {
