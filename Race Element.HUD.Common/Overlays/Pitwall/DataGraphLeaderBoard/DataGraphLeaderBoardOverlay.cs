@@ -65,25 +65,24 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
                     _ = graph.TryGetEdgesTo(fastestDriverId, out var driverEdgesTo);
 
                     CarNode? fastestCar = allCars.FirstOrDefault(x => driverEdgesTo.Select(x => x.ParentId).Contains(x.Id));
-                    if (fastestCar == null)
-                        goto breakFastestLapData;
-
-                    _panel.AddLine("Fastest", $"#{fastestCar.CarNumber} - {fastestDriver.Name} - L{fastestLap.LapIndex}");
-
-                    _panel.AddLine("Fastest Lap", $"{TimeSpan.FromMilliseconds(fastestLap.LapTimeMs):mm\\:ss\\.fff} ");
-
-                    StringBuilder sectorTimes = new();
-                    for (int i = 0; i < fastestLap.SectorTimesMs.Length; i++)
+                    if (fastestCar != null)
                     {
-                        _ = sectorTimes.Append($"S{i + 1}: {TimeSpan.FromMilliseconds(fastestLap.SectorTimesMs[i]):mm\\:ss\\.fff}");
-                        if (i < fastestLap.SectorTimesMs.Length - 1)
-                            _ = sectorTimes.Append(", ");
+                        _panel.AddLine("Fastest", $"#{fastestCar.CarNumber} - {fastestDriver.Name} - L{fastestLap.LapIndex}");
+
+                        _panel.AddLine("Fastest Lap", $"{TimeSpan.FromMilliseconds(fastestLap.LapTimeMs):mm\\:ss\\.fff} ");
+
+                        StringBuilder sectorTimes = new();
+                        for (int i = 0; i < fastestLap.SectorTimesMs.Length; i++)
+                        {
+                            _ = sectorTimes.Append($"S{i + 1}: {TimeSpan.FromMilliseconds(fastestLap.SectorTimesMs[i]):mm\\:ss\\.fff}");
+                            if (i < fastestLap.SectorTimesMs.Length - 1)
+                                _ = sectorTimes.Append(", ");
+                        }
+                        _panel.AddLine("Sectors", $" {sectorTimes}");
                     }
-                    _panel.AddLine("Sectors", $" {sectorTimes}");
                 }
             }
         }
-    breakFastestLapData: // used to "return" in the previous encoupling if section. needs to be decoupled eventually.. now a nifty "return nothing" solution.
 
         IEnumerable<LapDataNode> allValidLapTimes = allLapTimes.Where(x => x.IsValid);
         int validLapTimeCount = allValidLapTimes.Count();
