@@ -49,7 +49,7 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
 
         IEnumerable<LapDataNode?> allLapTimes = graph.Where(x => x is LapDataNode).Select(x => x as LapDataNode);
         IEnumerable<DriverNode?> allDrivers = graph.Where(x => x is DriverNode).Select(x => x as DriverNode);
-        IEnumerable<CarNode?> allCars = graph.Where(x => x is CarNode).Select(x => x as CarNode);
+        IEnumerable<RaceCarNode?> allCars = graph.Where(x => x is RaceCarNode).Select(x => x as RaceCarNode);
 
         if (allLapTimes.Any())
         {
@@ -60,11 +60,11 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
                 if (fastestLapEdges.Count != 0)
                 {
                     var fastestDriverId = fastestLapEdges.First().ParentId;
-                    var fastestDriver = allDrivers.First(x => x?.Id == fastestDriverId);
+                    var fastestDriver = allDrivers.First(driverNode => driverNode?.Id == fastestDriverId);
 
                     _ = graph.TryGetEdgesTo(fastestDriverId, out var driverEdgesTo);
 
-                    CarNode? fastestCar = allCars.FirstOrDefault(x => driverEdgesTo.Select(x => x.ParentId).Contains(x.Id));
+                    RaceCarNode? fastestCar = allCars.FirstOrDefault(carNode => driverEdgesTo.Select(edge => edge.ParentId).Contains(carNode.Id));
                     if (fastestCar != null)
                     {
                         _panel.AddLine("Fastest", $"#{fastestCar.CarNumber} - {fastestDriver.Name} - L{fastestLap.LapIndex}");
