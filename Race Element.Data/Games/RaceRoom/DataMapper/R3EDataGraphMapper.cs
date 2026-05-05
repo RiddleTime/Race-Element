@@ -6,8 +6,6 @@ using System.Diagnostics;
 
 namespace RaceElement.Data.Games.RaceRoom.DataMapper;
 
-
-
 /// <summary>
 /// Very rough testing data mapper, should have state tracking of tree nodes!
 /// </summary>
@@ -63,25 +61,11 @@ internal static class R3EDataGraphMapper
                     if (raceCarNode.Position != driverData.Place)
                         raceCarNode.Position = driverData.Place;
 
-                    //Debug.WriteLine($"Car #{raceCarNode.CarNumber} current:{raceCarNode.TrackState}  inPitLane??={driverData.InPitlane}");
-                    if (driverData.InPitlane == 1 && raceCarNode.TrackState != TrackStates.Pitlane)
-                    {
-                        Debug.WriteLine($"Set car #{raceCarNode.CarNumber} from {raceCarNode.TrackState} to {TrackStates.PitLaneIn}");
-                        graph.TryAddEdge(new TrackStateEdge() { ParentId = raceCarNode.Id, State = TrackStates.Pitlane });
-                        raceCarNode.TrackState = TrackStates.Pitlane;
-
-                    }
-                    if (driverData.InPitlane == 0 && raceCarNode.TrackState != TrackStates.Track)
-                    {
-                        Debug.WriteLine($"Set car #{raceCarNode.CarNumber} from {raceCarNode.TrackState} to {TrackStates.Track}");
-                        graph.TryAddEdge(new TrackStateEdge() { ParentId = raceCarNode.Id, State = TrackStates.Track });
-                        raceCarNode.TrackState = TrackStates.Track;
-                    }
+                    MapTrackStateChangeForDriver(graph, raceCarNode, driverData);
 
                     if (raceCarNode.Laps < driverData.CompletedLaps && !graph.Edges.IsEmpty)
                     {
                         raceCarNode.Laps = driverData.CompletedLaps;
-
 
                         int[] sectors = [
                             (int)Math.Round(Math.Abs(driverData.SectorTimePreviousSelf.Sector1 * 1000.000f)),
@@ -118,6 +102,29 @@ internal static class R3EDataGraphMapper
                 }
 
             }
+        }
+    }
+
+    /// <summary>
+    /// Map Track State and add TrackStateEdges
+    /// </summary>
+    /// <param name="graph"></param>
+    /// <param name="raceCarNode"></param>
+    /// <param name="driverData"></param>
+    private static void MapTrackStateChangeForDriver(DataGraph graph, CarNode raceCarNode, DriverData driverData)
+    {
+        if (driverData.InPitlane == 1 && raceCarNode.TrackState != TrackStates.Pitlane)
+        {
+            Debug.WriteLine($"Set car #{raceCarNode.CarNumber} from {raceCarNode.TrackState} to {TrackStates.Pitlane}");
+            graph.TryAddEdge(new TrackStateEdge() { ParentId = raceCarNode.Id, State = TrackStates.Pitlane });
+            raceCarNode.TrackState = TrackStates.Pitlane;
+
+        }
+        if (driverData.InPitlane == 0 && raceCarNode.TrackState != TrackStates.Track)
+        {
+            Debug.WriteLine($"Set car #{raceCarNode.CarNumber} from {raceCarNode.TrackState} to {TrackStates.Track}");
+            graph.TryAddEdge(new TrackStateEdge() { ParentId = raceCarNode.Id, State = TrackStates.Track });
+            raceCarNode.TrackState = TrackStates.Track;
         }
     }
 }
