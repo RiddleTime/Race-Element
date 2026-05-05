@@ -65,6 +65,8 @@ public sealed record class CarNode : AbstractNode
     /// </summary>
     public int Position { get; set; } = -1;
 
+    public TrackStates TrackState = TrackStates.None;
+
     /// <summary>
     /// The amount of completed laps
     /// </summary>

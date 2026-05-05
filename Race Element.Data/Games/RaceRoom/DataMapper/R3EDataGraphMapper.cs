@@ -27,7 +27,7 @@ internal static class R3EDataGraphMapper
 
         for (int i = 0; i < shared.DriverData.Length; i++)
         {
-            var driverData = shared.DriverData[i];
+            SharedMemory.DriverData driverData = shared.DriverData[i];
             if (driverData.Place == -1) continue;
 
             var matchingCars = existingCars.Where(x => x?.CarNumber == driverData.DriverInfo.CarNumber);
@@ -40,6 +40,7 @@ internal static class R3EDataGraphMapper
                     Position = driverData.Place,
                     Laps = driverData.CompletedLaps,
                 };
+
                 var raceDriverNode = new DriverNode()
                 {
                     DriverId = driverData.DriverInfo.UserId,
@@ -61,6 +62,21 @@ internal static class R3EDataGraphMapper
                     // Update data
                     if (raceCarNode.Position != driverData.Place)
                         raceCarNode.Position = driverData.Place;
+
+                    //Debug.WriteLine($"Car #{raceCarNode.CarNumber} current:{raceCarNode.TrackState}  inPitLane??={driverData.InPitlane}");
+                    if (driverData.InPitlane == 1 && raceCarNode.TrackState != TrackStates.Pitlane)
+                    {
+                        Debug.WriteLine($"Set car #{raceCarNode.CarNumber} from {raceCarNode.TrackState} to {TrackStates.PitLaneIn}");
+                        graph.TryAddEdge(new TrackStateEdge() { ParentId = raceCarNode.Id, State = TrackStates.Pitlane });
+                        raceCarNode.TrackState = TrackStates.Pitlane;
+
+                    }
+                    if (driverData.InPitlane == 0 && raceCarNode.TrackState != TrackStates.Track)
+                    {
+                        Debug.WriteLine($"Set car #{raceCarNode.CarNumber} from {raceCarNode.TrackState} to {TrackStates.Track}");
+                        graph.TryAddEdge(new TrackStateEdge() { ParentId = raceCarNode.Id, State = TrackStates.Track });
+                        raceCarNode.TrackState = TrackStates.Track;
+                    }
 
                     if (raceCarNode.Laps < driverData.CompletedLaps && !graph.Edges.IsEmpty)
                     {
