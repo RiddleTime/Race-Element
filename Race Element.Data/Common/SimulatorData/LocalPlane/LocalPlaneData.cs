@@ -27,6 +27,11 @@ public sealed record PhysicsData
     /// </summary>
     public double AltitudeFeet { get; internal set; }
 
+    /// <summary>
+    /// Knots.
+    /// </summary>
     public double IndicatedAirSpeed { get; internal set; }
+
+
     public double GroundSpeed { get; internal set; }
 }
