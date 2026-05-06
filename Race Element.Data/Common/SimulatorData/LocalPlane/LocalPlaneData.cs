@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Numerics;
-using System.Text;
+﻿using System.Numerics;
 
 namespace RaceElement.Data.Common.SimulatorData.LocalPlane;
 
 public sealed record LocalPlaneData
 {
+    public PhysicsData Physics { get; internal set; } = new();
+}
+
+public sealed record PhysicsData
+{
     public double Latitude { get; internal set; }
     public double Longitude { get; internal set; }
-
 
     public Vector3 Orientation { get; internal set; }
 

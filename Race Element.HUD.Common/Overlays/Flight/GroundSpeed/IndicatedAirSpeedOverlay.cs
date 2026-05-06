@@ -1,4 +1,5 @@
-﻿using RaceElement.Data.Common;
+﻿using RaceElement.Data.ACC.Database.Telemetry;
+using RaceElement.Data.Common;
 using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -59,27 +60,15 @@ internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbst
 
         int x = 0;
 
-        double speedKnots = SimDataProvider.LocalPlane.IndicatedAirSpeed;
-
-
+        var physics = SimDataProvider.LocalPlane.Physics;
         double indicatedSpeed = _config.General.Units switch
         {
-            IndicatedAirSpeedConfiguration.UnitChoice.Knots
-                => SimDataProvider.LocalPlane.IndicatedAirSpeed,
-
-            IndicatedAirSpeedConfiguration.UnitChoice.KilometersPerHour
-                => SimDataProvider.LocalPlane.IndicatedAirSpeed * 1.852,
-
-            IndicatedAirSpeedConfiguration.UnitChoice.MilesPerHour
-                => SimDataProvider.LocalPlane.IndicatedAirSpeed * 1.1507794480235425,
-
-            IndicatedAirSpeedConfiguration.UnitChoice.MetersPerSecond
-                => SimDataProvider.LocalPlane.IndicatedAirSpeed * 0.5144444444444444,
-
-            IndicatedAirSpeedConfiguration.UnitChoice.FeetPerSecond
-                => SimDataProvider.LocalPlane.IndicatedAirSpeed * 1.687809911111111,
-
-            _ => SimDataProvider.LocalPlane.IndicatedAirSpeed
+            IndicatedAirSpeedConfiguration.UnitChoice.Knots => physics.IndicatedAirSpeed,
+            IndicatedAirSpeedConfiguration.UnitChoice.KilometersPerHour => physics.IndicatedAirSpeed * 1.852,
+            IndicatedAirSpeedConfiguration.UnitChoice.MilesPerHour => physics.IndicatedAirSpeed * 1.1507794480235425,
+            IndicatedAirSpeedConfiguration.UnitChoice.MetersPerSecond => physics.IndicatedAirSpeed * 0.5144444444444444,
+            IndicatedAirSpeedConfiguration.UnitChoice.FeetPerSecond => physics.IndicatedAirSpeed * 1.687809911111111,
+            _ => physics.IndicatedAirSpeed
         };
 
         if (_config.General.Units == IndicatedAirSpeedConfiguration.UnitChoice.MilesPerHour)

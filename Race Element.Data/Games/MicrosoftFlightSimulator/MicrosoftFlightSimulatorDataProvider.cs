@@ -4,6 +4,7 @@ using RaceElement.Data.Common.SimulatorData.LocalPlane;
 using SimConnect.NET;
 using SimConnect.NET.Aircraft;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace RaceElement.Data.Games.MicrosoftFlightSimulator;
 
@@ -42,25 +43,64 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 
         if (!_simConnectClient.IsConnected)
         {
+            localPlane = new();
             Connect();
-            Thread.Sleep(4000);
+            Thread.Sleep(5000);
             return;
         }
 
-
-        AircraftMotion motion;
         try
         {
-            motion = _simConnectClient.Aircraft.GetMotionAsync().GetAwaiter().GetResult();
+            AircraftMotion motion = _simConnectClient.Aircraft.GetMotionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            AircraftPosition position = _simConnectClient.Aircraft.GetPositionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            localPlane.Physics.IndicatedAirSpeed = motion.IndicatedAirspeed;
+            localPlane.Physics.GroundSpeed = motion.GroundSpeed;
+            localPlane.Physics.VerticalSpeed = motion.VerticalSpeed;
+
+            localPlane.Physics.Latitude = position.Latitude;
+            localPlane.Physics.Longitude = position.Longitude;
+            localPlane.Physics.Orientation = GetForwardVector(position.TrueHeading, position.Pitch, position.Bank);
         }
         catch (Exception)
         {
             return;
         }
+    }
 
-        localPlane.IndicatedAirSpeed = motion.IndicatedAirspeed;
-        localPlane.GroundSpeed = motion.GroundSpeed;
-        localPlane.VerticalSpeed = motion.VerticalSpeed;
+    /// <summary>
+    /// Z-forward, Y-up, X-right - Standard right-handed system.
+    /// </summary>
+    /// <param name="headingDegrees"></param>
+    /// <param name="pitchDegrees"></param>
+    /// <param name="bankDegrees"></param>
+    /// <returns></returns>
+    private static Vector3 GetForwardVector(double headingDegrees, double pitchDegrees, double bankDegrees)
+    {
+        // Convert to radians
+        double headingRad = headingDegrees * Math.PI / 180.0;
+        double pitchRad = pitchDegrees * Math.PI / 180.0;
+        double bankRad = bankDegrees * Math.PI / 180.0;
+
+        // Trigonometric values
+        double cosH = Math.Cos(headingRad);
+        double sinH = Math.Sin(headingRad);
+        double cosP = Math.Cos(pitchRad);
+        double sinP = Math.Sin(pitchRad);
+        double cosB = Math.Cos(bankRad);
+        double sinB = Math.Sin(bankRad);
+
+        // Calculate forward vector (Z-forward, Y-up, X-right - standard right-handed system)
+        Vector3 forward = new()
+        {
+            X = (float)(cosP * sinH * cosB + sinP * sinB),          // East component
+            Y = (float)(-sinP * cosB + cosP * sinH * sinB),         // Up component  (negative because pitch up = positive climb)
+            Z = (float)(cosP * cosH * cosB - sinP * sinH * sinB)    // North component
+        };
+
+        forward = Vector3.Normalize(forward);
+
+        return forward;
     }
 
     private void Connect()
