@@ -59,7 +59,7 @@ internal sealed class GroundSpeedOverlay(Rectangle rectangle) : CommonAbstractOv
 
         int x = 0;
 
-        float speedKmh = SimDataProvider.LocalCar.Physics.Velocity;
+        float speedKmh = (float)SimDataProvider.LocalPlane.IndicatedAirSpeed;
         if (_config.General.Units == GroundSpeedConfiguration.UnitChoice.Mph)
             speedKmh *= 0.621371f;
 

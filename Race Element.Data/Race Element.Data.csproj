@@ -64,6 +64,7 @@
 	<ItemGroup>
 		<PackageReference Include="DeepCopy" Version="1.0.3" />
 		<PackageReference Include="Riok.Mapperly" Version="4.1.1" />
+		<PackageReference Include="SimConnect.NET" Version="0.1.18" />
 		<PackageReference Include="YamlDotNet" Version="15.1.1" />
 	</ItemGroup>
 

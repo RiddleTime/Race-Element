@@ -20,8 +20,14 @@ public sealed record LocalPlaneData
     public double RollAngle { get; internal set; }
 
 
+
+    /// <summary>
+    /// Feet per Minute
+    /// </summary>
+    public double VerticalSpeed { get; internal set; }
+
     public double AltitudeFeet { get; internal set; }
 
-    public double AirSpeed { get; internal set; }
+    public double IndicatedAirSpeed { get; internal set; }
     public double GroundSpeed { get; internal set; }
 }
