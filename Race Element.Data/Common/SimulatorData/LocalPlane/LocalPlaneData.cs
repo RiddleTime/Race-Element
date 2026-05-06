@@ -12,21 +12,19 @@ public sealed record PhysicsData
     public double Latitude { get; internal set; }
     public double Longitude { get; internal set; }
 
+    /// <summary>
+    /// Z-forward, Y-up, X-right - Standard right-handed system.
+    /// </summary>
     public Vector3 Orientation { get; internal set; }
 
-    public double YawAngle { get; internal set; }
-
-    public double PitchAngle { get; internal set; }
-
-    public double RollAngle { get; internal set; }
-
-
-
     /// <summary>
-    /// Feet per Minute
+    /// Feet per Minute.
     /// </summary>
     public double VerticalSpeed { get; internal set; }
 
+    /// <summary>
+    /// Altitude above sea level.
+    /// </summary>
     public double AltitudeFeet { get; internal set; }
 
     public double IndicatedAirSpeed { get; internal set; }

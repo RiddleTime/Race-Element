@@ -6,17 +6,18 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using System.Drawing;
 using System.Drawing.Text;
+using System.Text.RegularExpressions;
 
-namespace RaceElement.HUD.Common.Overlays.Pitwall.LocalCarData;
+namespace RaceElement.HUD.Common.Overlays.Pitwall.LocalPlaneData;
 
 [Overlay(
-    Name = "Common LocalCarData",
-    Description = "Provides info about the common local car data.",
+    Name = "Common LocalPlaneData",
+    Description = "Provides info about the common local lane data.",
     OverlayType = OverlayType.Pitwall,
     Authors = ["Reinier Klarenberg"],
-    UnsupportedGames = Data.Games.Game.MicrosoftFlightSimulator2020
+    SupportedGames = Data.Games.Game.MicrosoftFlightSimulator2020
 )]
-internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
+internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
 {
     private readonly LocalPlaneDataConfig _config = new();
     private sealed class LocalPlaneDataConfig : OverlayConfiguration
@@ -27,16 +28,7 @@ internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
         public VisibleMemberGrouping VisibleMember { get; init; } = new();
         public sealed class VisibleMemberGrouping
         {
-            public bool CarModel { get; init; } = true;
             public bool Physics { get; init; } = true;
-            public bool Engine { get; init; } = true;
-            public bool Inputs { get; init; } = true;
-            public bool Tyres { get; init; } = true;
-            public bool Brakes { get; init; } = true;
-            public bool Suspension { get; init; } = true;
-            public bool Electronics { get; init; } = true;
-            public bool RaceData { get; init; } = true;
-            public bool TimingData { get; init; } = true;
         }
 
         [ConfigGrouping("Data", "Adjust the members visible in the debug menu")]
@@ -49,10 +41,10 @@ internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
     }
 
     private Font? _font;
-    public LocalCarDataOverlay(Rectangle rectangle) : base(rectangle, "Common LocalCarData")
+    public LocalPlaneDataOverlay(Rectangle rectangle) : base(rectangle, "Common LocalPlaneData")
     {
         RefreshRateHz = _config.Data.RefreshRateHz;
-        Width = 330;
+        Width = 380;
     }
 
     public sealed override void BeforeStart() => _font = FontUtil.FontSegoeMono(10);
@@ -67,35 +59,8 @@ internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         float currentY = 0;
 
-        if (_config.VisibleMember.CarModel)
-            currentY += DrawObject(SimDataProvider.LocalCar.CarModel, "Car Model", currentY, g).Height;
-
         if (_config.VisibleMember.Physics)
-            currentY += DrawObject(SimDataProvider.LocalCar.Physics, "Physics", currentY, g).Height;
-
-        if (_config.VisibleMember.Engine)
-            currentY += DrawObject(SimDataProvider.LocalCar.Engine, "Engine", currentY, g).Height;
-
-        if (_config.VisibleMember.Inputs)
-            currentY += DrawObject(SimDataProvider.LocalCar.Inputs, "Inputs", currentY, g).Height;
-
-        if (_config.VisibleMember.Tyres)
-            currentY += DrawObject(SimDataProvider.LocalCar.Tyres, "Tyres", currentY, g).Height;
-
-        if (_config.VisibleMember.Brakes)
-            currentY += DrawObject(SimDataProvider.LocalCar.Brakes, "Brakes", currentY, g).Height;
-
-        if (_config.VisibleMember.Suspension)
-            currentY += DrawObject(SimDataProvider.LocalCar.Suspension, "Suspension", currentY, g).Height;
-
-        if (_config.VisibleMember.Electronics)
-            currentY += DrawObject(SimDataProvider.LocalCar.Electronics, "Electronics", currentY, g).Height;
-
-        if (_config.VisibleMember.RaceData)
-            currentY += DrawObject(SimDataProvider.LocalCar.Race, "Race Data", currentY, g).Height;
-
-        if (_config.VisibleMember.TimingData)
-            currentY += DrawObject(SimDataProvider.LocalCar.Timing, "Timing Data", currentY, g).Height;
+            currentY += DrawObject(SimDataProvider.LocalPlane.Physics, "Physics", currentY, g).Height;
 
         this.Height = (int)currentY;
     }
@@ -109,9 +74,13 @@ internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
         carModel = carModel.Remove(carModel.Length - 1, 1);
         carModel = carModel.Replace("  },\r\n", "");
         carModel = carModel.Replace(" {", "");
+        carModel = CommaBeforeNewLine().Replace(carModel, "");
         SizeF carModelSize = g.MeasureString(carModel, _font, Width);
         g.DrawStringWithShadow(carModel, _font, Brushes.White, new RectangleF(0, y, carModelSize.Width, carModelSize.Height));
 
         return carModelSize;
     }
+
+    [GeneratedRegex(@",\s*$", RegexOptions.Multiline)]
+    private static partial Regex CommaBeforeNewLine();
 }

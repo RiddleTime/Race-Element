@@ -35,7 +35,6 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         _simConnectClient.Dispose();
     }
 
-
     public void UpdateFlightData(ref LocalPlaneData localPlane)
     {
         if (_simConnectClient == null)
@@ -61,6 +60,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             localPlane.Physics.Latitude = position.Latitude;
             localPlane.Physics.Longitude = position.Longitude;
             localPlane.Physics.Orientation = GetForwardVector(position.TrueHeading, position.Pitch, position.Bank);
+            localPlane.Physics.AltitudeFeet = position.Altitude;
         }
         catch (Exception)
         {
@@ -73,14 +73,14 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
     /// </summary>
     /// <param name="headingDegrees"></param>
     /// <param name="pitchDegrees"></param>
-    /// <param name="bankDegrees"></param>
+    /// <param name="bankAngleDegrees"></param>
     /// <returns></returns>
-    private static Vector3 GetForwardVector(double headingDegrees, double pitchDegrees, double bankDegrees)
+    private static Vector3 GetForwardVector(double headingDegrees, double pitchDegrees, double bankAngleDegrees)
     {
         // Convert to radians
         double headingRad = headingDegrees * Math.PI / 180.0;
         double pitchRad = pitchDegrees * Math.PI / 180.0;
-        double bankRad = bankDegrees * Math.PI / 180.0;
+        double bankRad = bankAngleDegrees * Math.PI / 180.0;
 
         // Trigonometric values
         double cosH = Math.Cos(headingRad);

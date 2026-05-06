@@ -5,6 +5,9 @@ namespace RaceElement.HUD.Common.Overlays.Flight.GroundSpeed;
 
 internal sealed class IndicatedAirSpeedConfiguration : OverlayConfiguration
 {
+    public enum RpmTextFont { Roboto, Conthrax, Obitron, Segoe }
+    public enum UnitChoice { Knots, KilometersPerHour, MilesPerHour, MetersPerSecond, FeetPerSecond }
+
     public IndicatedAirSpeedConfiguration() => GenericConfiguration.AllowRescale = false;
 
     [ConfigGrouping("General", "General options")]
@@ -48,6 +51,4 @@ internal sealed class IndicatedAirSpeedConfiguration : OverlayConfiguration
         public int BackgroundOpacity { get; init; } = 175;
     }
 
-    public enum RpmTextFont { Roboto, Conthrax, Obitron, Segoe }
-    public enum UnitChoice { Knots, KilometersPerHour, MilesPerHour, MetersPerSecond, FeetPerSecond }
 }
