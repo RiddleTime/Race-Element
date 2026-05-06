@@ -11,14 +11,14 @@ using System.Drawing.Text;
 namespace RaceElement.HUD.Common.Overlays.Flight.GroundSpeed;
 
 [Overlay(
-    Name = "Ground Speed",
-    Description = "The current ground speed in the defined units",
+    Name = "Indicated Air Speed",
+    Description = "The air speed as indicated by the planes instruments.",
     SupportedGames = Game.MicrosoftFlightSimulator2020,
     Authors = ["Reinier Klarenberg"]
 )]
-internal sealed class GroundSpeedOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Ground Speed")
+internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Indicated Air Speed")
 {
-    private readonly GroundSpeedConfiguration _config = new();
+    private readonly IndicatedAirSpeedConfiguration _config = new();
 
     private CachedBitmap? _cachedBackground;
     private NumberBitmaps? _bitmaps;
@@ -59,11 +59,33 @@ internal sealed class GroundSpeedOverlay(Rectangle rectangle) : CommonAbstractOv
 
         int x = 0;
 
-        float speedKmh = (float)SimDataProvider.LocalPlane.IndicatedAirSpeed;
-        if (_config.General.Units == GroundSpeedConfiguration.UnitChoice.Mph)
-            speedKmh *= 0.621371f;
+        double speedKnots = SimDataProvider.LocalPlane.IndicatedAirSpeed;
 
-        string s = $"{speedKmh:f0}".FillStart(_config.General.Digits, ' ');
+
+        double indicatedSpeed = _config.General.Units switch
+        {
+            IndicatedAirSpeedConfiguration.UnitChoice.Knots
+                => SimDataProvider.LocalPlane.IndicatedAirSpeed,
+
+            IndicatedAirSpeedConfiguration.UnitChoice.KilometersPerHour
+                => SimDataProvider.LocalPlane.IndicatedAirSpeed * 1.852,
+
+            IndicatedAirSpeedConfiguration.UnitChoice.MilesPerHour
+                => SimDataProvider.LocalPlane.IndicatedAirSpeed * 1.1507794480235425,
+
+            IndicatedAirSpeedConfiguration.UnitChoice.MetersPerSecond
+                => SimDataProvider.LocalPlane.IndicatedAirSpeed * 0.5144444444444444,
+
+            IndicatedAirSpeedConfiguration.UnitChoice.FeetPerSecond
+                => SimDataProvider.LocalPlane.IndicatedAirSpeed * 1.687809911111111,
+
+            _ => SimDataProvider.LocalPlane.IndicatedAirSpeed
+        };
+
+        if (_config.General.Units == IndicatedAirSpeedConfiguration.UnitChoice.MilesPerHour)
+            indicatedSpeed *= 0.621371f;
+
+        string s = $"{indicatedSpeed:f0}".FillStart(_config.General.Digits, ' ');
 
         for (int i = 0; i < _config.General.Digits; i++)
         {
@@ -79,20 +101,20 @@ internal sealed class GroundSpeedOverlay(Rectangle rectangle) : CommonAbstractOv
     {
         private readonly CachedBitmap[] _rpmBitmaps = new CachedBitmap[10];
         public readonly (int Width, int Height) BitmapDimension;
-        public NumberBitmaps(GroundSpeedConfiguration config)
+        public NumberBitmaps(IndicatedAirSpeedConfiguration config)
         {
             GenerateBitMaps(config);
             BitmapDimension = (_rpmBitmaps[0].Width, _rpmBitmaps[0].Height);
         }
 
-        private void GenerateBitMaps(GroundSpeedConfiguration config)
+        private void GenerateBitMaps(IndicatedAirSpeedConfiguration config)
         {
             Font font = config.General.Font switch
             {
-                GroundSpeedConfiguration.RpmTextFont.Conthrax => FontUtil.FontConthrax(config.General.FontSize),
-                GroundSpeedConfiguration.RpmTextFont.Obitron => FontUtil.FontOrbitron(config.General.FontSize),
-                GroundSpeedConfiguration.RpmTextFont.Roboto => FontUtil.FontRoboto(config.General.FontSize),
-                GroundSpeedConfiguration.RpmTextFont.Segoe => FontUtil.FontSegoeMono(config.General.FontSize),
+                IndicatedAirSpeedConfiguration.RpmTextFont.Conthrax => FontUtil.FontConthrax(config.General.FontSize),
+                IndicatedAirSpeedConfiguration.RpmTextFont.Obitron => FontUtil.FontOrbitron(config.General.FontSize),
+                IndicatedAirSpeedConfiguration.RpmTextFont.Roboto => FontUtil.FontRoboto(config.General.FontSize),
+                IndicatedAirSpeedConfiguration.RpmTextFont.Segoe => FontUtil.FontSegoeMono(config.General.FontSize),
                 _ => FontUtil.FontConthrax(config.General.FontSize),
             };
 

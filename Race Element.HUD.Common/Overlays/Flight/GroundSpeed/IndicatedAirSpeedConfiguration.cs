@@ -3,16 +3,16 @@ using System.Drawing;
 
 namespace RaceElement.HUD.Common.Overlays.Flight.GroundSpeed;
 
-internal sealed class GroundSpeedConfiguration : OverlayConfiguration
+internal sealed class IndicatedAirSpeedConfiguration : OverlayConfiguration
 {
-    public GroundSpeedConfiguration() => GenericConfiguration.AllowRescale = false;
+    public IndicatedAirSpeedConfiguration() => GenericConfiguration.AllowRescale = false;
 
     [ConfigGrouping("General", "General options")]
     public GeneralGrouping General { get; init; } = new();
     public sealed class GeneralGrouping
     {
-        [ToolTip("Kilometers per Hour or Miles per Hour")]
-        public UnitChoice Units { get; init; } = UnitChoice.Kmh;
+        [ToolTip("Unit Type")]
+        public UnitChoice Units { get; init; } = UnitChoice.Knots;
 
         [ToolTip("Size of the font")]
         [FloatRange(12.0f, 90.0f, 0.5f, 1)]
@@ -49,5 +49,5 @@ internal sealed class GroundSpeedConfiguration : OverlayConfiguration
     }
 
     public enum RpmTextFont { Roboto, Conthrax, Obitron, Segoe }
-    public enum UnitChoice { Kmh, Mph }
+    public enum UnitChoice { Knots, KilometersPerHour, MilesPerHour, MetersPerSecond, FeetPerSecond }
 }
