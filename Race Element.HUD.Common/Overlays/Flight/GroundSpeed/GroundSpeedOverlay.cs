@@ -8,25 +8,26 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
-namespace RaceElement.HUD.Common.Overlays.Driving.Speedometer;
+namespace RaceElement.HUD.Common.Overlays.Flight.GroundSpeed;
+
 [Overlay(
-    Name = "Speedometer",
-    Description = "The current speed as text",
-    UnsupportedGames = Game.MicrosoftFlightSimulator2020,
+    Name = "Ground Speed",
+    Description = "The current ground speed in the defined units",
+    SupportedGames = Game.MicrosoftFlightSimulator2020,
     Authors = ["Reinier Klarenberg"]
 )]
-internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Speedometer")
+internal sealed class GroundSpeedOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Ground Speed")
 {
-    private readonly SpeedometerConfiguration _config = new();
+    private readonly GroundSpeedConfiguration _config = new();
 
     private CachedBitmap? _cachedBackground;
-    private RpmBitmaps? _bitmaps;
+    private NumberBitmaps? _bitmaps;
 
     public override void BeforeStart()
     {
         RefreshRateHz = _config.General.RefreshRate;
 
-        _bitmaps = new RpmBitmaps(_config);
+        _bitmaps = new NumberBitmaps(_config);
         Width = _config.General.Digits * _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing * (_config.General.Digits - 1);
         Height = _bitmaps.BitmapDimension.Height;
 
@@ -59,7 +60,7 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
         int x = 0;
 
         float speedKmh = SimDataProvider.LocalCar.Physics.Velocity;
-        if (_config.General.Units == SpeedometerConfiguration.UnitChoice.Mph)
+        if (_config.General.Units == GroundSpeedConfiguration.UnitChoice.Mph)
             speedKmh *= 0.621371f;
 
         string s = $"{speedKmh:f0}".FillStart(_config.General.Digits, ' ');
@@ -74,24 +75,24 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
         }
     }
 
-    private sealed class RpmBitmaps : IDisposable
+    private sealed class NumberBitmaps : IDisposable
     {
         private readonly CachedBitmap[] _rpmBitmaps = new CachedBitmap[10];
         public readonly (int Width, int Height) BitmapDimension;
-        public RpmBitmaps(SpeedometerConfiguration config)
+        public NumberBitmaps(GroundSpeedConfiguration config)
         {
             GenerateBitMaps(config);
             BitmapDimension = (_rpmBitmaps[0].Width, _rpmBitmaps[0].Height);
         }
 
-        private void GenerateBitMaps(SpeedometerConfiguration config)
+        private void GenerateBitMaps(GroundSpeedConfiguration config)
         {
             Font font = config.General.Font switch
             {
-                SpeedometerConfiguration.RpmTextFont.Conthrax => FontUtil.FontConthrax(config.General.FontSize),
-                SpeedometerConfiguration.RpmTextFont.Obitron => FontUtil.FontOrbitron(config.General.FontSize),
-                SpeedometerConfiguration.RpmTextFont.Roboto => FontUtil.FontRoboto(config.General.FontSize),
-                SpeedometerConfiguration.RpmTextFont.Segoe => FontUtil.FontSegoeMono(config.General.FontSize),
+                GroundSpeedConfiguration.RpmTextFont.Conthrax => FontUtil.FontConthrax(config.General.FontSize),
+                GroundSpeedConfiguration.RpmTextFont.Obitron => FontUtil.FontOrbitron(config.General.FontSize),
+                GroundSpeedConfiguration.RpmTextFont.Roboto => FontUtil.FontRoboto(config.General.FontSize),
+                GroundSpeedConfiguration.RpmTextFont.Segoe => FontUtil.FontSegoeMono(config.General.FontSize),
                 _ => FontUtil.FontConthrax(config.General.FontSize),
             };
 

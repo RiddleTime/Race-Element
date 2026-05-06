@@ -13,7 +13,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.ShiftBar;
 [Overlay(
     Name = "Shift Bar",
     Description = "A lightweight RPM Bar. Can render up to 200 Hz for some simulators.",
-    UnsupportedGames = Game.DirtRally2,
+    UnsupportedGames = Game.DirtRally2 | Game.MicrosoftFlightSimulator2020,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class ShiftBarOverlay : CommonAbstractOverlay

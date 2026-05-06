@@ -27,6 +27,7 @@
 		<None Remove="Games\Resources\Icons\FH5.ico" />
 		<None Remove="Games\Resources\Icons\FM.ico" />
 		<None Remove="Games\Resources\Icons\LMU.ico" />
+		<None Remove="Games\Resources\Icons\MFS2020.ico" />
 		<None Remove="Games\Resources\Icons\PMR.ico" />
 		<None Remove="Games\Resources\Icons\rF2.ico" />
 		<None Remove="Games\Resources\Icons\WRCG.ico" />
@@ -40,6 +41,7 @@
 		<None Remove="Games\Resources\Logos\FH5.jpg" />
 		<None Remove="Games\Resources\Logos\FM.jpg" />
 		<None Remove="Games\Resources\Logos\LMU.jpg" />
+		<None Remove="Games\Resources\Logos\MFS2020.jpg" />
 		<None Remove="Games\Resources\Logos\PMR.jpg" />
 		<None Remove="Games\Resources\Logos\rF2.jpg" />
 		<None Remove="Games\Resources\Logos\WRCG.jpg" />
@@ -85,6 +87,7 @@
 		<EmbeddedResource Include="Games\Resources\Icons\FM.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\iRacing.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\LMU.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\MFS2020.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\PMR.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\RaceRoom.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\rF2.ico" />
@@ -104,6 +107,7 @@
 		<EmbeddedResource Include="Games\Resources\Logos\FM.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\iRacing.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\LMU.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\MFS2020.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\PMR.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\RaceRoom.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\rF2.jpg" />

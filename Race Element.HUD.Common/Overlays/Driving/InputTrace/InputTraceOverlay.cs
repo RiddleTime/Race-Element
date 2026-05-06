@@ -1,5 +1,6 @@
 ﻿using Race_Element.Core.Jobs.Loop;
 using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util.SystemExtensions;
 using System.Collections.Concurrent;
@@ -13,7 +14,8 @@ namespace RaceElement.HUD.Common.Overlays.Driving.InputTrace;
     Version = 1.00,
     Authors = ["Reinier Klarenberg, Dirk Wolf"],
     OverlayType = OverlayType.Drive,
-    OverlayCategory = OverlayCategory.Inputs
+    OverlayCategory = OverlayCategory.Inputs,
+    UnsupportedGames = Game.MicrosoftFlightSimulator2020
 )]
 internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Input Trace")
 {
