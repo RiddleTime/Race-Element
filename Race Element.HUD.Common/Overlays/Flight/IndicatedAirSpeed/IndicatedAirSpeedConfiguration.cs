@@ -5,7 +5,7 @@ namespace RaceElement.HUD.Common.Overlays.Flight.IndicatedAirSpeed;
 
 internal sealed class IndicatedAirSpeedConfiguration : OverlayConfiguration
 {
-    public enum RpmTextFont { Roboto, Conthrax, Obitron, Segoe }
+    public enum TextFont { Roboto, Conthrax, Obitron, Segoe }
     public enum UnitChoice { Knots, KilometersPerHour, MilesPerHour, MetersPerSecond, FeetPerSecond }
 
     public IndicatedAirSpeedConfiguration() => GenericConfiguration.AllowRescale = false;
@@ -22,7 +22,7 @@ internal sealed class IndicatedAirSpeedConfiguration : OverlayConfiguration
         public float FontSize { get; init; } = 25.5f;
 
         [ToolTip("Change the Font")]
-        public RpmTextFont Font { get; init; } = RpmTextFont.Roboto;
+        public TextFont Font { get; init; } = TextFont.Roboto;
 
         [ToolTip("Amount of visible digits. 5 Digits is available, if you really need it.")]
         [IntRange(3, 5, 1)]

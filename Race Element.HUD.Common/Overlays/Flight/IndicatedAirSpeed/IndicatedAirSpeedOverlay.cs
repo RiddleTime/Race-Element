@@ -96,10 +96,10 @@ internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbst
         {
             Font font = config.General.Font switch
             {
-                IndicatedAirSpeedConfiguration.RpmTextFont.Conthrax => FontUtil.FontConthrax(config.General.FontSize),
-                IndicatedAirSpeedConfiguration.RpmTextFont.Obitron => FontUtil.FontOrbitron(config.General.FontSize),
-                IndicatedAirSpeedConfiguration.RpmTextFont.Roboto => FontUtil.FontRoboto(config.General.FontSize),
-                IndicatedAirSpeedConfiguration.RpmTextFont.Segoe => FontUtil.FontSegoeMono(config.General.FontSize),
+                IndicatedAirSpeedConfiguration.TextFont.Conthrax => FontUtil.FontConthrax(config.General.FontSize),
+                IndicatedAirSpeedConfiguration.TextFont.Obitron => FontUtil.FontOrbitron(config.General.FontSize),
+                IndicatedAirSpeedConfiguration.TextFont.Roboto => FontUtil.FontRoboto(config.General.FontSize),
+                IndicatedAirSpeedConfiguration.TextFont.Segoe => FontUtil.FontSegoeMono(config.General.FontSize),
                 _ => FontUtil.FontConthrax(config.General.FontSize),
             };
 
