@@ -81,6 +81,12 @@ public abstract class CommonAbstractOverlay : FloatingWindow
         if (SimDataProvider.LocalCar.Engine.IsRunning)
             condition = true;
 
+
+        if (GameWhenStarted == Game.MicrosoftFlightSimulator2020)
+        {
+            condition = !SimDataProvider.GameData.IsGamePaused;
+        }
+
         Game pauseConditionable = Game.RaceRoom | Game.AmericanTruckSimulator | Game.EuroTruckSimulator2 | Game.Automobilista2 | Game.AssettoCorsaEvo | Game.LeMansUltimate
                                     | Game.WRC_Generations | Game.ProjectMotorRacing | Game.RaceRoom;
         if (pauseConditionable.HasFlag(GameWhenStarted))   // TODO: map these conditions for other simulators

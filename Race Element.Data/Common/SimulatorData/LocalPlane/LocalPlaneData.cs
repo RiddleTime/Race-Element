@@ -11,7 +11,6 @@ public sealed record LocalPlaneData
     public List<EngineData> Engines { get; internal set; } = [];
 }
 
-
 public sealed record GeneralPlaneData
 {
     /// <summary>
@@ -19,7 +18,6 @@ public sealed record GeneralPlaneData
     /// </summary>
     public uint EngineCount { get; internal set; }
 }
-
 
 public sealed record EngineData
 {

@@ -36,6 +36,9 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         _simConnectClient?.Dispose();
     }
 
+
+    private double _lastAnimationTime = 0;
+
     public void UpdateFlightData(ref LocalPlaneData localPlane)
     {
         if (_simConnectClient == null)
@@ -56,6 +59,14 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 
         try
         {
+            double lastAnimateTime = _simConnectClient.SimVars.GetAsync<double>("ANIMATION DELTA TIME", "seconds", 0).ConfigureAwait(false).GetAwaiter().GetResult();
+            if (lastAnimateTime != _lastAnimationTime)
+                SimDataProvider.GameData.IsGamePaused = false;
+            else
+                SimDataProvider.GameData.IsGamePaused = true;
+            _lastAnimationTime = lastAnimateTime;
+
+
             AircraftMotion motion = _simConnectClient.Aircraft.GetMotionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             AircraftPosition position = _simConnectClient.Aircraft.GetPositionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
@@ -100,7 +111,11 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         }
         catch (Exception e)
         {
-            Debug.WriteLine(e);
+            if (e is SimConnectException)
+            {
+                Debug.WriteLine("Received SimConnectException, disconnected client");
+                _simConnectClient.DisconnectAsync().Wait();
+            }
             return;
         }
     }
