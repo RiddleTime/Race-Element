@@ -66,10 +66,6 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
                 SimDataProvider.GameData.IsGamePaused = true;
             _lastAnimationTime = lastAnimateTime;
 
-
-            AircraftMotion motion = _simConnectClient.Aircraft.GetMotionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            AircraftPosition position = _simConnectClient.Aircraft.GetPositionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-
             uint engineCount = (uint)_simConnectClient.SimVars.GetAsync<int>("NUMBER OF ENGINES", "number", 0).ConfigureAwait(false).GetAwaiter().GetResult();
             if (localPlane.General.EngineCount != engineCount) localPlane.Engines = [];
             localPlane.General.EngineCount = (uint)engineCount;
@@ -96,6 +92,9 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
                 }
             }
 
+            AircraftMotion motion = _simConnectClient.Aircraft.GetMotionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+            AircraftPosition position = _simConnectClient.Aircraft.GetPositionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
             localPlane.Physics.IndicatedAirSpeed = motion.IndicatedAirspeed;
             localPlane.Physics.GroundSpeed = motion.GroundSpeed;
             localPlane.Physics.VerticalSpeed = motion.VerticalSpeed;
@@ -105,9 +104,6 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             localPlane.Physics.Orientation = GetForwardVector(position.TrueHeading, position.Pitch, position.Bank);
             localPlane.Physics.AltitudeSea = position.Altitude;
             localPlane.Physics.AltitudeGround = position.AltitudeAboveGround;
-
-
-
         }
         catch (Exception e)
         {
