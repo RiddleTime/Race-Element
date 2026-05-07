@@ -28,7 +28,10 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
         public VisibleMemberGrouping VisibleMember { get; init; } = new();
         public sealed class VisibleMemberGrouping
         {
+            public bool General { get; init; } = true;
             public bool Physics { get; init; } = true;
+
+            public bool Engines { get; init; } = true;
         }
 
         [ConfigGrouping("Data", "Adjust the members visible in the debug menu")]
@@ -59,8 +62,14 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
         g.TextRenderingHint = TextRenderingHint.AntiAlias;
         float currentY = 0;
 
+        if (_config.VisibleMember.General)
+            currentY += DrawObject(SimDataProvider.LocalPlane.General, "General", currentY, g).Height;
+
         if (_config.VisibleMember.Physics)
             currentY += DrawObject(SimDataProvider.LocalPlane.Physics, "Physics", currentY, g).Height;
+
+        if (_config.VisibleMember.Engines)
+            currentY += DrawObject(SimDataProvider.LocalPlane.Engines, "Engines", currentY, g).Height;
 
         this.Height = (int)currentY;
     }
@@ -70,6 +79,7 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
         if (_font == null) return new();
 
         string carModel = JsonConvert.SerializeObject(obj, Formatting.Indented);
+        if (carModel.Length < 3) return new();
         carModel = $"{header}:\n{carModel.Remove(0, 3)}";
         carModel = carModel.Remove(carModel.Length - 1, 1);
         carModel = carModel.Replace("  },\r\n", "");

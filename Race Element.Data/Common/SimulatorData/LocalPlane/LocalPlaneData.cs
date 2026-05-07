@@ -4,8 +4,47 @@ namespace RaceElement.Data.Common.SimulatorData.LocalPlane;
 
 public sealed record LocalPlaneData
 {
+    public GeneralPlaneData General { get; internal set; } = new();
+
     public PhysicsData Physics { get; internal set; } = new();
+
+    public List<EngineData> Engines { get; internal set; } = [];
 }
+
+
+public sealed record GeneralPlaneData
+{
+    /// <summary>
+    /// The amount of engines.
+    /// </summary>
+    public uint EngineCount { get; internal set; }
+}
+
+
+public sealed record EngineData
+{
+    /// <summary>
+    /// 0 based.
+    /// </summary>
+    public uint EngineIndex { get; internal set; }
+
+    /// <summary>
+    /// Revolutions per Minute
+    /// </summary>
+    public double Rpm { get; internal set; }
+
+    /// <summary>
+    /// 0 - 100
+    /// </summary>
+    public double ThrottlePosition { get; internal set; }
+
+
+    /// <summary>
+    /// Whether the engine is running.
+    /// </summary>
+    public bool IsRunning { get; internal set; }
+}
+
 
 public sealed record PhysicsData
 {
@@ -37,3 +76,5 @@ public sealed record PhysicsData
 
     public double GroundSpeed { get; internal set; }
 }
+
+

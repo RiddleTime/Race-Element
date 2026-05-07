@@ -1,4 +1,5 @@
-﻿using RaceElement.Data.Common.SimulatorData;
+﻿using RaceElement.Data.Common;
+using RaceElement.Data.Common.SimulatorData;
 using RaceElement.Data.Common.SimulatorData.LocalCar;
 using RaceElement.Data.Common.SimulatorData.LocalPlane;
 using SimConnect.NET;
@@ -42,16 +43,47 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 
         if (!_simConnectClient.IsConnected)
         {
+            SimDataProvider.GameData.IsRunning = false;
             localPlane = new();
             Connect();
             Thread.Sleep(5000);
             return;
+        }
+        else
+        {
+            SimDataProvider.GameData.IsRunning = true;
         }
 
         try
         {
             AircraftMotion motion = _simConnectClient.Aircraft.GetMotionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             AircraftPosition position = _simConnectClient.Aircraft.GetPositionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
+
+            uint engineCount = (uint)_simConnectClient.SimVars.GetAsync<int>("NUMBER OF ENGINES", "number", 0).ConfigureAwait(false).GetAwaiter().GetResult();
+            if (localPlane.General.EngineCount != engineCount) localPlane.Engines = [];
+            localPlane.General.EngineCount = (uint)engineCount;
+
+            if (engineCount > 0)
+            {
+                for (int i = 0; i < engineCount; i++)
+                {
+                    AircraftEngine engine = _simConnectClient.Aircraft.GetEngineAsync(i + 1).ConfigureAwait(false).GetAwaiter().GetResult();
+
+                    Common.SimulatorData.LocalPlane.EngineData engineData = new()
+                    {
+                        EngineIndex = (uint)i,
+                        IsRunning = engine.IsRunning,
+                        Rpm = engine.Rpm,
+                        ThrottlePosition = engine.ThrottlePosition,
+                    };
+
+                    var existingItem = localPlane.Engines.FirstOrDefault(x => x.EngineIndex == i);
+                    if (existingItem == null)
+                        localPlane.Engines.Add(engineData);
+                    else
+                        localPlane.Engines[i] = engineData;
+                }
+            }
 
             localPlane.Physics.IndicatedAirSpeed = motion.IndicatedAirspeed;
             localPlane.Physics.GroundSpeed = motion.GroundSpeed;
@@ -62,9 +94,13 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             localPlane.Physics.Orientation = GetForwardVector(position.TrueHeading, position.Pitch, position.Bank);
             localPlane.Physics.AltitudeSea = position.Altitude;
             localPlane.Physics.AltitudeGround = position.AltitudeAboveGround;
+
+
+
         }
-        catch (Exception)
+        catch (Exception e)
         {
+            Debug.WriteLine(e);
             return;
         }
     }
