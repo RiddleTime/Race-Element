@@ -44,11 +44,19 @@ internal sealed class VerticalSpeedConfiguration : OverlayConfiguration
         [IntRange(75, 255, 1)]
         public int TextOpacity { get; init; } = 255;
 
-        public Color BackgroundColor { get; init; } = Color.FromArgb(255, 0, 0, 0);
+        [ToolTip("The background color when vertical speed is positive.")]
+        public Color AirColor { get; init; } = Color.FromArgb(255, 14, 57, 146);
 
-        [ToolTip("Changes the background opacity, 0 is invisible.")]
+        [ToolTip("0 is invisible.")]
         [IntRange(0, 255, 1)]
-        public int BackgroundOpacity { get; init; } = 175;
+        public int AirOpacity { get; init; } = 175;
+
+        [ToolTip("The background color when vertical speed is negative.")]
+        public Color EarthColor { get; init; } = Color.FromArgb(255, 94, 59, 32);
+
+        [ToolTip("0 is invisible.")]
+        [IntRange(0, 255, 1)]
+        public int EarthOpacity { get; init; } = 175;
     }
 
 }

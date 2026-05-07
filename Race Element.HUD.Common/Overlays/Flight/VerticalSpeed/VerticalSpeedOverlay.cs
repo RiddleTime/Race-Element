@@ -20,7 +20,8 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
 {
     private readonly VerticalSpeedConfiguration _config = new();
 
-    private CachedBitmap? _cachedBackground;
+    private CachedBitmap? _cachedBackgroundAir;
+    private CachedBitmap? _cachedBackgroundEarth;
     private NumberBitmaps? _bitmaps;
 
     public override void BeforeStart()
@@ -31,30 +32,32 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
         Width = _config.General.Digits * _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing * (_config.General.Digits - 1);
         Height = _bitmaps.BitmapDimension.Height;
 
-        _cachedBackground = new(Width, Height, g =>
-        {
-            RectangleF barArea = new(0, 0, Width - 1, Height - 1);
+        _cachedBackgroundAir = CreateBackgroundBitmap(_config.Colors.AirOpacity, _config.Colors.AirColor);
 
-            g.CompositingQuality = CompositingQuality.HighQuality;
-            g.SmoothingMode = SmoothingMode.AntiAlias;
+        _cachedBackgroundEarth = CreateBackgroundBitmap(_config.Colors.EarthOpacity, _config.Colors.EarthColor);
 
-            using SolidBrush darkBrush = new(Color.FromArgb(_config.Colors.BackgroundOpacity, _config.Colors.BackgroundColor));
-            g.FillRoundedRectangle(darkBrush, Rectangle.Round(barArea), 3);
-            using Pen darkPen = new(darkBrush, 1);
-            g.DrawRoundedRectangle(darkPen, Rectangle.Round(barArea), 3);
-        });
     }
+
+    private CachedBitmap CreateBackgroundBitmap(int opacity, Color color) => new(Width, Height, g =>
+     {
+         RectangleF barArea = new(0, 0, Width - 1, Height - 1);
+
+         using SolidBrush darkBrush = new(Color.FromArgb(opacity, color));
+         g.FillRoundedRectangle(darkBrush, Rectangle.Round(barArea), 3);
+
+         using Pen darkPen = new(darkBrush, 1);
+         g.DrawRoundedRectangle(darkPen, Rectangle.Round(barArea), 3);
+     });
 
     public override void BeforeStop()
     {
-        _cachedBackground?.Dispose();
+        _cachedBackgroundAir?.Dispose();
+        _cachedBackgroundEarth?.Dispose();
         _bitmaps?.Dispose();
     }
 
     public override void Render(Graphics g)
     {
-        if (_config.Colors.BackgroundOpacity != 0) _cachedBackground?.Draw(g);
-
         if (_bitmaps == null) return;
 
         int x = 0;
@@ -70,6 +73,16 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
             VerticalSpeedConfiguration.UnitChoice.KilometersPerHour => physics.VerticalSpeed * 0.018288,
             _ => physics.VerticalSpeed
         };
+
+        if (verticalSpeed >= 0)
+        {
+            if (_config.Colors.AirOpacity != 0) _cachedBackgroundAir?.Draw(g);
+        }
+        else
+        {
+            if (_config.Colors.EarthOpacity != 0) _cachedBackgroundEarth?.Draw(g);
+        }
+
 
         string s = $"{verticalSpeed:f0}".FillStart(_config.General.Digits, ' ');
 
