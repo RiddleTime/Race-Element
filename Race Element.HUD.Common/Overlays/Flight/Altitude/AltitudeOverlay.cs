@@ -11,7 +11,7 @@ using System.Drawing.Text;
 namespace RaceElement.HUD.Common.Overlays.Flight.Altitude;
 
 [Overlay(
-    Name = "Altitudede",
+    Name = "Altitude",
     Description = "The Air Planes Altitude.",
     SupportedGames = Game.MicrosoftFlightSimulator2020,
     Authors = ["Reinier Klarenberg"]
