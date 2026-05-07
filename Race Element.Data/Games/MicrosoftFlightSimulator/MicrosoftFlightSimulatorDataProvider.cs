@@ -108,7 +108,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
     {
         try
         {
-            _simConnectClient.ConnectAsync().Wait();
+            _simConnectClient?.ConnectAsync().Wait();
         }
         catch (Exception e)
         {
