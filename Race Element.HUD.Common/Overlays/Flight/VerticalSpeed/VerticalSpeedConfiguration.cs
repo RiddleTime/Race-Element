@@ -5,7 +5,7 @@ namespace RaceElement.HUD.Common.Overlays.Flight.VerticalSpeed;
 
 internal sealed class VerticalSpeedConfiguration : OverlayConfiguration
 {
-    public enum RpmTextFont { Roboto, Conthrax, Obitron, Segoe }
+    public enum TextFont { Roboto, Conthrax, Obitron, Segoe }
     public enum UnitChoice { FeetPerMinute, MetersPerMinute, FeetPerSecond, MetersPerSecond, MilesPerHour, KilometersPerHour }
 
     public VerticalSpeedConfiguration() => GenericConfiguration.AllowRescale = false;
@@ -22,7 +22,7 @@ internal sealed class VerticalSpeedConfiguration : OverlayConfiguration
         public float FontSize { get; init; } = 25.5f;
 
         [ToolTip("Change the Font")]
-        public RpmTextFont Font { get; init; } = RpmTextFont.Roboto;
+        public TextFont Font { get; init; } = TextFont.Roboto;
 
         [ToolTip("Amount of visible digits. 8 Digits is available, if you really need it.")]
         [IntRange(3, 8, 1)]

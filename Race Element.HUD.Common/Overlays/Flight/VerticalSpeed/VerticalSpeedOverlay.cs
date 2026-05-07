@@ -97,10 +97,10 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
         {
             Font font = config.General.Font switch
             {
-                VerticalSpeedConfiguration.RpmTextFont.Conthrax => FontUtil.FontConthrax(config.General.FontSize),
-                VerticalSpeedConfiguration.RpmTextFont.Obitron => FontUtil.FontOrbitron(config.General.FontSize),
-                VerticalSpeedConfiguration.RpmTextFont.Roboto => FontUtil.FontRoboto(config.General.FontSize),
-                VerticalSpeedConfiguration.RpmTextFont.Segoe => FontUtil.FontSegoeMono(config.General.FontSize),
+                VerticalSpeedConfiguration.TextFont.Conthrax => FontUtil.FontConthrax(config.General.FontSize),
+                VerticalSpeedConfiguration.TextFont.Obitron => FontUtil.FontOrbitron(config.General.FontSize),
+                VerticalSpeedConfiguration.TextFont.Roboto => FontUtil.FontRoboto(config.General.FontSize),
+                VerticalSpeedConfiguration.TextFont.Segoe => FontUtil.FontSegoeMono(config.General.FontSize),
                 _ => FontUtil.FontConthrax(config.General.FontSize),
             };
 
