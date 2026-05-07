@@ -1,5 +1,4 @@
-﻿using RaceElement.Data.ACC.Database.Telemetry;
-using RaceElement.Data.Common;
+﻿using RaceElement.Data.Common;
 using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -9,7 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
-namespace RaceElement.HUD.Common.Overlays.Flight.GroundSpeed;
+namespace RaceElement.HUD.Common.Overlays.Flight.IndicatedAirSpeed;
 
 [Overlay(
     Name = "Indicated Air Speed",
@@ -70,9 +69,6 @@ internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbst
             IndicatedAirSpeedConfiguration.UnitChoice.FeetPerSecond => physics.IndicatedAirSpeed * 1.687809911111111,
             _ => physics.IndicatedAirSpeed
         };
-
-        if (_config.General.Units == IndicatedAirSpeedConfiguration.UnitChoice.MilesPerHour)
-            indicatedSpeed *= 0.621371f;
 
         string s = $"{indicatedSpeed:f0}".FillStart(_config.General.Digits, ' ');
 

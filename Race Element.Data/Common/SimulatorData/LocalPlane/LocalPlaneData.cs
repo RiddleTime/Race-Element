@@ -23,9 +23,11 @@ public sealed record PhysicsData
     public double VerticalSpeed { get; internal set; }
 
     /// <summary>
-    /// Altitude above sea level.
+    /// Altitude in Feet, above sea level.
     /// </summary>
-    public double AltitudeFeet { get; internal set; }
+    public double AltitudeSea { get; internal set; }
+
+    public double AltitudeGround { get; internal set; }
 
     /// <summary>
     /// Knots.

@@ -1,7 +1,7 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
-namespace RaceElement.HUD.Common.Overlays.Flight.GroundSpeed;
+namespace RaceElement.HUD.Common.Overlays.Flight.IndicatedAirSpeed;
 
 internal sealed class IndicatedAirSpeedConfiguration : OverlayConfiguration
 {
@@ -24,9 +24,9 @@ internal sealed class IndicatedAirSpeedConfiguration : OverlayConfiguration
         [ToolTip("Change the Font")]
         public RpmTextFont Font { get; init; } = RpmTextFont.Roboto;
 
-        [ToolTip("Amount of visible digits. 4 Digits is available, if you really need it.")]
-        [IntRange(3, 4, 1)]
-        public int Digits { get; init; } = 3;
+        [ToolTip("Amount of visible digits. 5 Digits is available, if you really need it.")]
+        [IntRange(3, 5, 1)]
+        public int Digits { get; init; } = 4;
 
         [IntRange(-10, 30, 1)]
         public int ExtraDigitSpacing { get; init; } = -8;

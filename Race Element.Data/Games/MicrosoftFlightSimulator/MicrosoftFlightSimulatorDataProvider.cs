@@ -10,7 +10,7 @@ namespace RaceElement.Data.Games.MicrosoftFlightSimulator;
 
 internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProvider
 {
-    private SimConnectClient _simConnectClient;
+    private SimConnectClient? _simConnectClient;
 
     internal override int PollingRate() => 100;
     internal override void Start()
@@ -20,7 +20,6 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             MaxReconnectAttempts = 1,
         };
         _simConnectClient.ConnectionStatusChanged += SimConnectClient_ConnectionStatusChanged;
-
     }
 
     private void SimConnectClient_ConnectionStatusChanged(object? sender, SimConnect.NET.Events.ConnectionStatusChangedEventArgs e)
@@ -31,8 +30,9 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 
     internal override void Stop()
     {
-        _simConnectClient.DisconnectAsync().Wait();
-        _simConnectClient.Dispose();
+        _simConnectClient?.DisconnectAsync().Wait();
+        if (_simConnectClient != null) _simConnectClient.ConnectionStatusChanged -= SimConnectClient_ConnectionStatusChanged;
+        _simConnectClient?.Dispose();
     }
 
     public void UpdateFlightData(ref LocalPlaneData localPlane)
@@ -60,7 +60,8 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             localPlane.Physics.Latitude = position.Latitude;
             localPlane.Physics.Longitude = position.Longitude;
             localPlane.Physics.Orientation = GetForwardVector(position.TrueHeading, position.Pitch, position.Bank);
-            localPlane.Physics.AltitudeFeet = position.Altitude;
+            localPlane.Physics.AltitudeSea = position.Altitude;
+            localPlane.Physics.AltitudeGround = position.AltitudeAboveGround;
         }
         catch (Exception)
         {
