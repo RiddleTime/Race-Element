@@ -93,7 +93,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
             if (SimDataProvider.GameData.IsGamePaused)
                 condition = false;
 
-        Game isRunningConditionable = Game.iRacing;
+        Game isRunningConditionable = Game.iRacing | Game.MicrosoftFlightSimulator2020;
         if (isRunningConditionable.HasFlag(GameWhenStarted))
             if (!SimDataProvider.GameData.IsRunning)
                 condition = false;
