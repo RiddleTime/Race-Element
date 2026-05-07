@@ -24,9 +24,9 @@ internal sealed class VerticalSpeedConfiguration : OverlayConfiguration
         [ToolTip("Change the Font")]
         public RpmTextFont Font { get; init; } = RpmTextFont.Roboto;
 
-        [ToolTip("Amount of visible digits. 5 Digits is available, if you really need it.")]
-        [IntRange(3, 5, 1)]
-        public int Digits { get; init; } = 4;
+        [ToolTip("Amount of visible digits. 8 Digits is available, if you really need it.")]
+        [IntRange(3, 8, 1)]
+        public int Digits { get; init; } = 5;
 
         [IntRange(-10, 30, 1)]
         public int ExtraDigitSpacing { get; init; } = -8;
