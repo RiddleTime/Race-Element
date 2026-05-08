@@ -25,7 +25,7 @@ internal sealed class AircraftInfoOverlay(Rectangle rectangle) : CommonAbstractO
         _infoPanel = new(12, 300);
 
         Width = 300;
-        Height = _infoPanel.FontHeight * 2 + _infoPanel.ExtraLineSpacing * 3;
+        Height = _infoPanel.FontHeight * 3 + _infoPanel.ExtraLineSpacing * 2;
     }
 
     public sealed override void BeforeStop()
@@ -37,6 +37,7 @@ internal sealed class AircraftInfoOverlay(Rectangle rectangle) : CommonAbstractO
     {
         _infoPanel.AddLine("Type", $"{SimDataProvider.LocalPlane.ATC.Type}");
         _infoPanel.AddLine("Model", $"{SimDataProvider.LocalPlane.ATC.Model}");
+        _infoPanel.AddLine("ID", $"{SimDataProvider.LocalPlane.ATC.Identifier}");
         _infoPanel.Draw(g);
     }
 }
