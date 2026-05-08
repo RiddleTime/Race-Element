@@ -32,21 +32,19 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
         Height = _bitmaps.BitmapDimension.Height;
 
         _cachedBackgroundAir = CreateBackgroundBitmap(_config.Colors.AirOpacity, _config.Colors.AirColor);
-
         _cachedBackgroundEarth = CreateBackgroundBitmap(_config.Colors.EarthOpacity, _config.Colors.EarthColor);
-
     }
 
     private CachedBitmap CreateBackgroundBitmap(int opacity, Color color) => new(Width, Height, g =>
-     {
-         RectangleF barArea = new(0, 0, Width - 1, Height - 1);
+    {
+        RectangleF barArea = new(0, 0, Width - 1, Height - 1);
 
-         using SolidBrush darkBrush = new(Color.FromArgb(opacity, color));
-         g.FillRoundedRectangle(darkBrush, Rectangle.Round(barArea), 3);
+        using SolidBrush darkBrush = new(Color.FromArgb(opacity, color));
+        g.FillRoundedRectangle(darkBrush, Rectangle.Round(barArea), 3);
 
-         using Pen darkPen = new(darkBrush, 1);
-         g.DrawRoundedRectangle(darkPen, Rectangle.Round(barArea), 3);
-     });
+        using Pen darkPen = new(darkBrush, 1);
+        g.DrawRoundedRectangle(darkPen, Rectangle.Round(barArea), 3);
+    });
 
     public override void BeforeStop()
     {

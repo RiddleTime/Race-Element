@@ -35,7 +35,6 @@ public sealed record FlightModelData()
         public double CurrentGForce { get; internal set; }
         public double MinGForceAttained { get; internal set; }
         public double MaxGForceAttained { get; internal set; }
-
     }
 
     public sealed record CenterOfGravityModelData

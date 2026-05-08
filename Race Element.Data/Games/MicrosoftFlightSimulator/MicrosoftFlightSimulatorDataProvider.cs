@@ -155,7 +155,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
                 double maxRatedEngineRPM = _simConnectClient.SimVars.GetAsync<double>($"MAX RATED ENGINE RPM:{i + 1}", "rpm", 0).ConfigureAwait(false).GetAwaiter().GetResult();
                 double maxReachedEngineRPM = _simConnectClient.SimVars.GetAsync<double>($"GENERAL ENG MAX REACHED RPM:{i + 1}", "rpm", 0).ConfigureAwait(false).GetAwaiter().GetResult();
 
-                Common.SimulatorData.LocalPlane.EngineData engineData = new()
+                Common.SimulatorData.LocalPlane.EngineData newEngineData = new()
                 {
                     EngineIndex = (uint)i,
                     IsRunning = engine.IsRunning,
@@ -166,11 +166,11 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
                     EngineType = engineType,
                 };
 
-                var existingItem = localPlane.Engines.FirstOrDefault(x => x.EngineIndex == i);
-                if (existingItem == null)
-                    localPlane.Engines.Add(engineData);
+                Common.SimulatorData.LocalPlane.EngineData? existingEngineData = localPlane.Engines.FirstOrDefault(x => x.EngineIndex == i);
+                if (existingEngineData == null)
+                    localPlane.Engines.Add(newEngineData);
                 else
-                    localPlane.Engines[i] = engineData;
+                    localPlane.Engines[i] = newEngineData;
             }
         }
     }
