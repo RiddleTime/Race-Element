@@ -66,12 +66,12 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
                 SimDataProvider.GameData.IsGamePaused = true;
             _lastAnimationTime = lastAnimateTime;
 
+
             uint engineCount = (uint)_simConnectClient.SimVars.GetAsync<int>("NUMBER OF ENGINES", "number", 0).ConfigureAwait(false).GetAwaiter().GetResult();
             if (localPlane.General.EngineCount != engineCount) localPlane.Engines = [];
             localPlane.General.EngineCount = (uint)engineCount;
 
             if (engineCount > 0)
-            {
                 for (int i = 0; i < engineCount; i++)
                 {
                     AircraftEngine engine = _simConnectClient.Aircraft.GetEngineAsync(i + 1).ConfigureAwait(false).GetAwaiter().GetResult();
@@ -90,15 +90,15 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
                     else
                         localPlane.Engines[i] = engineData;
                 }
-            }
+
 
             AircraftMotion motion = _simConnectClient.Aircraft.GetMotionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
-            AircraftPosition position = _simConnectClient.Aircraft.GetPositionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             localPlane.Physics.IndicatedAirSpeed = motion.IndicatedAirspeed;
             localPlane.Physics.GroundSpeed = motion.GroundSpeed;
             localPlane.Physics.VerticalSpeed = motion.VerticalSpeed;
 
+            AircraftPosition position = _simConnectClient.Aircraft.GetPositionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
             localPlane.Physics.Latitude = position.Latitude;
             localPlane.Physics.Longitude = position.Longitude;
             localPlane.Physics.Orientation = GetForwardVector(position.TrueHeading, position.Pitch, position.Bank);
