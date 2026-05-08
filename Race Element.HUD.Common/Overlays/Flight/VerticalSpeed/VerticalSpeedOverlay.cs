@@ -5,7 +5,6 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
 using RaceElement.Util.SystemExtensions;
 using System.Drawing;
-using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
 namespace RaceElement.HUD.Common.Overlays.Flight.VerticalSpeed;
