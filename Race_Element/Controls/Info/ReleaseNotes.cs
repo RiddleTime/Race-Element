@@ -6,6 +6,14 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.6.4.0", "Race Element:"+
+                    "\n- Added support for Microsoft Flight Simulator 2020."+
+                    "\n- Added support for Microsoft Flight Simulator 2024."+
+                    "\n\nFlight HUDs"+
+                    "\n- Added Vertical Speed HUD."+
+                    "\n- Added Indicated Air Speed HUD."+
+                    "\n- Added Altitude HUD."
+                    },
         {"2.6.3.0", "Common HUDs"+
                     "\n- Input Trace HUD: Increase max refresh rate to 60 Hz with 2 step intervals."+
                     "\n\nAssetto Corsa Competizione"+

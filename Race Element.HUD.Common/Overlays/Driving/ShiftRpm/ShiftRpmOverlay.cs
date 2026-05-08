@@ -13,7 +13,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.ShiftRpm;
 [Overlay(
     Name = "Shift RPM",
     Description = "The current engine RPM as text",
-    UnsupportedGames = Game.DirtRally2 | Game.MicrosoftFlightSimulator2020,
+    UnsupportedGames = Game.DirtRally2 | Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class ShiftRpmOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Shift RPM")

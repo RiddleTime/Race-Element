@@ -14,7 +14,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.InputValues;
     Description = "Shows Throttle and Brake Input Percentage.",
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Drive,
-    UnsupportedGames = Game.MicrosoftFlightSimulator2020,
+    UnsupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class InputValuesOverlay : CommonAbstractOverlay

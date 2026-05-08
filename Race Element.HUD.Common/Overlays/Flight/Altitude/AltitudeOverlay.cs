@@ -13,7 +13,7 @@ namespace RaceElement.HUD.Common.Overlays.Flight.Altitude;
 [Overlay(
     Name = "Altitude",
     Description = "The Air Planes Altitude.",
-    SupportedGames = Game.MicrosoftFlightSimulator2020,
+    SupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class AltitudeOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Altitude")

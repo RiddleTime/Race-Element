@@ -194,6 +194,12 @@ public static class SimDataProvider
                     ((MicrosoftFlightSimulatorDataProvider)Instance).UpdateFlightData(ref _localPlane);
                     break;
                 }
+            case Game.MicrosoftFlightSimulator2024:
+                {
+                    Instance ??= new MicrosoftFlightSimulatorDataProvider();
+                    ((MicrosoftFlightSimulatorDataProvider)Instance).UpdateFlightData(ref _localPlane);
+                    break;
+                }
             //  case Game.BeamNG:
             //      {
             //          Instance ??= new BeamNGDataProvider();

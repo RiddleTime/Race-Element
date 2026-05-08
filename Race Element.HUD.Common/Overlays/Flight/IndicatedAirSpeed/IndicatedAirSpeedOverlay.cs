@@ -13,7 +13,7 @@ namespace RaceElement.HUD.Common.Overlays.Flight.IndicatedAirSpeed;
 [Overlay(
     Name = "Indicated Air Speed",
     Description = "The air speed as indicated by the planes instruments.",
-    SupportedGames = Game.MicrosoftFlightSimulator2020,
+    SupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Indicated Air Speed")

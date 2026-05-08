@@ -13,7 +13,7 @@ namespace RaceElement.HUD.Common.Overlays.Flight.VerticalSpeed;
 [Overlay(
     Name = "Vertical Speed",
     Description = "The Air Planes Vertical speed.",
-    SupportedGames = Game.MicrosoftFlightSimulator2020,
+    SupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Vertical Speed")

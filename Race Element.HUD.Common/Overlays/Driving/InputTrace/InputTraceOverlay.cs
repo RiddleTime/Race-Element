@@ -15,7 +15,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.InputTrace;
     Authors = ["Reinier Klarenberg, Dirk Wolf"],
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Inputs,
-    UnsupportedGames = Game.MicrosoftFlightSimulator2020
+    UnsupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024
 )]
 internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Input Trace")
 {

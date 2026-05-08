@@ -27,6 +27,7 @@ public enum Game : long
     RichardBurnsRally = 1 << 18,
     ForzaHorizon4 = 1 << 19,
     MicrosoftFlightSimulator2020 = 1 << 20,
+    MicrosoftFlightSimulator2024 = 1 << 21,
 }
 
 public static class GameExtensions
@@ -54,7 +55,8 @@ public static class GameExtensions
             { Game.DirtRally2, "DiRT Rally 2.0" },
             //{ Game.BeamNG, "BeamNG.drive" },
             { Game.RichardBurnsRally, "Richard Burns Rally" },
-            { Game.MicrosoftFlightSimulator2020, "Microsoft Flight Simulator 2020" }
+            { Game.MicrosoftFlightSimulator2020, "Microsoft Flight Simulator 2020" },
+            { Game.MicrosoftFlightSimulator2024, "Microsoft Flight Simulator 2024" }
         }.ToImmutableDictionary();
     }
 
@@ -81,7 +83,8 @@ public static class GameExtensions
             { Game.DirtRally2, "DR2" },
             //{ Game.BeamNG, "BeamNG" },
             { Game.RichardBurnsRally, "RBR" },
-            { Game.MicrosoftFlightSimulator2020, "MFS2020" }
+            { Game.MicrosoftFlightSimulator2020, "MFS2020" },
+            { Game.MicrosoftFlightSimulator2024, "MFS2024" }
         }.ToImmutableDictionary();
     }
 
@@ -111,6 +114,7 @@ public static class GameExtensions
             { "RichardBurnsRally_SSE", Game.RichardBurnsRally },
             { "RichardBurnsRally", Game.RichardBurnsRally },
             { "FlightSimulator", Game.MicrosoftFlightSimulator2020  },
+            { "FlightSimulator2024", Game.MicrosoftFlightSimulator2024 }
         }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
         public static readonly Lazy<ImmutableArray<string>> All = new(() => ImmutableArray.Create(ProcessMap.Select(x => x.Key).ToArray()));
@@ -140,6 +144,7 @@ public static class GameExtensions
             //{ Game.BeamNG, 284160 },
             { Game.RichardBurnsRally, -1 },
             { Game.MicrosoftFlightSimulator2020, 1250410 },
+            { Game.MicrosoftFlightSimulator2024, 2537591 },
         }.ToImmutableDictionary();
     }
 
