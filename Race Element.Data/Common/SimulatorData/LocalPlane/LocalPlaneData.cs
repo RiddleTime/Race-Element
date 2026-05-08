@@ -17,6 +17,36 @@ public sealed record LocalPlaneData
     /// Provides Air traffic control data.
     /// </summary>
     public AtcData ATC { get; internal set; } = new();
+
+    public FlightModelData FlightModel { get; internal set; } = new();
+}
+
+/// <summary>
+/// Contains data about the flight model of the aviation device.
+/// </summary>
+public sealed record FlightModelData()
+{
+    public GeneralModelData General { get; internal set; } = new();
+    public WeightModelData Weight { get; internal set; } = new();
+    public CenterOfGravityModelData CenterOfGravity { get; internal set; } = new();
+
+    public sealed record GeneralModelData
+    {
+        public double CurrentGForce { get; internal set; }
+        public double MinGForceAttained { get; internal set; }
+        public double MaxGForceAttained { get; internal set; }
+
+    }
+
+    public sealed record CenterOfGravityModelData
+    {
+
+    }
+
+    public sealed record WeightModelData
+    {
+
+    }
 }
 
 public sealed record GeneralPlaneData

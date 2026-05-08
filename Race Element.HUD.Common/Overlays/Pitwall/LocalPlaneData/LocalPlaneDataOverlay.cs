@@ -30,11 +30,12 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
         {
             public bool General { get; init; } = true;
             public bool Physics { get; init; } = true;
-
             public bool Engines { get; init; } = true;
             public bool Helicopter { get; init; } = true;
-
-            public bool Atc { get; init; } = true;
+            public bool AirTrafficControl { get; init; } = true;
+            public bool FlightModelGeneral { get; init; } = true;
+            public bool FlightModelCOG { get; init; } = true;
+            public bool FlightModelWeight { get; init; } = true;
         }
 
         [ConfigGrouping("Data", "Adjust the members visible in the debug menu")]
@@ -77,8 +78,19 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
         if (_config.VisibleMember.Helicopter)
             currentY += DrawObject(SimDataProvider.LocalPlane.Helicopter, "Helicopter", currentY, g).Height;
 
-        if (_config.VisibleMember.Atc)
-            currentY += DrawObject(SimDataProvider.LocalPlane.ATC, "ATC", currentY, g).Height;
+        if (_config.VisibleMember.AirTrafficControl)
+            currentY += DrawObject(SimDataProvider.LocalPlane.ATC, "Air Traffic Control", currentY, g).Height;
+
+        if (_config.VisibleMember.FlightModelGeneral)
+            currentY += DrawObject(SimDataProvider.LocalPlane.FlightModel.General, "Flight Model General", currentY, g).Height;
+
+        if (_config.VisibleMember.FlightModelCOG)
+            currentY += DrawObject(SimDataProvider.LocalPlane.FlightModel.CenterOfGravity, "Flight Model Center Of Gravity", currentY, g).Height;
+
+        if (_config.VisibleMember.FlightModelWeight)
+            currentY += DrawObject(SimDataProvider.LocalPlane.FlightModel.Weight, "Flight Model Weight", currentY, g).Height;
+
+
 
         this.Height = (int)currentY;
     }
