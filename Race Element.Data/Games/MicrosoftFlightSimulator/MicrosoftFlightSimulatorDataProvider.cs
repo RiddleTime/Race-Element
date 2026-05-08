@@ -102,24 +102,24 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
     {
         try
         {
-            string atcId = _simConnectClient?.SimVars.GetAsync<string>("ATC ID").ConfigureAwait(false).GetAwaiter().GetResult();
-            string atcModel = _simConnectClient?.SimVars.GetAsync<string>("ATC MODEL").ConfigureAwait(false).GetAwaiter().GetResult();
-            string atcType = _simConnectClient?.SimVars.GetAsync<string>("ATC TYPE").ConfigureAwait(false).GetAwaiter().GetResult();
+            string? atcId = _simConnectClient?.SimVars.GetAsync<string>("ATC ID").ConfigureAwait(false).GetAwaiter().GetResult();
+            string? atcModel = _simConnectClient?.SimVars.GetAsync<string>("ATC MODEL").ConfigureAwait(false).GetAwaiter().GetResult();
+            string? atcType = _simConnectClient?.SimVars.GetAsync<string>("ATC TYPE").ConfigureAwait(false).GetAwaiter().GetResult();
 
 
-            string airportName = _simConnectClient?.SimVars.GetAsync<string>("ATC RUNWAY AIRPORT NAME").ConfigureAwait(false).GetAwaiter().GetResult();
+            string? airportName = _simConnectClient?.SimVars.GetAsync<string>("ATC RUNWAY AIRPORT NAME").ConfigureAwait(false).GetAwaiter().GetResult();
 
             double suggestedRunwayLandingFeet = _simConnectClient.SimVars.GetAsync<double>($"ATC SUGGESTED MIN RWY LANDING", "feet", 0).ConfigureAwait(false).GetAwaiter().GetResult();
             double suggestedRunwayTakeOffFeet = _simConnectClient.SimVars.GetAsync<double>($"ATC SUGGESTED MIN RWY TAKEOFF", "feet", 0).ConfigureAwait(false).GetAwaiter().GetResult();
 
             localPlane.ATC = new()
             {
-                Identifier = atcId,
-                Model = atcModel,
-                Type = atcType,
+                Identifier = atcId ?? "",
+                Model = atcModel ?? "",
+                Type = atcType ?? "",
                 SuggestedMinimumRunwayLandingLength = suggestedRunwayLandingFeet,
                 SuggestedMinimumRunwayTakeoffLength = suggestedRunwayTakeOffFeet,
-                AirportName = airportName,
+                AirportName = airportName ?? "",
             };
         }
         catch (Exception e)
