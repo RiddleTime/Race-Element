@@ -31,6 +31,10 @@ public sealed record EngineData
     /// </summary>
     public double Rpm { get; internal set; }
 
+    public double MaxRatedEngineRpm { get; internal set; }
+
+    public double MaxReachedEngineRpm { get; internal set; }
+
     /// <summary>
     /// 0 - 100
     /// </summary>
@@ -41,6 +45,9 @@ public sealed record EngineData
     /// Whether the engine is running.
     /// </summary>
     public bool IsRunning { get; internal set; }
+
+
+    public string EngineType { get; internal set; }
 }
 
 

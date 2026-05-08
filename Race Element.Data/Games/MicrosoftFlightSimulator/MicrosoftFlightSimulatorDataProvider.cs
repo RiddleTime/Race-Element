@@ -67,30 +67,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             _lastAnimationTime = lastAnimateTime;
 
 
-            uint engineCount = (uint)_simConnectClient.SimVars.GetAsync<int>("NUMBER OF ENGINES", "number", 0).ConfigureAwait(false).GetAwaiter().GetResult();
-            if (localPlane.General.EngineCount != engineCount) localPlane.Engines = [];
-            localPlane.General.EngineCount = (uint)engineCount;
-
-            if (engineCount > 0)
-                for (int i = 0; i < engineCount; i++)
-                {
-                    AircraftEngine engine = _simConnectClient.Aircraft.GetEngineAsync(i + 1).ConfigureAwait(false).GetAwaiter().GetResult();
-
-                    Common.SimulatorData.LocalPlane.EngineData engineData = new()
-                    {
-                        EngineIndex = (uint)i,
-                        IsRunning = engine.IsRunning,
-                        Rpm = engine.Rpm,
-                        ThrottlePosition = engine.ThrottlePosition,
-                    };
-
-                    var existingItem = localPlane.Engines.FirstOrDefault(x => x.EngineIndex == i);
-                    if (existingItem == null)
-                        localPlane.Engines.Add(engineData);
-                    else
-                        localPlane.Engines[i] = engineData;
-                }
-
+            MapEngineData(ref localPlane);
 
             AircraftMotion motion = _simConnectClient.Aircraft.GetMotionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
@@ -113,6 +90,54 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
                 _simConnectClient.DisconnectAsync().Wait();
             }
             return;
+        }
+    }
+
+
+    private void MapEngineData(ref LocalPlaneData localPlane)
+    {
+        uint engineCount = (uint)_simConnectClient.SimVars.GetAsync<int>("NUMBER OF ENGINES", "number", 0).ConfigureAwait(false).GetAwaiter().GetResult();
+        if (localPlane.General.EngineCount != engineCount) localPlane.Engines = [];
+        localPlane.General.EngineCount = (uint)engineCount;
+
+        if (engineCount > 0)
+        {
+            int engineTypeNumber = _simConnectClient.SimVars.GetAsync<int>("ENGINE TYPE", "enum").ConfigureAwait(false).GetAwaiter().GetResult();
+            string engineType = engineTypeNumber switch
+            {
+                0 => "Piston",
+                1 => "Jet",
+                2 => "None",
+                3 => "Helo[Bell] Turbine",
+                4 => "Unsupported",
+                5 => "Turboprop",
+                6 => "Electric",
+                _ => "",
+            };
+
+            for (int i = 0; i < engineCount; i++)
+            {
+                AircraftEngine engine = _simConnectClient.Aircraft.GetEngineAsync(i + 1).ConfigureAwait(false).GetAwaiter().GetResult();
+                double maxRatedEngineRPM = _simConnectClient.SimVars.GetAsync<double>($"MAX RATED ENGINE RPM:{i + 1}", "rpm", 0).ConfigureAwait(false).GetAwaiter().GetResult();
+                double maxReachedEngineRPM = _simConnectClient.SimVars.GetAsync<double>($"GENERAL ENG MAX REACHED RPM:{i + 1}", "rpm", 0).ConfigureAwait(false).GetAwaiter().GetResult();
+
+                Common.SimulatorData.LocalPlane.EngineData engineData = new()
+                {
+                    EngineIndex = (uint)i,
+                    IsRunning = engine.IsRunning,
+                    Rpm = engine.Rpm,
+                    MaxRatedEngineRpm = maxRatedEngineRPM,
+                    MaxReachedEngineRpm = maxReachedEngineRPM,
+                    ThrottlePosition = engine.ThrottlePosition,
+                    EngineType = engineType,
+                };
+
+                var existingItem = localPlane.Engines.FirstOrDefault(x => x.EngineIndex == i);
+                if (existingItem == null)
+                    localPlane.Engines.Add(engineData);
+                else
+                    localPlane.Engines[i] = engineData;
+            }
         }
     }
 
