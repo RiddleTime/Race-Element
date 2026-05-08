@@ -10,7 +10,7 @@ namespace RaceElement.HUD.Common.Overlays.Flight.AircraftInfo;
     Name = "Aircraft Info",
     Description = "Displays the Type and Model"
 )]
-internal class AircraftInfoOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Aircraft Info")
+internal sealed class AircraftInfoOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Aircraft Info")
 {
     private readonly AircraftInfoConfiguration _config = new();
     private sealed class AircraftInfoConfiguration : OverlayConfiguration
@@ -20,7 +20,7 @@ internal class AircraftInfoOverlay(Rectangle rectangle) : CommonAbstractOverlay(
 
     private InfoPanel _infoPanel;
 
-    public override void BeforeStart()
+    public sealed override void BeforeStart()
     {
         _infoPanel = new(12, 300);
 
@@ -28,12 +28,12 @@ internal class AircraftInfoOverlay(Rectangle rectangle) : CommonAbstractOverlay(
         Height = _infoPanel.FontHeight * 2 + _infoPanel.ExtraLineSpacing * 3;
     }
 
-    public override void BeforeStop()
+    public sealed override void BeforeStop()
     {
         _infoPanel?.Dispose();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         _infoPanel.AddLine("Type", $"{SimDataProvider.LocalPlane.ATC.Type}");
         _infoPanel.AddLine("Model", $"{SimDataProvider.LocalPlane.ATC.Model}");
