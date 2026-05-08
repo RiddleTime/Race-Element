@@ -69,6 +69,8 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 
             MapEngineData(ref localPlane);
 
+            MapAtcData(ref localPlane);
+
             AircraftMotion motion = _simConnectClient.Aircraft.GetMotionAsync().ConfigureAwait(false).GetAwaiter().GetResult();
 
             localPlane.Physics.IndicatedAirSpeed = motion.IndicatedAirspeed;
@@ -81,6 +83,9 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             localPlane.Physics.Orientation = GetForwardVector(position.TrueHeading, position.Pitch, position.Bank);
             localPlane.Physics.AltitudeSea = position.Altitude;
             localPlane.Physics.AltitudeGround = position.AltitudeAboveGround;
+
+            double collectivePosition = _simConnectClient.SimVars.GetAsync<double>("COLLECTIVE POSITION", "percent over 100", 0).ConfigureAwait(false).GetAwaiter().GetResult();
+            localPlane.Helicopter.CollectivePosition = collectivePosition;
         }
         catch (Exception e)
         {
@@ -93,6 +98,35 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         }
     }
 
+    private void MapAtcData(ref LocalPlaneData localPlane)
+    {
+        try
+        {
+            string atcId = _simConnectClient?.SimVars.GetAsync<string>("ATC ID").ConfigureAwait(false).GetAwaiter().GetResult();
+            string atcModel = _simConnectClient?.SimVars.GetAsync<string>("ATC MODEL").ConfigureAwait(false).GetAwaiter().GetResult();
+            string atcType = _simConnectClient?.SimVars.GetAsync<string>("ATC TYPE").ConfigureAwait(false).GetAwaiter().GetResult();
+
+
+            string airportName = _simConnectClient?.SimVars.GetAsync<string>("ATC RUNWAY AIRPORT NAME").ConfigureAwait(false).GetAwaiter().GetResult();
+
+            double suggestedRunwayLandingFeet = _simConnectClient.SimVars.GetAsync<double>($"ATC SUGGESTED MIN RWY LANDING", "feet", 0).ConfigureAwait(false).GetAwaiter().GetResult();
+            double suggestedRunwayTakeOffFeet = _simConnectClient.SimVars.GetAsync<double>($"ATC SUGGESTED MIN RWY TAKEOFF", "feet", 0).ConfigureAwait(false).GetAwaiter().GetResult();
+
+            localPlane.ATC = new()
+            {
+                Identifier = atcId,
+                Model = atcModel,
+                Type = atcType,
+                SuggestedMinimumRunwayLandingLength = suggestedRunwayLandingFeet,
+                SuggestedMinimumRunwayTakeoffLength = suggestedRunwayTakeOffFeet,
+                AirportName = airportName,
+            };
+        }
+        catch (Exception e)
+        {
+            Debug.WriteLine(e);
+        }
+    }
 
     private void MapEngineData(ref LocalPlaneData localPlane)
     {

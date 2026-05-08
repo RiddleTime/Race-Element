@@ -9,6 +9,14 @@ public sealed record LocalPlaneData
     public PhysicsData Physics { get; internal set; } = new();
 
     public List<EngineData> Engines { get; internal set; } = [];
+
+    public HelicopterData Helicopter { get; internal set; } = new();
+
+
+    /// <summary>
+    /// Provides Air traffic control data.
+    /// </summary>
+    public AtcData ATC { get; internal set; } = new();
 }
 
 public sealed record GeneralPlaneData
@@ -17,6 +25,47 @@ public sealed record GeneralPlaneData
     /// The amount of engines.
     /// </summary>
     public uint EngineCount { get; internal set; }
+}
+
+/// <summary>
+/// Air traffic control data (ATC)
+/// </summary>
+public sealed record AtcData
+{
+    /// <summary>
+    /// ID used by ATC
+    /// </summary>
+    public string Identifier { get; internal set; }
+
+    /// <summary>
+    /// Model used by ATC
+    /// </summary>
+    public string Model { get; internal set; }
+
+    /// <summary>
+    /// ATC Type
+    /// </summary>
+    public string Type { get; internal set; }
+
+    /// <summary>
+    /// Suggested minimum runway length for takeoff.
+    /// </summary>
+    public double SuggestedMinimumRunwayTakeoffLength { get; internal set; }
+
+    /// <summary>
+    /// Suggested minimum runway length for landing.
+    /// </summary>
+    public double SuggestedMinimumRunwayLandingLength { get; internal set; }
+
+    public string AirportName { get; internal set; }
+}
+
+public sealed record HelicopterData
+{
+    /// <summary>
+    /// 0-100
+    /// </summary>
+    public double CollectivePosition { get; internal set; }
 }
 
 public sealed record EngineData

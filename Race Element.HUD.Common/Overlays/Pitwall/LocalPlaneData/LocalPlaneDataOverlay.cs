@@ -32,6 +32,9 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
             public bool Physics { get; init; } = true;
 
             public bool Engines { get; init; } = true;
+            public bool Helicopter { get; init; } = true;
+
+            public bool Atc { get; init; } = true;
         }
 
         [ConfigGrouping("Data", "Adjust the members visible in the debug menu")]
@@ -47,7 +50,7 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
     public LocalPlaneDataOverlay(Rectangle rectangle) : base(rectangle, "Common LocalPlaneData")
     {
         RefreshRateHz = _config.Data.RefreshRateHz;
-        Width = 380;
+        Width = 400;
     }
 
     public sealed override void BeforeStart() => _font = FontUtil.FontSegoeMono(10);
@@ -70,6 +73,12 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
 
         if (_config.VisibleMember.Engines)
             currentY += DrawObject(SimDataProvider.LocalPlane.Engines, "Engines", currentY, g).Height;
+
+        if (_config.VisibleMember.Helicopter)
+            currentY += DrawObject(SimDataProvider.LocalPlane.Helicopter, "Helicopter", currentY, g).Height;
+
+        if (_config.VisibleMember.Atc)
+            currentY += DrawObject(SimDataProvider.LocalPlane.ATC, "ATC", currentY, g).Height;
 
         this.Height = (int)currentY;
     }
