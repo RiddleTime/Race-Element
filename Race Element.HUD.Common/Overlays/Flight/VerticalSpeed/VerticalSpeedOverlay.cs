@@ -97,6 +97,7 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
     {
         private readonly CachedBitmap[] _rpmBitmaps = new CachedBitmap[10];
         public readonly (int Width, int Height) BitmapDimension;
+
         public NumberBitmaps(VerticalSpeedConfiguration config)
         {
             GenerateBitMaps(config);
@@ -133,11 +134,7 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
                 });
         }
 
-        public CachedBitmap GetForNumber(byte number)
-        {
-            ArgumentOutOfRangeException.ThrowIfGreaterThan(number, 9);
-            return _rpmBitmaps.AsSpan()[number];
-        }
+        public CachedBitmap GetForNumber(byte number) => _rpmBitmaps.AsSpan()[number];
 
         public void Dispose()
         {
