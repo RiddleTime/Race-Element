@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -15,7 +16,7 @@ namespace RaceElement.HUD.Common.Overlays.Pitwall.LocalPlaneData;
     Description = "Provides info about the common local lane data.",
     OverlayType = OverlayType.Pitwall,
     Authors = ["Reinier Klarenberg"],
-    SupportedGames = Data.Games.Game.MicrosoftFlightSimulator2020
+    SupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024
 )]
 internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
 {

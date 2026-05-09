@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -14,7 +15,7 @@ namespace RaceElement.HUD.Common.Overlays.Pitwall.LocalCarData;
     Description = "Provides info about the common local car data.",
     OverlayType = OverlayType.Pitwall,
     Authors = ["Reinier Klarenberg"],
-    UnsupportedGames = Data.Games.Game.MicrosoftFlightSimulator2020
+    UnsupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024
 )]
 internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
 {

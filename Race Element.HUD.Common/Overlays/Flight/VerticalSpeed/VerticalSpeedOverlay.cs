@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common;
+using RaceElement.Data.Common.SimulatorData.LocalPlane;
 using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -59,7 +60,7 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
 
         int x = 0;
 
-        var physics = SimDataProvider.LocalPlane.Physics;
+        PhysicsData physics = SimDataProvider.LocalPlane.Physics;
         double verticalSpeed = _config.General.Units switch
         {
             VerticalSpeedConfiguration.UnitChoice.FeetPerMinute => physics.VerticalSpeed,
