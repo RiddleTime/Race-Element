@@ -52,7 +52,7 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
     public LocalPlaneDataOverlay(Rectangle rectangle) : base(rectangle, "Common LocalPlaneData")
     {
         RefreshRateHz = _config.Data.RefreshRateHz;
-        Width = 400;
+        Width = 450;
     }
 
     public sealed override void BeforeStart() => _font = FontUtil.FontSegoeMono(10);
