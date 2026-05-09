@@ -35,6 +35,16 @@ public sealed record FlightModelData()
         public double CurrentGForce { get; internal set; }
         public double MinGForceAttained { get; internal set; }
         public double MaxGForceAttained { get; internal set; }
+
+        public double DesignTakeoffSpeed { get; internal set; }
+
+        public double DesignClimbSpeed { get; internal set; }
+
+        /// <summary>
+        /// This design constant represents the optimal altitude the aircraft should maintain when in cruise.
+        /// </summary>
+        public double DesignCruiseAltitude { get; internal set; }
+
     }
 
     public sealed record CenterOfGravityModelData
@@ -44,7 +54,20 @@ public sealed record FlightModelData()
 
     public sealed record WeightModelData
     {
+        /// <summary>
+        /// Pounds
+        /// </summary>
+        public double EmptyWeight { get; internal set; }
 
+        /// <summary>
+        /// Pounds
+        /// </summary>
+        public double TotalWeight { get; internal set; }
+
+        /// <summary>
+        /// Pounds
+        /// </summary>
+        public double MaxGrossWeight { get; internal set; }
     }
 }
 
@@ -77,14 +100,14 @@ public sealed record AtcData
     public string Type { get; internal set; }
 
     /// <summary>
-    /// Suggested minimum runway length for takeoff.
+    /// Suggested minimum runway length( Feet) for takeoff.
     /// </summary>
-    public double SuggestedMinimumRunwayTakeoffLength { get; internal set; }
+    public double SuggestedMinRunwayTakeoffLength { get; internal set; }
 
     /// <summary>
-    /// Suggested minimum runway length for landing.
+    /// Suggested minimum runway length( Feet) for landing.
     /// </summary>
-    public double SuggestedMinimumRunwayLandingLength { get; internal set; }
+    public double SuggestedMinRunwayLandingLength { get; internal set; }
 
     public string AirportName { get; internal set; }
 }
