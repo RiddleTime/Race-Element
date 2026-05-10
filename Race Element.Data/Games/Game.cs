@@ -148,7 +148,7 @@ public static class GameExtensions
             //{ Game.BeamNG, 284160 },
             { Game.RichardBurnsRally, -1 },
             { Game.MicrosoftFlightSimulator2020, 1250410 },
-            { Game.MicrosoftFlightSimulator2024, 2537591 },
+            { Game.MicrosoftFlightSimulator2024, 2537590 },
             { Game.ForzaHorizon6, 2483190 }
         }.ToImmutableDictionary();
     }
