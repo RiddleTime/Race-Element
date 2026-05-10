@@ -87,9 +87,14 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
         for (int i = 0; i < _config.General.Digits; i++)
         {
             if (byte.TryParse(s.AsSpan(i, 1), out byte number))
-                if (i != 0 || number != 0) // do not draw the first "0"
-                    _bitmaps.GetForNumber(number).Draw(g, new(x, 0));
+            {
+                if (i == 0 && number == 0) // do not draw the first "0"
+                    goto increaseX;
 
+                _bitmaps.GetForNumber(number).Draw(g, new(x, 0));
+            }
+
+        increaseX:
             x += _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing;
         }
     }
