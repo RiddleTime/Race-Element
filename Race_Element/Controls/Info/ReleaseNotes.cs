@@ -10,6 +10,7 @@ public static class ReleaseNotes
                     "\n- Added preliminary support for Forza Horizon 6. With DSX support. If there is more work required an update will follow."+
                     "\n- Added support for Microsoft Flight Simulator 2020."+
                     "\n- Added support for Microsoft Flight Simulator 2024."+
+                    "\n- Updated SharpCompress package due to vulnerability."+
                     "\n\nFlight HUDs"+
                     "\n- Added Vertical Speed HUD. Based on positive or negative VS the background can change color."+
                     "\n- Added Indicated Air Speed HUD."+
