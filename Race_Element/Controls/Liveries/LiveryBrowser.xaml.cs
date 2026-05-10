@@ -7,6 +7,8 @@ using RaceElement.Util;
 using RaceElement.Util.SystemExtensions;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
+using SharpCompress.Writers.Zip;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -779,7 +781,7 @@ public partial class LiveryBrowser : UserControl
                 if (filename == null)
                     return;
 
-                using (ZipArchive zipArchive = ZipArchive.Create())
+                using (var zipArchive = ZipArchive.CreateArchive())
                 {
                     string liveriesFolder = $"Liveries\\{liveryTreeCar.CarsRoot.CustomSkinName}\\";
                     string carsFolder = "Cars\\";
@@ -820,7 +822,7 @@ public partial class LiveryBrowser : UserControl
 
                         using (FileStream outputStream = new(filename, FileMode.Create))
                         {
-                            zipArchive.SaveTo(outputStream);
+                            zipArchive.SaveTo(outputStream, new ZipWriterOptions(CompressionType.Deflate));
                             MainWindow.Instance.snackbar.MessageQueue.Enqueue($"Livery \"{liveryTreeCar.CarsRoot.TeamName}\" saved as: {filename}");
                         }
                     }

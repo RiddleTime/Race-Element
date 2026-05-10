@@ -144,15 +144,15 @@ public partial class SetupImporter : UserControl
 
             if (type == ArchiveType.Zip)
             {
-                using ZipArchive archive = ZipArchive.Open(stream);
-                if (archive.Entries.Count == 1)
+                using var archive = ZipArchive.OpenArchive(stream);
+                if (archive.Entries.Count() == 1)
                 {
                     foreach (var entry in archive.Entries)
                     {
                         DirectoryInfo downloadCache = new(FileUtil.RaceElementDownloadCachePath);
                         if (!downloadCache.Exists) downloadCache.Create();
                         filePath = $"{FileUtil.RaceElementDownloadCachePath}{entry.Key}";
-                        entry.WriteToFile(filePath, new SharpCompress.Common.ExtractionOptions() { Overwrite = true, PreserveFileTime = true });
+                        entry.WriteToFile(filePath, new ExtractionOptions() { Overwrite = true, PreserveFileTime = true });
                     }
                 }
                 else
