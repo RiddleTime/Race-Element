@@ -6,9 +6,9 @@ description: General features
 ## **[Open Download and Installation Guide](/guide/how-to-get-started)**
 
 # Race Element
-Race Element is a lightweight application for racing simulators which is designed to run with minimum system requirements. This application is completely free and open source(GPL-3).
+Race Element is a lightweight application for Racing and Flight simulators which is designed to run with minimum system requirements. This application is completely free and open source(GPL-3).
 
-# Supported Racing Simulators
+# Supported Simulators
 - Assetto Corsa Competizione
 - Assetto Corsa
 - Assetto Corsa EVO
@@ -22,6 +22,8 @@ Race Element is a lightweight application for racing simulators which is designe
 - Forza Motorsport 8
 - iRacing
 - Le Mans Ultimate
+- Microsoft Flight Simulator 2020
+- Microsoft Flight Simulator 2024
 - Project Motor Racing
 - Richard Burns Rally
 - RaceRoom
