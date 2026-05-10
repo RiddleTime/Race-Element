@@ -6,8 +6,8 @@ description: General features
 
 <h2 id="open-download-and-installation-guide"><strong><a href="/guide/how-to-get-started">Open Download and Installation Guide</a></strong></h2>
 <h1 id="race-element">Race Element</h1>
-<p>Race Element is a lightweight application for racing simulators which is designed to run with minimum system requirements. This application is completely free and open source(GPL-3).</p>
-<h1 id="supported-racing-simulators">Supported Racing Simulators</h1>
+<p>Race Element is a lightweight application for Racing and Flight simulators which is designed to run with minimum system requirements. This application is completely free and open source(GPL-3).</p>
+<h1 id="supported-simulators">Supported Simulators</h1>
 <ul>
 <li>Assetto Corsa Competizione</li>
 <li>Assetto Corsa</li>
@@ -22,6 +22,8 @@ description: General features
 <li>Forza Motorsport 8</li>
 <li>iRacing</li>
 <li>Le Mans Ultimate</li>
+<li>Microsoft Flight Simulator 2020</li>
+<li>Microsoft Flight Simulator 2024</li>
 <li>Project Motor Racing</li>
 <li>Richard Burns Rally</li>
 <li>RaceRoom</li>
