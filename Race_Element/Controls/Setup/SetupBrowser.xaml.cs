@@ -468,7 +468,7 @@ public partial class SetupBrowser : UserControl
         }
     }
 
-    private string GetSetupLink(FileInfo file)
+    private static string GetSetupLink(FileInfo file)
     {
         // command is RaceElement://Setup=
         // The Race Element website enables linking.
@@ -481,7 +481,6 @@ public partial class SetupBrowser : UserControl
             archive.AddEntry(file.Name, setupFileStream);
             using MemoryStream stream = new();
             archive.SaveTo(stream, new ZipWriterOptions(CompressionType.Deflate));
-            archive.WriteToDirectory(file.FullName);
 
             byte[] bytes = stream.ToArray();
             base64 = Convert.ToBase64String(bytes);
