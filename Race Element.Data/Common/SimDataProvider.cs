@@ -139,6 +139,13 @@ public static class SimDataProvider
                     _localCarEventLoop.Run();
                     break;
                 }
+            case Game.ForzaHorizon6:
+                {
+                    Instance ??= new ForzaDataProvider(Game.ForzaHorizon6);
+                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                    _localCarEventLoop.Run();
+                    break;
+                }
             case Game.ForzaMotorsport:
                 {
                     Instance ??= new ForzaDataProvider(Game.ForzaMotorsport);

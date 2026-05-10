@@ -25,6 +25,7 @@
 		<None Remove="Games\Resources\Icons\DR2.ico" />
 		<None Remove="Games\Resources\Icons\FH4.ico" />
 		<None Remove="Games\Resources\Icons\FH5.ico" />
+		<None Remove="Games\Resources\Icons\FH6.ico" />
 		<None Remove="Games\Resources\Icons\FM.ico" />
 		<None Remove="Games\Resources\Icons\LMU.ico" />
 		<None Remove="Games\Resources\Icons\MFS2020.ico" />
@@ -40,6 +41,7 @@
 		<None Remove="Games\Resources\Logos\DR2.jpg" />
 		<None Remove="Games\Resources\Logos\FH4.jpg" />
 		<None Remove="Games\Resources\Logos\FH5.jpg" />
+		<None Remove="Games\Resources\Logos\FH6.jpg" />
 		<None Remove="Games\Resources\Logos\FM.jpg" />
 		<None Remove="Games\Resources\Logos\LMU.jpg" />
 		<None Remove="Games\Resources\Logos\MFS2020.jpg" />
@@ -87,6 +89,7 @@
 		<EmbeddedResource Include="Games\Resources\Icons\ETS2.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\FH4.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\FH5.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\FH6.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\FM.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\iRacing.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\LMU.ico" />
@@ -108,6 +111,7 @@
 		<EmbeddedResource Include="Games\Resources\Logos\ETS2.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\FH4.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\FH5.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\FH6.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\FM.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\iRacing.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\LMU.jpg" />

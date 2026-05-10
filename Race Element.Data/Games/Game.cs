@@ -28,6 +28,7 @@ public enum Game : long
     ForzaHorizon4 = 1 << 19,
     MicrosoftFlightSimulator2020 = 1 << 20,
     MicrosoftFlightSimulator2024 = 1 << 21,
+    ForzaHorizon6 = 1 << 22,
 }
 
 public static class GameExtensions
@@ -56,7 +57,8 @@ public static class GameExtensions
             //{ Game.BeamNG, "BeamNG.drive" },
             { Game.RichardBurnsRally, "Richard Burns Rally" },
             { Game.MicrosoftFlightSimulator2020, "Microsoft Flight Simulator 2020" },
-            { Game.MicrosoftFlightSimulator2024, "Microsoft Flight Simulator 2024" }
+            { Game.MicrosoftFlightSimulator2024, "Microsoft Flight Simulator 2024" },
+            { Game.ForzaHorizon6, "Forza Horizon 6" }
         }.ToImmutableDictionary();
     }
 
@@ -84,7 +86,8 @@ public static class GameExtensions
             //{ Game.BeamNG, "BeamNG" },
             { Game.RichardBurnsRally, "RBR" },
             { Game.MicrosoftFlightSimulator2020, "MFS2020" },
-            { Game.MicrosoftFlightSimulator2024, "MFS2024" }
+            { Game.MicrosoftFlightSimulator2024, "MFS2024" },
+            { Game.ForzaHorizon6, "FH6" }
         }.ToImmutableDictionary();
     }
 
@@ -114,7 +117,8 @@ public static class GameExtensions
             { "RichardBurnsRally_SSE", Game.RichardBurnsRally },
             { "RichardBurnsRally", Game.RichardBurnsRally },
             { "FlightSimulator", Game.MicrosoftFlightSimulator2020  },
-            { "FlightSimulator2024", Game.MicrosoftFlightSimulator2024 }
+            { "FlightSimulator2024", Game.MicrosoftFlightSimulator2024 },
+            { "forzahorizon6", Game.ForzaHorizon6 }
         }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
         public static readonly Lazy<ImmutableArray<string>> All = new(() => ImmutableArray.Create(ProcessMap.Select(x => x.Key).ToArray()));
@@ -145,6 +149,7 @@ public static class GameExtensions
             { Game.RichardBurnsRally, -1 },
             { Game.MicrosoftFlightSimulator2020, 1250410 },
             { Game.MicrosoftFlightSimulator2024, 2537591 },
+            { Game.ForzaHorizon6, 2483190 }
         }.ToImmutableDictionary();
     }
 

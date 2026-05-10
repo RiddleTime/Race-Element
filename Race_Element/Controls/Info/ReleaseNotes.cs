@@ -7,6 +7,7 @@ public static class ReleaseNotes
     internal static readonly Dictionary<string, string> Notes = new()
     {
         {"2.6.4.0", "Race Element:"+
+                    "\n- Added preliminary support for Forza Horizon 6."+
                     "\n- Added support for Microsoft Flight Simulator 2020."+
                     "\n- Added support for Microsoft Flight Simulator 2024."+
                     "\n\nFlight HUDs"+
