@@ -20,7 +20,7 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
     internal sealed override void Start()
     {
         _graphjob = new(this) { IntervalMillis = 500 };
-        _graphjob.Run();
+        //_graphjob.Run();
     }
 
     internal sealed override void Stop()
