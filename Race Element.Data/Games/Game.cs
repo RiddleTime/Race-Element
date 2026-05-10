@@ -1,11 +1,10 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
-using static System.Net.WebRequestMethods;
 
 namespace RaceElement.Data.Games;
 
 [Flags]
-public enum Game : int
+public enum Game : long
 {
     Any = 1 << 0,
     AssettoCorsa1 = 1 << 1,
@@ -27,6 +26,9 @@ public enum Game : int
     //BeamNG = 1 << 17,
     RichardBurnsRally = 1 << 18,
     ForzaHorizon4 = 1 << 19,
+    MicrosoftFlightSimulator2020 = 1 << 20,
+    MicrosoftFlightSimulator2024 = 1 << 21,
+    ForzaHorizon6 = 1 << 22,
 }
 
 public static class GameExtensions
@@ -54,6 +56,9 @@ public static class GameExtensions
             { Game.DirtRally2, "DiRT Rally 2.0" },
             //{ Game.BeamNG, "BeamNG.drive" },
             { Game.RichardBurnsRally, "Richard Burns Rally" },
+            { Game.MicrosoftFlightSimulator2020, "Microsoft Flight Simulator 2020" },
+            { Game.MicrosoftFlightSimulator2024, "Microsoft Flight Simulator 2024" },
+            { Game.ForzaHorizon6, "Forza Horizon 6" }
         }.ToImmutableDictionary();
     }
 
@@ -80,6 +85,9 @@ public static class GameExtensions
             { Game.DirtRally2, "DR2" },
             //{ Game.BeamNG, "BeamNG" },
             { Game.RichardBurnsRally, "RBR" },
+            { Game.MicrosoftFlightSimulator2020, "MFS2020" },
+            { Game.MicrosoftFlightSimulator2024, "MFS2024" },
+            { Game.ForzaHorizon6, "FH6" }
         }.ToImmutableDictionary();
     }
 
@@ -108,6 +116,9 @@ public static class GameExtensions
             //{ "BeamNG.drive", Game.BeamNG },
             { "RichardBurnsRally_SSE", Game.RichardBurnsRally },
             { "RichardBurnsRally", Game.RichardBurnsRally },
+            { "FlightSimulator", Game.MicrosoftFlightSimulator2020  },
+            { "FlightSimulator2024", Game.MicrosoftFlightSimulator2024 },
+            { "forzahorizon6", Game.ForzaHorizon6 }
         }.ToImmutableDictionary(StringComparer.OrdinalIgnoreCase);
 
         public static readonly Lazy<ImmutableArray<string>> All = new(() => ImmutableArray.Create(ProcessMap.Select(x => x.Key).ToArray()));
@@ -136,6 +147,9 @@ public static class GameExtensions
             { Game.DirtRally2, 690790 },
             //{ Game.BeamNG, 284160 },
             { Game.RichardBurnsRally, -1 },
+            { Game.MicrosoftFlightSimulator2020, 1250410 },
+            { Game.MicrosoftFlightSimulator2024, 2537591 },
+            { Game.ForzaHorizon6, 2483190 }
         }.ToImmutableDictionary();
     }
 

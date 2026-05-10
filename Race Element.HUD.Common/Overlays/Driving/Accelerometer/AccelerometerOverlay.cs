@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -14,6 +15,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.Accelerometer;
     Version = 1.00,
     OverlayType = OverlayType.Drive,
     OverlayCategory = OverlayCategory.Physics,
+    UnsupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
     Description = "G-meter showing lateral and longitudinal g-forces.",
     Authors = ["Kris Vickers", "Reinier Klarenberg"]
 )]

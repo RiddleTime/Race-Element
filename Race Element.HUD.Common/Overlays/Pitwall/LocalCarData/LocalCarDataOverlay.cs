@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -14,14 +15,14 @@ namespace RaceElement.HUD.Common.Overlays.Pitwall.LocalCarData;
     Description = "Provides info about the common local car data.",
     OverlayType = OverlayType.Pitwall,
     Authors = ["Reinier Klarenberg"],
-    SupportedGames = Data.Games.Game.Any
+    UnsupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024
 )]
-internal sealed class GameDataOverlay : CommonAbstractOverlay
+internal sealed class LocalCarDataOverlay : CommonAbstractOverlay
 {
-    private readonly LocalCarDataConfig _config = new();
-    private sealed class LocalCarDataConfig : OverlayConfiguration
+    private readonly LocalPlaneDataConfig _config = new();
+    private sealed class LocalPlaneDataConfig : OverlayConfiguration
     {
-        public LocalCarDataConfig() => this.GenericConfiguration.AllowRescale = false;
+        public LocalPlaneDataConfig() => this.GenericConfiguration.AllowRescale = false;
 
         [ConfigGrouping("Visible Members", "Adjust the members visible in the debug menu")]
         public VisibleMemberGrouping VisibleMember { get; init; } = new();
@@ -49,7 +50,7 @@ internal sealed class GameDataOverlay : CommonAbstractOverlay
     }
 
     private Font? _font;
-    public GameDataOverlay(Rectangle rectangle) : base(rectangle, "Common LocalCarData")
+    public LocalCarDataOverlay(Rectangle rectangle) : base(rectangle, "Common LocalCarData")
     {
         RefreshRateHz = _config.Data.RefreshRateHz;
         Width = 330;

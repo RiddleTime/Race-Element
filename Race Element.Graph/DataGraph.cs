@@ -56,9 +56,7 @@ public sealed class DataGraph : ConcurrentBag<AbstractNode>
 
     public bool TryAddEdge(AbstractEdge edge)
     {
-        if (edge.ParentId == null || edge.ChildId == null)
-            return false;
-
+        if (edge.ParentId == Guid.Empty) return false;
         Edges.Add(edge);
         return true;
     }

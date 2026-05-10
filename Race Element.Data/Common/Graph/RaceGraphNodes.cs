@@ -33,7 +33,7 @@ public sealed record class LapDataNode : AbstractNode
 }
 
 /// <summary>
-/// Child of <see cref="CarNode"/> with <see cref="OwnsEdge" />.
+/// Child of <see cref="RaceCarNode"/> with <see cref="OwnsEdge" />.
 /// </summary>
 public sealed record class DriverNode : AbstractNode
 {
@@ -47,7 +47,7 @@ public sealed record class DriverNode : AbstractNode
     public string Country { get; init; } = string.Empty;
 }
 
-public sealed record class CarNode : AbstractNode
+public sealed record class RaceCarNode : AbstractNode
 {
     /// <summary>
     /// Car number.
@@ -65,6 +65,8 @@ public sealed record class CarNode : AbstractNode
     /// </summary>
     public int Position { get; set; } = -1;
 
+    public TrackStates TrackState = TrackStates.None;
+
     /// <summary>
     /// The amount of completed laps
     /// </summary>
@@ -72,7 +74,7 @@ public sealed record class CarNode : AbstractNode
 }
 
 /// <summary>
-/// Describes a <see cref="TrackStates"/> change for a <see cref="CarNode"/>
+/// Describes a <see cref="TrackStates"/> change for a <see cref="RaceCarNode"/>
 /// </summary>
 public sealed record class TrackStateEdge : AbstractEdge
 {

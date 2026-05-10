@@ -1,5 +1,6 @@
 ﻿using RaceElement.Data.Common;
 using RaceElement.Data.Common.Graph;
+using RaceElement.Data.Games;
 using RaceElement.Graph;
 using RaceElement.Graph.Edge;
 using RaceElement.HUD.Overlay.Internal;
@@ -12,13 +13,13 @@ using System.Text.Json;
 
 namespace RaceElement.HUD.Common.Overlays.Pitwall.DataGraphLeaderBoard;
 
-#if DEBUG
 [Overlay(
     Name = "Data Graph Leaderboard",
-    Description = "",
-    Authors = ["Reinier Klarenberg"]
+    Description = "A data test for the data-graph.",
+    Authors = ["Reinier Klarenberg"],
+    OverlayType = OverlayType.Pitwall,
+    SupportedGames = Game.RaceRoom
 )]
-#endif
 internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Data Graph Leaderboard")
 {
     private InfoPanel _panel;
@@ -48,36 +49,55 @@ internal sealed class DataGraphLeaderBoardOverlay(Rectangle rectangle) : CommonA
 
         IEnumerable<LapDataNode?> allLapTimes = graph.Where(x => x is LapDataNode).Select(x => x as LapDataNode);
         IEnumerable<DriverNode?> allDrivers = graph.Where(x => x is DriverNode).Select(x => x as DriverNode);
-        IEnumerable<CarNode?> allCars = graph.Where(x => x is CarNode).Select(x => x as CarNode);
+        IEnumerable<RaceCarNode?> allCars = graph.Where(x => x is RaceCarNode).Select(x => x as RaceCarNode);
 
         if (allLapTimes.Any())
         {
-            LapDataNode? fastestLap = allLapTimes.MinBy(x => x?.LapTimeMs);
-
-            _ = graph.TryGetEdgesTo(fastestLap.Id, out var fastestLapEdges);
-            if (fastestLapEdges.Count != 0)
+            LapDataNode? fastestLap = allLapTimes.Where(x => x.IsValid).MinBy(x => x?.LapTimeMs);
+            if (fastestLap != null)
             {
-                var fastestDriverId = fastestLapEdges.First().ParentId;
-                var fastestDriver = allDrivers.First(x => x?.Id == fastestDriverId);
+                _ = graph.TryGetEdgesTo(fastestLap.Id, out var fastestLapEdges);
+                if (fastestLapEdges.Count != 0)
+                {
+                    var fastestDriverId = fastestLapEdges.First().ParentId;
+                    var fastestDriver = allDrivers.First(driverNode => driverNode?.Id == fastestDriverId);
 
-                _ = graph.TryGetEdgesTo(fastestDriverId, out var driverEdgesTo);
+                    _ = graph.TryGetEdgesTo(fastestDriverId, out var driverEdgesTo);
 
-                CarNode fastestCar = allCars.First(x => driverEdgesTo.Select(x => x.ParentId).Contains(x.Id));
-                _panel.AddLine("Fastest", $"#{fastestCar.CarNumber} - {fastestDriver.Name} - L{fastestLap.LapIndex}");
-                _panel.AddLine("Fastest Lap", $"{TimeSpan.FromMilliseconds(fastestLap.LapTimeMs):mm\\:ss\\.fff}");
+                    RaceCarNode? fastestCar = allCars.FirstOrDefault(carNode => driverEdgesTo.Select(edge => edge.ParentId).Contains(carNode.Id));
+                    if (fastestCar != null)
+                    {
+                        _panel.AddLine("Fastest", $"#{fastestCar.CarNumber} - {fastestDriver.Name} - L{fastestLap.LapIndex}");
+
+                        _panel.AddLine("Fastest Lap", $"{TimeSpan.FromMilliseconds(fastestLap.LapTimeMs):mm\\:ss\\.fff} ");
+
+                        StringBuilder sectorTimes = new();
+                        for (int i = 0; i < fastestLap.SectorTimesMs.Length; i++)
+                        {
+                            _ = sectorTimes.Append($"S{i + 1}: {TimeSpan.FromMilliseconds(fastestLap.SectorTimesMs[i]):mm\\:ss\\.fff}");
+                            if (i < fastestLap.SectorTimesMs.Length - 1)
+                                _ = sectorTimes.Append(", ");
+                        }
+                        _panel.AddLine("Sectors", $" {sectorTimes}");
+                    }
+                }
             }
         }
 
-
-        if (allLapTimes.Any())
+        IEnumerable<LapDataNode> allValidLapTimes = allLapTimes.Where(x => x.IsValid);
+        int validLapTimeCount = allValidLapTimes.Count();
+        int invalidLapTimeCount = allLapTimes.Count() - validLapTimeCount;
+        _panel.AddLine("Laps", $"Valid: {validLapTimeCount},  Invalid: {invalidLapTimeCount}");
+        if (allValidLapTimes.Any())
         {
-            _panel.AddLine("Laps", $"{allLapTimes.Count()}");
-            int[] avgLapTimeMs = allLapTimes.Select(x => x.LapTimeMs).ToArray();
+            _panel.AddLine("", "---- Valid Laps ----");
+            int[] avgLapTimeMs = allValidLapTimes.Select(x => x.LapTimeMs).ToArray();
             AddTimeStats(_panel, [.. avgLapTimeMs]);
         }
 
-        _panel.AddLine("Nodes", $"{graph.Count}");
-        _panel.AddLine("Edges", $"{graph.Edges.Count}");
+        _panel.AddLine("", "---- Graph Stats ----");
+        _panel.AddLine("Drivers/Laps", $"{allDrivers.Count()}/{allLapTimes.Count()}");
+        _panel.AddLine("Edges/Nodes", $"{graph.Edges.Count}/{graph.Count}");
 
         _panel.Draw(g);
     }

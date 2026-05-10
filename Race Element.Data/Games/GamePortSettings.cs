@@ -18,6 +18,7 @@ public sealed class GamePortSettings : AbstractSettingsJson<GamePortSettingsJson
             { Game.ProjectMotorRacing, 7576 },
             { Game.ForzaHorizon4, 5300 },
             { Game.ForzaHorizon5, 5300 },
+            { Game.ForzaHorizon6, 5300 },
             { Game.ForzaMotorsport, 5300 },
             { Game.RichardBurnsRally, 6776 },
         }

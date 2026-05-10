@@ -16,6 +16,8 @@ using RaceElement.Data.Games.ProjectMotorRacing;
 using RaceElement.Data.Games.DirtRally2;
 using RaceElement.Data.Games.BeamNG;
 using RaceElement.Data.Games.RichardBurnsRally;
+using RaceElement.Data.Common.SimulatorData.LocalPlane;
+using RaceElement.Data.Games.MicrosoftFlightSimulator;
 
 namespace RaceElement.Data.Common;
 
@@ -23,6 +25,7 @@ public static class SimDataProvider
 {
     public static AbstractSimDataProvider? Instance { get; internal set; }
 
+    #region Racing Games
     private static LocalCarData _localCarData = new();
     public static LocalCarData LocalCar { get => _localCarData; }
 
@@ -39,6 +42,8 @@ public static class SimDataProvider
     public static DataGraph RacingGraph { get => _racingGraph; }
 
 
+
+
     /// <summary>
     /// TODO, remove and replace with <see cref="RacingGraph"/>
     /// </summary>
@@ -47,7 +52,14 @@ public static class SimDataProvider
     /// TODO, remove and replace with <see cref="RacingGraph"/>
     /// </summary>
     public static SessionData Session { get => _session; }
+    #endregion
 
+
+    #region Flight Data
+
+    private static LocalPlaneData _localPlane = new();
+    public static LocalPlaneData LocalPlane { get => _localPlane; }
+    #endregion
 
 
     public static void Update(bool clear = false)
@@ -127,6 +139,13 @@ public static class SimDataProvider
                     _localCarEventLoop.Run();
                     break;
                 }
+            case Game.ForzaHorizon6:
+                {
+                    Instance ??= new ForzaDataProvider(Game.ForzaHorizon6);
+                    Instance.Update(ref _localCarData, ref _session, ref _gameData);
+                    _localCarEventLoop.Run();
+                    break;
+                }
             case Game.ForzaMotorsport:
                 {
                     Instance ??= new ForzaDataProvider(Game.ForzaMotorsport);
@@ -174,6 +193,18 @@ public static class SimDataProvider
                     Instance ??= new DirtRally2DataProvider();
                     Instance.Update(ref _localCarData, ref _session, ref _gameData);
                     _localCarEventLoop.Run();
+                    break;
+                }
+            case Game.MicrosoftFlightSimulator2020:
+                {
+                    Instance ??= new MicrosoftFlightSimulatorDataProvider();
+                    ((MicrosoftFlightSimulatorDataProvider)Instance).UpdateFlightData(ref _localPlane);
+                    break;
+                }
+            case Game.MicrosoftFlightSimulator2024:
+                {
+                    Instance ??= new MicrosoftFlightSimulatorDataProvider();
+                    ((MicrosoftFlightSimulatorDataProvider)Instance).UpdateFlightData(ref _localPlane);
                     break;
                 }
             //  case Game.BeamNG:

@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
@@ -8,9 +9,11 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.Speedometer;
+
 [Overlay(
     Name = "Speedometer",
     Description = "The current speed as text",
+    UnsupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Speedometer")

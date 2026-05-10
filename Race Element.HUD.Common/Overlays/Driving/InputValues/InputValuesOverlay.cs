@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Configuration;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
@@ -13,8 +14,9 @@ namespace RaceElement.HUD.Common.Overlays.Driving.InputValues;
     Description = "Shows Throttle and Brake Input Percentage.",
     OverlayCategory = OverlayCategory.Inputs,
     OverlayType = OverlayType.Drive,
-Authors = ["Reinier Klarenberg"]
-    )]
+    UnsupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
+    Authors = ["Reinier Klarenberg"]
+)]
 internal sealed class InputValuesOverlay : CommonAbstractOverlay
 {
     private readonly InputValuesConfiguration _config = new();

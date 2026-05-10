@@ -2,11 +2,10 @@
 using RaceElement.Data.Games.RaceRoom.SharedMemory;
 using RaceElement.Graph;
 using RaceElement.Graph.Edge;
+using RaceElement.Graph.Node;
 using System.Diagnostics;
 
 namespace RaceElement.Data.Games.RaceRoom.DataMapper;
-
-
 
 /// <summary>
 /// Very rough testing data mapper, should have state tracking of tree nodes!
@@ -21,25 +20,26 @@ internal static class R3EDataGraphMapper
             return;
         }
 
-        var existingCars = graph.Where(x => x is CarNode).Select(x => x as CarNode);
+        var existingCars = graph.Where(x => x is RaceCarNode).Select(x => x as RaceCarNode);
         var existingDrivers = graph.Where(x => x is DriverNode).Select(x => x as DriverNode);
         var existingLaps = graph.Where(x => x is LapDataNode).Select(x => x as LapDataNode);
 
         for (int i = 0; i < shared.DriverData.Length; i++)
         {
-            var driverData = shared.DriverData[i];
+            SharedMemory.DriverData driverData = shared.DriverData[i];
             if (driverData.Place == -1) continue;
 
             var matchingCars = existingCars.Where(x => x?.CarNumber == driverData.DriverInfo.CarNumber);
             if (!matchingCars.Any())
             {
-                var raceCarNode = new CarNode()
+                var raceCarNode = new RaceCarNode()
                 {
                     CarNumber = driverData.DriverInfo.CarNumber,
                     CarModelGameID = $"{driverData.DriverInfo.ModelId}",
                     Position = driverData.Place,
                     Laps = driverData.CompletedLaps,
                 };
+
                 var raceDriverNode = new DriverNode()
                 {
                     DriverId = driverData.DriverInfo.UserId,
@@ -53,7 +53,14 @@ internal static class R3EDataGraphMapper
             }
             else
             {
-                var raceCarNode = matchingCars.FirstOrDefault();
+                RaceCarNode raceCarNode = matchingCars.FirstOrDefault();
+                if (raceCarNode == null)
+                {
+                    Debug.WriteLine("Race car node is NULL, RETURN;");
+                    return;
+                }
+
+                _ = graph.TryGetEdgesTo(raceCarNode, out var driverEdgesTo);
 
                 if (raceCarNode != null)
                 {
@@ -62,26 +69,40 @@ internal static class R3EDataGraphMapper
                     if (raceCarNode.Position != driverData.Place)
                         raceCarNode.Position = driverData.Place;
 
-                    if (raceCarNode.Laps < driverData.CompletedLaps && graph.Edges.Any())
+                    MapTrackStateChangeForDriver(ref graph, ref raceCarNode, driverData);
+
+                    if (raceCarNode.Laps < driverData.CompletedLaps && !graph.Edges.IsEmpty)
                     {
                         raceCarNode.Laps = driverData.CompletedLaps;
 
                         int[] sectors = [
-                            (int)(driverData.SectorTimePreviousSelf.Sector1 * 1000f),
-                            (int)((driverData.SectorTimePreviousSelf.Sector2 - driverData.SectorTimePreviousSelf.Sector1) * 1000f),
-                            (int)((driverData.SectorTimePreviousSelf.Sector3 - driverData.SectorTimePreviousSelf.Sector2) * 1000f),
+                            (int)Math.Round(Math.Abs(driverData.SectorTimePreviousSelf.Sector1 * 1000.000f)),
+                            (int)Math.Round(Math.Abs((driverData.SectorTimePreviousSelf.Sector2 - driverData.SectorTimePreviousSelf.Sector1) * 1000.000f)),
+                            (int)Math.Round(Math.Abs((driverData.SectorTimePreviousSelf.Sector3 - driverData.SectorTimePreviousSelf.Sector2) * 1000.000f)),
                         ];
+                        int lapTimeMs = sectors.Sum();
 
-                        if (sectors.Sum() <= 0)
+                        bool hasInvalidSectors = false;
+                        foreach (int sector in sectors)
+                            if (sector == 0)
+                            {
+                                hasInvalidSectors = true;
+                                break;
+                            }
+
+                        if (lapTimeMs <= 0)
                             continue;
 
-                        LapDataNode lapNode = new() { SectorTimesMs = sectors, LapIndex = raceCarNode.Laps, LapTimeMs = sectors.Sum(), IsValid = driverData.CurrentLapValid == 1 };
-                        Debug.WriteLine($"Added new lap for:\n- {raceCarNode}\n- {lapNode}");
+                        bool isValid = driverData.CurrentLapValid == 1 && !hasInvalidSectors;
+
+                        LapDataNode lapNode = new() { SectorTimesMs = sectors, LapIndex = raceCarNode.Laps, LapTimeMs = lapTimeMs, IsValid = isValid };
+                        Debug.WriteLine($"\nAdded new lap for:\n- {raceCarNode}\n- {lapNode}");
+
                         graph.Add(lapNode);
 
                         graph.TryGetEdgesFrom(raceCarNode, out var carEdgesFrom);
 
-                        DriverNode driverNode = (DriverNode)existingDrivers.First(x => carEdgesFrom.Select(x => x.ChildId).Contains(x.Id));
+                        DriverNode driverNode = existingDrivers.First(x => carEdgesFrom.Select(x => x.ChildId).Contains(x.Id));
 
 
                         graph.TryAddEdge(new OwnsEdge() { ParentId = driverNode.Id, ChildId = lapNode.Id });
@@ -89,6 +110,47 @@ internal static class R3EDataGraphMapper
                 }
 
             }
+        }
+    }
+
+    /// <summary>
+    /// Map Track State and add TrackStateEdges
+    /// </summary>
+    /// <param name="graph"></param>
+    /// <param name="raceCarNode"></param>
+    /// <param name="driverData"></param>
+    private static void MapTrackStateChangeForDriver(ref DataGraph graph, ref RaceCarNode raceCarNode, DriverData driverData)
+    {
+        if (raceCarNode.TrackState == TrackStates.None)
+        {
+            Debug.WriteLine($"\nCar #{raceCarNode.CarNumber} current:{raceCarNode.TrackState}  inPitLane={driverData.InPitlane} - S{driverData.TrackSector}");
+
+            TrackStates targetState = driverData.InPitlane == 1 ? TrackStates.Pitlane : TrackStates.Track;
+
+            Debug.WriteLine($"Set car #{raceCarNode.CarNumber} from {raceCarNode.TrackState} to {TrackStates.Pitlane}");
+
+            graph.TryAddEdge(new TrackStateEdge() { ParentId = raceCarNode.Id, State = targetState });
+            raceCarNode.TrackState = targetState;
+            return;
+        }
+
+        if (driverData.InPitlane == 1 && raceCarNode.TrackState != TrackStates.Pitlane)
+        {
+            Debug.WriteLine($"\nCar #{raceCarNode.CarNumber} current:{raceCarNode.TrackState}  inPitLane={driverData.InPitlane} - S{driverData.TrackSector}");
+
+            Debug.WriteLine($"Set car #{raceCarNode.CarNumber} from {raceCarNode.TrackState} to {TrackStates.Pitlane}");
+            graph.TryAddEdge(new TrackStateEdge() { ParentId = raceCarNode.Id, State = TrackStates.Pitlane });
+            raceCarNode.TrackState = TrackStates.Pitlane;
+            return;
+        }
+        if (driverData.InPitlane == 0 && raceCarNode.TrackState != TrackStates.Track)
+        {
+            Debug.WriteLine($"\nCar #{raceCarNode.CarNumber} current:{raceCarNode.TrackState}  inPitLane={driverData.InPitlane} - S{driverData.TrackSector}");
+
+            Debug.WriteLine($"Set car #{raceCarNode.CarNumber} {driverData.PitStopStatus} from {raceCarNode.TrackState} to {TrackStates.Track}");
+            graph.TryAddEdge(new TrackStateEdge() { ParentId = raceCarNode.Id, State = TrackStates.Track });
+            raceCarNode.TrackState = TrackStates.Track;
+            return;
         }
     }
 }

@@ -2,11 +2,15 @@
 using RaceElement.Controls.Setup;
 using RaceElement.Controls.Util;
 using RaceElement.Data.ACC.Core;
+using RaceElement.Data.ACC.SetupParser;
 using RaceElement.Data.ACC.Tracks;
 using RaceElement.Data.Games;
 using RaceElement.Util;
 using RaceElement.Util.SystemExtensions;
+using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
+using SharpCompress.Writers.Zip;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -17,10 +21,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using static RaceElement.Data.ACC.Tracks.TrackData;
 using static RaceElement.Data.ACC.SetupParser.ConversionFactory;
 using static RaceElement.Data.ACC.SetupParser.SetupJson;
-using RaceElement.Data.ACC.SetupParser;
+using static RaceElement.Data.ACC.Tracks.TrackData;
 
 namespace RaceElement.Controls;
 
@@ -465,19 +468,19 @@ public partial class SetupBrowser : UserControl
         }
     }
 
-    private string GetSetupLink(FileInfo file)
+    private static string GetSetupLink(FileInfo file)
     {
         // command is RaceElement://Setup=
         // The Race Element website enables linking.
         string website = new("https://race.elementfuture.com/?setup=");
         string base64 = string.Empty;
 
-        using (ZipArchive archive = ZipArchive.Create())
+        using (var archive = ZipArchive.CreateArchive())
         {
             using FileStream setupFileStream = file.OpenRead();
             archive.AddEntry(file.Name, setupFileStream);
             using MemoryStream stream = new();
-            archive.SaveTo(stream);
+            archive.SaveTo(stream, new ZipWriterOptions(CompressionType.Deflate));
 
             byte[] bytes = stream.ToArray();
             base64 = Convert.ToBase64String(bytes);

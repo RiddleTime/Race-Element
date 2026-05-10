@@ -19,22 +19,14 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
 
     internal sealed override void Start()
     {
-#if DEBUG
         _graphjob = new(this) { IntervalMillis = 500 };
-        _graphjob.Run();
-#endif
+        //_graphjob.Run();
     }
 
     internal sealed override void Stop()
     {
-#if DEBUG
         _graphjob.CancelJoin();
-#endif
     }
-
-    private float _lastLocationX = default;
-    private int _velocityBuffer = 0;
-    private const int _maxVelocityBuffer = 800;
 
     public sealed override void Update(ref LocalCarData localCar, ref SessionData sessionData, ref GameData gameData)
     {
@@ -56,7 +48,7 @@ internal sealed class RaceRoomDataProvider : AbstractSimDataProvider
             try
             {
                 Shared sharedMemory = R3eSharedMemory.ReadSharedMemory();
-    
+
 
                 PlayerData playerData = sharedMemory.Player;
                 // Local Car Data

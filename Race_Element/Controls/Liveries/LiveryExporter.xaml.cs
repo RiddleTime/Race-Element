@@ -1,6 +1,8 @@
 ﻿using RaceElement.Util;
 using SharpCompress.Archives;
 using SharpCompress.Archives.Zip;
+using SharpCompress.Common;
+using SharpCompress.Writers.Zip;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -74,7 +76,7 @@ public partial class LiveryExporter : UserControl
                         }));
                     }
 
-                    using (ZipArchive zipArchive = ZipArchive.Create())
+                    using (var zipArchive = ZipArchive.CreateArchive())
                     {
                         foreach (LiveryTreeCar liveryTreeCar in exportItems)
                         {
@@ -122,7 +124,7 @@ public partial class LiveryExporter : UserControl
 
                         using (FileStream outputStream = new(filename, FileMode.Create))
                         {
-                            zipArchive.SaveTo(outputStream);
+                            zipArchive.SaveTo(outputStream, new ZipWriterOptions(CompressionType.Deflate));
                             outputStream.Close();
                         }
 

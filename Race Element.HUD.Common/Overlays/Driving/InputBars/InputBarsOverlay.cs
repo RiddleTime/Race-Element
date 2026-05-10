@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.OverlayUtil.ProgressBars;
@@ -10,7 +11,9 @@ namespace RaceElement.HUD.Common.Overlays.Driving.InputBars;
 [Overlay(Name = "Input Bars", Version = 1.00, OverlayType = OverlayType.Drive,
   Description = "Live input bars of throttle and brake.",
   OverlayCategory = OverlayCategory.Inputs,
-Authors = ["Reinier Klarenberg"])]
+  UnsupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
+  Authors = ["Reinier Klarenberg"]
+ )]
 internal sealed class InputBarsOverlay : CommonAbstractOverlay
 {
     private readonly InputBarsConfiguration _config = new();
@@ -88,7 +91,7 @@ internal sealed class InputBarsOverlay : CommonAbstractOverlay
                 g.FillRoundedRectangle(gradientBrush, new Rectangle(0, (int)((_config.Bars.Thickness + _config.Bars.Spacing) * Scale), (int)(_config.Bars.Length * Scale), (int)(_config.Bars.Thickness * Scale)), (int)(5 * Scale));
 
                 if (_config.Bars.ShowClutch)
-                    g.FillRoundedRectangle(gradientBrush, new Rectangle(0, (int)((_config.Bars.Thickness + _config.Bars.Spacing ) * 2 * Scale), (int)(_config.Bars.Length * Scale), (int)(_config.Bars.Thickness * Scale)), (int)(5 * Scale));
+                    g.FillRoundedRectangle(gradientBrush, new Rectangle(0, (int)((_config.Bars.Thickness + _config.Bars.Spacing) * 2 * Scale), (int)(_config.Bars.Length * Scale), (int)(_config.Bars.Thickness * Scale)), (int)(5 * Scale));
             }
             else
             {
@@ -98,7 +101,7 @@ internal sealed class InputBarsOverlay : CommonAbstractOverlay
                 g.FillRoundedRectangle(gradientBrush, new Rectangle((int)((_config.Bars.Thickness + _config.Bars.Spacing) * Scale), 0, (int)(_config.Bars.Thickness * Scale), (int)(height * Scale)), (int)(5 * Scale));
 
                 if (_config.Bars.ShowClutch)
-                    g.FillRoundedRectangle(gradientBrush, new Rectangle((int)((_config.Bars.Thickness + _config.Bars.Spacing)*2 * Scale), 0, (int)(_config.Bars.Thickness * Scale), (int)(height * Scale)), (int)(5 * Scale));
+                    g.FillRoundedRectangle(gradientBrush, new Rectangle((int)((_config.Bars.Thickness + _config.Bars.Spacing) * 2 * Scale), 0, (int)(_config.Bars.Thickness * Scale), (int)(height * Scale)), (int)(5 * Scale));
             }
         });
 

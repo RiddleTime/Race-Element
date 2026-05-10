@@ -11,7 +11,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.AccelerationTester;
     Name = "Acceleration Tester",
     Description = "Ready? Set! Go! The Acceleration Tester." +
     "\nPrecision is Limited to Simulator Specification.",
-    SupportedGames = Game.ForzaHorizon4 | Game.ForzaHorizon5,
+    SupportedGames = Game.ForzaHorizon4 | Game.ForzaHorizon5 | Game.ForzaHorizon6,
     Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class AccelerationTester : CommonAbstractOverlay

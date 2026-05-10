@@ -1,4 +1,5 @@
 ﻿using RaceElement.Data.Common.Graph;
+using RaceElement.Data.Games;
 using RaceElement.Graph;
 using RaceElement.Graph.Edge;
 using RaceElement.HUD.Overlay.Internal;
@@ -11,13 +12,14 @@ using System.Text.Json;
 
 namespace RaceElement.HUD.Common.Overlays.Pitwall.DataGraphTest;
 
-#if DEBUG
+
 [Overlay(
     Name = "Data Graph Test",
-    Description = "",
-    Authors = ["Reinier Klarenberg"]
+    Description = "This is a performance test for the Data Graph.",
+    Authors = ["Reinier Klarenberg"],
+    OverlayType = OverlayType.Pitwall,
+    SupportedGames = Game.RaceRoom
 )]
-#endif
 internal sealed class DataGraphTestOverlay : CommonAbstractOverlay
 {
     private readonly DataGraph _graph;
@@ -44,7 +46,7 @@ internal sealed class DataGraphTestOverlay : CommonAbstractOverlay
         var trackStates = Enum.GetValues<TrackStates>();
         _ = Parallel.For(0, carCount, i =>
          {
-             var someCar = new CarNode() { CarNumber = i + 1 };
+             var someCar = new RaceCarNode() { CarNumber = i + 1 };
              _graph.Add(someCar);
              _graph.TryAddEdge(new TrackStateEdge() { ParentId = someCar.Id, State = trackStates[Random.Shared.Next(1, trackStates.Length - 1)] });
              _graph.TryAddEdge(new TrackStateEdge() { ParentId = someCar.Id, State = trackStates[Random.Shared.Next(1, trackStates.Length - 1)] });
@@ -58,7 +60,7 @@ internal sealed class DataGraphTestOverlay : CommonAbstractOverlay
             _graph.Add(someDriver);
 
             int carNumber = Random.Shared.Next(1, carCount);
-            CarNode? raceCar = _graph.FirstOrDefault(x => x is CarNode car && car.CarNumber == carNumber) as CarNode;
+            RaceCarNode? raceCar = _graph.FirstOrDefault(x => x is RaceCarNode car && car.CarNumber == carNumber) as RaceCarNode;
             _graph.TryAddEdge(new OwnsEdge() { ParentId = raceCar.Id, ChildId = someDriver.Id });
 
             Parallel.For(1, lapCount, j =>
@@ -108,7 +110,7 @@ internal sealed class DataGraphTestOverlay : CommonAbstractOverlay
 
         var allLapTimes = _graph.Where(x => x is LapDataNode);
         var allDrivers = _graph.Where(x => x is DriverNode);
-        var allCars = _graph.Where(x => x is CarNode);
+        var allCars = _graph.Where(x => x is RaceCarNode);
         var allTrackStates = _graph.Edges.Where(x => x is TrackStateEdge);
 
         LapDataNode? fastestLap = allLapTimes.MinBy(x => ((LapDataNode)x).LapTimeMs) as LapDataNode;
@@ -117,7 +119,7 @@ internal sealed class DataGraphTestOverlay : CommonAbstractOverlay
         var fastestDriver = (DriverNode)allDrivers.First(x => x.Id == fastestDriverId);
 
         _graph.TryGetEdgesTo(fastestDriver, out var driverEdgesTo);
-        CarNode fastestCar = (CarNode)allCars.First(x => driverEdgesTo.Select(x => x.ParentId).Contains(x.Id));
+        RaceCarNode fastestCar = (RaceCarNode)allCars.First(x => driverEdgesTo.Select(x => x.ParentId).Contains(x.Id));
         var allCarStates = _graph.Edges.Where(x => x.ParentId == fastestCar.Id && x is TrackStateEdge);
         var latestTrackState = allCarStates.Where(x => x.ParentId == fastestCar.Id).MaxBy(x => x.TimeStampUtc) as TrackStateEdge;
 

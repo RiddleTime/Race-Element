@@ -98,7 +98,7 @@ internal static class LiveryImporter
             MainWindow.Instance.EnqueueSnackbarMessage($"The archive(s) you choose are not supported. Manually import them.");
 
 
-        enableUI:
+    enableUI:
         LiveryBrowser.Instance.FetchAllCars();
         LiveryBrowser.Instance.Dispatcher.BeginInvoke(new Action(() =>
         {
@@ -124,7 +124,7 @@ internal static class LiveryImporter
         {
             case ".7z":
             case ".zip":
-            case ".rar": archive = ArchiveFactory.Open(fi.FullName, new SharpCompress.Readers.ReaderOptions() { LeaveStreamOpen = false }); break;
+            case ".rar": archive = ArchiveFactory.OpenArchive(fi.FullName, new SharpCompress.Readers.ReaderOptions() { LeaveStreamOpen = false }); break;
             default:
                 {
                     return;
@@ -236,7 +236,8 @@ internal static class LiveryImporter
                             //MainWindow.Instance.EnqueueSnackbarMessage($"Imported {carRoot.teamName} / {carRoot.customSkinName}");
                         }
                     }
-                };
+                }
+                ;
             });
         }
 
@@ -302,7 +303,8 @@ internal static class LiveryImporter
                             //MainWindow.Instance.EnqueueSnackbarMessage($"Imported {carRoot.teamName} / {carRoot.customSkinName}");
                         }
                     }
-                };
+                }
+                ;
             });
         }
     }

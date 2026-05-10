@@ -1,4 +1,5 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+﻿using RaceElement.Data.Games;
+using RaceElement.HUD.Overlay.Internal;
 using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 
@@ -9,6 +10,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.GForceTrace;
     Description = "Live graph of lateral and longitudinal G-forces.\nLateral forces are shown in Yellow, Longitudinal forces in light grey.",
     OverlayCategory = OverlayCategory.Physics,
     OverlayType = OverlayType.Drive,
+    UnsupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
     Version = 1.00,
     Authors = ["Reinier Klarenberg"])]
 internal sealed class GForceTraceOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "G-Force Trace")

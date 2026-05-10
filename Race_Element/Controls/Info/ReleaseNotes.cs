@@ -6,6 +6,22 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.7.0.0", "Race Element:"+
+                    "\n- Added preliminary support for Forza Horizon 6. With DSX support. If there is more work required an update will follow."+
+                    "\n- Added support for Microsoft Flight Simulator 2020."+
+                    "\n- Added support for Microsoft Flight Simulator 2024."+
+                    "\n- Updated SharpCompress package due to vulnerability."+
+                    "\n\nFlight HUDs"+
+                    "\n- Added Vertical Speed HUD. Based on positive or negative VS the background can change color."+
+                    "\n- Added Indicated Air Speed HUD."+
+                    "\n- Added Altitude HUD."+
+                    "\n- Added Aircraft Info HUD. Shows data like Type, Model and Identifier."
+                    },
+        {"2.6.3.0", "Common HUDs"+
+                    "\n- Input Trace HUD: Increase max refresh rate to 60 Hz with 2 step intervals."+
+                    "\n\nAssetto Corsa Competizione"+
+                    "\n- Input Trace HUD: Increase max refresh rate to 60 Hz with 2 step intervals."
+                    },
         {"2.6.2.0", "Race Element"+
                     "\n- Fixed Race Element icon in settings menu."+
                     "\n\nAssetto Corsa EVO"+

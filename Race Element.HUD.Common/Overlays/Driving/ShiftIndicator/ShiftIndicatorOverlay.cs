@@ -16,6 +16,7 @@ namespace RaceElement.HUD.Common.Overlays.Driving.ShiftIndicator;
     Description = "Shift Bar with RPM Text. Adjustable colors and percentages. (BETA)",
     Version = 1.00,
     OverlayType = OverlayType.Drive,
+    UnsupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
     OverlayCategory = OverlayCategory.Driving,
 Authors = ["Reinier Klarenberg, Dirk Wolf"])]
 #endif

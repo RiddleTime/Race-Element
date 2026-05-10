@@ -115,6 +115,12 @@ public sealed record TyresData
     /// Wheel Slip Ratio
     /// </summary>
     public float[] SlipRatio { get; internal set; } = new float[4];
+
+    /// <summary>
+    /// Tyre wear percentage (0 to 100%) (FL, FR, RL, RR).
+    /// 0% means a new tyre, 100% means a fully worn tyre. Note that the wear percentage is not necessarily linear with the actual wear of the tyre, and can vary between games.     
+    /// </summary>
+    public float[] Wear { get; internal set; } = new float[4];
 }
 
 public sealed record SuspensionData
@@ -131,6 +137,20 @@ public sealed record BrakesData
     /// The temperature in Celsius for each of the brake discs.
     /// </summary>
     public float[] DiscTemperature { get; internal set; } = new float[4];
+
+
+    /// <summary>
+    /// The amount of wear for each of the brake discs, in percentage (0 to 100%). 
+    /// 0% means a new brake disc, 100% means a fully worn brake disc. Note that the wear percentage is not necessarily linear with the actual wear of the brake disc, and can vary between games.
+    /// </summary>
+    public float[] DiscWear { get; internal set; } = new float[4];
+
+
+    /// <summary>
+    /// The amount of wear for each of the brake 'pad', in percentage (0 to 100%). 
+    /// 0% means a new brake 'pad', 100% means a fully destroyed 'pad'. Note that the wear percentage is not necessarily linear with the actual wear of the brake 'pad', and can vary between games.
+    /// </summary>
+    public float[] PadWear { get; internal set; } = new float[4];
 
     /// <summary>
     /// The amount of pressure applied to each of the brake pads
@@ -206,9 +226,9 @@ public sealed record ElectronicsData
     public float AbsActivation { get; internal set; }
     public float BrakeBias { get; internal set; }
 
-
     /// <summary>
-    /// Describes the state of the left and right blinkers/turning indicators
+    /// Describes the state of the left and right blinkers/turning indicators. Left and Right enabled describes Hazard Lights.
+    /// Note that in some games, the blinkers are also used to indicate other things, like warnings or pit limiter activation.
     /// </summary>
     public BlinkerStatus Blinkers { get; internal set; }
 

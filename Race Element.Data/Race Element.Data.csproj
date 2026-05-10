@@ -25,8 +25,11 @@
 		<None Remove="Games\Resources\Icons\DR2.ico" />
 		<None Remove="Games\Resources\Icons\FH4.ico" />
 		<None Remove="Games\Resources\Icons\FH5.ico" />
+		<None Remove="Games\Resources\Icons\FH6.ico" />
 		<None Remove="Games\Resources\Icons\FM.ico" />
 		<None Remove="Games\Resources\Icons\LMU.ico" />
+		<None Remove="Games\Resources\Icons\MFS2020.ico" />
+		<None Remove="Games\Resources\Icons\MFS2024.ico" />
 		<None Remove="Games\Resources\Icons\PMR.ico" />
 		<None Remove="Games\Resources\Icons\rF2.ico" />
 		<None Remove="Games\Resources\Icons\WRCG.ico" />
@@ -38,8 +41,11 @@
 		<None Remove="Games\Resources\Logos\DR2.jpg" />
 		<None Remove="Games\Resources\Logos\FH4.jpg" />
 		<None Remove="Games\Resources\Logos\FH5.jpg" />
+		<None Remove="Games\Resources\Logos\FH6.jpg" />
 		<None Remove="Games\Resources\Logos\FM.jpg" />
 		<None Remove="Games\Resources\Logos\LMU.jpg" />
+		<None Remove="Games\Resources\Logos\MFS2020.jpg" />
+		<None Remove="Games\Resources\Logos\MFS2024.jpg" />
 		<None Remove="Games\Resources\Logos\PMR.jpg" />
 		<None Remove="Games\Resources\Logos\rF2.jpg" />
 		<None Remove="Games\Resources\Logos\WRCG.jpg" />
@@ -62,6 +68,7 @@
 	<ItemGroup>
 		<PackageReference Include="DeepCopy" Version="1.0.3" />
 		<PackageReference Include="Riok.Mapperly" Version="4.1.1" />
+		<PackageReference Include="SimConnect.NET" Version="0.1.18" />
 		<PackageReference Include="YamlDotNet" Version="15.1.1" />
 	</ItemGroup>
 
@@ -82,9 +89,12 @@
 		<EmbeddedResource Include="Games\Resources\Icons\ETS2.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\FH4.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\FH5.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\FH6.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\FM.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\iRacing.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\LMU.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\MFS2020.ico" />
+		<EmbeddedResource Include="Games\Resources\Icons\MFS2024.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\PMR.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\RaceRoom.ico" />
 		<EmbeddedResource Include="Games\Resources\Icons\rF2.ico" />
@@ -101,9 +111,12 @@
 		<EmbeddedResource Include="Games\Resources\Logos\ETS2.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\FH4.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\FH5.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\FH6.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\FM.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\iRacing.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\LMU.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\MFS2020.jpg" />
+		<EmbeddedResource Include="Games\Resources\Logos\MFS2024.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\PMR.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\RaceRoom.jpg" />
 		<EmbeddedResource Include="Games\Resources\Logos\rF2.jpg" />
