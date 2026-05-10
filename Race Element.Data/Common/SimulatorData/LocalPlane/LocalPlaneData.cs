@@ -19,12 +19,19 @@ public sealed record LocalPlaneData
     public AtcData ATC { get; internal set; } = new();
 
     public FlightModelData FlightModel { get; internal set; } = new();
+
+    public FuelData Fuel { get; internal set; } = new();
+}
+
+public sealed record FuelData
+{
+
 }
 
 /// <summary>
 /// Contains data about the flight model of the aviation device.
 /// </summary>
-public sealed record FlightModelData()
+public sealed record FlightModelData
 {
     public GeneralModelData General { get; internal set; } = new();
     public WeightModelData Weight { get; internal set; } = new();
@@ -87,17 +94,17 @@ public sealed record AtcData
     /// <summary>
     /// ID used by ATC
     /// </summary>
-    public string Identifier { get; internal set; }
+    public string Identifier { get; internal set; } = string.Empty;
 
     /// <summary>
     /// Model used by ATC
     /// </summary>
-    public string Model { get; internal set; }
+    public string Model { get; internal set; } = string.Empty;
 
     /// <summary>
     /// ATC Type
     /// </summary>
-    public string Type { get; internal set; }
+    public string Type { get; internal set; } = string.Empty;
 
     /// <summary>
     /// Suggested minimum runway length( Feet) for takeoff.
@@ -109,7 +116,7 @@ public sealed record AtcData
     /// </summary>
     public double SuggestedMinRunwayLandingLength { get; internal set; }
 
-    public string AirportName { get; internal set; }
+    public string AirportName { get; internal set; } = string.Empty;
 }
 
 public sealed record HelicopterData
@@ -147,8 +154,7 @@ public sealed record EngineData
     /// </summary>
     public bool IsRunning { get; internal set; }
 
-
-    public string EngineType { get; internal set; }
+    public string EngineType { get; internal set; } = string.Empty;
 }
 
 
