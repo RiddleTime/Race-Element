@@ -83,6 +83,7 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
 
 
         string s = $"{verticalSpeed:f0}".FillStart(_config.General.Digits, ' ');
+        if (verticalSpeed < 0) s = s[1..];
 
         for (int i = 0; i < _config.General.Digits; i++)
         {
