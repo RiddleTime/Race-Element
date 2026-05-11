@@ -82,8 +82,9 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
         }
 
 
-        string s = $"{verticalSpeed:f0}".FillStart(_config.General.Digits, ' ');
-        if (verticalSpeed < 0) s = s[1..];
+        string s = $"{verticalSpeed:f0}";
+        if (verticalSpeed < 0) s = s.Replace("-", "");
+        s = s.FillStart(_config.General.Digits, ' ');
 
         for (int i = 0; i < _config.General.Digits; i++)
         {
@@ -94,9 +95,9 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
 
                 _bitmaps.GetForNumber(number).Draw(g, new(x, 0));
             }
-
         increaseX:
             x += _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing;
+
         }
     }
 
