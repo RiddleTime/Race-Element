@@ -20,8 +20,6 @@
     <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
     <PackageReference Include="SharpDX" Version="4.2.0" />
     <PackageReference Include="SharpDX.DirectInput" Version="4.2.0" />
-    <PackageReference Include="System.Net.Http" Version="4.3.4" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Race_Element.Data.ACC\Race Element.Data.ACC.csproj" />
