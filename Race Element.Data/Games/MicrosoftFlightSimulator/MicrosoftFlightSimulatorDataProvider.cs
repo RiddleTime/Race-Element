@@ -76,6 +76,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             }
             _lastAnimationTime = lastAnimateTime;
 
+            if (SimDataProvider.GameData.IsGamePaused) return;
 
             //MapEngineData(ref localPlane);
 
