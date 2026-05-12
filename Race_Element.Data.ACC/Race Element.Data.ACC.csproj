@@ -51,13 +51,6 @@
     <PackageReference Include="Microsoft.Extensions.Options.ConfigurationExtensions" Version="10.0.7" />
     <PackageReference Include="Microsoft.Extensions.Primitives" Version="10.0.7" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
-    <PackageReference Include="System.Collections.Immutable" Version="10.0.7" />
-    <PackageReference Include="System.Diagnostics.DiagnosticSource" Version="10.0.7" />
-    <PackageReference Include="System.Runtime.CompilerServices.Unsafe" Version="6.1.2" />
-    <PackageReference Include="System.Text.Encodings.Web" Version="10.0.7" />
-    <PackageReference Include="System.Text.Json" Version="10.0.7" />
-    <PackageReference Include="System.Threading.Channels" Version="10.0.7" />
-    <PackageReference Include="System.Configuration.ConfigurationManager" Version="10.0.7" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Race Element.Core\Race Element.Core.csproj" />

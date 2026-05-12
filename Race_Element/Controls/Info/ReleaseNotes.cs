@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.7.0.4", "Race Element:"+
+                    "\n- Updated SimConnect.NET package for improved performance."
+                    },
         {"2.7.0.2", "Flight HUDs"+
                     "\n- Vertical Speed HUD: Fixed negative VS digit spacing."
                     },
