@@ -13,17 +13,19 @@ internal sealed class ControlsConfiguration : OverlayConfiguration
     {
         [ToolTip("Set to 0 for not drawing a line")]
         [IntRange(0, 6, 1)]
-        public int LineThickness { get; init; } = 4;
+        public int LineThickness { get; init; } = 2;
         public Color LineColor { get; init; } = Color.FromArgb(255, 255, 255);
         [IntRange(0, 255, 1)]
-        public int LineOpacity { get; init; } = 240;
+        public int LineOpacity { get; init; } = 170;
+        [IntRange(6, 14, 2)]
+        public int IndicatorSize { get; init; } = 12;
         public Color IndicatorFillColor { get; init; } = Color.FromArgb(0, 180, 255);
         [IntRange(0, 255, 1)]
         public int IndicatorFillOpacity { get; init; } = 255;
 
         public Color IndicatorBorderColor { get; init; } = Color.FromArgb(255, 255, 255);
         [IntRange(0, 255, 1)]
-        public int IndicatorBorderOpacity { get; init; } = 255;
+        public int IndicatorBorderOpacity { get; init; } = 170;
     }
 
     [ConfigGrouping("Joystick Indicator Background", "Adjust the background for the JoyStick indicator.")]

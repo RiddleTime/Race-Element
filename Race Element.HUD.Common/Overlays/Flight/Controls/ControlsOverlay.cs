@@ -108,7 +108,7 @@ internal sealed class ControlsOverlay : CommonAbstractOverlay
         });
 
         // === Cached Stick Head ===
-        int headSize = (int)(14 * Scale);
+        int headSize = (int)(_config.JoyStickIndicator.IndicatorSize * Scale);
         _cachedStickHead = new CachedBitmap(headSize + 1, headSize + 1, g =>
         {
             using SolidBrush headBrush = new(Color.FromArgb(_config.JoyStickIndicator.IndicatorFillOpacity, _config.JoyStickIndicator.IndicatorFillColor));
@@ -164,7 +164,7 @@ internal sealed class ControlsOverlay : CommonAbstractOverlay
         if (_config.JoyStickIndicator.LineThickness > 0)
             g.DrawLine(_indicatorPen, centerX, joystickY, stickX, stickY);
 
-        _cachedStickHead?.Draw(g, new Point(stickX - (int)(7 * Scale), stickY - (int)(7 * Scale)));
+        _cachedStickHead?.Draw(g, new Point(stickX - (int)(_config.JoyStickIndicator.IndicatorSize / 2 * Scale), stickY - (int)(_config.JoyStickIndicator.IndicatorSize / 2 * Scale)));
 
         // === Rudder Bar with Clipping ===
         int rudderY = (int)(BaseRudderBarY * Scale);
