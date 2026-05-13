@@ -21,11 +21,23 @@ public sealed record LocalPlaneData
     public FlightModelData FlightModel { get; internal set; } = new();
 
     public FuelData Fuel { get; internal set; } = new();
+
+    public ControlsData Controls { get; internal set; } = new();
 }
 
 public sealed record FuelData
 {
 
+}
+
+public sealed record ControlsData
+{
+    public double ElevatorPosition { get; internal set; }
+    /// <summary>
+    /// -100 to 100, where negative values represent left aileron deflection and positive values represent right aileron deflection.
+    /// </summary>
+    public double AileronPosition { get; internal set; }
+    public double RudderPosition { get; internal set; }
 }
 
 /// <summary>

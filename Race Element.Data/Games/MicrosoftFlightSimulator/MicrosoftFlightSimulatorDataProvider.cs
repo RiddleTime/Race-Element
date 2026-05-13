@@ -15,7 +15,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
     private SimConnectClient? _simConnectClient;
     private SlowDataJob _slowDataJob = null;
 
-    internal override int PollingRate() => 2;
+    internal override int PollingRate() => 100;
     internal override void Start()
     {
         _simConnectClient = new("Race Element")
@@ -125,6 +125,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             {
                 MapAtcData();
                 MapFlightModelData();
+                MapControlsData();
             }
             catch (Exception) { }
         }
@@ -133,8 +134,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         private static readonly AtcData DefaultATCData = new();
         private void MapAtcData()
         {
-            if (SimDataProvider.LocalPlane.ATC != DefaultATCData)
-                return;
+
 
             string? atcId = simConnectClient?.SimVars.GetAsync<string>("ATC ID").GetAwaiter().GetResult();
             string? atcModel = simConnectClient?.SimVars.GetAsync<string>("ATC MODEL").GetAwaiter().GetResult();
@@ -155,10 +155,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
                 SuggestedMinRunwayTakeoffLength = suggestedRunwayTakeOffFeet,
                 AirportName = airportName ?? "",
             };
-
-            MapFlightModelData();
         }
-
 
         private void MapFlightModelData()
         {
@@ -180,7 +177,6 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
                 DesignClimbSpeed = designClimbSpeed,
             };
 
-
             double emptyWeight = simConnectClient.SimVars.GetAsync<double>("EMPTY WEIGHT", "Pounds").GetAwaiter().GetResult();
             double totalWeight = simConnectClient.SimVars.GetAsync<double>("TOTAL WEIGHT", "Pounds").GetAwaiter().GetResult();
             double maxGrossWeight = simConnectClient.SimVars.GetAsync<double>("MAX GROSS WEIGHT", "Pounds").GetAwaiter().GetResult();
@@ -190,8 +186,23 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
                 TotalWeight = totalWeight,
                 MaxGrossWeight = maxGrossWeight,
             };
-
         }
+
+        private void MapControlsData()
+        {
+            double aileronPosition = simConnectClient.SimVars.GetAsync<double>("AILERON POSITION", "percent scaler 16k").GetAwaiter().GetResult();
+            double elevatorPosition = simConnectClient.SimVars.GetAsync<double>("ELEVATOR POSITION", "percent scaler 16k").GetAwaiter().GetResult();
+            double rudderPosition = simConnectClient.SimVars.GetAsync<double>("RUDDER POSITION", "percent scaler 16k").GetAwaiter().GetResult();
+            double scalar = 16384.0d;
+
+            SimDataProvider.LocalPlane.Controls = new()
+            {
+                AileronPosition = aileronPosition / scalar,
+                ElevatorPosition = elevatorPosition / scalar,
+                RudderPosition = rudderPosition / scalar,
+            };
+        }
+
     }
 
 
