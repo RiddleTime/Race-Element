@@ -53,6 +53,16 @@ Both simulators require a plugin to be installed before any data can be read fro
 8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Horizon 5.
 9. If you run the game from the Microsoft Store, so skip this step if you run it through Steam. Open a command prompt( CMD) as administrator and run the following command: `CheckNetIsolation.exe LoopbackExempt -a -n=microsoft.624F8B84B80_8wekyb3d8bbwe` it allows the game to send the UDP packets to your local computer.
 
+# Forza Horizon 6
+1. Go to Options
+2. Go to HUD AND GAMEPLAY
+3. Set Data Out to `On`
+4. Set Data Out IP Address to `127.0.0.1`
+5. Set Data Out Port to `5300`
+6. Restart Forza Horizon 6.
+7. Restart Race Element.
+8. If Windows asks permission for network access allow it else race element won't be able to receive data from Forza Horizon 6.
+
 # Forza Motorsport 8
 1. Start Forza Motorsport 8
 2. Go to Gameplay and HUD tab
