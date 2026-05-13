@@ -4,6 +4,7 @@ using RaceElement.HUD.Overlay.OverlayUtil;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Text;
 
 namespace RaceElement.HUD.Common.Overlays.Flight.Controls;
@@ -48,6 +49,9 @@ internal sealed class ControlsOverlay : CommonAbstractOverlay
         int centerX = (int)((aileronPosition * 100 + 100) / 2);
         int centerY = (int)((elevatorPosition * 100 + 100) / 2);
 
+
+        g.CompositingQuality = CompositingQuality.HighQuality;
+        g.SmoothingMode = SmoothingMode.AntiAlias;
         using SolidBrush joystickBrush = new(Color.FromArgb(255, 255, 255, 255));
         using Pen joystickPen = new(joystickBrush, 2);
         g.DrawLine(joystickPen, Width / 2, Height / 2, centerX, centerY);
