@@ -18,9 +18,9 @@ internal sealed class ControlsGraph : IDisposable
 
 
     // Reusable buffers to avoid per-frame allocations
-    private readonly List<int> _aileronBuffer = [];
-    private readonly List<int> _elevatorBuffer = [];
-    private readonly List<int> _rudderBuffer = [];
+    private readonly List<double> _aileronBuffer = [];
+    private readonly List<double> _elevatorBuffer = [];
+    private readonly List<double> _rudderBuffer = [];
     private readonly List<Point> _pointsBuffer = [];
 
     public ControlsGraph(int x, int y, int width, int height, ControlsTraceConfiguration config)
@@ -51,7 +51,7 @@ internal sealed class ControlsGraph : IDisposable
         });
     }
 
-    private int GetRelativeNodeY(int value)
+    private int GetRelativeNodeY(double value)
     {
         double range = 100 - 0;
         double percentage = 1d - (value - 0) / range;
@@ -59,7 +59,7 @@ internal sealed class ControlsGraph : IDisposable
                 + _height / 10;
     }
 
-    public void Draw(Graphics g, ConcurrentQueue<InputsData> data)
+    public void Draw(Graphics g, ConcurrentQueue<ControlsData> data)
     {
         _cachedBackground?.Draw(g);
 
@@ -81,7 +81,7 @@ internal sealed class ControlsGraph : IDisposable
         DrawData(g, _rudderBuffer, _rudderPen);
     }
 
-    private void DrawData(Graphics g, List<int> data, Pen pen)
+    private void DrawData(Graphics g, List<double> data, Pen pen)
     {
         if (data.Count > 0)
         {

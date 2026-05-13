@@ -19,7 +19,7 @@ namespace RaceElement.HUD.Common.Overlays.Flight.ControlsTrace;
 internal sealed class ControlsTraceOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Controls Trace")
 {
     private readonly ControlsTraceConfiguration _config = new();
-    private readonly ConcurrentQueue<InputsData> _dataQueue = [];
+    private readonly ConcurrentQueue<ControlsData> _dataQueue = [];
     private DataCollector? _dataCollector;
     private ControlsGraph? _graph;
 
@@ -42,10 +42,10 @@ internal sealed class ControlsTraceOverlay(Rectangle rectangle) : CommonAbstract
         }
     }
 
-    private void OnNewData(object? sender, InputsData e)
+    private void OnNewData(object? sender, ControlsData e)
     {
         if (_dataQueue.Count >= _config.Chart.Width - 1)
-            _dataQueue.TryDequeue(out InputsData _);
+            _dataQueue.TryDequeue(out ControlsData _);
 
         _dataQueue.Enqueue(e);
     }
@@ -64,13 +64,13 @@ internal sealed class ControlsTraceOverlay(Rectangle rectangle) : CommonAbstract
     public sealed override void Render(Graphics g) => _graph?.Draw(g, _dataQueue);
 }
 
-internal readonly record struct InputsData(int Aileron, int Elevator, int Rudder);
-internal sealed class DataCollector : AbstractCollectionJob<InputsData>
+internal readonly record struct ControlsData(double Aileron, double Elevator, double Rudder);
+internal sealed class DataCollector : AbstractCollectionJob<ControlsData>
 {
-    public sealed override InputsData Collect => new()
+    public sealed override ControlsData Collect => new()
     {
-        Aileron = (int)(((SimDataProvider.LocalPlane.Controls.AileronPosition + 1.0f) / 2f) * 100f),
-        Elevator = (int)(((SimDataProvider.LocalPlane.Controls.ElevatorPosition + 1.0f) / 2f) * 100f),
-        Rudder = (int)(((SimDataProvider.LocalPlane.Controls.RudderPosition + 1.0f) / 2f) * 100f),
+        Aileron = (SimDataProvider.LocalPlane.Controls.AileronPosition + 1.0) / 2.0 * 100.0,
+        Elevator = (SimDataProvider.LocalPlane.Controls.ElevatorPosition + 1.0) / 2.0 * 100.0,
+        Rudder = (SimDataProvider.LocalPlane.Controls.RudderPosition + 1.0) / 2.0 * 100.0,
     };
 }
