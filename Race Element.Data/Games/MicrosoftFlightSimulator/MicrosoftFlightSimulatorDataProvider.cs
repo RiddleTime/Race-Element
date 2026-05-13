@@ -30,7 +30,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 
         _slowDataJob = new(_simConnectClient) { IntervalMillis = 100 };
         _slowDataJob.Run();
-        _controlsDataJob = new(_simConnectClient) { IntervalMillis = (int)(1000 / 100f) };
+        _controlsDataJob = new(_simConnectClient) { IntervalMillis = (int)(1000d / 100d) };
         _controlsDataJob.Run();
     }
 
@@ -107,24 +107,30 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             return;
         }
     }
+
     private void MapPhysicsData(ref LocalPlaneData localPlane)
     {
-        AircraftMotion motion = _simConnectClient.Aircraft.GetMotionAsync().GetAwaiter().GetResult();
+        if (_simConnectClient == null) return;
 
-        localPlane.Physics.IndicatedAirSpeed = motion.IndicatedAirspeed;
-        localPlane.Physics.GroundSpeed = motion.GroundSpeed;
-        localPlane.Physics.VerticalSpeed = motion.VerticalSpeed;
+        Task<AircraftPosition> position = _simConnectClient.Aircraft.GetPositionAsync();
+        Task<AircraftMotion> motion = _simConnectClient.Aircraft.GetMotionAsync();
 
-        AircraftPosition position = _simConnectClient.Aircraft.GetPositionAsync().GetAwaiter().GetResult();
-        localPlane.Physics.Latitude = position.Latitude;
-        localPlane.Physics.Longitude = position.Longitude;
-        localPlane.Physics.Orientation = GetForwardVector(position.TrueHeading, position.Pitch, position.Bank);
-        localPlane.Physics.AltitudeSea = position.Altitude;
-        localPlane.Physics.AltitudeGround = position.AltitudeAboveGround;
+        Task.WhenAll(position, motion).ConfigureAwait(false).GetAwaiter().GetResult();
+
+        localPlane.Physics.IndicatedAirSpeed = motion.Result.IndicatedAirspeed;
+        localPlane.Physics.GroundSpeed = motion.Result.GroundSpeed;
+        localPlane.Physics.VerticalSpeed = motion.Result.VerticalSpeed;
+
+        localPlane.Physics.Latitude = position.Result.Latitude;
+        localPlane.Physics.Longitude = position.Result.Longitude;
+        localPlane.Physics.Orientation = GetForwardVector(position.Result.TrueHeading, position.Result.Pitch, position.Result.Bank);
+        localPlane.Physics.AltitudeSea = position.Result.Altitude;
+        localPlane.Physics.AltitudeGround = position.Result.AltitudeAboveGround;
     }
 
     private sealed class ControlsDataJob(SimConnectClient simConnectClient) : AbstractLoopJob
     {
+        private const double PercentScalar16k = 16384.0d;
         public sealed override void RunAction()
         {
             if (simConnectClient == null || !simConnectClient.IsConnected || SimDataProvider.GameData.IsGamePaused)
@@ -140,16 +146,16 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 
         private void MapControlsData()
         {
-            double aileronPosition = simConnectClient.SimVars.GetAsync<double>("AILERON POSITION", "percent scaler 16k").GetAwaiter().GetResult();
-            double elevatorPosition = simConnectClient.SimVars.GetAsync<double>("ELEVATOR POSITION", "percent scaler 16k").GetAwaiter().GetResult();
-            double rudderPosition = simConnectClient.SimVars.GetAsync<double>("RUDDER POSITION", "percent scaler 16k").GetAwaiter().GetResult();
-            double scalar = 16384.0d;
+            Task<double> aileronPosition = simConnectClient.SimVars.GetAsync<double>("AILERON POSITION", "percent scaler 16k");
+            Task<double> elevatorPosition = simConnectClient.SimVars.GetAsync<double>("ELEVATOR POSITION", "percent scaler 16k");
+            Task<double> rudderPosition = simConnectClient.SimVars.GetAsync<double>("RUDDER POSITION", "percent scaler 16k");
+            Task.WhenAll(aileronPosition, elevatorPosition, rudderPosition).ConfigureAwait(false).GetAwaiter().GetResult();
 
             SimDataProvider.LocalPlane.Controls = new()
             {
-                AileronPosition = aileronPosition / scalar,
-                ElevatorPosition = elevatorPosition / scalar,
-                RudderPosition = rudderPosition / scalar,
+                AileronPosition = aileronPosition.Result / PercentScalar16k,
+                ElevatorPosition = elevatorPosition.Result / PercentScalar16k,
+                RudderPosition = rudderPosition.Result / PercentScalar16k,
             };
         }
     }
@@ -169,59 +175,60 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             catch (Exception) { }
         }
 
-
-        private static readonly AtcData DefaultATCData = new();
         private void MapAtcData()
         {
-            string? atcId = simConnectClient?.SimVars.GetAsync<string>("ATC ID").GetAwaiter().GetResult();
-            string? atcModel = simConnectClient?.SimVars.GetAsync<string>("ATC MODEL").GetAwaiter().GetResult();
-            string? atcType = simConnectClient?.SimVars.GetAsync<string>("ATC TYPE").GetAwaiter().GetResult();
+            if (simConnectClient == null) return;
 
+            Task<string> atcId = simConnectClient.SimVars.GetAsync<string>("ATC ID");
+            Task<string> atcModel = simConnectClient.SimVars.GetAsync<string>("ATC MODEL");
+            Task<string> atcType = simConnectClient.SimVars.GetAsync<string>("ATC TYPE");
+            Task<string> airportName = simConnectClient.SimVars.GetAsync<string>("ATC RUNWAY AIRPORT NAME");
+            Task<double> suggestedRunwayLandingFeet = simConnectClient.SimVars.GetAsync<double>($"ATC SUGGESTED MIN RWY LANDING", "feet");
+            Task<double> suggestedRunwayTakeOffFeet = simConnectClient.SimVars.GetAsync<double>($"ATC SUGGESTED MIN RWY TAKEOFF", "feet");
 
-            string? airportName = simConnectClient?.SimVars.GetAsync<string>("ATC RUNWAY AIRPORT NAME").GetAwaiter().GetResult();
-
-            double suggestedRunwayLandingFeet = simConnectClient.SimVars.GetAsync<double>($"ATC SUGGESTED MIN RWY LANDING", "feet").GetAwaiter().GetResult();
-            double suggestedRunwayTakeOffFeet = simConnectClient.SimVars.GetAsync<double>($"ATC SUGGESTED MIN RWY TAKEOFF", "feet").GetAwaiter().GetResult();
+            Task.WhenAll(atcId, atcModel, atcType, atcType, airportName, suggestedRunwayLandingFeet, suggestedRunwayTakeOffFeet).ConfigureAwait(false).GetAwaiter().GetResult();
 
             SimDataProvider.LocalPlane.ATC = new()
             {
-                Identifier = atcId ?? "",
-                Model = atcModel ?? "",
-                Type = atcType ?? "",
-                SuggestedMinRunwayLandingLength = suggestedRunwayLandingFeet,
-                SuggestedMinRunwayTakeoffLength = suggestedRunwayTakeOffFeet,
-                AirportName = airportName ?? "",
+                Identifier = atcId?.Result ?? "",
+                Model = atcModel?.Result ?? "",
+                Type = atcType?.Result ?? "",
+                SuggestedMinRunwayLandingLength = suggestedRunwayLandingFeet?.Result ?? 0,
+                SuggestedMinRunwayTakeoffLength = suggestedRunwayTakeOffFeet?.Result ?? 0,
+                AirportName = airportName?.Result ?? "",
             };
         }
 
         private void MapFlightModelData()
         {
-            double currentGForce = simConnectClient.SimVars.GetAsync<double>("G FORCE", "GForce").GetAwaiter().GetResult();
-            double minGForceAttained = simConnectClient.SimVars.GetAsync<double>("MIN G FORCE", "GForce").GetAwaiter().GetResult();
-            double maxGForceAttained = simConnectClient.SimVars.GetAsync<double>("MAX G FORCE", "GForce").GetAwaiter().GetResult();
+            if (simConnectClient == null) return;
 
-            double designTakeOffSpeed = simConnectClient.SimVars.GetAsync<double>("DESIGN TAKEOFF SPEED", "Knots").GetAwaiter().GetResult();
-            double designCruiseAltitude = simConnectClient.SimVars.GetAsync<double>("DESIGN CRUISE ALT", "Feet").GetAwaiter().GetResult();
-            double designClimbSpeed = simConnectClient.SimVars.GetAsync<double>("DESIGN SPEED CLIMB", "Feet per second").GetAwaiter().GetResult();
-
+            Task<double> currentGForce = simConnectClient.SimVars.GetAsync<double>("G FORCE", "GForce");
+            Task<double> minGForceAttained = simConnectClient.SimVars.GetAsync<double>("MIN G FORCE", "GForce");
+            Task<double> maxGForceAttained = simConnectClient.SimVars.GetAsync<double>("MAX G FORCE", "GForce");
+            Task<double> designTakeOffSpeed = simConnectClient.SimVars.GetAsync<double>("DESIGN TAKEOFF SPEED", "Knots");
+            Task<double> designCruiseAltitude = simConnectClient.SimVars.GetAsync<double>("DESIGN CRUISE ALT", "Feet");
+            Task<double> designClimbSpeed = simConnectClient.SimVars.GetAsync<double>("DESIGN SPEED CLIMB", "Feet per second");
+            Task.WhenAll(currentGForce, minGForceAttained, maxGForceAttained, designTakeOffSpeed, designCruiseAltitude, designClimbSpeed).ConfigureAwait(false).GetAwaiter().GetResult();
             SimDataProvider.LocalPlane.FlightModel.General = new()
             {
-                CurrentGForce = currentGForce,
-                MinGForceAttained = minGForceAttained,
-                MaxGForceAttained = maxGForceAttained,
-                DesignTakeoffSpeed = designTakeOffSpeed,
-                DesignCruiseAltitude = designCruiseAltitude,
-                DesignClimbSpeed = designClimbSpeed,
+                CurrentGForce = currentGForce?.Result ?? 0,
+                MinGForceAttained = minGForceAttained?.Result ?? 0,
+                MaxGForceAttained = maxGForceAttained?.Result ?? 0,
+                DesignTakeoffSpeed = designTakeOffSpeed?.Result ?? 0,
+                DesignCruiseAltitude = designCruiseAltitude?.Result ?? 0,
+                DesignClimbSpeed = designClimbSpeed?.Result ?? 0,
             };
 
-            double emptyWeight = simConnectClient.SimVars.GetAsync<double>("EMPTY WEIGHT", "Pounds").GetAwaiter().GetResult();
-            double totalWeight = simConnectClient.SimVars.GetAsync<double>("TOTAL WEIGHT", "Pounds").GetAwaiter().GetResult();
-            double maxGrossWeight = simConnectClient.SimVars.GetAsync<double>("MAX GROSS WEIGHT", "Pounds").GetAwaiter().GetResult();
+            Task<double> emptyWeight = simConnectClient.SimVars.GetAsync<double>("EMPTY WEIGHT", "Pounds");
+            Task<double> totalWeight = simConnectClient.SimVars.GetAsync<double>("TOTAL WEIGHT", "Pounds");
+            Task<double> maxGrossWeight = simConnectClient.SimVars.GetAsync<double>("MAX GROSS WEIGHT", "Pounds");
+            Task.WhenAll(emptyWeight, totalWeight, maxGrossWeight).ConfigureAwait(false).GetAwaiter().GetResult();
             SimDataProvider.LocalPlane.FlightModel.Weight = new()
             {
-                EmptyWeight = emptyWeight,
-                TotalWeight = totalWeight,
-                MaxGrossWeight = maxGrossWeight,
+                EmptyWeight = emptyWeight?.Result ?? 0,
+                TotalWeight = totalWeight?.Result ?? 0,
+                MaxGrossWeight = maxGrossWeight?.Result ?? 0,
             };
         }
 
