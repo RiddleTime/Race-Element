@@ -23,14 +23,14 @@ internal sealed class ControlsOverlay : CommonAbstractOverlay
     private Pen _indicatorPen;
 
     private const int BaseWidth = 130;
-    private const int BaseHeight = 157;
+    private const int BaseHeight = 158;
 
     private const int BaseJoystickSize = 112;
     private const int BaseJoystickY = 64;
 
     private const int BaseRudderBarY = 130;
     private const int BaseRudderBarWidth = 112;
-    private const int BaseRudderBarHeight = 18;
+    private const int BaseRudderBarHeight = 19;
 
     private int _joystickSize;
     private int _rudderBarWidth;
