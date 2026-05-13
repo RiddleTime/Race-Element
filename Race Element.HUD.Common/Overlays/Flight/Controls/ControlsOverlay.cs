@@ -1,18 +1,17 @@
 ﻿using RaceElement.Data.Common;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using System.Text;
 
 namespace RaceElement.HUD.Common.Overlays.Flight.Controls;
 
 [Overlay(
     Name = "Controls",
     Description = "Displays the current state of the controls",
-    Authors = ["Reinier Klarenberg"]
+    Authors = ["Reinier Klarenberg"],
+    SupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024
 )]
 internal sealed class ControlsOverlay : CommonAbstractOverlay
 {
