@@ -133,7 +133,7 @@ internal sealed class ControlsOverlay : CommonAbstractOverlay
         _cachedRudderBar?.Dispose();
     }
 
-    public override void Render(Graphics g)
+    public sealed override void Render(Graphics g)
     {
         if (!IsPreviewing)
             _model = new Model(

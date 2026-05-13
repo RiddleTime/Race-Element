@@ -33,17 +33,17 @@ public sealed record FuelData
 public sealed record ControlsData
 {
     /// <summary>
-    /// -100 to 100, where negative values represent nose down deflection and positive values represent nose up deflection.
+    /// -1 to 1, where negative values represent nose down deflection and positive values represent nose up deflection.
     /// </summary>
     public double ElevatorPosition { get; internal set; }
 
     /// <summary>
-    /// -100 to 100, where negative values represent left aileron deflection and positive values represent right aileron deflection.
+    /// -1 to 1, where negative values represent left aileron deflection and positive values represent right aileron deflection.
     /// </summary>
     public double AileronPosition { get; internal set; }
 
     /// <summary>
-    /// -100 to 100, where negative values represent left rudder deflection and positive values represent right rudder deflection.
+    /// -1 to 1, where negative values represent left rudder deflection and positive values represent right rudder deflection.
     /// </summary>
     public double RudderPosition { get; internal set; }
 }
