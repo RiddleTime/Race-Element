@@ -14,6 +14,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 {
     private SimConnectClient? _simConnectClient;
     private SlowDataJob _slowDataJob = null;
+    private ControlsDataJob _controlsDataJob = null;
 
     internal override int PollingRate() => 100;
     internal override void Start()
@@ -23,8 +24,14 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             MaxReconnectAttempts = 1,
         };
         _simConnectClient.ConnectionStatusChanged += SimConnectClient_ConnectionStatusChanged;
+
+
+
+
         _slowDataJob = new(_simConnectClient) { IntervalMillis = 100 };
         _slowDataJob.Run();
+        _controlsDataJob = new(_simConnectClient) { IntervalMillis = (int)(1000 / 100f) };
+        _controlsDataJob.Run();
     }
 
     private void SimConnectClient_ConnectionStatusChanged(object? sender, SimConnect.NET.Events.ConnectionStatusChangedEventArgs e)
@@ -36,6 +43,8 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
     internal override void Stop()
     {
         _slowDataJob?.CancelJoin();
+        _controlsDataJob?.CancelJoin();
+
         _simConnectClient?.DisconnectAsync().Wait();
         if (_simConnectClient != null) _simConnectClient.ConnectionStatusChanged -= SimConnectClient_ConnectionStatusChanged;
         _simConnectClient?.Dispose();
@@ -114,6 +123,38 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         localPlane.Physics.AltitudeGround = position.AltitudeAboveGround;
     }
 
+
+    private sealed class ControlsDataJob(SimConnectClient simConnectClient) : AbstractLoopJob
+    {
+        public override void RunAction()
+        {
+            if (simConnectClient == null || !simConnectClient.IsConnected || SimDataProvider.GameData.IsGamePaused)
+                return;
+
+            try
+            {
+                MapControlsData();
+
+            }
+            catch (Exception) { }
+        }
+
+        private void MapControlsData()
+        {
+            double aileronPosition = simConnectClient.SimVars.GetAsync<double>("AILERON POSITION", "percent scaler 16k").GetAwaiter().GetResult();
+            double elevatorPosition = simConnectClient.SimVars.GetAsync<double>("ELEVATOR POSITION", "percent scaler 16k").GetAwaiter().GetResult();
+            double rudderPosition = simConnectClient.SimVars.GetAsync<double>("RUDDER POSITION", "percent scaler 16k").GetAwaiter().GetResult();
+            double scalar = 16384.0d;
+
+            SimDataProvider.LocalPlane.Controls = new()
+            {
+                AileronPosition = aileronPosition / scalar,
+                ElevatorPosition = elevatorPosition / scalar,
+                RudderPosition = rudderPosition / scalar,
+            };
+        }
+    }
+
     private sealed class SlowDataJob(SimConnectClient simConnectClient) : AbstractLoopJob
     {
         public override void RunAction()
@@ -125,7 +166,6 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             {
                 MapAtcData();
                 MapFlightModelData();
-                MapControlsData();
             }
             catch (Exception) { }
         }
@@ -188,20 +228,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             };
         }
 
-        private void MapControlsData()
-        {
-            double aileronPosition = simConnectClient.SimVars.GetAsync<double>("AILERON POSITION", "percent scaler 16k").GetAwaiter().GetResult();
-            double elevatorPosition = simConnectClient.SimVars.GetAsync<double>("ELEVATOR POSITION", "percent scaler 16k").GetAwaiter().GetResult();
-            double rudderPosition = simConnectClient.SimVars.GetAsync<double>("RUDDER POSITION", "percent scaler 16k").GetAwaiter().GetResult();
-            double scalar = 16384.0d;
 
-            SimDataProvider.LocalPlane.Controls = new()
-            {
-                AileronPosition = aileronPosition / scalar,
-                ElevatorPosition = elevatorPosition / scalar,
-                RudderPosition = rudderPosition / scalar,
-            };
-        }
 
     }
 

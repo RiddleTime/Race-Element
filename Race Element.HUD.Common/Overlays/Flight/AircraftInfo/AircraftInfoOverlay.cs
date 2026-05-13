@@ -10,7 +10,8 @@ namespace RaceElement.HUD.Common.Overlays.Flight.AircraftInfo;
 [Overlay(
     Name = "Aircraft Info",
     Description = "Displays the Type and Model",
-    SupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024
+    SupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
+    Authors = ["Reinier Klarenberg"]
 )]
 internal sealed class AircraftInfoOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Aircraft Info")
 {
