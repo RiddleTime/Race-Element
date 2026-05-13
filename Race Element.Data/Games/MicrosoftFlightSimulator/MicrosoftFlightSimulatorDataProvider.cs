@@ -25,6 +25,8 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         };
         _simConnectClient.ConnectionStatusChanged += SimConnectClient_ConnectionStatusChanged;
 
+
+        // Start seperate data jobs to prevent slower data fetches from interfering with high frequency data
         _slowDataJob = new(_simConnectClient) { IntervalMillis = 100 };
         _slowDataJob.Run();
         _controlsDataJob = new(_simConnectClient) { IntervalMillis = (int)(1000d / 100d) };
