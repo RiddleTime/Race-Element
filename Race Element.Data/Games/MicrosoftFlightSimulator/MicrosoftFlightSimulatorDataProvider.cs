@@ -25,9 +25,6 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         };
         _simConnectClient.ConnectionStatusChanged += SimConnectClient_ConnectionStatusChanged;
 
-
-
-
         _slowDataJob = new(_simConnectClient) { IntervalMillis = 100 };
         _slowDataJob.Run();
         _controlsDataJob = new(_simConnectClient) { IntervalMillis = (int)(1000d / 100d) };
@@ -130,7 +127,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 
     private sealed class ControlsDataJob(SimConnectClient simConnectClient) : AbstractLoopJob
     {
-        private const double PercentScalar16k = 16384.0d;
+        private const double PercentScalar16k = 16384.0;
         public sealed override void RunAction()
         {
             if (simConnectClient == null || !simConnectClient.IsConnected || SimDataProvider.GameData.IsGamePaused)
