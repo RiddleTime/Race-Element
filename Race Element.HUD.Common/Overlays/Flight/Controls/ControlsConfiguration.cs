@@ -25,7 +25,7 @@ internal sealed class ControlsConfiguration : OverlayConfiguration
 
         public Color IndicatorBorderColor { get; init; } = Color.FromArgb(255, 255, 255);
         [IntRange(0, 255, 1)]
-        public int IndicatorBorderOpacity { get; init; } = 170;
+        public int IndicatorBorderOpacity { get; init; } = 140;
     }
 
     [ConfigGrouping("Joystick Indicator Background", "Adjust the background for the JoyStick indicator.")]
