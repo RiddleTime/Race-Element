@@ -16,8 +16,8 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
     private SlowDataJob _slowDataJob = null;
     private ControlsDataJob _controlsDataJob = null;
 
-    internal override int PollingRate() => 100;
-    internal override void Start()
+    internal sealed override int PollingRate() => 100;
+    internal sealed override void Start()
     {
         _simConnectClient = new("Race Element")
         {
@@ -40,7 +40,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         if (e.IsDisconnected) Debug.WriteLine("Disconnected from Simconnect!");
     }
 
-    internal override void Stop()
+    internal sealed override void Stop()
     {
         _slowDataJob?.CancelJoin();
         _controlsDataJob?.CancelJoin();
@@ -123,10 +123,9 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         localPlane.Physics.AltitudeGround = position.AltitudeAboveGround;
     }
 
-
     private sealed class ControlsDataJob(SimConnectClient simConnectClient) : AbstractLoopJob
     {
-        public override void RunAction()
+        public sealed override void RunAction()
         {
             if (simConnectClient == null || !simConnectClient.IsConnected || SimDataProvider.GameData.IsGamePaused)
                 return;
@@ -157,7 +156,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 
     private sealed class SlowDataJob(SimConnectClient simConnectClient) : AbstractLoopJob
     {
-        public override void RunAction()
+        public sealed override void RunAction()
         {
             if (simConnectClient == null || !simConnectClient.IsConnected || SimDataProvider.GameData.IsGamePaused)
                 return;
@@ -174,8 +173,6 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         private static readonly AtcData DefaultATCData = new();
         private void MapAtcData()
         {
-
-
             string? atcId = simConnectClient?.SimVars.GetAsync<string>("ATC ID").GetAwaiter().GetResult();
             string? atcModel = simConnectClient?.SimVars.GetAsync<string>("ATC MODEL").GetAwaiter().GetResult();
             string? atcType = simConnectClient?.SimVars.GetAsync<string>("ATC TYPE").GetAwaiter().GetResult();
@@ -228,13 +225,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
             };
         }
 
-
-
     }
-
-
-
-
     private void MapEngineData(ref LocalPlaneData localPlane)
     {
         uint engineCount = (uint)_simConnectClient.SimVars.GetAsync<int>("NUMBER OF ENGINES", "number", 0).GetAwaiter().GetResult();
