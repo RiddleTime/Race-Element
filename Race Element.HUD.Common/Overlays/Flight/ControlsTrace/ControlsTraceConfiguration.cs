@@ -1,5 +1,4 @@
-﻿using RaceElement.Data.Games;
-using RaceElement.HUD.Overlay.Configuration;
+﻿using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
 namespace RaceElement.HUD.Common.Overlays.Flight.ControlsTrace;
