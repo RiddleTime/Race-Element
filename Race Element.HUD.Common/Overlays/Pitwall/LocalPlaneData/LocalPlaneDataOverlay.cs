@@ -31,6 +31,7 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
         {
             public bool General { get; init; } = true;
             public bool Physics { get; init; } = true;
+            public bool Controls { get; init; } = true;
             public bool Engines { get; init; } = true;
             public bool Helicopter { get; init; } = true;
             public bool AirTrafficControl { get; init; } = true;
@@ -72,6 +73,9 @@ internal sealed partial class LocalPlaneDataOverlay : CommonAbstractOverlay
 
         if (_config.VisibleMember.Physics)
             currentY += DrawObject(SimDataProvider.LocalPlane.Physics, "Physics", currentY, g).Height;
+
+        if (_config.VisibleMember.Controls)
+            currentY += DrawObject(SimDataProvider.LocalPlane.Controls, "Controls", currentY, g).Height;
 
         if (_config.VisibleMember.Engines)
             currentY += DrawObject(SimDataProvider.LocalPlane.Engines, "Engines", currentY, g).Height;
