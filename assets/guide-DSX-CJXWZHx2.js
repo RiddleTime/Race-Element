@@ -16,6 +16,7 @@ type: guide
 <li>DiRT Rally 2.0</li>
 <li>Forza Horizon 4</li>
 <li>Forza Horizon 5</li>
+<li>Forza Horizon 6</li>
 <li>Forza Motorsport 8</li>
 <li>Le Mans Ultimate</li>
 <li>Project Motor Racing</li>
