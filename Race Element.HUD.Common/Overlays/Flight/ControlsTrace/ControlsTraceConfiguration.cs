@@ -25,7 +25,7 @@ internal sealed class ControlsTraceConfiguration : OverlayConfiguration
         public int Width { get; init; } = 300;
 
         [ToolTip("The height of the chart, pixel wise.")]
-        [IntRange(80, 250, 10)]
+        [IntRange(80, 250, 2)]
         public int Height { get; init; } = 120;
 
         [ToolTip("Set the thickness of the lines in the chart.")]
