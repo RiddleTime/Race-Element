@@ -15,7 +15,7 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
     private SimConnectClient? _simConnectClient;
     private SlowDataJob _slowDataJob = null;
 
-    internal override int PollingRate() => 500;
+    internal override int PollingRate() => 2;
     internal override void Start()
     {
         _simConnectClient = new("Race Element")
