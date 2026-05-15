@@ -193,6 +193,9 @@ public sealed record PhysicsData
     /// </summary>
     public double VerticalSpeed { get; internal set; }
 
+
+    public double IndicatedAltitude { get; internal set; }
+
     /// <summary>
     /// Altitude in Feet, above sea level.
     /// </summary>
