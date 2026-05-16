@@ -12,7 +12,7 @@ internal sealed class DsxJob(DsxOverlay? overlay) : AbstractLoopJob
         if (overlay == null)
             return;
 
-        if (!GameManager.IsGameRunning)
+        if (!GameManager.IsGameRunning && !overlay._config.Behavior.IgnoreGameRequirement)
         {
             if (overlay._hasSetLighting)
             {
