@@ -84,19 +84,11 @@ internal sealed class DsxConfiguration : OverlayConfiguration
     }
 
     [ConfigGrouping("DSX UDP", "Adjust the port DSX uses, 6969 is default.")]
-    public UdpConfig UDP { get; init; } = new();
+    public UdpConfig UDP { get; init; } = new UdpConfig();
     public sealed class UdpConfig
     {
         [ToolTip("Adjust the port used by DSX, 6969 is default.")]
         [IntRange(0, 65535, 1)]
         public int Port { get; init; } = 6969;
-    }
-
-
-    [ConfigGrouping("Race Element DSX Behavior", "Adjust the behavior of Race Element's DSX integration.")]
-    public BehaviorGrouping Behavior { get; init; } = new();
-    public sealed class BehaviorGrouping
-    {
-        public bool IgnoreGameRequirement { get; set; } = false;
     }
 }
