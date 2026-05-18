@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.7.0.8", "Forza Horizon 6"+
+                    "\n- Wheel Slip HUD now also show slip angle"
+                    },
         {"2.7.0.6", "Flight HUDs"+
                     "\n- Added new Controls HUD, shows the current state of basic control surfaces."+
                     "\n- Added new Controls Trace HUD, shows a live graph of basic control surfaces."
