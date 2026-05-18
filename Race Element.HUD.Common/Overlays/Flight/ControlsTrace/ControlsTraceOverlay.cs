@@ -32,7 +32,7 @@ internal sealed class ControlsTraceOverlay(Rectangle rectangle) : CommonAbstract
 
         _graph = new ControlsGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, this._config);
 
-        for (int i = 0; i < _config.Chart.Width - 1; i++) _dataQueue.Enqueue(new(40, 60, 50));
+        for (int i = 0; i < _config.Chart.Width - 1; i++) _dataQueue.Enqueue(new(71, 50, 39));
 
         if (!IsPreviewing)
         {

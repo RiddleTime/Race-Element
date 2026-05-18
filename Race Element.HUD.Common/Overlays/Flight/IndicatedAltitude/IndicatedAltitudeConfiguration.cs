@@ -1,14 +1,14 @@
 ﻿using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
-namespace RaceElement.HUD.Common.Overlays.Flight.Altitude;
+namespace RaceElement.HUD.Common.Overlays.Flight.IndicatedAltitude;
 
-internal sealed class AltitudeConfiguration : OverlayConfiguration
+internal sealed class IndicatedAltitudeConfiguration : OverlayConfiguration
 {
     public enum TextFont { Roboto, Conthrax, Obitron, Segoe }
     public enum UnitChoice { Feet, Meters, Miles, Kilometer }
 
-    public AltitudeConfiguration() => GenericConfiguration.AllowRescale = false;
+    public IndicatedAltitudeConfiguration() => GenericConfiguration.AllowRescale = false;
 
     [ConfigGrouping("General", "General options")]
     public GeneralGrouping General { get; init; } = new();

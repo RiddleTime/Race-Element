@@ -113,8 +113,9 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
 
         Task<AircraftPosition> position = _simConnectClient.Aircraft.GetPositionAsync();
         Task<AircraftMotion> motion = _simConnectClient.Aircraft.GetMotionAsync();
+        Task<double> indicatedAltitude = _simConnectClient.SimVars.GetAsync<double>("INDICATED ALTITUDE", "feet", 0);
 
-        Task.WhenAll(position, motion).ConfigureAwait(false).GetAwaiter().GetResult();
+        Task.WhenAll(position, motion, indicatedAltitude).ConfigureAwait(false).GetAwaiter().GetResult();
 
         localPlane.Physics.IndicatedAirSpeed = motion.Result.IndicatedAirspeed;
         localPlane.Physics.GroundSpeed = motion.Result.GroundSpeed;
@@ -123,6 +124,8 @@ internal sealed class MicrosoftFlightSimulatorDataProvider : AbstractSimDataProv
         localPlane.Physics.Latitude = position.Result.Latitude;
         localPlane.Physics.Longitude = position.Result.Longitude;
         localPlane.Physics.Orientation = GetForwardVector(position.Result.TrueHeading, position.Result.Pitch, position.Result.Bank);
+
+        localPlane.Physics.IndicatedAltitude = indicatedAltitude.Result;
         localPlane.Physics.AltitudeSea = position.Result.Altitude;
         localPlane.Physics.AltitudeGround = position.Result.AltitudeAboveGround;
     }

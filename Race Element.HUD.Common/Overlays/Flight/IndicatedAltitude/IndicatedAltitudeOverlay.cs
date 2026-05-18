@@ -8,17 +8,17 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 
-namespace RaceElement.HUD.Common.Overlays.Flight.Altitude;
+namespace RaceElement.HUD.Common.Overlays.Flight.IndicatedAltitude;
 
 [Overlay(
-    Name = "Altitude",
-    Description = "The Air Planes Altitude.",
+    Name = "Indicated Altitude",
+    Description = "The Air Planes Indicated Altitude.",
     SupportedGames = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024,
     Authors = ["Reinier Klarenberg"]
 )]
-internal sealed class AltitudeOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Altitude")
+internal sealed class IndicatedAltitudeOverlay(Rectangle rectangle) : CommonAbstractOverlay(rectangle, "Indicated Altitude")
 {
-    private readonly AltitudeConfiguration _config = new();
+    private readonly IndicatedAltitudeConfiguration _config = new();
 
     private CachedBitmap? _cachedBackground;
     private NumberBitmaps? _bitmaps;
@@ -62,10 +62,10 @@ internal sealed class AltitudeOverlay(Rectangle rectangle) : CommonAbstractOverl
         var physics = SimDataProvider.LocalPlane.Physics;
         double altitude = _config.General.Units switch
         {
-            AltitudeConfiguration.UnitChoice.Feet => physics.AltitudeSea,
-            AltitudeConfiguration.UnitChoice.Meters => physics.AltitudeSea * 0.3048,
-            AltitudeConfiguration.UnitChoice.Miles => physics.AltitudeSea / 5280.0,
-            AltitudeConfiguration.UnitChoice.Kilometer => physics.AltitudeSea * 0.0003048,
+            IndicatedAltitudeConfiguration.UnitChoice.Feet => physics.IndicatedAltitude,
+            IndicatedAltitudeConfiguration.UnitChoice.Meters => physics.IndicatedAltitude * 0.3048,
+            IndicatedAltitudeConfiguration.UnitChoice.Miles => physics.IndicatedAltitude / 5280.0,
+            IndicatedAltitudeConfiguration.UnitChoice.Kilometer => physics.IndicatedAltitude * 0.0003048,
             _ => physics.VerticalSpeed
         };
 
@@ -85,20 +85,20 @@ internal sealed class AltitudeOverlay(Rectangle rectangle) : CommonAbstractOverl
     {
         private readonly CachedBitmap[] _rpmBitmaps = new CachedBitmap[10];
         public readonly (int Width, int Height) BitmapDimension;
-        public NumberBitmaps(AltitudeConfiguration config)
+        public NumberBitmaps(IndicatedAltitudeConfiguration config)
         {
             GenerateBitMaps(config);
             BitmapDimension = (_rpmBitmaps[0].Width, _rpmBitmaps[0].Height);
         }
 
-        private void GenerateBitMaps(AltitudeConfiguration config)
+        private void GenerateBitMaps(IndicatedAltitudeConfiguration config)
         {
             Font font = config.General.Font switch
             {
-                AltitudeConfiguration.TextFont.Conthrax => FontUtil.FontConthrax(config.General.FontSize),
-                AltitudeConfiguration.TextFont.Obitron => FontUtil.FontOrbitron(config.General.FontSize),
-                AltitudeConfiguration.TextFont.Roboto => FontUtil.FontRoboto(config.General.FontSize),
-                AltitudeConfiguration.TextFont.Segoe => FontUtil.FontSegoeMono(config.General.FontSize),
+                IndicatedAltitudeConfiguration.TextFont.Conthrax => FontUtil.FontConthrax(config.General.FontSize),
+                IndicatedAltitudeConfiguration.TextFont.Obitron => FontUtil.FontOrbitron(config.General.FontSize),
+                IndicatedAltitudeConfiguration.TextFont.Roboto => FontUtil.FontRoboto(config.General.FontSize),
+                IndicatedAltitudeConfiguration.TextFont.Segoe => FontUtil.FontSegoeMono(config.General.FontSize),
                 _ => FontUtil.FontConthrax(config.General.FontSize),
             };
 
