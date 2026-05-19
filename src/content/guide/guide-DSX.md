@@ -27,8 +27,9 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 # DSX
 1. Open DSX and at the left bottom click Settings (Don't have DSX yet? **[Get DSX on Steam](https://store.steampowered.com/app/1812620/DSX/)** )
 2. Open the Networking tab
-3. Make sure the Firewall Rules are okay, if it's not then allow DSX to fix it
+3. Make sure the Firewall Rules are okay, if it's not then allow DSX to fix it.
 4. Enable `Incoming UDP`
+5. Make Incoming UDP port should be set to 6969.
 
 # Race Element
 1. Open Race Element (Don't have Race Element yet? **[Race Element Download and Installation Guide](/guide/how-to-get-started)** )
@@ -36,5 +37,5 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 3. Make sure the game selection is set correctly(left-bottem of the app), this should happen automatically unless disabled
 4. Open the HUD Tab
 5. Click DSX
-6. You can alter behaviour for Braking and Acceleration
+6. You can alter behaviour for Braking and Acceleration, the port that is used to connect to DSX should be set to 6969. This is not related to what you see in the multi-sim guide.
 7. To activate it read **[The guide for using the HUD Tab](/guide/how-to-use-huds)**
