@@ -37,20 +37,27 @@ internal sealed class DsxJob(DsxOverlay? overlay) : AbstractLoopJob
             return;
         }
 
-        DsxPacket tcPacket = TriggerHaptics.HandleAcceleration(overlay?._config);
-        if (tcPacket != null)
+        if (overlay._config.ThrottleSlip.Enabled)
         {
-            overlay?.Send(tcPacket);
-            //ServerResponse response = Receive();
-            //HandleResponse(response);
+            DsxPacket tcPacket = TriggerHaptics.HandleAcceleration(overlay?._config);
+            if (tcPacket != null)
+            {
+                overlay?.Send(tcPacket);
+                //ServerResponse response = Receive();
+                //HandleResponse(response);
+            }
         }
 
-        DsxPacket absPacket = TriggerHaptics.HandleBraking(overlay?._config);
-        if (absPacket != null)
+
+        if (overlay._config.BrakeSlip.Enabled)
         {
-            overlay?.Send(absPacket);
-            //ServerResponse response = Receive();
-            //HandleResponse(response);
+            DsxPacket absPacket = TriggerHaptics.HandleBraking(overlay?._config);
+            if (absPacket != null)
+            {
+                overlay?.Send(absPacket);
+                //ServerResponse response = Receive();
+                //HandleResponse(response);
+            }
         }
     }
 
