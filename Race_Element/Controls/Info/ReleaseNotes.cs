@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.7.1.0", "DSX: "+
+                    "\n- Both Brake and Throttle Haptics can now be Enabled or Disabled independently."
+                    },
         {"2.7.0.8", "Forza Horizon 6"+
                     "\n- Wheel Slip HUD now also shows slip angle."
                     },

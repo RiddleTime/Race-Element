@@ -17,6 +17,9 @@ internal sealed class DsxConfiguration : OverlayConfiguration
     public BrakeSlipHaptics BrakeSlip { get; init; } = new();
     public sealed class BrakeSlipHaptics
     {
+        [ToolTip("When set to Off, disables the brake haptics.")]
+        public bool Enabled { get; init; } = true;
+
         /// <summary>
         /// The brake in percentage (divide by 100f if you want 0-1 value)
         /// </summary>
@@ -51,6 +54,10 @@ internal sealed class DsxConfiguration : OverlayConfiguration
     public ThrottleSlipHaptics ThrottleSlip { get; init; } = new();
     public sealed class ThrottleSlipHaptics
     {
+
+        [ToolTip("When set to Off, disables the throttle haptics.")]
+        public bool Enabled { get; init; } = true;
+
         /// <summary>
         /// The throttle in percentage (divide by 100f if you want 0-1 value)
         /// </summary>

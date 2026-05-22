@@ -29,7 +29,7 @@
         <PackageReference Include="AutoMapper" Version="16.1.1" />
         <PackageReference Include="EdCanHack.Unglide" Version="2.0.0" />
         <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
-        <PackageReference Include="System.Speech" Version="10.0.7" />
+        <PackageReference Include="System.Speech" Version="10.0.8" />
         <PackageReference Include="TwitchLib.Client" Version="3.3.1" />
         <ProjectReference Include="..\Race Element.Data\Race Element.Data.csproj" />
         <ProjectReference Include="..\Race Element.Graph\Race Element.Graph.csproj" />
