@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -123,6 +124,59 @@ public partial class GamePicker : UserControl
 
         SetToolTip(model.Game);
         comboGamePicker.SelectedItem = model;
+    }
+
+    private void ComboGamePickerPreviewMouseWheel(object sender, System.Windows.Input.MouseWheelEventArgs e)
+    {
+        if (!comboGamePicker.IsDropDownOpen)
+            return;
+
+        // Get the ScrollViewer from the dropdown popup
+        var scrollViewer = GetDropDownScrollViewer();
+        if (scrollViewer == null)
+            return;
+
+        if (e.Delta > 0)
+            scrollViewer.LineUp();
+        else
+            scrollViewer.LineDown();
+
+        e.Handled = true;
+    }
+
+    // Improved method specifically for ComboBox dropdown
+    private ScrollViewer GetDropDownScrollViewer()
+    {
+        if (comboGamePicker == null || !comboGamePicker.IsDropDownOpen)
+            return null;
+
+        // Try to find Popup first
+        var popup = FindVisualChild<Popup>(comboGamePicker);
+        if (popup?.Child != null)
+        {
+            return FindVisualChild<ScrollViewer>(popup.Child);
+        }
+
+        // Fallback
+        return FindVisualChild<ScrollViewer>(comboGamePicker);
+    }
+
+    private static T FindVisualChild<T>(DependencyObject depObj) where T : DependencyObject
+    {
+        if (depObj == null) return null;
+
+        for (int i = 0; i < VisualTreeHelper.GetChildrenCount(depObj); i++)
+        {
+            var child = VisualTreeHelper.GetChild(depObj, i);
+
+            if (child is T t)
+                return t;
+
+            var found = FindVisualChild<T>(child);
+            if (found != null)
+                return found;
+        }
+        return null;
     }
 }
 
