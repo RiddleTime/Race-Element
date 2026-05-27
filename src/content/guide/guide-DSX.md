@@ -38,6 +38,6 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 3. Make sure the game selection is set correctly(left-bottem of the app), this should happen automatically unless disabled
 4. Open the HUD Tab
 5. Click DSX
-6. To activate the DSX HUD read **[The guide for using the HUD Tab](/guide/how-to-use-huds)**
+6. **To activate the DSX HUD read [The guide for using the HUD Tab](/guide/how-to-use-huds)**, Once it's activated you'll see it marked green in the HUD list and the options will be grayed out.
 7. You can alter behaviour for Braking and Acceleration, the port that is used to connect to DSX should be set to 6969. This is not related to what you see in the multi-sim guide.
 
