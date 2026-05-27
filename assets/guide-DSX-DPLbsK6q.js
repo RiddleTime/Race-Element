@@ -41,7 +41,7 @@ type: guide
 <li>Make sure the game selection is set correctly(left-bottem of the app), this should happen automatically unless disabled</li>
 <li>Open the HUD Tab</li>
 <li>Click DSX</li>
-<li>To activate the DSX HUD read <strong><a href="/guide/how-to-use-huds">The guide for using the HUD Tab</a></strong></li>
+<li><strong>To activate the DSX HUD read <a href="/guide/how-to-use-huds">The guide for using the HUD Tab</a></strong>, Once it&#39;s activated you&#39;ll see it marked green in the HUD list and the options will be grayed out.</li>
 <li>You can alter behaviour for Braking and Acceleration, the port that is used to connect to DSX should be set to 6969. This is not related to what you see in the multi-sim guide.</li>
 </ol>
 `;export{e as default};
