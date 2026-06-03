@@ -24,7 +24,6 @@ internal static class TriggerHaptics
         DsxPacket p = new();
         int controllerIndex = 0;
 
-        // TODO: add either an option to threshold it on brake input or based on some curve?
         if (SimDataProvider.LocalCar.Inputs.Brake > config.BrakeSlip.BrakeThreshold / 100f)
         {
             float[] slipRatios = SimDataProvider.LocalCar.Tyres.SlipRatio;
@@ -34,7 +33,6 @@ internal static class TriggerHaptics
                 float slipRatioFront = Math.Max(slipRatios[0], slipRatios[1]);
                 float slipRatioRear = Math.Max(slipRatios[2], slipRatios[3]);
 
-                // TODO: add option for front and rear ratio threshold.
                 if (slipRatioFront > config.BrakeSlip.FrontSlipThreshold || slipRatioRear > config.BrakeSlip.RearSlipThreshold)
                 {
                     float frontslipCoefecient = slipRatioFront * 4f;
