@@ -32,6 +32,11 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 5. Make `Incoming UDP port` should be set to `6969`.
 6. Do not enable Outgoing UDP.
 
+# DSY
+1. You can alternatively use DSY which is free, but is very basic compared to DSX.
+2. https://github.com/WujekFoliarz/DualSenseY-v2
+3. I personally use DSX for the features it provides.
+
 # Race Element
 1. Open Race Element (Don't have Race Element yet? **[Race Element Download and Installation Guide](/guide/how-to-get-started)** )
 2. Some Games require you to configure a data stream, make sure to read the **[Multi-Sim Guide](/guide/multi-sim)**
@@ -40,4 +45,3 @@ Active triggers is Force Feedback based on the physics of the car which is appli
 5. Click DSX
 6. **To activate the DSX HUD read [The guide for using the HUD Tab](/guide/how-to-use-huds)**, Once it's activated you'll see it marked green in the HUD list and the options will be grayed out.
 7. You can alter behaviour for Braking and Acceleration, the port that is used to connect to DSX should be set to 6969. This is not related to what you see in the multi-sim guide.
-
