@@ -34,6 +34,12 @@ type: guide
 <li>Make <code>Incoming UDP port</code> should be set to <code>6969</code>.</li>
 <li>Do not enable Outgoing UDP.</li>
 </ol>
+<h1 id="dsy">DSY</h1>
+<ol>
+<li>You can alternatively use DSY which is free, but is very basic compared to DSX.</li>
+<li><a href="https://github.com/WujekFoliarz/DualSenseY-v2">https://github.com/WujekFoliarz/DualSenseY-v2</a></li>
+<li>I personally use DSX for the features it provides.</li>
+</ol>
 <h1 id="race-element">Race Element</h1>
 <ol>
 <li>Open Race Element (Don&#39;t have Race Element yet? <strong><a href="/guide/how-to-get-started">Race Element Download and Installation Guide</a></strong> )</li>
