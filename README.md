@@ -3,7 +3,7 @@
 [![Discord](https://badgen.net/discord/members/26AAEW5mUq?icon=discord&color=5562ea&label=Race%20Element)](https://discord.gg/26AAEW5mUq)
 
 ![Race Element - Name](https://user-images.githubusercontent.com/4581237/209894151-3f8a5dc5-45de-4d7c-a46a-8c5a2a57cd91.png)
-# Solutions for Simulators
+# Solutions for Driving and Flight Simulators
 - HUDs
 - Telemetry
 - Setups

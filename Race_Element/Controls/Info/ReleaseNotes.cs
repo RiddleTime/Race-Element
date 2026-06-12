@@ -6,7 +6,11 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
-        {"2.7.1.0", "DSX: "+
+        {"2.7.1.2", "Race Element"+
+                    "\n- Game Picker now scrolls 1 item at the time, regardless of windows mouse scroll settings."+
+                    "\n- Update NET packages to 10.0.9"
+                    },
+        {"2.7.1.0", "DSX"+
                     "\n- Both Brake and Throttle Haptics can now be Enabled or Disabled independently."
                     },
         {"2.7.0.8", "Forza Horizon 6"+
@@ -16,13 +20,13 @@ public static class ReleaseNotes
                     "\n- Added new Controls HUD, shows the current state of basic control surfaces."+
                     "\n- Added new Controls Trace HUD, shows a live graph of basic control surfaces."
                     },
-        {"2.7.0.4", "Race Element:"+
+        {"2.7.0.4", "Race Element"+
                     "\n- Updated SimConnect.NET package for improved performance."
                     },
         {"2.7.0.2", "Flight HUDs"+
                     "\n- Vertical Speed HUD: Fixed negative VS digit spacing."
                     },
-        {"2.7.0.0", "Race Element:"+
+        {"2.7.0.0", "Race Element"+
                     "\n- Added preliminary support for Forza Horizon 6. With DSX support. If there is more work required an update will follow."+
                     "\n- Added support for Microsoft Flight Simulator 2020."+
                     "\n- Added support for Microsoft Flight Simulator 2024."+
