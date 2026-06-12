@@ -7,7 +7,8 @@ public static class ReleaseNotes
     internal static readonly Dictionary<string, string> Notes = new()
     {
         {"2.7.1.2", "Race Element"+
-                    "- Game Picker now scrolls 1 item at the time, regardless of windows mouse scroll settings."
+                    "\n- Game Picker now scrolls 1 item at the time, regardless of windows mouse scroll settings."+
+                    "\n- Update NET packages to 10.0.9"
                     },
         {"2.7.1.0", "DSX"+
                     "\n- Both Brake and Throttle Haptics can now be Enabled or Disabled independently."
