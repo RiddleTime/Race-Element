@@ -3,7 +3,6 @@ using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
-using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -22,6 +21,9 @@ internal sealed class ShiftRpmOverlay(Rectangle rectangle) : CommonAbstractOverl
 
     private CachedBitmap _cachedBackground;
     private RpmBitmaps _bitmaps;
+
+    // Precomputed powers of 10 for fast digit extraction (covers up to 7 digits)
+    private static readonly int[] _powersOfTen = { 1, 10, 100, 1000, 10000, 100000, 1000000 };
 
     public override void BeforeStart()
     {
@@ -55,21 +57,40 @@ internal sealed class ShiftRpmOverlay(Rectangle rectangle) : CommonAbstractOverl
     {
         _cachedBackground?.Draw(g);
 
+        int value = SimDataProvider.LocalCar.Engine.Rpm;
+        if (IsPreviewing) value = 8492;
+
+        value = Math.Clamp(value, 0, 999_999); // Same as original .Clip(0, 999_999)
+
+        int digits = _config.General.Digits;
         int x = 0;
+        bool leading = true;
 
-        int currentRpm = SimDataProvider.LocalCar.Engine.Rpm;
-        currentRpm.Clip(0, 999_999);
+        // Get starting power of 10
+        int power = digits <= _powersOfTen.Length
+            ? _powersOfTen[digits - 1]
+            : (int)Math.Pow(10, digits - 1);
 
-        string s = $"{currentRpm}".FillStart(_config.General.Digits, '0');
-
-        for (int i = 0; i < _config.General.Digits; i++)
+        for (int i = 0; i < digits; i++)
         {
-            if (byte.TryParse(s.AsSpan(i, 1), out byte number))
+            byte digit = (byte)(value / power);
+
+            if (leading && i != digits - 1)
             {
-                if (i != 0 || number != 0) // do not draw the first "0"
-                    _bitmaps.GetForNumber(number).Draw(g, new(x, 0));
+                if (digit == 0)
+                {
+                    // Skip drawing leading zero (matches original behavior)
+                    power /= 10;
+                    x += _bitmaps.Dimension.Width + _config.General.ExtraDigitSpacing;
+                    continue;
+                }
+                leading = false;
             }
 
+            _bitmaps.GetForNumber(digit).Draw(g, new Point(x, 0));
+
+            value %= power;
+            power /= 10;
             x += _bitmaps.Dimension.Width + _config.General.ExtraDigitSpacing;
         }
     }
@@ -78,6 +99,7 @@ internal sealed class ShiftRpmOverlay(Rectangle rectangle) : CommonAbstractOverl
     {
         private readonly CachedBitmap[] _rpmBitmaps = new CachedBitmap[10];
         public readonly (int Width, int Height) Dimension;
+
         public RpmBitmaps(ShiftRpmConfiguration config)
         {
             GenerateBitMaps(config);
@@ -116,8 +138,10 @@ internal sealed class ShiftRpmOverlay(Rectangle rectangle) : CommonAbstractOverl
 
         public CachedBitmap GetForNumber(byte number)
         {
+#if DEBUG
             ArgumentOutOfRangeException.ThrowIfGreaterThan(number, 9);
-            return _rpmBitmaps.AsSpan()[number];
+#endif
+            return _rpmBitmaps[number];
         }
 
         public void Dispose()
@@ -125,7 +149,5 @@ internal sealed class ShiftRpmOverlay(Rectangle rectangle) : CommonAbstractOverl
             foreach (CachedBitmap cachedBitmap in _rpmBitmaps)
                 cachedBitmap?.Dispose();
         }
-
     }
-
 }

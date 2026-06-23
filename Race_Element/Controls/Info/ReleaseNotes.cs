@@ -6,6 +6,11 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.7.1.4", "Microsoft Flight Simulator 2024"+
+                    "\n- Fix auto visibility."+
+                    "\n\nHUDs"+
+                    "\n- Decreased cpu usage for various amount of HUDs that show plain digits, like speedometer, shift rpm, indicated altitude..."
+                    },
         {"2.7.1.2", "Race Element"+
                     "\n- Game Picker now scrolls 1 item at the time, regardless of windows mouse scroll settings."+
                     "\n- Update NET packages to 10.0.9"

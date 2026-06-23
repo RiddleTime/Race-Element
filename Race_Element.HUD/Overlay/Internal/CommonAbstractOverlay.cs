@@ -82,7 +82,8 @@ public abstract class CommonAbstractOverlay : FloatingWindow
             condition = true;
 
 
-        if (GameWhenStarted == Game.MicrosoftFlightSimulator2020)
+        Game gamesThatShouldHideWhenpaused = Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024;
+        if (gamesThatShouldHideWhenpaused.HasFlag(GameWhenStarted))
         {
             condition = !SimDataProvider.GameData.IsGamePaused;
         }
@@ -93,7 +94,7 @@ public abstract class CommonAbstractOverlay : FloatingWindow
             if (SimDataProvider.GameData.IsGamePaused)
                 condition = false;
 
-        Game isRunningConditionable = Game.iRacing | Game.MicrosoftFlightSimulator2020;
+        Game isRunningConditionable = Game.iRacing | Game.MicrosoftFlightSimulator2020 | Game.MicrosoftFlightSimulator2024;
         if (isRunningConditionable.HasFlag(GameWhenStarted))
             if (!SimDataProvider.GameData.IsRunning)
                 condition = false;

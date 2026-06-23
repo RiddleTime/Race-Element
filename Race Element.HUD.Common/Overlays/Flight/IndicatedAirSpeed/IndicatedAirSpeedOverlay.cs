@@ -23,6 +23,9 @@ internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbst
     private CachedBitmap? _cachedBackground;
     private NumberBitmaps? _bitmaps;
 
+    // Precomputed powers of 10 for fast digit extraction (covers up to 7 digits)
+    private static readonly int[] _powersOfTen = { 1, 10, 100, 1000, 10000, 100000, 1000000 };
+
     public override void BeforeStart()
     {
         RefreshRateHz = _config.General.RefreshRate;
@@ -53,31 +56,57 @@ internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbst
 
     public override void Render(Graphics g)
     {
-        if (_config.Colors.BackgroundOpacity != 0) _cachedBackground?.Draw(g);
+        if (_config.Colors.BackgroundOpacity != 0)
+            _cachedBackground?.Draw(g);
 
         if (_bitmaps == null) return;
 
-        int x = 0;
-
         var physics = SimDataProvider.LocalPlane.Physics;
-        double indicatedSpeed = _config.General.Units switch
+
+        double indicatedAirSpeed = physics.IndicatedAirSpeed;
+        if (IsPreviewing) indicatedAirSpeed = 199;
+        double rawSpeed = _config.General.Units switch
         {
-            IndicatedAirSpeedConfiguration.UnitChoice.Knots => physics.IndicatedAirSpeed,
-            IndicatedAirSpeedConfiguration.UnitChoice.KilometersPerHour => physics.IndicatedAirSpeed * 1.852,
-            IndicatedAirSpeedConfiguration.UnitChoice.MilesPerHour => physics.IndicatedAirSpeed * 1.1507794480235425,
-            IndicatedAirSpeedConfiguration.UnitChoice.MetersPerSecond => physics.IndicatedAirSpeed * 0.5144444444444444,
-            IndicatedAirSpeedConfiguration.UnitChoice.FeetPerSecond => physics.IndicatedAirSpeed * 1.687809911111111,
-            _ => physics.IndicatedAirSpeed
+            IndicatedAirSpeedConfiguration.UnitChoice.Knots => indicatedAirSpeed,
+            IndicatedAirSpeedConfiguration.UnitChoice.KilometersPerHour => indicatedAirSpeed * 1.852,
+            IndicatedAirSpeedConfiguration.UnitChoice.MilesPerHour => indicatedAirSpeed * 1.1507794480235425,
+            IndicatedAirSpeedConfiguration.UnitChoice.MetersPerSecond => indicatedAirSpeed * 0.5144444444444444,
+            IndicatedAirSpeedConfiguration.UnitChoice.FeetPerSecond => indicatedAirSpeed * 1.687809911111111,
+            _ => indicatedAirSpeed
         };
 
-        string s = $"{indicatedSpeed:f0}".FillStart(_config.General.Digits, ' ');
+        int value = (int)Math.Round(rawSpeed);
+        if (value < 0) value = 0; // Speed is non-negative
 
-        for (int i = 0; i < _config.General.Digits; i++)
+        int digits = _config.General.Digits;
+        int x = 0;
+        bool leading = true;
+
+        // Get starting power of 10
+        int power = digits <= _powersOfTen.Length
+            ? _powersOfTen[digits - 1]
+            : (int)Math.Pow(10, digits - 1);
+
+        for (int i = 0; i < digits; i++)
         {
-            if (byte.TryParse(s.AsSpan(i, 1), out byte number))
-                if (i != 0 || number != 0) // do not draw the first "0"
-                    _bitmaps.GetForNumber(number).Draw(g, new(x, 0));
+            byte digit = (byte)(value / power);
 
+            if (leading && i != digits - 1)
+            {
+                if (digit == 0)
+                {
+                    // Skip drawing leading zeros (matches original behavior)
+                    power /= 10;
+                    x += _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing;
+                    continue;
+                }
+                leading = false;
+            }
+
+            _bitmaps.GetForNumber(digit).Draw(g, new Point(x, 0));
+
+            value %= power;
+            power /= 10;
             x += _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing;
         }
     }
@@ -86,6 +115,7 @@ internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbst
     {
         private readonly CachedBitmap[] _rpmBitmaps = new CachedBitmap[10];
         public readonly (int Width, int Height) BitmapDimension;
+
         public NumberBitmaps(IndicatedAirSpeedConfiguration config)
         {
             GenerateBitMaps(config);
@@ -124,8 +154,10 @@ internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbst
 
         public CachedBitmap GetForNumber(byte number)
         {
+#if DEBUG
             ArgumentOutOfRangeException.ThrowIfGreaterThan(number, 9);
-            return _rpmBitmaps.AsSpan()[number];
+#endif
+            return _rpmBitmaps[number];
         }
 
         public void Dispose()
@@ -133,7 +165,5 @@ internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbst
             foreach (CachedBitmap cachedBitmap in _rpmBitmaps)
                 cachedBitmap?.Dispose();
         }
-
     }
-
 }
