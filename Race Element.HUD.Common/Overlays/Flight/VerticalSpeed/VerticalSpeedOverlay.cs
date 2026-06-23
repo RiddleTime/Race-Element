@@ -4,7 +4,6 @@ using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
-using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 using System.Drawing.Text;
 
@@ -23,6 +22,9 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
     private CachedBitmap? _cachedBackgroundAir;
     private CachedBitmap? _cachedBackgroundEarth;
     private NumberBitmaps? _bitmaps;
+
+    // Precomputed powers of 10 for fast digit extraction (covers up to 7 digits)
+    private static readonly int[] _powersOfTen = { 1, 10, 100, 1000, 10000, 100000, 1000000 };
 
     public override void BeforeStart()
     {
@@ -58,10 +60,9 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
     {
         if (_bitmaps == null) return;
 
-        int x = 0;
+        var physics = SimDataProvider.LocalPlane.Physics;
 
-        PhysicsData physics = SimDataProvider.LocalPlane.Physics;
-        double verticalSpeed = _config.General.Units switch
+        double rawSpeed = _config.General.Units switch
         {
             VerticalSpeedConfiguration.UnitChoice.FeetPerMinute => physics.VerticalSpeed,
             VerticalSpeedConfiguration.UnitChoice.MetersPerMinute => physics.VerticalSpeed * 0.3048,
@@ -72,7 +73,11 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
             _ => physics.VerticalSpeed
         };
 
-        if (verticalSpeed >= 0)
+        bool isPositive = rawSpeed >= 0;
+        int value = (int)Math.Round(Math.Abs(rawSpeed));
+
+        // Background
+        if (isPositive)
         {
             if (_config.Colors.AirOpacity != 0) _cachedBackgroundAir?.Draw(g);
         }
@@ -81,23 +86,36 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
             if (_config.Colors.EarthOpacity != 0) _cachedBackgroundEarth?.Draw(g);
         }
 
+        int digits = _config.General.Digits;
+        int x = 0;
+        bool leading = true;
 
-        string s = $"{verticalSpeed:f0}";
-        if (verticalSpeed < 0) s = s.Replace("-", "");
-        s = s.FillStart(_config.General.Digits, ' ');
+        // Get starting power of 10
+        int power = digits <= _powersOfTen.Length
+            ? _powersOfTen[digits - 1]
+            : (int)Math.Pow(10, digits - 1);
 
-        for (int i = 0; i < _config.General.Digits; i++)
+        for (int i = 0; i < digits; i++)
         {
-            if (byte.TryParse(s.AsSpan(i, 1), out byte number))
+            byte digit = (byte)(value / power);
+
+            if (leading)
             {
-                if (i == 0 && number == 0) // do not draw the first "0"
-                    goto increaseX;
-
-                _bitmaps.GetForNumber(number).Draw(g, new(x, 0));
+                if (digit == 0)
+                {
+                    // Skip drawing leading zeros (matches original behavior)
+                    power /= 10;
+                    x += _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing;
+                    continue;
+                }
+                leading = false;
             }
-        increaseX:
-            x += _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing;
 
+            _bitmaps.GetForNumber(digit).Draw(g, new Point(x, 0));
+
+            value %= power;
+            power /= 10;
+            x += _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing;
         }
     }
 
@@ -142,7 +160,13 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
                 });
         }
 
-        public CachedBitmap GetForNumber(byte number) => _rpmBitmaps.AsSpan()[number];
+        public CachedBitmap GetForNumber(byte number)
+        {
+#if DEBUG
+            ArgumentOutOfRangeException.ThrowIfGreaterThan(number, 9);
+#endif
+            return _rpmBitmaps[number];
+        }
 
         public void Dispose()
         {
@@ -150,5 +174,4 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
                 cachedBitmap?.Dispose();
         }
     }
-
 }
