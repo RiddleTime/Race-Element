@@ -104,7 +104,7 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
         {
             byte digit = (byte)(value / power);
 
-            if (leading)
+            if (leading && i != digits - 1)
             {
                 if (digit == 0)
                 {

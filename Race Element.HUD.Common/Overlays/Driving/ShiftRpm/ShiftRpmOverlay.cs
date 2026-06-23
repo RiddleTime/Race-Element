@@ -75,7 +75,7 @@ internal sealed class ShiftRpmOverlay(Rectangle rectangle) : CommonAbstractOverl
         {
             byte digit = (byte)(value / power);
 
-            if (leading)
+            if (leading && i != digits - 1)
             {
                 if (digit == 0)
                 {
