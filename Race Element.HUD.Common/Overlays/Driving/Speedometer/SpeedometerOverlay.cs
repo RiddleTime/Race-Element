@@ -3,7 +3,6 @@ using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
 using RaceElement.HUD.Overlay.OverlayUtil;
 using RaceElement.HUD.Overlay.Util;
-using RaceElement.Util.SystemExtensions;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
@@ -22,6 +21,9 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
 
     private CachedBitmap? _cachedBackground;
     private RpmBitmaps? _bitmaps;
+
+    // Precomputed powers of 10 for fast digit extraction (covers up to 7 digits)
+    private static readonly int[] _powersOfTen = { 1, 10, 100, 1000, 10000, 100000, 1000000 };
 
     public override void BeforeStart()
     {
@@ -53,24 +55,48 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
 
     public override void Render(Graphics g)
     {
-        if (_config.Colors.BackgroundOpacity != 0) _cachedBackground?.Draw(g);
+        if (_config.Colors.BackgroundOpacity != 0)
+            _cachedBackground?.Draw(g);
 
         if (_bitmaps == null) return;
 
-        int x = 0;
+        float rawSpeed = SimDataProvider.LocalCar.Physics.Velocity;
 
-        float speedKmh = SimDataProvider.LocalCar.Physics.Velocity;
         if (_config.General.Units == SpeedometerConfiguration.UnitChoice.Mph)
-            speedKmh *= 0.621371f;
+            rawSpeed *= 0.621371f;
 
-        string s = $"{speedKmh:f0}".FillStart(_config.General.Digits, ' ');
+        int value = (int)Math.Round(rawSpeed);
+        if (value < 0) value = 0;
 
-        for (int i = 0; i < _config.General.Digits; i++)
+        int digits = _config.General.Digits;
+        int x = 0;
+        bool leading = true;
+
+        // Get starting power of 10
+        int power = digits <= _powersOfTen.Length
+            ? _powersOfTen[digits - 1]
+            : (int)Math.Pow(10, digits - 1);
+
+        for (int i = 0; i < digits; i++)
         {
-            if (byte.TryParse(s.AsSpan(i, 1), out byte number))
-                if (i != 0 || number != 0) // do not draw the first "0"
-                    _bitmaps.GetForNumber(number).Draw(g, new(x, 0));
+            byte digit = (byte)(value / power);
 
+            if (leading)
+            {
+                if (digit == 0)
+                {
+                    // Skip drawing leading zeros (matches original behavior)
+                    power /= 10;
+                    x += _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing;
+                    continue;
+                }
+                leading = false;
+            }
+
+            _bitmaps.GetForNumber(digit).Draw(g, new Point(x, 0));
+
+            value %= power;
+            power /= 10;
             x += _bitmaps.BitmapDimension.Width + _config.General.ExtraDigitSpacing;
         }
     }
@@ -79,6 +105,7 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
     {
         private readonly CachedBitmap[] _rpmBitmaps = new CachedBitmap[10];
         public readonly (int Width, int Height) BitmapDimension;
+
         public RpmBitmaps(SpeedometerConfiguration config)
         {
             GenerateBitMaps(config);
@@ -117,8 +144,10 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
 
         public CachedBitmap GetForNumber(byte number)
         {
+#if DEBUG
             ArgumentOutOfRangeException.ThrowIfGreaterThan(number, 9);
-            return _rpmBitmaps.AsSpan()[number];
+#endif
+            return _rpmBitmaps[number];
         }
 
         public void Dispose()
@@ -126,7 +155,5 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
             foreach (CachedBitmap cachedBitmap in _rpmBitmaps)
                 cachedBitmap?.Dispose();
         }
-
     }
-
 }
