@@ -58,6 +58,8 @@ internal sealed class ShiftRpmOverlay(Rectangle rectangle) : CommonAbstractOverl
         _cachedBackground?.Draw(g);
 
         int value = SimDataProvider.LocalCar.Engine.Rpm;
+        if (IsPreviewing) value = 8492;
+
         value = Math.Clamp(value, 0, 999_999); // Same as original .Clip(0, 999_999)
 
         int digits = _config.General.Digits;

@@ -62,19 +62,24 @@ internal sealed class VerticalSpeedOverlay(Rectangle rectangle) : CommonAbstract
 
         var physics = SimDataProvider.LocalPlane.Physics;
 
+
+        double vertSpeed = physics.VerticalSpeed;
+        if (IsPreviewing) vertSpeed = 1723;
+
         double rawSpeed = _config.General.Units switch
         {
-            VerticalSpeedConfiguration.UnitChoice.FeetPerMinute => physics.VerticalSpeed,
-            VerticalSpeedConfiguration.UnitChoice.MetersPerMinute => physics.VerticalSpeed * 0.3048,
-            VerticalSpeedConfiguration.UnitChoice.FeetPerSecond => physics.VerticalSpeed / 60.0,
-            VerticalSpeedConfiguration.UnitChoice.MetersPerSecond => physics.VerticalSpeed * 0.00508,
-            VerticalSpeedConfiguration.UnitChoice.MilesPerHour => physics.VerticalSpeed * (60.0 / 5280.0),
-            VerticalSpeedConfiguration.UnitChoice.KilometersPerHour => physics.VerticalSpeed * 0.018288,
-            _ => physics.VerticalSpeed
+            VerticalSpeedConfiguration.UnitChoice.FeetPerMinute => vertSpeed,
+            VerticalSpeedConfiguration.UnitChoice.MetersPerMinute => vertSpeed * 0.3048,
+            VerticalSpeedConfiguration.UnitChoice.FeetPerSecond => vertSpeed / 60.0,
+            VerticalSpeedConfiguration.UnitChoice.MetersPerSecond => vertSpeed * 0.00508,
+            VerticalSpeedConfiguration.UnitChoice.MilesPerHour => vertSpeed * (60.0 / 5280.0),
+            VerticalSpeedConfiguration.UnitChoice.KilometersPerHour => vertSpeed * 0.018288,
+            _ => vertSpeed
         };
 
         bool isPositive = rawSpeed >= 0;
         int value = (int)Math.Round(Math.Abs(rawSpeed));
+
 
         // Background
         if (isPositive)

@@ -74,6 +74,7 @@ internal sealed class IndicatedAltitudeOverlay(Rectangle rectangle) : CommonAbst
 
         int value = (int)Math.Round(rawAltitude);
         if (value < 0) value = 0; // Altitudes are non-negative
+        if (IsPreviewing) value = 789;
 
         int digits = _config.General.Digits;
         int x = 0;

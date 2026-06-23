@@ -61,6 +61,7 @@ internal sealed class SpeedometerOverlay(Rectangle rectangle) : CommonAbstractOv
         if (_bitmaps == null) return;
 
         float rawSpeed = SimDataProvider.LocalCar.Physics.Velocity;
+        if (IsPreviewing) rawSpeed = 192.3f;
 
         if (_config.General.Units == SpeedometerConfiguration.UnitChoice.Mph)
             rawSpeed *= 0.621371f;

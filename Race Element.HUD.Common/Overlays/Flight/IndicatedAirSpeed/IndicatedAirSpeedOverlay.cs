@@ -63,14 +63,16 @@ internal sealed class IndicatedAirSpeedOverlay(Rectangle rectangle) : CommonAbst
 
         var physics = SimDataProvider.LocalPlane.Physics;
 
+        double indicatedAirSpeed = physics.IndicatedAirSpeed;
+        if (IsPreviewing) indicatedAirSpeed = 199;
         double rawSpeed = _config.General.Units switch
         {
-            IndicatedAirSpeedConfiguration.UnitChoice.Knots => physics.IndicatedAirSpeed,
-            IndicatedAirSpeedConfiguration.UnitChoice.KilometersPerHour => physics.IndicatedAirSpeed * 1.852,
-            IndicatedAirSpeedConfiguration.UnitChoice.MilesPerHour => physics.IndicatedAirSpeed * 1.1507794480235425,
-            IndicatedAirSpeedConfiguration.UnitChoice.MetersPerSecond => physics.IndicatedAirSpeed * 0.5144444444444444,
-            IndicatedAirSpeedConfiguration.UnitChoice.FeetPerSecond => physics.IndicatedAirSpeed * 1.687809911111111,
-            _ => physics.IndicatedAirSpeed
+            IndicatedAirSpeedConfiguration.UnitChoice.Knots => indicatedAirSpeed,
+            IndicatedAirSpeedConfiguration.UnitChoice.KilometersPerHour => indicatedAirSpeed * 1.852,
+            IndicatedAirSpeedConfiguration.UnitChoice.MilesPerHour => indicatedAirSpeed * 1.1507794480235425,
+            IndicatedAirSpeedConfiguration.UnitChoice.MetersPerSecond => indicatedAirSpeed * 0.5144444444444444,
+            IndicatedAirSpeedConfiguration.UnitChoice.FeetPerSecond => indicatedAirSpeed * 1.687809911111111,
+            _ => indicatedAirSpeed
         };
 
         int value = (int)Math.Round(rawSpeed);
