@@ -31,10 +31,7 @@ internal sealed class AircraftInfoOverlay(Rectangle rectangle) : CommonAbstractO
         Height = _infoPanel.FontHeight * 3 + _infoPanel.ExtraLineSpacing * 2;
     }
 
-    public sealed override void BeforeStop()
-    {
-        _infoPanel?.Dispose();
-    }
+    public sealed override void BeforeStop() => _infoPanel?.Dispose();
 
     public sealed override void Render(Graphics g)
     {
