@@ -930,6 +930,9 @@ public sealed class AcEvoSharedMemory
         /// <summary>Car is restricted to a single tyre compound for both axles</summary>
         public bool UseSingleCompound;
 
+        [MarshalAs(UnmanagedType.ByValArray, SizeConst = 60)]
+        public ulong[] CarIds;
+
         public static readonly int Size = Marshal.SizeOf<SPageFileGraphicEvo>();
         public static readonly byte[] Buffer = new byte[Size];
     }
@@ -1005,7 +1008,7 @@ public sealed class AcEvoSharedMemory
     {
         if (fromCache) return PageFileGraphic;
         return PageFileGraphic = StructExtension.ToStruct<SPageFileGraphicEvo>(
-            MemoryMappedFile.CreateOrOpen(graphicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite),
+            MemoryMappedFile.CreateOrOpen(graphicsMap, SPageFileGraphicEvo.Size, MemoryMappedFileAccess.ReadWrite),
             SPageFileGraphicEvo.Buffer);
     }
 
@@ -1014,7 +1017,7 @@ public sealed class AcEvoSharedMemory
     {
         if (fromCache) return PageFileStatic;
         return PageFileStatic = StructExtension.ToStruct<SPageFileStaticEvo>(
-            MemoryMappedFile.CreateOrOpen(staticMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite),
+            MemoryMappedFile.CreateOrOpen(staticMap, SPageFileStaticEvo.Size, MemoryMappedFileAccess.ReadWrite),
             SPageFileStaticEvo.Buffer);
     }
 
@@ -1023,7 +1026,7 @@ public sealed class AcEvoSharedMemory
     {
         if (fromCache) return PageFilePhysics;
         return PageFilePhysics = StructExtension.ToStruct<SPageFilePhysicsEvo>(
-            MemoryMappedFile.CreateOrOpen(physicsMap, sizeof(byte), MemoryMappedFileAccess.ReadWrite),
+            MemoryMappedFile.CreateOrOpen(physicsMap, SPageFilePhysicsEvo.Size, MemoryMappedFileAccess.ReadWrite),
             SPageFilePhysicsEvo.Buffer);
     }
 
