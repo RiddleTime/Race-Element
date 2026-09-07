@@ -8,15 +8,15 @@ using static RaceElement.HUD.Overlay.Internal.WindowStructs;
 
 namespace RaceElement.HUD.Overlay.Internal;
 
+/// <summary>
+/// Transparent layered native window used as the base for HUD overlays.
+/// </summary>
 public class FloatingWindow : NativeWindow, IDisposable
 {
-    public string Name { get; internal set; }
-    internal bool WindowMode { get; set; } = false;
+    public string Name { get; internal set; } = string.Empty;
+    internal bool WindowMode { get; set; }
     internal bool AlwaysOnTop { get; set; } = true;
 
-
-
-    #region #  Enums  #
     [Flags]
     public enum AnimateMode
     {
@@ -24,316 +24,252 @@ public class FloatingWindow : NativeWindow, IDisposable
         SlideRightToLeft,
         SlideLeftToRight,
         SlideTopToBottom,
-        SlideBottmToTop,
+        SlideBottomToTop,
         RollRightToLeft,
         RollLeftToRight,
         RollTopToBottom,
-        RollBottmToTop,
+        RollBottomToTop,
         ExpandCollapse
     }
-    #endregion
 
-    #region #  Fields  #
-    protected bool _disposed = false;
+    protected bool _disposed;
     private byte _alpha = 255;
     private Size _size = new(1, 1);
     private Rectangle _drawingRect;
     private Point _location = new(50, 50);
-    #endregion
 
-    #region #  Methods  #
+    // Mouse state
+    private int _deltaX;
+    private int _deltaY;
+    private bool _captured;
+    private bool _isMouseIn;
+    private bool _onMouseMove;
+    private bool _onMouseDown;
+    private bool _onMouseUp;
+    private Point _lastMouseDown = Point.Empty;
 
-    #region == Painting ==
+    #region Painting
+
     /// <summary>
-    /// Performs the painting of the window. Overide this method to provide custom painting
+    /// Override to provide custom painting. Called on a temporary bitmap that is then
+    /// presented via UpdateLayeredWindow.
     /// </summary>
-    /// <param name="e">A <see cref="PaintEventArgs"/> containing the event data.</param>
-    protected virtual void PerformPaint(PaintEventArgs e)
-    {
-    }
+    protected virtual void PerformPaint(PaintEventArgs e) { }
+
     #endregion
 
-    #region == Updating ==
-    protected internal void Invalidate()
-    {
-        this.UpdateLayeredWindow();
-    }
+    #region Updating
+
+    protected internal void Invalidate() => UpdateLayeredWindow();
 
     protected void UpdateLayeredWindow()
     {
+        if (_disposed || base.Handle == IntPtr.Zero)
+            return;
+
         try
         {
-            using Bitmap bitmap = new(this.Size.Width, this.Size.Height, PixelFormat.Format32bppPArgb);
-            using Graphics graphics = Graphics.FromImage(bitmap);
+            using var bitmap = new Bitmap(Size.Width, Size.Height, PixelFormat.Format32bppPArgb);
+            using var graphics = Graphics.FromImage(bitmap);
 
-            POINT point1;
-            POINT point2;
-            BLENDFUNCTION blendfunction1;
-            this.PerformPaint(new PaintEventArgs(graphics, _drawingRect));
-            IntPtr ptr1 = User32.GetDC(IntPtr.Zero);
-            IntPtr ptr2 = Gdi32.CreateCompatibleDC(ptr1);
-            IntPtr ptr3 = bitmap.GetHbitmap(Color.FromArgb(0));
-            IntPtr ptr4 = Gdi32.SelectObject(ptr2, ptr3);
+            PerformPaint(new PaintEventArgs(graphics, _drawingRect));
 
-            SIZE size1;
-            size1.cx = this.Size.Width;
-            size1.cy = this.Size.Height;
-            point1.X = this.Location.X;
-            point1.Y = this.Location.Y;
-            point2.X = 0;
-            point2.Y = 0;
-            blendfunction1 = new BLENDFUNCTION();
-            blendfunction1.BlendOp = 0;
-            blendfunction1.BlendFlags = 0;
-            blendfunction1.SourceConstantAlpha = this._alpha;
-            blendfunction1.AlphaFormat = 1;
-            User32.UpdateLayeredWindow(base.Handle, ptr1, ref point1, ref size1, ptr2, ref point2, 0, ref blendfunction1, 2); //2=ULW_ALPHA
-            Gdi32.SelectObject(ptr2, ptr4);
-            User32.ReleaseDC(IntPtr.Zero, ptr1);
-            Gdi32.DeleteObject(ptr3);
-            Gdi32.DeleteDC(ptr2);
+            IntPtr screenDc = User32.GetDC(IntPtr.Zero);
+            IntPtr memDc = Gdi32.CreateCompatibleDC(screenDc);
+            IntPtr hBitmap = bitmap.GetHbitmap(Color.FromArgb(0));
+            IntPtr oldBitmap = Gdi32.SelectObject(memDc, hBitmap);
+
+            var size = new SIZE { cx = Size.Width, cy = Size.Height };
+            var dstPoint = new POINT(Location.X, Location.Y);
+            var srcPoint = new POINT(0, 0);
+
+            var blend = new BLENDFUNCTION
+            {
+                BlendOp = 0,
+                BlendFlags = 0,
+                SourceConstantAlpha = _alpha,
+                AlphaFormat = 1 // AC_SRC_ALPHA
+            };
+
+            User32.UpdateLayeredWindow(
+                base.Handle,
+                screenDc,
+                ref dstPoint,
+                ref size,
+                memDc,
+                ref srcPoint,
+                0,
+                ref blend,
+                2); // ULW_ALPHA
+
+            Gdi32.SelectObject(memDc, oldBitmap);
+            User32.ReleaseDC(IntPtr.Zero, screenDc);
+            Gdi32.DeleteObject(hBitmap);
+            Gdi32.DeleteDC(memDc);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Debug.WriteLine(e);
+            Debug.WriteLine(ex);
         }
     }
 
     #endregion
 
-    #region == Show / Hide ==
-    /// <summary>
-    /// Shows the window. Position determined by Location property in screen coordinates
-    /// </summary>
+    #region Show / Hide / Animate
+
     public virtual void Show()
     {
-        //Debug.WriteLine("base handle: " + base.Handle);
         if (base.Handle == IntPtr.Zero)
-        {  //if handle don't equal to zero - window was created and just hided
-           //Debug.WriteLine("Creating window only with normal style");
-            this.CreateWindowOnly(GetExStyle());
-        }
+            CreateWindowOnly(GetExStyle());
 
         User32.ShowWindow(base.Handle, User32.SW_SHOWNOACTIVATE);
-        //Debug.WriteLine("Showing window");
-        //SetBoundsCore(X, Y, Width, Height);
     }
 
     public virtual void SetDraggy(bool toggle)
     {
         if (base.Handle == IntPtr.Zero)
-        {  //if handle don't equal to zero - window was created and just hided
-           //Debug.WriteLine($"Creating window only with draggy style: {toggle}");
-            this.CreateWindowOnly(toggle ? GetExStyleDrag() : GetExStyle());
-        }
+            CreateWindowOnly(toggle ? GetExStyleDrag() : GetExStyle());
 
-        //Debug.WriteLine($"Settings Draggy style: {toggle}");
-
-        //Debug.WriteLine("Current style" + User32.GetWindowLong(this.Handle, -20));
-        //Debug.WriteLine("Drag style " + GetExStyleDrag());
-        //Debug.WriteLine("Normal style" + GetExStyle());
-
-        if (toggle)
-            User32.SetWindowLong(base.Handle, -20, (uint)GetExStyleDrag());
-        else
-            User32.SetWindowLong(base.Handle, -20, (uint)GetExStyle());
-
-        //SetBoundsCore(X, Y, Width, Height);
+        User32.SetWindowLong(base.Handle, -20, (uint)(toggle ? GetExStyleDrag() : GetExStyle()));
         User32.ShowWindow(base.Handle, User32.SW_SHOWNOACTIVATE);
     }
 
-    /// <summary>
-    /// Shows the window.
-    /// </summary>
-    /// <param name="x">x-coordinate of window in screen coordinates</param>
-    /// <param name="y">x-coordinate of window in screen coordinates</param>
     public virtual void Show(int x, int y)
     {
-        this._location.X = x;
-        this._location.Y = y;
-        this.Show();
+        _location = new Point(x, y);
+        Show();
     }
-    /// <summary>
-    /// Shows the window with animation effect. Position determined by Location property in screen coordinates
-    /// </summary>
-    /// <param name="mode">Effect to be applied</param>
-    /// <param name="time">Time, in milliseconds, for effect playing</param>
+
     public virtual void ShowAnimate(AnimateMode mode, uint time)
     {
-        uint dwFlag = 0;
-        switch (mode)
-        {
-            case AnimateMode.Blend:
-                dwFlag = User32.AW_BLEND;
-                break;
-            case AnimateMode.ExpandCollapse:
-                dwFlag = User32.AW_CENTER;
-                break;
-            case AnimateMode.SlideLeftToRight:
-                dwFlag = User32.AW_HOR_POSITIVE | User32.AW_SLIDE;
-                break;
-            case AnimateMode.SlideRightToLeft:
-                dwFlag = User32.AW_HOR_NEGATIVE | User32.AW_SLIDE;
-                break;
-            case AnimateMode.SlideTopToBottom:
-                dwFlag = User32.AW_VER_POSITIVE | User32.AW_SLIDE;
-                break;
-            case AnimateMode.SlideBottmToTop:
-                dwFlag = User32.AW_VER_NEGATIVE | User32.AW_SLIDE;
-                break;
-            case AnimateMode.RollLeftToRight:
-                dwFlag = User32.AW_HOR_POSITIVE;
-                break;
-            case AnimateMode.RollRightToLeft:
-                dwFlag = User32.AW_HOR_NEGATIVE;
-                break;
-            case AnimateMode.RollBottmToTop:
-                dwFlag = User32.AW_VER_NEGATIVE;
-                break;
-            case AnimateMode.RollTopToBottom:
-                dwFlag = User32.AW_VER_POSITIVE;
-                break;
-        }
+        uint flags = GetAnimateFlags(mode);
+
         if (base.Handle == IntPtr.Zero)
-            this.CreateWindowOnly(GetExStyle());
-        if ((dwFlag & User32.AW_BLEND) != 0)
-            this.AnimateWithBlend(true, time);
+            CreateWindowOnly(GetExStyle());
+
+        if ((flags & User32.AW_BLEND) != 0)
+            AnimateWithBlend(show: true, time);
         else
-            User32.AnimateWindow(base.Handle, time, dwFlag);
+            User32.AnimateWindow(base.Handle, time, flags);
     }
-    /// <summary>
-    /// Shows the window with animation effect.
-    /// </summary>
-    /// <param name="x">x-coordinate of window in screen coordinates</param>
-    /// <param name="y">x-coordinate of window in screen coordinates</param>
-    /// <param name="mode">Effect to be applied</param>
-    /// <param name="time">Time, in milliseconds, for effect playing</param>
+
     public virtual void ShowAnimate(int x, int y, AnimateMode mode, uint time)
     {
-        this._location.X = x;
-        this._location.Y = y;
-        this.ShowAnimate(mode, time);
+        _location = new Point(x, y);
+        ShowAnimate(mode, time);
     }
-    /// <summary>
-    /// Hides the window and release it's handle.
-    /// </summary>
+
     public virtual void Hide()
     {
         if (base.Handle == IntPtr.Zero)
             return;
 
-        //Debug.WriteLine("Hiding Window");
         User32.ShowWindow(base.Handle, User32.SW_HIDE);
     }
-    /// <summary>
-    /// Hides the window with animation effect and release it's handle.
-    /// </summary>
-    /// <param name="mode">Effect to be applied</param>
-    /// <param name="time">Time, in milliseconds, for effect playing</param>
+
     public virtual void HideAnimate(AnimateMode mode, uint time)
     {
         if (base.Handle == IntPtr.Zero)
             return;
-        uint dwFlag = 0;
-        switch (mode)
-        {
-            case AnimateMode.Blend:
-                dwFlag = User32.AW_BLEND;
-                break;
-            case AnimateMode.ExpandCollapse:
-                dwFlag = User32.AW_CENTER;
-                break;
-            case AnimateMode.SlideLeftToRight:
-                dwFlag = User32.AW_HOR_POSITIVE | User32.AW_SLIDE;
-                break;
-            case AnimateMode.SlideRightToLeft:
-                dwFlag = User32.AW_HOR_NEGATIVE | User32.AW_SLIDE;
-                break;
-            case AnimateMode.SlideTopToBottom:
-                dwFlag = User32.AW_VER_POSITIVE | User32.AW_SLIDE;
-                break;
-            case AnimateMode.SlideBottmToTop:
-                dwFlag = User32.AW_VER_NEGATIVE | User32.AW_SLIDE;
-                break;
-            case AnimateMode.RollLeftToRight:
-                dwFlag = User32.AW_HOR_POSITIVE;
-                break;
-            case AnimateMode.RollRightToLeft:
-                dwFlag = User32.AW_HOR_NEGATIVE;
-                break;
-            case AnimateMode.RollBottmToTop:
-                dwFlag = User32.AW_VER_NEGATIVE;
-                break;
-            case AnimateMode.RollTopToBottom:
-                dwFlag = User32.AW_VER_POSITIVE;
-                break;
-        }
-        dwFlag |= User32.AW_HIDE;
-        if ((dwFlag & User32.AW_BLEND) != 0)
-            this.AnimateWithBlend(false, time);
+
+        uint flags = GetAnimateFlags(mode) | User32.AW_HIDE;
+
+        if ((flags & User32.AW_BLEND) != 0)
+            AnimateWithBlend(show: false, time);
         else
-            User32.AnimateWindow(base.Handle, time, dwFlag);
-        this.Hide();
+            User32.AnimateWindow(base.Handle, time, flags);
+
+        Hide();
     }
-    /// <summary>
-    /// Close the window and destroy it's handle.
-    /// </summary>
+
     public virtual void Close()
     {
-        if (this.Handle != IntPtr.Zero)
-            this.Hide();
-        this.Dispose();
+        if (Handle != IntPtr.Zero)
+            Hide();
+
+        Dispose();
     }
+
+    private static uint GetAnimateFlags(AnimateMode mode) => mode switch
+    {
+        AnimateMode.Blend => User32.AW_BLEND,
+        AnimateMode.ExpandCollapse => User32.AW_CENTER,
+        AnimateMode.SlideLeftToRight => User32.AW_HOR_POSITIVE | User32.AW_SLIDE,
+        AnimateMode.SlideRightToLeft => User32.AW_HOR_NEGATIVE | User32.AW_SLIDE,
+        AnimateMode.SlideTopToBottom => User32.AW_VER_POSITIVE | User32.AW_SLIDE,
+        AnimateMode.SlideBottomToTop => User32.AW_VER_NEGATIVE | User32.AW_SLIDE,
+        AnimateMode.RollLeftToRight => User32.AW_HOR_POSITIVE,
+        AnimateMode.RollRightToLeft => User32.AW_HOR_NEGATIVE,
+        AnimateMode.RollBottomToTop => User32.AW_VER_NEGATIVE,
+        AnimateMode.RollTopToBottom => User32.AW_VER_POSITIVE,
+        _ => 0
+    };
 
     private void AnimateWithBlend(bool show, uint time)
     {
-        byte originalAplha = this._alpha;
-        byte p = (byte)(originalAplha / (time / 10));
-        if (p == 0) p++;
+        byte originalAlpha = _alpha;
+        byte step = (byte)Math.Max(1, originalAlpha / Math.Max(1, time / 10));
+
         if (show)
         {
-            this._alpha = 0;
-            this.UpdateLayeredWindow();
+            _alpha = 0;
+            UpdateLayeredWindow();
             User32.ShowWindow(base.Handle, User32.SW_SHOWNOACTIVATE);
         }
-        for (byte i = show ? (byte)0 : originalAplha; (show ? i <= originalAplha : i >= (byte)0); i += (byte)(p * (show ? 1 : -1)))
-        {
-            this._alpha = i;
-            this.UpdateLayeredWindow();
-            if ((show && i > originalAplha - p) || (!show && i < p))
-                break;
-        }
-        this._alpha = originalAplha;
+
         if (show)
-            this.UpdateLayeredWindow();
+        {
+            for (byte i = 0; i <= originalAlpha; i += step)
+            {
+                _alpha = i;
+                UpdateLayeredWindow();
+                if (i > originalAlpha - step)
+                    break;
+            }
+        }
+        else
+        {
+            for (int i = originalAlpha; i >= 0; i -= step)
+            {
+                _alpha = (byte)i;
+                UpdateLayeredWindow();
+                if (i < step)
+                    break;
+            }
+        }
+
+        _alpha = originalAlpha;
+        if (show)
+            UpdateLayeredWindow();
     }
 
     private void CreateWindowOnly(int exStyle)
     {
-        int nX = this._location.X;
-        int nY = this._location.Y;
-        this._location = Monitors.IsInsideMonitor(nX, nY, this._size.Width, this._size.Height, this.Handle);
-        Size size1 = this._size;
-        Point point1 = this._location;
-        CreateParams params1 = new();
-        params1.Caption = Name;
-        params1.X = _location.X;
-        params1.Y = _location.Y;
-        params1.Height = size1.Height;
-        params1.Width = size1.Width;
-        params1.Parent = IntPtr.Zero;
-        uint ui = User32.WS_POPUP;
-        params1.Style = (int)ui;
-        params1.ExStyle = (int)exStyle;
+        _location = Monitors.IsInsideMonitor(
+            _location.X, _location.Y, _size.Width, _size.Height, Handle);
+
+        var createParams = new CreateParams
+        {
+            Caption = Name,
+            X = _location.X,
+            Y = _location.Y,
+            Height = _size.Height,
+            Width = _size.Width,
+            Parent = IntPtr.Zero,
+            Style = unchecked((int)User32.WS_POPUP),
+            ExStyle = exStyle
+        };
 
         try
         {
-            this.CreateHandle(params1);
-            this.UpdateLayeredWindow();
+            CreateHandle(createParams);
+            UpdateLayeredWindow();
         }
-        catch (InvalidOperationException) { }
+        catch (InvalidOperationException)
+        {
+            // Handle already exists or invalid state – ignore
+        }
     }
-    #endregion
 
     public int GetExStyle()
     {
@@ -351,574 +287,341 @@ public class FloatingWindow : NativeWindow, IDisposable
         return exStyle;
     }
 
-    public int GetExStyleDrag()
-    {
-        int exStyle = User32.WS_EX_LAYERED | User32.WS_EX_TOPMOST | User32.WS_EX_NOACTIVATE | 0x00020000;
-        return exStyle;
-    }
+    public int GetExStyleDrag() =>
+        User32.WS_EX_LAYERED | User32.WS_EX_TOPMOST | User32.WS_EX_NOACTIVATE | 0x00020000;
 
-    #region == Other messages ==
+    #endregion
+
+    #region WndProc
+
     private void PerformWmPaint_WmPrintClient(ref Message m, bool isPaintMessage)
     {
         try
         {
-            PAINTSTRUCT paintstruct1;
-            RECT rect1;
-            Rectangle rectangle1;
-            paintstruct1 = new PAINTSTRUCT();
-            IntPtr ptr1 = isPaintMessage ? User32.BeginPaint(m.HWnd, ref paintstruct1) : m.WParam;
-            rect1 = new RECT();
-            User32.GetWindowRect(base.Handle, ref rect1);
-            rectangle1 = new Rectangle(0, 0, rect1.right - rect1.left, rect1.bottom - rect1.top);
-            using (Graphics graphics1 = Graphics.FromHdc(ptr1))
+            var ps = new PAINTSTRUCT();
+            IntPtr hdc = isPaintMessage ? User32.BeginPaint(m.HWnd, ref ps) : m.WParam;
+
+            var rect = new RECT();
+            User32.GetWindowRect(base.Handle, ref rect);
+            var bounds = new Rectangle(0, 0, rect.right - rect.left, rect.bottom - rect.top);
+
+            using (var graphics = Graphics.FromHdc(hdc))
+            using (var bitmap = new Bitmap(bounds.Width, bounds.Height))
+            using (var g = Graphics.FromImage(bitmap))
             {
-                Bitmap bitmap1 = new(rectangle1.Width, rectangle1.Height);
-                using (Graphics graphics2 = Graphics.FromImage(bitmap1))
-                    this.PerformPaint(new PaintEventArgs(graphics2, rectangle1));
-                graphics1.DrawImageUnscaled(bitmap1, 0, 0);
+                PerformPaint(new PaintEventArgs(g, bounds));
+                graphics.DrawImageUnscaled(bitmap, 0, 0);
             }
+
             if (isPaintMessage)
-                User32.EndPaint(m.HWnd, ref paintstruct1);
+                User32.EndPaint(m.HWnd, ref ps);
         }
-        catch (Exception e)
+        catch (Exception ex)
         {
-            Debug.WriteLine(e);
+            Debug.WriteLine(ex);
         }
     }
-
-    [DllImport("user32.dll")]
-    private static extern bool GetCursorPos(out POINT lpPoint);
-
-    private static POINT GetCursorPosition()
-    {
-        POINT lpPoint;
-        GetCursorPos(out lpPoint);
-        // NOTE: If you need error handling
-        // bool success = GetCursorPos(out lpPoint);
-        // if (!success)
-
-        return lpPoint;
-    }
-
-    private bool PerformWmNcHitTest(ref Message m)
-    {
-        POINT point1 = GetCursorPosition();
-        point1.X -= _location.X;
-        point1.Y -= _location.Y;
-        Rectangle rect = new(_location.Y, _location.X, _size.Width, _size.Height);
-        if (!rect.Contains(point1.X, point1.Y))
-            return false;
-
-        m.Result = (IntPtr)(-1);
-        return true;
-    }
-
 
     protected override void WndProc(ref Message m)
     {
-
-        if (m.Msg == 15) // WM_PAINT
-        {
-            this.PerformWmPaint_WmPrintClient(ref m, true);
-            //return;
-        }
-
-        else if (m.Msg == 0x318) // WM_PRINTCLIENT
-        {
-            this.PerformWmPaint_WmPrintClient(ref m, false);
-            return;
-        }
-
         switch (m.Msg)
         {
-            case 0x21: // WM_MOUSEACTIVATE
-                {
-                    this.PerformWmMouseActivate(ref m);
-                    return;
-                }
-            //case 0x84: // WM_NCHITTEST
-            //    {
-            //        Debug.WriteLine("WM_NCHITTEST");
-            //        //if (!this.PerformWmNcHitTest(ref m))
-            //        //{
-            //        //    Debug.WriteLine("not in");
-            //        //}
-            //    }
-            case 0x200: // WM_MOUSEMOVE
-                        //Debug.WriteLine("WM_MOUSEMOVE");
+            case 15: // WM_PAINT
+                PerformWmPaint_WmPrintClient(ref m, isPaintMessage: true);
+                break;
 
-                if (!this.isMouseIn)
+            case 0x318: // WM_PRINTCLIENT
+                PerformWmPaint_WmPrintClient(ref m, isPaintMessage: false);
+                return;
+
+            case 0x21: // WM_MOUSEACTIVATE
+                m.Result = (IntPtr)3; // MA_NOACTIVATE
+                return;
+
+            case 0x200: // WM_MOUSEMOVE
+                if (!_isMouseIn)
                 {
-                    this.OnMouseEnter();
-                    this.isMouseIn = true;
+                    OnMouseEnter();
+                    _isMouseIn = true;
                 }
-                Point p6 = new(m.LParam.ToInt32());
-                this.OnMouseMove(new MouseEventArgs(Control.MouseButtons, 1, p6.X, p6.X, 0));
-                if (this.onMouseMove)
+
+                var pMove = new Point(m.LParam.ToInt32());
+                OnMouseMove(new MouseEventArgs(Control.MouseButtons, 1, pMove.X, pMove.Y, 0));
+
+                if (_onMouseMove)
                 {
-                    this.PerformWmMouseMove(ref m);
-                    this.onMouseMove = false;
+                    PerformWmMouseMove(ref m);
+                    _onMouseMove = false;
                 }
                 break;
-            case 0x201: // WM_MOUSEDOWN
+
+            case 0x201: // WM_LBUTTONDOWN
                 {
-                    //Debug.WriteLine("WM_MOUSEDOWN");
-                    POINT point1;
-                    this.lastMouseDown = new Point(m.LParam.ToInt32());
-                    point1 = new POINT();
-                    point1.X = this.lastMouseDown.X;
-                    point1.Y = this.lastMouseDown.Y;
-                    point1 = this.MousePositionToScreen(point1);
-                    deltaX = point1.X - this.Location.X;
-                    deltaY = point1.Y - this.Location.Y;
-                    //Debug.WriteLine($"mouse is in {lastMouseDown}");
+                    _lastMouseDown = new Point(m.LParam.ToInt32());
+                    var screenPt = MousePositionToScreen(new POINT { X = _lastMouseDown.X, Y = _lastMouseDown.Y });
+                    _deltaX = screenPt.X - Location.X;
+                    _deltaY = screenPt.Y - Location.Y;
 
+                    OnMouseDown(new MouseEventArgs(Control.MouseButtons, 1, _lastMouseDown.X, _lastMouseDown.Y, 0));
 
-                    this.OnMouseDown(new MouseEventArgs(Control.MouseButtons, 1, lastMouseDown.X, lastMouseDown.Y, 0));
-                    if (this.onMouseDown)
+                    if (_onMouseDown)
                     {
-                        //Debug.WriteLine("");
-                        this.PerformWmMouseDown(ref m);
-                        this.onMouseDown = false;
+                        PerformWmMouseDown(ref m);
+                        _onMouseDown = false;
                     }
-
                     return;
                 }
+
             case 0x202: // WM_LBUTTONUP
                 {
-                    //Debug.WriteLine("WM_LBUTTONUP");
-                    Point p = new(m.LParam.ToInt32());
-                    this.OnMouseUp(new MouseEventArgs(Control.MouseButtons, 1, p.X, p.Y, 0));
-                    if (this.onMouseUp)
+                    var pUp = new Point(m.LParam.ToInt32());
+                    OnMouseUp(new MouseEventArgs(Control.MouseButtons, 1, pUp.X, pUp.Y, 0));
+
+                    if (_onMouseUp)
                     {
-                        this.PerformWmMouseUp(ref m);
-                        this.onMouseUp = false;
+                        PerformWmMouseUp(ref m);
+                        _onMouseUp = false;
                     }
                     return;
                 }
+
             case 0x02A3: // WM_MOUSELEAVE
+                if (_isMouseIn)
                 {
-                    //Debug.WriteLine("WM_MOUSELEAVE");
-                    if (this.isMouseIn)
-                    {
-                        this.OnMouseLeave();
-                        this.isMouseIn = false;
-                    }
-                    break;
+                    OnMouseLeave();
+                    _isMouseIn = false;
                 }
-
-                //case 0x0100: // WM_KEYDOWN
-                //    {
-                //        Debug.WriteLine("Key down");
-                //        break;
-                //    }
-
-                //case 0x001c: // WM_ACTIVATEAPP 
-                //    {
-                //        //Debug.WriteLine("WM_ACTIVATEAPP");
-
-                //        return;
-                //    }
-
-                //case 0x002: //WM_Destroy
-                //    {
-                //        //Debug.WriteLine("WM_Destroy");
-
-                //        return;
-                //    }
-
-                //case 0x0046:
-                //    {
-                //        //Debug.WriteLine("WM_WINDOWPOSCHANGING");
-                //        return;
-                //    }
-
-                //case 0x0047:
-                //    {
-                //        //Debug.WriteLine("WM_WINDOWPOSCHANGED");
-                //        return;
-                //    }
-
-                //case 0x007C:
-                //    {
-
-                //        //Debug.WriteLine("WM_STYLECHANGING");
-                //        return;
-                //    }
-
-                //case 0x007D:
-                //    {
-                //        //Debug.WriteLine("WM_STYLECHANGED");
-                //        return;
-                //    }
+                break;
         }
-
-        //Debug.WriteLine($"{m.Msg}");
 
         base.WndProc(ref m);
     }
+
     #endregion
 
-    #region == Mouse ==
-
-    private int deltaX;
-    private int deltaY;
-    private bool captured;
-    private bool isMouseIn;
-    private bool onMouseMove;
-    private bool onMouseDown;
-    private bool onMouseUp;
-
-    private Point lastMouseDown = Point.Empty;
+    #region Mouse Helpers
 
     private POINT MousePositionToClient(POINT point)
     {
-        POINT point1;
-        point1.X = point.X;
-        point1.Y = point.Y;
-        User32.ScreenToClient(base.Handle, ref point1);
-        return point1;
+        User32.ScreenToClient(base.Handle, ref point);
+        return point;
     }
-    private POINT MousePositionToScreen(MSG msg)
-    {
-        POINT point1;
-        point1.X = (short)(((int)msg.lParam) & 0xffff);
-        point1.Y = (short)((((int)msg.lParam) & -65536) >> 0x10);
-        if ((((msg.message != 0xa2) && (msg.message != 0xa8)) && ((msg.message != 0xa5) && (msg.message != 0xac))) && (((msg.message != 0xa1) && (msg.message != 0xa7)) && ((msg.message != 0xa4) && (msg.message != 0xab))))
-        {
-            User32.ClientToScreen(msg.hwnd, ref point1);
-        }
-        return point1;
-    }
+
     private POINT MousePositionToScreen(POINT point)
     {
-        POINT point1;
-        point1.X = point.X;
-        point1.Y = point.Y;
-        User32.ClientToScreen(base.Handle, ref point1);
-        return point1;
-    }
-    private POINT MousePositionToScreen(Message msg)
-    {
-        POINT point1;
-        point1.X = (short)(((int)msg.LParam) & 0xffff);
-        point1.Y = (short)((((int)msg.LParam) & -65536) >> 0x10);
-        if ((((msg.Msg != 0xa2) && (msg.Msg != 0xa8)) && ((msg.Msg != 0xa5) && (msg.Msg != 0xac))) && (((msg.Msg != 0xa1) && (msg.Msg != 0xa7)) && ((msg.Msg != 0xa4) && (msg.Msg != 0xab))))
-        {
-            User32.ClientToScreen(msg.HWnd, ref point1);
-        }
-        return point1;
+        User32.ClientToScreen(base.Handle, ref point);
+        return point;
     }
 
     private void PerformWmMouseDown(ref Message m)
     {
-        POINT location = MousePositionToClient(new POINT() { X = Location.X, Y = Location.Y });
-        if (new Rectangle(location, Size).Contains(this.lastMouseDown))
+        var clientLoc = MousePositionToClient(new POINT { X = Location.X, Y = Location.Y });
+        if (new Rectangle(clientLoc, Size).Contains(_lastMouseDown))
         {
-            this.captured = true;
+            _captured = true;
             User32.SetCapture(base.Handle);
         }
     }
+
     private void PerformWmMouseMove(ref Message m)
     {
-        Point p = Control.MousePosition;
-        POINT point1 = new();
-        point1.X = p.X;
-        point1.Y = p.Y;
-        point1 = this.MousePositionToClient(point1);
+        var screenPos = Control.MousePosition;
+        var clientPos = MousePositionToClient(new POINT { X = screenPos.X, Y = screenPos.Y });
 
-        if (new Rectangle(0, 0, Size.Width, Size.Height).Contains(point1.X, point1.Y))
-            Cursor.Current = Cursors.Hand;
-        else
-            Cursor.Current = Cursors.Arrow;
+        Cursor.Current = new Rectangle(0, 0, Size.Width, Size.Height).Contains(clientPos.X, clientPos.Y)
+            ? Cursors.Hand
+            : Cursors.Arrow;
 
-        //Debug.WriteLine($"{deltaX}, {deltaY}");
-
-
-        if (this.captured)
-        {
-
-            //if (this.resizing)
-            //{
-            //    int w = System.Math.Max(50, (p.X + deltaX) - this.Location.X);
-            //    int h = System.Math.Max(50, (p.Y + deltaY) - this.Location.Y);
-            //    this.Size = new Size(w, h);
-            //}
-            //else
-            //{
-            this.Location = new Point(p.X - deltaX, p.Y - deltaY);
-            //}
-        }
+        if (_captured)
+            Location = new Point(screenPos.X - _deltaX, screenPos.Y - _deltaY);
     }
+
     private void PerformWmMouseUp(ref Message m)
     {
-        //this.resizing = false;
-        if (this.captured)
-        {
-            this.captured = false;
-            User32.ReleaseCapture();
-        }
-    }
-    private void PerformWmMouseActivate(ref Message m)
-    {
-        m.Result = (IntPtr)3;
-    }
+        if (!_captured)
+            return;
 
+        _captured = false;
+        User32.ReleaseCapture();
+    }
 
     protected virtual void OnMouseMove(MouseEventArgs e)
     {
-        if (this.MouseMove != null)
-        {
-            this.MouseMove(this, e);
-        }
-        this.onMouseMove = true;
+        MouseMove?.Invoke(this, e);
+        _onMouseMove = true;
     }
+
     protected virtual void OnMouseDown(MouseEventArgs e)
     {
-        if (this.MouseDown != null)
-        {
-            this.MouseDown(this, e);
-        }
-        this.onMouseDown = true;
+        MouseDown?.Invoke(this, e);
+        _onMouseDown = true;
     }
+
     protected virtual void OnMouseUp(MouseEventArgs e)
     {
-        if (this.MouseUp != null)
-        {
-            this.MouseUp(this, e);
-        }
-        this.onMouseUp = true;
+        MouseUp?.Invoke(this, e);
+        _onMouseUp = true;
     }
 
-    protected virtual void OnMouseEnter()
-    {
-        if (this.MouseEnter != null)
-        {
-            this.MouseEnter(this, EventArgs.Empty);
-        }
-    }
-    protected virtual void OnMouseLeave()
-    {
-        if (this.MouseLeave != null)
-        {
-            this.MouseLeave(this, EventArgs.Empty);
-        }
-    }
+    protected virtual void OnMouseEnter() => MouseEnter?.Invoke(this, EventArgs.Empty);
+    protected virtual void OnMouseLeave() => MouseLeave?.Invoke(this, EventArgs.Empty);
 
     #endregion
 
-    #region #  Events  #
+    #region Events
 
-    public event EventHandler SizeChanged;
-    public event EventHandler LocationChanged;
-    public event EventHandler Move;
-    public event EventHandler Resize;
-    public event MouseEventHandler MouseDown;
-    public event MouseEventHandler MouseUp;
-    public event MouseEventHandler MouseMove;
-    public event EventHandler MouseEnter;
-    public event EventHandler MouseLeave;
-
-    #endregion
-
-    #region == Event Methods ==
+    public event EventHandler? SizeChanged;
+    public event EventHandler? LocationChanged;
+    public event EventHandler? Move;
+    public event EventHandler? Resize;
+    public event MouseEventHandler? MouseDown;
+    public event MouseEventHandler? MouseUp;
+    public event MouseEventHandler? MouseMove;
+    public event EventHandler? MouseEnter;
+    public event EventHandler? MouseLeave;
 
     protected virtual void OnLocationChanged(EventArgs e)
     {
-        this.OnMove(EventArgs.Empty);
-        if (this.LocationChanged != null)
-        {
-            this.LocationChanged(this, e);
-        }
+        OnMove(EventArgs.Empty);
+        LocationChanged?.Invoke(this, e);
     }
+
     protected virtual void OnSizeChanged(EventArgs e)
     {
-        this.OnResize(EventArgs.Empty);
-        if (this.SizeChanged != null)
-        {
-            this.SizeChanged(this, e);
-        }
+        OnResize(EventArgs.Empty);
+        SizeChanged?.Invoke(this, e);
     }
-    protected virtual void OnMove(EventArgs e)
-    {
-        if (this.Move != null)
-        {
-            this.Move(this, e);
-        }
-    }
-    protected virtual void OnResize(EventArgs e)
-    {
-        if (this.Resize != null)
-        {
-            this.Resize(this, e);
-        }
-    }
+
+    protected virtual void OnMove(EventArgs e) => Move?.Invoke(this, e);
+    protected virtual void OnResize(EventArgs e) => Resize?.Invoke(this, e);
 
     #endregion
 
-    #region == Size and Location ==
+    #region Size & Location
+
     protected virtual void SetBoundsCore(int x, int y, int width, int height)
     {
-        if (((this.X != x) || (this.Y != y)) || ((this.Width != width) || (this.Height != height)))
+        if (X == x && Y == y && Width == width && Height == height)
+            return;
+
+        if (base.Handle != IntPtr.Zero)
         {
-            if (base.Handle != IntPtr.Zero)
-            {
-                int num1 = 20;
-                if ((this.X == x) && (this.Y == y))
-                {
-                    num1 |= 2;
-                }
-                if ((this.Width == width) && (this.Height == height))
-                {
-                    num1 |= 1;
-                }
-                User32.SetWindowPos(base.Handle, IntPtr.Zero, x, y, width, height, (uint)num1);
-            }
-            else
-            {
-                this.Location = new Point(x, y);
-                this.Size = new Size(width, height);
-            }
+            uint flags = 20; // SWP_NOZORDER | SWP_NOACTIVATE
+            if (X == x && Y == y) flags |= 2;          // SWP_NOMOVE
+            if (Width == width && Height == height) flags |= 1; // SWP_NOSIZE
+
+            User32.SetWindowPos(base.Handle, IntPtr.Zero, x, y, width, height, flags);
+        }
+        else
+        {
+            Location = new Point(x, y);
+            Size = new Size(width, height);
         }
     }
-    #endregion
 
-    #endregion
-
-    #region #  Properties  #
-    /// <summary>
-    /// Get or set position of top-left corner of floating native window in screen coordinates
-    /// </summary>
     public virtual Point Location
     {
-        get { return this._location; }
+        get => _location;
         set
         {
             if (base.Handle != IntPtr.Zero)
             {
-                this.SetBoundsCore(value.X, value.Y, this._size.Width, this._size.Height);
-                RECT rect = new();
+                SetBoundsCore(value.X, value.Y, _size.Width, _size.Height);
+                var rect = new RECT();
                 User32.GetWindowRect(base.Handle, ref rect);
-                this._location = new Point(rect.left, rect.top);
-                //this.UpdateLayeredWindow();
+                _location = new Point(rect.left, rect.top);
             }
             else
             {
-                this._location = value;
+                _location = value;
             }
         }
     }
-    /// <summary>
-    /// Get or set size of client area of floating native window
-    /// </summary>
+
     public virtual Size Size
     {
-        get { return this._size; }
+        get => _size;
         set
         {
             if (base.Handle != IntPtr.Zero)
             {
-                this.SetBoundsCore(this._location.X, this._location.Y, value.Width, value.Height);
-                RECT rect = new();
+                SetBoundsCore(_location.X, _location.Y, value.Width, value.Height);
+                var rect = new RECT();
                 User32.GetWindowRect(base.Handle, ref rect);
-                this._size = new Size(rect.right - rect.left, rect.bottom - rect.top);
-                //this.UpdateLayeredWindow();
+                _size = new Size(rect.right - rect.left, rect.bottom - rect.top);
             }
             else
             {
-                this._size = value;
+                _size = value;
             }
 
-            _drawingRect = new Rectangle(0, 0, this._size.Width, this._size.Height);
+            _drawingRect = new Rectangle(0, 0, _size.Width, _size.Height);
         }
     }
-    /// <summary>
-    /// Gets or sets the height of the floating native window
-    /// </summary>
+
     public int Height
     {
-        get { return this._size.Height; }
-        set
-        {
-            this.Size = new Size(this._size.Width, value);
-        }
+        get => _size.Height;
+        set => Size = new Size(_size.Width, value);
     }
-    /// <summary>
-    /// Gets or sets the width of the floating native window
-    /// </summary>
+
     public int Width
     {
-        get { return this._size.Width; }
-        set
-        {
-            this.Size = new Size(value, this._size.Height);
-        }
+        get => _size.Width;
+        set => Size = new Size(value, _size.Height);
     }
-    /// <summary>
-    /// Get or set x-coordinate of top-left corner of floating native window in screen coordinates
-    /// </summary>
+
     public int X
     {
-        get { return this._location.X; }
-        set
-        {
-            this.Location = new Point(value, this.Location.Y);
-        }
+        get => _location.X;
+        set => Location = new Point(value, Location.Y);
     }
-    /// <summary>
-    /// Get or set y-coordinate of top-left corner of floating native window in screen coordinates
-    /// </summary>
+
     public int Y
     {
-        get { return this._location.Y; }
-        set
-        {
-            this.Location = new Point(this.Location.X, value);
-        }
+        get => _location.Y;
+        set => Location = new Point(Location.X, value);
     }
-    /// <summary>
-    /// Get rectangle represented client area of floating native window in client coordinates(top-left corner always has coord. 0,0)
-    /// </summary>
-    public Rectangle Bound
-    {
-        get
-        {
-            return new Rectangle(new Point(0, 0), this._size);
-        }
-    }
-    /// <summary>
-    /// Get or set full opacity(255) or full transparency(0) or any intermediate state for floating native window transparency
-    /// </summary>
+
+    public Rectangle Bound => new(Point.Empty, _size);
+
     public byte Alpha
     {
-        get { return this._alpha; }
+        get => _alpha;
         set
         {
-            if (this._alpha == value) return;
-            this._alpha = value;
-            this.UpdateLayeredWindow();
+            if (_alpha == value)
+                return;
+
+            _alpha = value;
+            UpdateLayeredWindow();
         }
     }
+
     #endregion
 
-    #region IDisposable Members
+    #region IDisposable
+
     public void Dispose()
     {
-        this.Dispose(true);
+        Dispose(true);
         GC.SuppressFinalize(this);
     }
-    private void Dispose(bool disposing)
+
+    protected virtual void Dispose(bool disposing)
     {
-        if (!this._disposed)
-        {
-            this.DestroyHandle();
-            this._disposed = true;
-        }
+        if (_disposed)
+            return;
+
+        DestroyHandle();
+        _disposed = true;
     }
+
     #endregion
 }
 
-#region #  Win32  #
+#region Win32 interop
+
 internal struct PAINTSTRUCT
 {
     public IntPtr hdc;
@@ -926,15 +629,10 @@ internal struct PAINTSTRUCT
     public Rectangle rcPaint;
     public int fRestore;
     public int fIncUpdate;
-    public int Reserved1;
-    public int Reserved2;
-    public int Reserved3;
-    public int Reserved4;
-    public int Reserved5;
-    public int Reserved6;
-    public int Reserved7;
-    public int Reserved8;
+    public int Reserved1, Reserved2, Reserved3, Reserved4;
+    public int Reserved5, Reserved6, Reserved7, Reserved8;
 }
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct TRACKMOUSEEVENTS
 {
@@ -943,6 +641,7 @@ internal struct TRACKMOUSEEVENTS
     public IntPtr hWnd;
     public uint dwHoverTime;
 }
+
 [StructLayout(LayoutKind.Sequential)]
 internal struct MSG
 {
@@ -954,6 +653,7 @@ internal struct MSG
     public int pt_x;
     public int pt_y;
 }
+
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 internal struct BLENDFUNCTION
 {
@@ -962,7 +662,8 @@ internal struct BLENDFUNCTION
     public byte SourceConstantAlpha;
     public byte AlphaFormat;
 }
-internal sealed class User32
+
+internal static class User32
 {
     public const uint WS_POPUP = 0x80000000;
     public const int WS_EX_TOPMOST = 0x8;
@@ -972,6 +673,7 @@ internal sealed class User32
     public const int WS_EX_NOACTIVATE = 0x08000000;
     public const int SW_SHOWNOACTIVATE = 4;
     public const int SW_HIDE = 0;
+
     public const uint AW_HOR_POSITIVE = 0x1;
     public const uint AW_HOR_NEGATIVE = 0x2;
     public const uint AW_VER_POSITIVE = 0x4;
@@ -981,127 +683,65 @@ internal sealed class User32
     public const uint AW_ACTIVATE = 0x20000;
     public const uint AW_SLIDE = 0x40000;
     public const uint AW_BLEND = 0x80000;
-    // Methods
-    private User32()
-    {
-    }
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern bool AnimateWindow(IntPtr hWnd, uint dwTime, uint dwFlags);
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern IntPtr BeginPaint(IntPtr hWnd, ref PAINTSTRUCT ps);
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern bool ClientToScreen(IntPtr hWnd, ref POINT pt);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool DispatchMessage(ref MSG msg);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool DrawFocusRect(IntPtr hWnd, ref RECT rect);
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern bool EndPaint(IntPtr hWnd, ref PAINTSTRUCT ps);
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern IntPtr GetDC(IntPtr hWnd);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern IntPtr GetFocus();
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern ushort GetKeyState(int virtKey);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool GetMessage(ref MSG msg, int hWnd, uint wFilterMin, uint wFilterMax);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern IntPtr GetParent(IntPtr hWnd);
-    [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-    public static extern bool GetClientRect(IntPtr hWnd, [In, Out] ref RECT rect);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern int GetWindowLong(IntPtr hWnd, int nIndex);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern IntPtr GetWindow(IntPtr hWnd, int cmd);
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern bool GetWindowRect(IntPtr hWnd, ref RECT rect);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool HideCaret(IntPtr hWnd);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool InvalidateRect(IntPtr hWnd, ref RECT rect, bool erase);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern IntPtr LoadCursor(IntPtr hInstance, uint cursor);
-    [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-    public static extern int MapWindowPoints(IntPtr hWndFrom, IntPtr hWndTo, [In, Out] ref RECT rect, int cPoints);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool MoveWindow(IntPtr hWnd, int x, int y, int width, int height, bool repaint);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool PeekMessage(ref MSG msg, int hWnd, uint wFilterMin, uint wFilterMax, uint wFlag);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool PostMessage(IntPtr hWnd, int Msg, uint wParam, uint lParam);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool ReleaseCapture();
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern int ReleaseDC(IntPtr hWnd, IntPtr hDC);
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern bool ScreenToClient(IntPtr hWnd, ref POINT pt);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern uint SendMessage(IntPtr hWnd, int Msg, uint wParam, uint lParam);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern IntPtr SetCursor(IntPtr hCursor);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern IntPtr SetFocus(IntPtr hWnd);
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern int SetWindowLong(IntPtr hWnd, int nIndex, uint newLong);
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern int SetWindowPos(IntPtr hWnd, IntPtr hWndAfter, int X, int Y, int Width, int Height, uint flags);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool SetWindowRgn(IntPtr hWnd, IntPtr hRgn, bool redraw);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool ShowCaret(IntPtr hWnd);
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern bool SetCapture(IntPtr hWnd);
+
+    [DllImport("User32.dll", CharSet = CharSet.Auto)]
+    internal static extern bool ReleaseCapture();
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
     internal static extern int ShowWindow(IntPtr hWnd, short cmdShow);
+
     [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool SystemParametersInfo(uint uiAction, uint uiParam, ref int bRetValue, uint fWinINI);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool TrackMouseEvent(ref TRACKMOUSEEVENTS tme);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool TranslateMessage(ref MSG msg);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool UpdateLayeredWindow(IntPtr hwnd, IntPtr hdcDst, ref POINT pptDst, ref SIZE psize, IntPtr hdcSrc, ref POINT pprSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool UpdateWindow(IntPtr hwnd);
-    [DllImport("User32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool WaitMessage();
-    [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true)]
-    public static extern bool AdjustWindowRectEx(ref RECT lpRect, int dwStyle, bool bMenu, int dwExStyle);
+    internal static extern bool UpdateLayeredWindow(
+        IntPtr hwnd, IntPtr hdcDst, ref POINT pptDst, ref SIZE psize,
+        IntPtr hdcSrc, ref POINT pprSrc, int crKey, ref BLENDFUNCTION pblend, int dwFlags);
 }
 
-internal sealed class Gdi32
+internal static class Gdi32
 {
-    // Methods
-    private Gdi32()
-    {
-    }
-    [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
-    internal static extern int CombineRgn(IntPtr dest, IntPtr src1, IntPtr src2, int flags);
-    [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
-    internal static extern IntPtr CreateBrushIndirect(ref LOGBRUSH brush);
     [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
     internal static extern IntPtr CreateCompatibleDC(IntPtr hDC);
-    [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
-    internal static extern IntPtr CreateRectRgnIndirect(ref RECT rect);
+
     [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
     internal static extern bool DeleteDC(IntPtr hDC);
+
     [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
     internal static extern IntPtr DeleteObject(IntPtr hObject);
-    [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
-    internal static extern int GetClipBox(IntPtr hDC, ref RECT rectBox);
-    [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
-    internal static extern bool PatBlt(IntPtr hDC, int x, int y, int width, int height, uint flags);
-    [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
-    internal static extern int SelectClipRgn(IntPtr hDC, IntPtr hRgn);
+
     [DllImport("gdi32.dll", CharSet = CharSet.Auto)]
     internal static extern IntPtr SelectObject(IntPtr hDC, IntPtr hObject);
-}
-[StructLayout(LayoutKind.Sequential)]
-public struct LOGBRUSH
-{
-    public uint lbStyle;
-    public uint lbColor;
-    public uint lbHatch;
 }
 
 #endregion

@@ -189,31 +189,26 @@ public static class GameExtensions
 
     public static Game GetRunningGame()
     {
-        try
+        foreach (var process in Process.GetProcesses())
         {
-            foreach (var process in Process.GetProcesses())
+            try
             {
-                try
+                if (ExeNames.All.Value.Contains(process.ProcessName, StringComparer.OrdinalIgnoreCase))
                 {
-                    if (ExeNames.All.Value.Contains(process.ProcessName, StringComparer.OrdinalIgnoreCase))
+                    var game = GameFromProcessName(process.ProcessName);
+                    if (game != Game.Any)
                     {
-                        var game = GameFromProcessName(process.ProcessName);
-                        if (game != Game.Any)
-                        {
-                            process?.Dispose();
-                            return game;
-                        }
+                        process?.Dispose();
+                        return game;
                     }
                 }
-                finally
-                {
-                    process?.Dispose();
-                }
+            }
+            finally
+            {
+                process?.Dispose();
             }
         }
-        catch (Exception)
-        {
-        }
+
         return Game.Any;
     }
 
