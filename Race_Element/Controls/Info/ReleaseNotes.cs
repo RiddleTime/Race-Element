@@ -6,6 +6,11 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.7.1.6", "Race Element"+
+                    "\n- Reworked HUD Internals."+
+                    "\n\nAssetto Corsa EVO"+
+                    "\n- Fixed Shared Memory Mapping."
+                    },
         {"2.7.1.4", "Microsoft Flight Simulator 2024"+
                     "\n- Fix auto visibility."+
                     "\n\nHUDs"+
