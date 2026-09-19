@@ -60,11 +60,13 @@ namespace RaceElement.Data.Games.Forza.ForzaUDP
             public float SuspensionTravelMetersFr;
             public float SuspensionTravelMetersRl;
             public float SuspensionTravelMetersRr;
-            public byte CarOrdinal;
-            public byte CarClass;
-            public byte CarPerformanceIndex;
-            public byte DriveTrain;
-            public byte NumCylinders;
+            // These are s32 in the Data Out format, declaring them as byte made SledData
+            // 217 bytes instead of 232 and shifted every field after CarOrdinal.
+            public int CarOrdinal;
+            public int CarClass;
+            public int CarPerformanceIndex;
+            public int DriveTrain;
+            public int NumCylinders;
         }
 
         [StructLayout(LayoutKind.Sequential, Pack = 1)]
