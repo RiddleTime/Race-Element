@@ -91,25 +91,13 @@ public partial class HudOptions : UserControl
             {
                 if (e.next != Game.Any)
                 {
-                    switch (e.previous)
-                    {
-                        case Game.Any: break;
-                        case Game.AssettoCorsaCompetizione:
-                            {
-                                OverlaysAcc.CloseAll(); break;
-                            }
-                        default:
-                            {
-                                CommonHuds.CloseAll(); break;
-                            }
-                    }
+                    OverlayLifecycleService.Instance.StopAll();
 
                     PreviewCache._cachedPreviews.Clear();
                     Thread.Sleep(1000);
 
                     PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
                     PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
-
                     BuildOverlayPanel();
                 }
             };
@@ -493,74 +481,29 @@ public partial class HudOptions : UserControl
         toggle.Checked += (s, e) =>
         {
             toggle.Background = Brushes.Green;
-
             stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
             overlayNameLabel.Foreground = Brushes.LimeGreen;
+            overlayNameLabel.BorderBrush = Brushes.Green;
 
+            listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
 
-            CommonAbstractOverlay overlay = null;
-            if (GameManager.CurrentGame == Game.AssettoCorsaCompetizione)
-            {
-                overlay = ActiveOverlays.Find(f => f.GetType() == type);
-            }
-            else
-            {
-                overlay = CommonHuds.ActiveOverlays.Find(f => f.GetType() == type);
-            }
-
-            if (overlay == null)
-            {
-
-                overlayNameLabel.BorderBrush = Brushes.Green;
-                listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-                listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
-                overlay = (CommonAbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
-                overlay.Start();
-
-                SaveOverlaySettings(overlay, true);
-
-                configStacker.IsEnabled = false;
-
-                if (GameManager.CurrentGame == Game.AssettoCorsaCompetizione)
-                {
-                    if (ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
-                        ActiveOverlays.Add(overlay);
-                }
-                else
-                {
-                    if (CommonHuds.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
-                        CommonHuds.ActiveOverlays.Add(overlay);
-                }
-            }
+            OverlayLifecycleService.Instance.Start(overlayAttribute.Name);
+            configStacker.IsEnabled = false;
         };
+
         toggle.Unchecked += (s, e) =>
         {
             toggle.Background = Brushes.Transparent;
-
             stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
             overlayNameLabel.BorderBrush = Brushes.OrangeRed;
             overlayNameLabel.Foreground = Brushes.White;
 
-            lock (ActiveOverlays)
-            {
-                listViewItem.Background = Brushes.Transparent;
-                listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
-                CommonAbstractOverlay overlay = ActiveOverlays.Find(f => f.GetType() == type);
-                if (overlay == null) return;
-                SaveOverlaySettings(overlay, false);
+            listViewItem.Background = Brushes.Transparent;
+            listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
 
-
-
-                int index = ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
-                if (index != -1)
-                    ActiveOverlays.RemoveAt(index);
-                new Thread(() =>
-                 {
-                     overlay?.Stop();
-                 })
-                { IsBackground = true }.Start();
-                configStacker.IsEnabled = true;
-            }
+            OverlayLifecycleService.Instance.Stop(overlayAttribute.Name);
+            configStacker.IsEnabled = true;
         };
         activationPanel.PreviewMouseLeftButtonDown += (s, e) => toggle.IsChecked = !toggle.IsChecked;
 
@@ -659,17 +602,16 @@ public partial class HudOptions : UserControl
 
         if (enabled)
         {
-            mousePositionOverlay ??= new MousePositionOverlay(new System.Drawing.Rectangle(0, 0, 150, 150), "Mouse Position");
+            mousePositionOverlay ??= new MousePositionOverlay(
+                new System.Drawing.Rectangle(0, 0, 150, 150), "Mouse Position");
             mousePositionOverlay.Start(false);
         }
         else
         {
-            if (mousePositionOverlay != null)
-                mousePositionOverlay.Stop();
+            mousePositionOverlay?.Stop();
         }
 
-        foreach (CommonAbstractOverlay overlay in ActiveOverlays)
-            overlay.EnableReposition(enabled);
+        OverlayLifecycleService.Instance.SetRepositionMode(enabled);
     }
 
     private void BuildOverlayPanel()
@@ -795,20 +737,7 @@ public partial class HudOptions : UserControl
                     listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
                     listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
 
-                    lock (ActiveOverlays)
-                    {
-                        CommonAbstractOverlay overlay = (CommonAbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
-                        if (ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
-                        {
-                            SaveOverlaySettings(overlay, true);
-                            ActiveOverlays.Add(overlay);
-                            overlay.Start();
-                        }
-                        else
-                        {
-                            overlay.Dispose();
-                        }
-                    }
+                    OverlayLifecycleService.Instance.Start(overlayAttribute.Name);
                 }
 
             listView.Items.Add(listViewItem);
