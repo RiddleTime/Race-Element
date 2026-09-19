@@ -110,6 +110,7 @@ public static class GameExtensions
             { "rFactor2", Game.rFactor2 },
             { "WRCG", Game.WRC_Generations },
             { "forza_steamworks_release_final", Game.ForzaMotorsport },
+            { "forza_gaming.desktop.x64_release_final", Game.ForzaMotorsport },
             { "acr", Game.AssettoCorsaRally },
             { "ProjectMotorRacingGame", Game.ProjectMotorRacing },
             { "dirtrally2", Game.DirtRally2 },
