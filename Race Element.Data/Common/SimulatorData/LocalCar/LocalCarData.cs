@@ -81,6 +81,14 @@ public sealed record EngineData
     /// </summary>
     public int ShiftUpRpm { get; internal set; }
 
+    /// <summary>
+    /// The revolutions per minute at which the engine hits the rev limiter.
+    /// Zero when the simulator does not expose it and it could not be detected.
+    /// Not every simulator reports <see cref="MaxRpm"/> as the limiter, Forza for
+    /// example reports the end of the tachometer scale instead.
+    /// </summary>
+    public int RevLimiterRpm { get; internal set; }
+
     // Fuel info
     public float FuelLiters { get; internal set; }
     public float MaxFuelLiters { get; internal set; }
