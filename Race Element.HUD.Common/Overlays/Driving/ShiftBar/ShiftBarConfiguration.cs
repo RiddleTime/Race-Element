@@ -3,6 +3,7 @@ using RaceElement.HUD.Overlay.Configuration;
 using System.Drawing;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.ShiftBar;
+
 internal sealed class ShiftBarConfiguration : OverlayConfiguration
 {
     public ShiftBarConfiguration() => GenericConfiguration.AllowRescale = false;
@@ -52,6 +53,12 @@ internal sealed class ShiftBarConfiguration : OverlayConfiguration
         [ToolTip("Sets the percentage of max rpm required to activate the upshift color")]
         [FloatRange(70f, 99.98f, 0.001f, 3)]
         public float RedlinePercentage { get; init; } = 97.3f;
+
+        [ToolTip("The rpm at which the engine hits the rev limiter.\n" +
+                      "Leave at 0 to use the simulator data, where the limiter is not reported it gets detected while driving.\n" +
+                      "Set this when a game reports a tachometer scale that is higher than the actual limiter, like Forza does.\n")]
+        [IntRange(0, 20_000, 50)]
+        public int RevLimiterRpmOverride { get; init; } = 0;
 
         [ToolTip("Only enable this when configuring the Upshift Percentages below." +
                       "\nDraws the outcome of these percentages when activating this HUD. Including the Max amount of rpm." +

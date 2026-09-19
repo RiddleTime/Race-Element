@@ -62,24 +62,7 @@ internal sealed class ShiftBarOverlay : CommonAbstractOverlay
     public sealed override void SetupPreviewData() => _model = new(_config.Upshift.PreviewRpm, _config.Upshift.MaxPreviewRpm);
 
     private (float earlyPercentage, float redlinePercentage) GetUpShiftPercentages()
-    {
-        // configured percentages (0-100%)
-        float earlyPercentage = _config.Upshift.EarlyPercentage;
-        float upshiftPercentage = _config.Upshift.RedlinePercentage;
-
-        Game upshiftSupportedGames = Game.RaceRoom | Game.iRacing;
-        if (upshiftSupportedGames.HasFlag(GameWhenStarted))
-        {
-            float maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
-            float upshiftRpm = SimDataProvider.LocalCar.Engine.ShiftUpRpm;
-            if (maxRpm > 0 && upshiftRpm > 0)
-            {
-                upshiftPercentage = upshiftRpm * 100 / maxRpm;
-                earlyPercentage = upshiftPercentage * 0.96f;
-            }
-        }
-        return (earlyPercentage, upshiftPercentage);
-    }
+        => UpshiftPercentages.Calculate(_config.Upshift.EarlyPercentage, _config.Upshift.RedlinePercentage, _config.Upshift.RevLimiterRpmOverride);
 
     private void UpdateColorDictionary()
     {
@@ -160,7 +143,7 @@ internal sealed class ShiftBarOverlay : CommonAbstractOverlay
 
         if (!IsPreviewing)
         {
-            _maxRpmDetectionJob = new(this) { IntervalMillis = 1000 };
+            _maxRpmDetectionJob = new(this) { IntervalMillis = 250 };
             _maxRpmDetectionJob.Run();
         }
     }
@@ -284,14 +267,20 @@ internal sealed class ShiftBarOverlay : CommonAbstractOverlay
     private sealed class MaxRpmDetectionJob(ShiftBarOverlay shiftBarOverlay) : AbstractLoopJob
     {
         private int _lastMaxRpm = -1;
+        private int _lastRevLimiterRpm = -1;
         public sealed override void RunAction()
         {
             var model = shiftBarOverlay._model;
-            if (_lastMaxRpm != model.MaxRpm)
+            int revLimiterRpm = SimDataProvider.LocalCar.Engine.RevLimiterRpm;
+
+            // The limiter is detected while driving in some games, so it can change
+            // without MaxRpm changing.
+            if (_lastMaxRpm != model.MaxRpm || _lastRevLimiterRpm != revLimiterRpm)
             {
-                shiftBarOverlay?._cachedRpmLines.Render();
                 shiftBarOverlay?.UpdateColorDictionary();
+                shiftBarOverlay?._cachedRpmLines.Render();
                 _lastMaxRpm = model.MaxRpm;
+                _lastRevLimiterRpm = revLimiterRpm;
             }
         }
     }

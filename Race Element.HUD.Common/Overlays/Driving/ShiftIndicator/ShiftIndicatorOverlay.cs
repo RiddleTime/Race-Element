@@ -32,6 +32,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
     }
 
     private int _lastMaxRpm = -1;
+    private int _lastRevLimiterRpm = -1;
     private CachedBitmap _cachedBackground;
     private CachedBitmap _cachedRpmLines;
 
@@ -156,17 +157,7 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
     /// </summary>
     private void UpdateColorDictionary()
     {
-        // configured percentages (0-100%)
-        float earlyPercentage = _config.Upshift.Early;
-        float upshiftPercentage = _config.Upshift.Upshift;
-
-        if (GameWhenStarted.HasFlag(Game.RaceRoom))
-        {
-            float maxRpm = SimDataProvider.LocalCar.Engine.MaxRpm;
-            float upshiftRpm = SimDataProvider.LocalCar.Engine.ShiftUpRpm;
-            upshiftPercentage = upshiftRpm * 100 / maxRpm;
-            earlyPercentage = upshiftPercentage * 0.96f;
-        }
+        var (earlyPercentage, upshiftPercentage) = UpshiftPercentages.Calculate(_config.Upshift.Early, _config.Upshift.Upshift);
 
         _colors =
           [
@@ -317,9 +308,14 @@ internal sealed class ShiftIndicatorOverlay : CommonAbstractOverlay
 
     private void DrawRpmBar1kLines(Graphics g)
     {
-        if (_lastMaxRpm != _model.MaxRpm)
+        int revLimiterRpm = SimDataProvider.LocalCar.Engine.RevLimiterRpm;
+
+        // The limiter is detected while driving in some games, so it can change
+        // without MaxRpm changing.
+        if (_lastMaxRpm != _model.MaxRpm || _lastRevLimiterRpm != revLimiterRpm)
         {
             _lastMaxRpm = _model.MaxRpm;
+            _lastRevLimiterRpm = revLimiterRpm;
             _halfRpmStringWidth = -1; // reseting this so the background for the text is correct
             _cachedRpmLines.Render();
             UpdateColorDictionary();
