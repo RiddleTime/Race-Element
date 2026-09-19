@@ -185,8 +185,9 @@ internal sealed class ShiftBarOverlay : CommonAbstractOverlay
 
         if (_config.Upshift.DrawUpshiftData)
         {
-            _upshiftDataPanel.AddLine("Early", $"{_model.MaxRpm * _config.Upshift.EarlyPercentage / 100d:F1}");
-            _upshiftDataPanel.AddLine("Redline", $"{_model.MaxRpm * _config.Upshift.RedlinePercentage / 100d:F1}");
+            var (earlyPercentage, redlinePercentage) = GetUpShiftPercentages();
+            _upshiftDataPanel.AddLine("Early", $"{_model.MaxRpm * earlyPercentage / 100d:F1}");
+            _upshiftDataPanel.AddLine("Redline", $"{_model.MaxRpm * redlinePercentage / 100d:F1}");
             _upshiftDataPanel.AddLine("Max", $"{_model.MaxRpm:F1}");
             _upshiftDataPanel.Draw(g);
         }
