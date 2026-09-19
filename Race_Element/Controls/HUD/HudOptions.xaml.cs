@@ -674,7 +674,7 @@ public partial class HudOptions : UserControl
             if (overlayAttribute.OverlayType != overlayType)
                 continue;
 
-          
+
             Thickness defaultTextBlockMargin = new(14, 0.5, 0, 0.5);
             Thickness selectedTextBlockMargin = new(12, 0.5, 0, 0.5);
 
@@ -700,12 +700,14 @@ public partial class HudOptions : UserControl
                 BorderBrush = new SolidColorBrush(Colors.Transparent),
                 BorderThickness = new Thickness(4, 0, 0, 0),
             };
-            listViewItem.Selected += (s, e) => {
+            listViewItem.Selected += (s, e) =>
+            {
                 textBlock.FontWeight = FontWeights.Bold;
                 textBlock.FontStyle = FontStyles.Italic;
                 textBlock.Margin = selectedTextBlockMargin;
             };
-            listViewItem.Unselected += (s, e) => {
+            listViewItem.Unselected += (s, e) =>
+            {
                 textBlock.FontWeight = FontWeights.Normal;
                 textBlock.FontStyle = FontStyles.Normal;
                 textBlock.Margin = defaultTextBlockMargin;
