@@ -17,7 +17,7 @@ internal sealed class HudProfileManager
 {
     public static HudProfileManager Instance { get; } = new();
 
-    public event Action<HudProfile> ProfileApplied;
+    public event Action<HudProfile>? ProfileApplied;
 
     /// <summary>
     /// Ensures a Default profile exists for the current (or given) game.
