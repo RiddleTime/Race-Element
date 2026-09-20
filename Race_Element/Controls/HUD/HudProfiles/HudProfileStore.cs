@@ -56,7 +56,80 @@ internal static class HudProfileStore
         return name.Trim();
     }
 
-    // ── List ──────────────────────────────────────────────────
+
+    public const string DefaultProfileName = "Default";
+
+    /// <summary>
+    /// If the game has root-level HUD settings but no Default profile yet,
+    /// create Profiles\Default\ from the current root files.
+    /// Does not overwrite an existing Default profile.
+    /// Returns true when a new Default was created.
+    /// </summary>
+    public static bool EnsureDefaultProfile(Game? game = null)
+    {
+        game ??= GameManager.CurrentGame;
+        if (game == Game.Any)
+            return false;
+
+        // Already have Default → nothing to do
+        string defaultFolder = GetProfileFolder(DefaultProfileName, game);
+        if (Directory.Exists(defaultFolder))
+        {
+            string profileJson = Path.Combine(defaultFolder, ProfileJsonFileName);
+            if (File.Exists(profileJson))
+                return false;
+        }
+
+        string overlayDir = GetGameOverlayDirectory(game);
+        if (!Directory.Exists(overlayDir))
+            return false;
+
+        var rootHudFiles = Directory.GetFiles(overlayDir, "*.json")
+            .Where(f => !IsUnderProfilesFolder(f, overlayDir))
+            .ToList();
+
+        if (rootHudFiles.Count == 0)
+            return false; // nothing to migrate
+
+        var profile = new HudProfile
+        {
+            Name = DefaultProfileName,
+            Description = "Auto-created from existing HUD settings",
+            IsDefault = true,
+            LastModified = DateTime.UtcNow,
+            Conditions = []
+        };
+
+        foreach (string file in rootHudFiles)
+        {
+            string hudName = Path.GetFileNameWithoutExtension(file);
+            if (string.IsNullOrWhiteSpace(hudName))
+                continue;
+
+            try
+            {
+                OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(hudName, game.Value);
+                profile.Huds[hudName] = settings;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HudProfileStore] Default migrate skip '{hudName}': {ex.Message}");
+            }
+        }
+
+        if (profile.Huds.Count == 0)
+            return false;
+
+        Save(profile, game);
+        Debug.WriteLine($"[HudProfileStore] Created Default profile for {game} ({profile.Huds.Count} HUDs)");
+        return true;
+    }
+
+    private static bool IsUnderProfilesFolder(string filePath, string overlayDir)
+    {
+        string profilesRoot = Path.Combine(overlayDir, ProfilesFolderName);
+        return filePath.StartsWith(profilesRoot, StringComparison.OrdinalIgnoreCase);
+    }
 
     public static IReadOnlyList<string> ListProfileNames(Game? game = null)
     {
@@ -70,8 +143,6 @@ internal static class HudProfileStore
             .OrderBy(n => n, StringComparer.OrdinalIgnoreCase)
             .ToList()!;
     }
-
-    // ── Load ──────────────────────────────────────────────────
 
     public static HudProfile? Load(string profileName, Game? game = null)
     {
@@ -149,8 +220,6 @@ internal static class HudProfileStore
         return list;
     }
 
-    // ── Save ──────────────────────────────────────────────────
-
     public static void Save(HudProfile profile, Game? game = null)
     {
         if (profile is null || string.IsNullOrWhiteSpace(profile.Name))
@@ -181,8 +250,6 @@ internal static class HudProfileStore
             File.WriteAllText(hudPath, JsonSerializer.Serialize(kv.Value, JsonOptions));
         }
     }
-
-    // ── Capture current live settings into a new/updated profile ─
 
     /// <summary>
     /// Builds a HudProfile from the current root-level OverlaySettings files
@@ -240,8 +307,6 @@ internal static class HudProfileStore
         Save(profile, game);
         return profile;
     }
-
-    // ── Delete ────────────────────────────────────────────────
 
     public static bool Delete(string profileName, Game? game = null)
     {

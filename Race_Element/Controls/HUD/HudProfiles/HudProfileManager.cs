@@ -20,6 +20,13 @@ internal sealed class HudProfileManager
     public event Action<HudProfile> ProfileApplied;
 
     /// <summary>
+    /// Ensures a Default profile exists for the current (or given) game.
+    /// Safe to call on every game change / HUD tab load.
+    /// </summary>
+    public bool EnsureDefaultProfile(Game? game = null)
+        => HudProfileStore.EnsureDefaultProfile(game);
+
+    /// <summary>
     /// Loads a profile by name for the current (or given) game and applies it.
     /// </summary>
     public bool ApplyProfile(string profileName, Game? game = null)

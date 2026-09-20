@@ -104,8 +104,11 @@ public partial class HudOptions : UserControl
 
                     PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
                     PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
-                    BuildOverlayPanel();
+                   
+                    HudProfileManager.Instance.EnsureDefaultProfile(e.next);
                     RefreshProfileList();
+
+                    BuildOverlayPanel();
                 }
             };
 
