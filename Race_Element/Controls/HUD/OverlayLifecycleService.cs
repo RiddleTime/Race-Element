@@ -30,9 +30,9 @@ internal sealed class OverlayLifecycleService
             300, 150)
     ];
 
-    public event Action<string> OverlayStarted;
-    public event Action<string> OverlayStopped;
-    public event Action ActiveOverlaysChanged;
+    public event Action<string>? OverlayStarted;
+    public event Action<string>? OverlayStopped;
+    public event Action? ActiveOverlaysChanged;
 
     private List<CommonAbstractOverlay> LiveList => GameManager.CurrentGame switch
     {
