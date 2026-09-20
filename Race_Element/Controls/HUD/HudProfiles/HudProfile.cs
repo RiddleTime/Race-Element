@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 
-namespace RaceElement.Controls.HUD.Profiles;
+namespace RaceElement.Controls.HUD.HudProfiles;
 
 /// <summary>
 /// In-memory representation of a HUD profile (one folder under Profiles\).
@@ -36,5 +36,5 @@ public sealed class HudProfile
 public sealed class ProfileConditionDto
 {
     public string Type { get; set; } = string.Empty;
-    public Dictionary<string, string> Parameters { get; set; } = new();
+    public Dictionary<string, string> Parameters { get; set; } = [];
 }

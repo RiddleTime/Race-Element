@@ -1,7 +1,7 @@
 ﻿using Gma.System.MouseKeyHook;
 using RaceElement.Controls.HUD;
 using RaceElement.Controls.HUD.Controls;
-using RaceElement.Controls.HUD.Profiles;
+using RaceElement.Controls.HUD.HudProfiles;
 using RaceElement.Controls.Util.SetupImage;
 using RaceElement.Data.Games;
 using RaceElement.HUD.ACC;

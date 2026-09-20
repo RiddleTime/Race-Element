@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace RaceElement.Controls.HUD.Profiles;
+namespace RaceElement.Controls.HUD.HudProfiles;
 
 /// <summary>
 /// On-disk schema for profile.json (metadata + conditions only).

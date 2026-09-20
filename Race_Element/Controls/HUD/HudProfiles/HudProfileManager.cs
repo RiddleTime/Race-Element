@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 
-namespace RaceElement.Controls.HUD.Profiles;
+namespace RaceElement.Controls.HUD.HudProfiles;
 
 /// <summary>
 /// Applies and captures HUD profiles. Depends only on HudProfileStore + OverlayLifecycleService.

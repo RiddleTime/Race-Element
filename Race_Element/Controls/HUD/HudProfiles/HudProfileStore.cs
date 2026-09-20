@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text.Json;
 using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 
-namespace RaceElement.Controls.HUD.Profiles;
+namespace RaceElement.Controls.HUD.HudProfiles;
 
 /// <summary>
 /// Load / save / list HUD profile folders. No UI, no Apply.
@@ -24,8 +24,6 @@ internal static class HudProfileStore
 
     private const string ProfilesFolderName = "Profiles";
     private const string ProfileJsonFileName = "profile.json";
-
-    // ── Paths ─────────────────────────────────────────────────
 
     /// <summary>
     /// Root overlay directory for the current (or given) game.
@@ -84,14 +82,14 @@ internal static class HudProfileStore
         if (!Directory.Exists(overlayDir))
             return false;
 
-        var rootHudFiles = Directory.GetFiles(overlayDir, "*.json")
+        List<string> rootHudFiles = Directory.GetFiles(overlayDir, "*.json")
             .Where(f => !IsUnderProfilesFolder(f, overlayDir))
             .ToList();
 
         if (rootHudFiles.Count == 0)
             return false; // nothing to migrate
 
-        var profile = new HudProfile
+        HudProfile profile = new()
         {
             Name = DefaultProfileName,
             Description = "Auto-created from existing HUD settings",
@@ -174,7 +172,7 @@ internal static class HudProfileStore
         if (string.IsNullOrWhiteSpace(meta.Name))
             meta.Name = profileName;
 
-        var profile = new HudProfile
+        HudProfile profile = new()
         {
             Name = meta.Name,
             Description = meta.Description ?? string.Empty,
@@ -210,13 +208,15 @@ internal static class HudProfileStore
 
     public static IReadOnlyList<HudProfile> LoadAll(Game? game = null)
     {
-        var list = new List<HudProfile>();
+        List<HudProfile> list = [];
+
         foreach (string name in ListProfileNames(game))
         {
             var p = Load(name, game);
             if (p is not null)
                 list.Add(p);
         }
+
         return list;
     }
 
@@ -230,8 +230,7 @@ internal static class HudProfileStore
         profile.FolderPath = folder;
         profile.LastModified = DateTime.UtcNow;
 
-        // profile.json
-        var meta = new ProfileJson
+        ProfileJson meta = new()
         {
             Name = profile.Name,
             Description = profile.Description ?? string.Empty,
