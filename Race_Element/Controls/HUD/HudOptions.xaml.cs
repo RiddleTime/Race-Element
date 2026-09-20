@@ -1,6 +1,7 @@
 ﻿using Gma.System.MouseKeyHook;
 using RaceElement.Controls.HUD;
 using RaceElement.Controls.HUD.Controls;
+using RaceElement.Controls.HUD.Profiles;
 using RaceElement.Controls.Util.SetupImage;
 using RaceElement.Data.Games;
 using RaceElement.HUD.ACC;
@@ -87,6 +88,11 @@ public partial class HudOptions : UserControl
                 listOverlays.SelectedIndex = -1;
             };
 
+            buttonProfileApply.Click += (_, _) => ApplySelectedProfile();
+            buttonProfileSave.Click += (_, _) => SaveCurrentProfile();
+            buttonProfileDelete.Click += (_, _) => DeleteSelectedProfile();
+
+
             GameManager.OnGameChanged += (s, e) =>
             {
                 if (e.next != Game.Any)
@@ -99,6 +105,7 @@ public partial class HudOptions : UserControl
                     PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
                     PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
                     BuildOverlayPanel();
+                    RefreshProfileList();
                 }
             };
 
@@ -944,5 +951,148 @@ public partial class HudOptions : UserControl
         tempOverlay.Dispose();
 
         return temp;
+    }
+
+    private void RefreshProfileList()
+    {
+        string? previous = comboProfiles.SelectedItem as string;
+
+        comboProfiles.Items.Clear();
+
+        if (GameManager.CurrentGame == Game.Any)
+            return;
+
+        foreach (string name in HudProfileManager.Instance.ListProfiles())
+            comboProfiles.Items.Add(name);
+
+        if (previous != null && comboProfiles.Items.Contains(previous))
+            comboProfiles.SelectedItem = previous;
+        else if (comboProfiles.Items.Count > 0)
+            comboProfiles.SelectedIndex = 0;
+    }
+
+    private void ApplySelectedProfile()
+    {
+        if (comboProfiles.SelectedItem is not string name || string.IsNullOrWhiteSpace(name))
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Select a profile to apply.");
+            return;
+        }
+
+        try
+        {
+            bool ok = HudProfileManager.Instance.ApplyProfile(name);
+            if (ok)
+            {
+                MainWindow.Instance.EnqueueSnackbarMessage($"Applied profile '{name}'.");
+                // Optional: refresh list visual state (enabled borders) by rebuilding lists
+                BuildOverlayPanel();
+            }
+            else
+                MainWindow.Instance.EnqueueSnackbarMessage($"Profile '{name}' could not be applied.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            MainWindow.Instance.EnqueueSnackbarMessage("Failed to apply profile.");
+        }
+    }
+
+    private void SaveCurrentProfile()
+    {
+        if (GameManager.CurrentGame == Game.Any)
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Select a game first.");
+            return;
+        }
+
+        // Simple name prompt — replace with a small dialog if you already have one
+        string? name = PromptForProfileName();
+        if (string.IsNullOrWhiteSpace(name))
+            return;
+
+        try
+        {
+            HudProfileManager.Instance.SaveCurrentAs(name.Trim());
+            RefreshProfileList();
+            comboProfiles.SelectedItem = name.Trim();
+            MainWindow.Instance.EnqueueSnackbarMessage($"Saved profile '{name.Trim()}'.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            MainWindow.Instance.EnqueueSnackbarMessage("Failed to save profile.");
+        }
+    }
+
+    private void DeleteSelectedProfile()
+    {
+        if (comboProfiles.SelectedItem is not string name || string.IsNullOrWhiteSpace(name))
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Select a profile to delete.");
+            return;
+        }
+
+        // Simple confirm — use your existing dialog pattern if available
+        var result = MessageBox.Show(
+            $"Delete profile '{name}'? This cannot be undone.",
+            "Delete profile",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (result != MessageBoxResult.Yes)
+            return;
+
+        if (HudProfileManager.Instance.DeleteProfile(name))
+        {
+            RefreshProfileList();
+            MainWindow.Instance.EnqueueSnackbarMessage($"Deleted profile '{name}'.");
+        }
+        else
+            MainWindow.Instance.EnqueueSnackbarMessage($"Could not delete '{name}'.");
+    }
+
+    /// <summary>
+    /// Minimal name prompt. Swap for a MaterialDesign dialog when you want something nicer.
+    /// </summary>
+    private string? PromptForProfileName()
+    {
+        // If the project already has an input dialog, use that instead.
+        // Fallback: use a simple WPF Window or reuse any existing prompt helper.
+        var dialog = new Window
+        {
+            Title = "Save profile as…",
+            Width = 360,
+            Height = 140,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            Owner = MainWindow.Instance,
+            ResizeMode = ResizeMode.NoResize
+        };
+
+        var box = new TextBox { Margin = new Thickness(12), FontSize = 14 };
+        var ok = new Button { Content = "Save", Width = 80, IsDefault = true, Margin = new Thickness(0, 0, 8, 0) };
+        var cancel = new Button { Content = "Cancel", Width = 80, IsCancel = true };
+
+        string? result = null;
+        ok.Click += (_, _) => { result = box.Text; dialog.DialogResult = true; };
+        cancel.Click += (_, _) => { dialog.DialogResult = false; };
+
+        var buttons = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            Margin = new Thickness(12, 0, 12, 12)
+        };
+        buttons.Children.Add(ok);
+        buttons.Children.Add(cancel);
+
+        var root = new DockPanel();
+        DockPanel.SetDock(buttons, Dock.Bottom);
+        root.Children.Add(buttons);
+        root.Children.Add(box);
+        dialog.Content = root;
+
+        box.Focus();
+        return dialog.ShowDialog() == true ? result : null;
     }
 }

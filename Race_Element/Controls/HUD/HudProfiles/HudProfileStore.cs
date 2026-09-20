@@ -18,7 +18,8 @@ internal static class HudProfileStore
     private static readonly JsonSerializerOptions JsonOptions = new()
     {
         WriteIndented = true,
-        PropertyNameCaseInsensitive = true
+        PropertyNameCaseInsensitive = true,
+        IncludeFields = true
     };
 
     private const string ProfilesFolderName = "Profiles";

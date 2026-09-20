@@ -189,12 +189,32 @@ internal sealed class OverlayLifecycleService
         if (string.IsNullOrWhiteSpace(overlayName) || settings is null)
             return;
 
+        // 1. Persist as last-applied (root)
         OverlaySettings.SaveOverlaySettings(overlayName, settings);
 
-        if (settings.Enabled)
-            Start(overlayName);
-        else
+        // 2. Disabled → stop
+        if (!settings.Enabled)
+        {
             Stop(overlayName);
+            return;
+        }
+
+        // 3. Enabled → start or update live instance
+        lock (_lock)
+        {
+            var live = LiveList.Find(o => o.Name == overlayName);
+            if (live is not null)
+            {
+                // Already running: push position (and anything else the base supports)
+                live.X = settings.X;
+                live.Y = settings.Y;
+                // If your base type has a reload-config helper, call it here.
+                return;
+            }
+        }
+
+        // Not running → Start (prefer that Start() loads X/Y from OverlaySettings)
+        Start(overlayName);
     }
 
     public void SetRepositionMode(bool enabled)
