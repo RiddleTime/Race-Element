@@ -120,13 +120,7 @@ public partial class HudOptions : UserControl
                     PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
 
                     if (GameManager.CurrentGame != Game.Any)
-                    {
                         BuildOverlayPanel();
-
-                        // Step 5: one-time Default from legacy root settings for this game
-                        HudProfileManager.Instance.EnsureDefaultProfile();
-                        RefreshProfileList();
-                    }
 
                     ToolTipService.SetInitialShowDelay(listBoxItemToggleDemoMode, 1);
                     ToolTipService.SetInitialShowDelay(listBoxItemToggleMovementMode, 1);
