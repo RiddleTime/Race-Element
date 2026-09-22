@@ -1,9 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
+using System.Text.Json;
 
 namespace RaceElement.HUD.Overlay.Configuration;
 
@@ -70,6 +72,12 @@ public abstract class OverlayConfiguration
         return configFields;
     }
 
+    /// <summary>
+    /// Applies persisted config fields onto this configuration instance.
+    /// Values may arrive as CLR primitives, Newtonsoft JToken, or System.Text.Json JsonElement
+    /// after load/save round-trips — ConvertConfigValue normalizes them before SetValue.
+    /// One bad field is logged and skipped; other fields still apply.
+    /// </summary>
     internal void SetConfigFields(List<ConfigField> configFields)
     {
         if (configFields == null)
@@ -80,86 +88,237 @@ public abstract class OverlayConfiguration
 
         foreach (var field in configFields)
         {
-            bool isGrouped = field.Name.Contains('.');
-            if (isGrouped)
+            if (field == null || string.IsNullOrEmpty(field.Name))
+                continue;
+
+            try
             {
-                string[] groupSplit = field.Name.Split('.');
-                string groupName = groupSplit[0];
-                string propName = groupSplit[1];
-                //Debug.WriteLine($"Group: {groupName}, PropName: {propName}");
-                foreach (var prop in runtimeProperties)
+                bool isGrouped = field.Name.Contains('.');
+                if (isGrouped)
                 {
-                    if (prop.Name == groupName)
+                    string[] groupSplit = field.Name.Split('.');
+                    if (groupSplit.Length < 2)
+                        continue;
+
+                    string groupName = groupSplit[0];
+                    string propName = groupSplit[1];
+
+                    foreach (var prop in runtimeProperties)
                     {
+                        if (prop.Name != groupName)
+                            continue;
+
                         var nestedValue = prop.GetValue(this);
+                        if (nestedValue == null)
+                            break;
+
                         foreach (PropertyInfo subNested in nestedValue.GetType().GetRuntimeProperties())
                         {
-                            if (subNested.Name == propName)
-                            {
-                                if (subNested.PropertyType == typeof(Single))
-                                    subNested.SetValue(nestedValue, Single.Parse(field.Value.ToString()));
-                                else if (subNested.PropertyType == typeof(int))
-                                    subNested.SetValue(nestedValue, int.Parse(field.Value.ToString()));
-                                else if (subNested.PropertyType == typeof(bool))
-                                    subNested.SetValue(nestedValue, field.Value);
-                                else if (subNested.PropertyType == typeof(string))
-                                    subNested.SetValue(nestedValue, field.Value);
-                                else if (subNested.PropertyType == typeof(byte))
-                                    subNested.SetValue(nestedValue, byte.Parse(field.Value.ToString()));
-                                else if (subNested.PropertyType == typeof(Color))
-                                    subNested.SetValue(nestedValue, ColorFromToString(field.Value.ToString()));
-                                else if (subNested.PropertyType.BaseType == typeof(Enum))
-                                {
-                                    try
-                                    {
-                                        var enumList = Enum.GetValues(subNested.PropertyType).Cast<Enum>().ToList();
-                                        var enumItem = enumList.FirstOrDefault(x => x.ToString().Equals(field.Value.ToString()));
-                                        subNested.SetValue(nestedValue, enumItem);
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        Debug.WriteLine(e.ToString());
-                                    }
-                                }
-                                else
-                                {
-                                    Debug.WriteLine($"{prop.PropertyType} - {nestedValue}");
-                                }
+                            if (subNested.Name != propName)
+                                continue;
 
-
-                            }
+                            object converted = ConvertConfigValue(field.Value, subNested.PropertyType);
+                            if (converted != null || IsNullableTarget(subNested.PropertyType))
+                                subNested.SetValue(nestedValue, converted);
+                            break;
                         }
+                        break;
+                    }
+                }
+                else
+                {
+                    foreach (var prop in runtimeProperties)
+                    {
+                        if (prop.Name != field.Name)
+                            continue;
+
+                        object converted = ConvertConfigValue(field.Value, prop.PropertyType);
+                        if (converted != null || IsNullableTarget(prop.PropertyType))
+                            prop.SetValue(this, converted);
+                        break;
                     }
                 }
             }
-            else
+            catch (Exception ex)
             {
-                foreach (var prop in runtimeProperties)
-                {
-                    if (prop.Name == field.Name)
-                    {
-                        if (prop.PropertyType == typeof(Single))
-                            prop.SetValue(this, Single.Parse(field.Value.ToString()));
-                        else if (prop.PropertyType == typeof(int))
-                            prop.SetValue(this, int.Parse(field.Value.ToString()));
-                        else if (prop.PropertyType == typeof(bool))
-                            prop.SetValue(this, field.Value);
-                        else if (prop.PropertyType == typeof(string))
-                            prop.SetValue(this, field.Value);
-                        else if (prop.PropertyType == typeof(byte))
-                            prop.SetValue(this, byte.Parse(field.Value.ToString()));
-                        else if (prop.PropertyType == typeof(Color))
-                            prop.SetValue(this, ColorFromToString(field.Value.ToString()));
-                        else if (prop.PropertyType.BaseType == typeof(Enum))
-                        {
-                            var enumList = Enum.GetValues(prop.PropertyType).Cast<Enum>().ToList();
-                            var enumItem = enumList.FirstOrDefault(x => x.ToString().Equals(field.Value.ToString()));
-                            prop.SetValue(this, enumItem);
-                        }
-                    }
-                }
+                Debug.WriteLine($"[OverlayConfiguration] SetConfigFields failed for '{field.Name}': {ex.Message}");
             }
         }
+    }
+
+    /// <summary>
+    /// Coerces a raw deserialized value to <paramref name="targetType"/>.
+    /// Handles: null, CLR primitives, JsonElement (STJ), Newtonsoft JToken (via reflection),
+    /// and string forms used by Color / Enum.
+    /// </summary>
+    private static object ConvertConfigValue(object raw, Type targetType)
+    {
+        if (targetType == null)
+            return null;
+
+        if (raw == null)
+            return targetType.IsValueType ? Activator.CreateInstance(targetType) : null;
+
+        // Unwrap System.Text.Json.JsonElement early.
+        if (raw is JsonElement element)
+            raw = UnwrapJsonElement(element);
+
+        // Unwrap Newtonsoft.Json.Linq.JToken without a hard compile-time dependency.
+        raw = UnwrapNewtonsoftToken(raw);
+
+        if (raw == null)
+            return targetType.IsValueType ? Activator.CreateInstance(targetType) : null;
+
+        Type underlying = Nullable.GetUnderlyingType(targetType) ?? targetType;
+
+        try
+        {
+            if (underlying == typeof(bool))
+            {
+                if (raw is bool b)
+                    return b;
+                if (raw is string sBool && bool.TryParse(sBool, out bool parsedBool))
+                    return parsedBool;
+                if (bool.TryParse(raw.ToString(), out parsedBool))
+                    return parsedBool;
+                return false;
+            }
+
+            if (underlying == typeof(float) || underlying == typeof(Single))
+            {
+                if (raw is float f)
+                    return f;
+                if (raw is double d)
+                    return (float)d;
+                if (raw is decimal m)
+                    return (float)m;
+                if (raw is int i)
+                    return (float)i;
+                if (float.TryParse(raw.ToString(), NumberStyles.Float, CultureInfo.InvariantCulture, out float parsedF))
+                    return parsedF;
+                if (float.TryParse(raw.ToString(), NumberStyles.Float, CultureInfo.CurrentCulture, out parsedF))
+                    return parsedF;
+                return 0f;
+            }
+
+            if (underlying == typeof(int))
+            {
+                if (raw is int ii)
+                    return ii;
+                if (raw is long l)
+                    return (int)l;
+                if (raw is double dd)
+                    return (int)dd;
+                if (int.TryParse(raw.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out int parsedI))
+                    return parsedI;
+                return 0;
+            }
+
+            if (underlying == typeof(byte))
+            {
+                if (raw is byte bb)
+                    return bb;
+                if (byte.TryParse(raw.ToString(), NumberStyles.Integer, CultureInfo.InvariantCulture, out byte parsedB))
+                    return parsedB;
+                return (byte)0;
+            }
+
+            if (underlying == typeof(string))
+                return raw as string ?? raw.ToString();
+
+            if (underlying == typeof(Color))
+                return ColorFromToStringStatic(raw.ToString());
+
+            if (underlying.IsEnum)
+            {
+                if (raw.GetType() == underlying)
+                    return raw;
+                string name = raw.ToString();
+                if (Enum.TryParse(underlying, name, ignoreCase: true, out object enumValue))
+                    return enumValue;
+                // Fallback: match by name in defined values
+                foreach (var enumItem in Enum.GetValues(underlying))
+                {
+                    if (string.Equals(enumItem.ToString(), name, StringComparison.OrdinalIgnoreCase))
+                        return enumItem;
+                }
+                return Activator.CreateInstance(underlying);
+            }
+
+            // Already correct type
+            if (underlying.IsInstanceOfType(raw))
+                return raw;
+
+            return Convert.ChangeType(raw, underlying, CultureInfo.InvariantCulture);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"[OverlayConfiguration] ConvertConfigValue({underlying.Name}) failed for '{raw}': {ex.Message}");
+            return underlying.IsValueType ? Activator.CreateInstance(underlying) : null;
+        }
+    }
+
+    private static object UnwrapJsonElement(JsonElement element)
+    {
+        switch (element.ValueKind)
+        {
+            case JsonValueKind.True:
+                return true;
+            case JsonValueKind.False:
+                return false;
+            case JsonValueKind.Number:
+                if (element.TryGetInt32(out int i))
+                    return i;
+                if (element.TryGetInt64(out long l))
+                    return l;
+                if (element.TryGetDouble(out double d))
+                    return d;
+                return element.GetRawText();
+            case JsonValueKind.String:
+                return element.GetString();
+            case JsonValueKind.Null:
+            case JsonValueKind.Undefined:
+                return null;
+            default:
+                // Object/Array — keep raw text so Color/Enum string paths can still try
+                return element.GetRawText();
+        }
+    }
+
+    /// <summary>
+    /// If <paramref name="raw"/> is a Newtonsoft JToken, peel to the inner CLR value or ToString().
+    /// Uses reflection so this file does not require Newtonsoft types at compile time after S1.
+    /// </summary>
+    private static object UnwrapNewtonsoftToken(object raw)
+    {
+        if (raw == null)
+            return null;
+
+        Type t = raw.GetType();
+        string fullName = t.FullName ?? string.Empty;
+        if (!fullName.StartsWith("Newtonsoft.Json.Linq.", StringComparison.Ordinal))
+            return raw;
+
+        // JValue exposes .Value
+        PropertyInfo valueProp = t.GetProperty("Value", BindingFlags.Instance | BindingFlags.Public);
+        if (valueProp != null)
+        {
+            object inner = valueProp.GetValue(raw);
+            if (inner != null)
+                return inner;
+        }
+
+        // JObject / other tokens: ToString() is better than SetValue(token)
+        return raw.ToString();
+    }
+
+    private static bool IsNullableTarget(Type targetType)
+    {
+        if (targetType == null)
+            return false;
+        if (!targetType.IsValueType)
+            return true;
+        return Nullable.GetUnderlyingType(targetType) != null;
     }
 
     public List<PropertyInfo> GetProperties()
@@ -168,15 +327,19 @@ public abstract class OverlayConfiguration
         return properties;
     }
 
-    private System.Drawing.Color ColorFromToString(string value)
+    private System.Drawing.Color ColorFromToString(string value) => ColorFromToStringStatic(value);
+
+    private static System.Drawing.Color ColorFromToStringStatic(string value)
     {
+        if (string.IsNullOrWhiteSpace(value))
+            return Color.Red;
+
         if (value.Contains("#"))
         {
             value = value.Replace("Color [", "");
             value = value.Replace("]", "");
             return (System.Drawing.Color)new System.Drawing.ColorConverter().ConvertFromString(value);
         }
-
 
         if (value.Contains("A") && value.Contains("R") && value.Contains("G") && value.Contains("B"))
         {
@@ -210,6 +373,5 @@ public abstract class OverlayConfiguration
                 return Color.Red;
             }
         }
-
     }
 }
