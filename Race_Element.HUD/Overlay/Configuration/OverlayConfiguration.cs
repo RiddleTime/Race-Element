@@ -6,6 +6,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace RaceElement.HUD.Overlay.Configuration;
 
@@ -45,6 +46,8 @@ public abstract class OverlayConfiguration
     public class ConfigField
     {
         public string Name { get; set; }
+
+        [JsonConverter(typeof(ConfigFieldValueConverter))]
         public object Value { get; set; }
     }
 

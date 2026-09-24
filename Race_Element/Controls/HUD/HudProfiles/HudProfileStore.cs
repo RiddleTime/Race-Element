@@ -12,14 +12,15 @@ namespace RaceElement.Controls.HUD.HudProfiles;
 
 /// <summary>
 /// Load / save / list HUD profile folders. No UI, no Apply.
+/// HUD *.json uses OverlaySettings STJ (same converter as live overlay files).
+/// profile.json is metadata only (no ConfigField).
 /// </summary>
 internal static class HudProfileStore
 {
-    private static readonly JsonSerializerOptions JsonOptions = new()
+    private static readonly JsonSerializerOptions ProfileMetaOptions = new()
     {
         WriteIndented = true,
-        PropertyNameCaseInsensitive = true,
-        IncludeFields = true
+        PropertyNameCaseInsensitive = true
     };
 
     private const string ProfilesFolderName = "Profiles";
@@ -54,7 +55,6 @@ internal static class HudProfileStore
         return name.Trim();
     }
 
-
     public const string DefaultProfileName = "Default";
 
     /// <summary>
@@ -69,7 +69,6 @@ internal static class HudProfileStore
         if (game == Game.Any)
             return false;
 
-        // Already have Default → nothing to do
         string defaultFolder = GetProfileFolder(DefaultProfileName, game);
         if (Directory.Exists(defaultFolder))
         {
@@ -87,7 +86,7 @@ internal static class HudProfileStore
             .ToList();
 
         if (rootHudFiles.Count == 0)
-            return false; // nothing to migrate
+            return false;
 
         HudProfile profile = new()
         {
@@ -156,7 +155,7 @@ internal static class HudProfileStore
             try
             {
                 string json = File.ReadAllText(profileJsonPath);
-                meta = JsonSerializer.Deserialize<ProfileJson>(json, JsonOptions) ?? new ProfileJson();
+                meta = JsonSerializer.Deserialize<ProfileJson>(json, ProfileMetaOptions) ?? new ProfileJson();
             }
             catch (Exception ex)
             {
@@ -182,7 +181,7 @@ internal static class HudProfileStore
             Conditions = meta.Conditions ?? []
         };
 
-        // Discover HUD settings files (*.json except profile.json)
+        DirectoryInfo dir = new(folder);
         foreach (string file in Directory.GetFiles(folder, "*.json"))
         {
             string fileName = Path.GetFileName(file);
@@ -192,8 +191,7 @@ internal static class HudProfileStore
             string hudName = Path.GetFileNameWithoutExtension(file);
             try
             {
-                string json = File.ReadAllText(file);
-                var settings = JsonSerializer.Deserialize<OverlaySettingsJson>(json, JsonOptions);
+                OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettingsFromDirectory(hudName, dir);
                 if (settings is not null)
                     profile.Huds[hudName] = settings;
             }
@@ -240,14 +238,11 @@ internal static class HudProfileStore
         };
 
         string profileJsonPath = Path.Combine(folder, ProfileJsonFileName);
-        File.WriteAllText(profileJsonPath, JsonSerializer.Serialize(meta, JsonOptions));
+        File.WriteAllText(profileJsonPath, JsonSerializer.Serialize(meta, ProfileMetaOptions));
 
-        // HUD settings files
+        DirectoryInfo dir = new(folder);
         foreach (var kv in profile.Huds)
-        {
-            string hudPath = Path.Combine(folder, kv.Key + ".json");
-            File.WriteAllText(hudPath, JsonSerializer.Serialize(kv.Value, JsonOptions));
-        }
+            OverlaySettings.SaveOverlaySettingsToDirectory(kv.Key, kv.Value, dir);
     }
 
     /// <summary>
@@ -273,7 +268,6 @@ internal static class HudProfileStore
 
         foreach (string file in Directory.GetFiles(overlayDir, "*.json"))
         {
-            // Skip anything that is not a HUD settings file at root
             string fileName = Path.GetFileName(file);
             if (fileName.Equals(ProfileJsonFileName, StringComparison.OrdinalIgnoreCase))
                 continue;
@@ -281,8 +275,7 @@ internal static class HudProfileStore
             string hudName = Path.GetFileNameWithoutExtension(file);
             try
             {
-                // Prefer the existing OverlaySettings loader so format stays identical
-                var settings = OverlaySettings.LoadOverlaySettings(hudName);
+                var settings = OverlaySettings.LoadOverlaySettings(hudName, game.Value);
                 if (settings is not null)
                     profile.Huds[hudName] = settings;
             }

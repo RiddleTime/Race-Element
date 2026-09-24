@@ -1,11 +1,12 @@
-﻿using Newtonsoft.Json;
-using RaceElement.Data.Games;
+﻿using RaceElement.Data.Games;
 using RaceElement.Util;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 using static RaceElement.HUD.Overlay.Configuration.OverlayConfiguration;
 
 namespace RaceElement.HUD.Overlay.Configuration;
@@ -14,9 +15,58 @@ public class OverlaySettings
 {
     public class OverlaySettingsJson
     {
-        public bool Enabled;
-        public int X, Y;
-        public List<ConfigField> Config;
+        [JsonInclude] public bool Enabled;
+        [JsonInclude] public int X, Y;
+        [JsonInclude] public List<ConfigField> Config;
+    }
+
+    /// <summary>
+    /// Shared STJ options for live HUD json and profile HUD snapshots.
+    /// IncludeFields matches OverlaySettingsJson public fields (Newtonsoft default).
+    /// ConfigField.Value is coerced to CLR primitives via ConfigFieldValueConverter.
+    /// </summary>
+    public static readonly JsonSerializerOptions JsonOptions = CreateOptions();
+
+    private static JsonSerializerOptions CreateOptions()
+    {
+        JsonSerializerOptions options = new()
+        {
+            WriteIndented = true,
+            PropertyNameCaseInsensitive = true,
+            IncludeFields = true,
+            DefaultIgnoreCondition = JsonIgnoreCondition.Never,
+            NumberHandling = JsonNumberHandling.AllowReadingFromString
+        };
+        options.Converters.Add(new ConfigFieldValueConverter());
+        return options;
+    }
+
+    public static string SerializeSettings(OverlaySettingsJson settings)
+    {
+        settings ??= new OverlaySettingsJson();
+        settings.Config ??= [];
+        return JsonSerializer.Serialize(settings, JsonOptions);
+    }
+
+    public static OverlaySettingsJson DeserializeSettings(string json)
+    {
+        if (string.IsNullOrWhiteSpace(json))
+            return new OverlaySettingsJson();
+
+        try
+        {
+            json = json.Replace("\0", "");
+            OverlaySettingsJson settings = JsonSerializer.Deserialize<OverlaySettingsJson>(json, JsonOptions);
+            if (settings is null)
+                return new OverlaySettingsJson();
+            settings.Config ??= [];
+            return settings;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            return new OverlaySettingsJson();
+        }
     }
 
     /// <summary>Game root overlay folder (live / last-applied settings).</summary>
@@ -86,23 +136,7 @@ public class OverlaySettings
     {
         DirectoryInfo dir = GetOverlayDirectory(gameWhenStarted);
         FileInfo overlaySettingsFile = new(Path.Combine(dir.FullName, overlayName + ".json"));
-
-        string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
-
-        try
-        {
-            if (overlaySettingsFile.Exists)
-                overlaySettingsFile.Delete();
-
-            File.WriteAllText(overlaySettingsFile.FullName, jsonString);
-            Debug.WriteLine($"Written to {overlaySettingsFile.FullName}\n - Game: {gameWhenStarted.ToFriendlyName()}");
-        }
-        catch (Exception)
-        {
-            return settings;
-        }
-
-        return settings;
+        return WriteFile(overlaySettingsFile, settings, gameWhenStarted);
     }
 
     /// <summary>
@@ -118,21 +152,7 @@ public class OverlaySettings
             directory.Create();
 
         FileInfo file = new(Path.Combine(directory.FullName, overlayName + ".json"));
-        string jsonString = JsonConvert.SerializeObject(settings, Formatting.Indented);
-
-        try
-        {
-            if (file.Exists)
-                file.Delete();
-
-            File.WriteAllText(file.FullName, jsonString);
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-        }
-
-        return settings;
+        return WriteFile(file, settings, Game.Any);
     }
 
     /// <summary>HUD json files in the live game root (excludes nothing under Profiles\).</summary>
@@ -144,6 +164,29 @@ public class OverlaySettings
             .Where(n => !string.IsNullOrWhiteSpace(n))
             .OrderBy(n => n, StringComparer.OrdinalIgnoreCase)
             .ToList();
+    }
+
+    private static OverlaySettingsJson WriteFile(FileInfo overlaySettingsFile, OverlaySettingsJson settings, Game gameWhenStarted)
+    {
+        settings ??= new OverlaySettingsJson();
+        settings.Config ??= [];
+        string jsonString = SerializeSettings(settings);
+
+        try
+        {
+            if (overlaySettingsFile.Exists)
+                overlaySettingsFile.Delete();
+
+            File.WriteAllText(overlaySettingsFile.FullName, jsonString);
+            Debug.WriteLine($"Written to {overlaySettingsFile.FullName}\n - Game: {gameWhenStarted.ToFriendlyName()}");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            return settings;
+        }
+
+        return settings;
     }
 
     private static OverlaySettingsJson LoadSettings(FileInfo file)
@@ -166,18 +209,16 @@ public class OverlaySettings
 
     private static OverlaySettingsJson LoadSettings(Stream stream)
     {
-        OverlaySettingsJson settings = null;
         try
         {
             using StreamReader reader = new(stream);
-            string jsonString = reader.ReadToEnd().Replace("\0", "");
-            settings = JsonConvert.DeserializeObject<OverlaySettingsJson>(jsonString);
+            string jsonString = reader.ReadToEnd();
+            return DeserializeSettings(jsonString);
         }
         catch (Exception e)
         {
             Debug.WriteLine(e);
+            return null;
         }
-
-        return settings;
     }
 }
