@@ -97,14 +97,14 @@ public partial class HudOptions : UserControl
             {
                 if (e.next != Game.Any)
                 {
+                    DisableMovementMode();
                     OverlayLifecycleService.Instance.StopAll();
 
                     PreviewCache._cachedPreviews.Clear();
-                    Thread.Sleep(1000);
 
                     PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
                     PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
-                   
+
                     HudProfileManager.Instance.EnsureDefaultProfile(e.next);
                     RefreshProfileList();
 
@@ -984,11 +984,11 @@ public partial class HudOptions : UserControl
 
         try
         {
+            DisableMovementMode();
             bool ok = HudProfileManager.Instance.ApplyProfile(name);
             if (ok)
             {
                 MainWindow.Instance.EnqueueSnackbarMessage($"Applied profile '{name}'.");
-                // Optional: refresh list visual state (enabled borders) by rebuilding lists
                 BuildOverlayPanel();
             }
             else
@@ -1009,13 +1009,13 @@ public partial class HudOptions : UserControl
             return;
         }
 
-        // Simple name prompt — replace with a small dialog if you already have one
         string? name = PromptForProfileName();
         if (string.IsNullOrWhiteSpace(name))
             return;
 
         try
         {
+            DisableMovementMode();
             HudProfileManager.Instance.SaveCurrentAs(name.Trim());
             RefreshProfileList();
             comboProfiles.SelectedItem = name.Trim();
@@ -1053,6 +1053,26 @@ public partial class HudOptions : UserControl
         }
         else
             MainWindow.Instance.EnqueueSnackbarMessage($"Could not delete '{name}'.");
+    }
+
+    /// <summary>
+    /// Turns movement mode off in the UI (persists live X/Y via EnableReposition(false)).
+    /// Safe from the UI thread or a GameChanged callback.
+    /// </summary>
+    private void DisableMovementMode()
+    {
+        void Go()
+        {
+            if (listBoxItemToggleMovementMode.IsSelected)
+                listBoxItemToggleMovementMode.IsSelected = false;
+            else
+                SetRepositionMode(false);
+        }
+
+        if (Dispatcher.CheckAccess())
+            Go();
+        else
+            Dispatcher.Invoke(Go);
     }
 
     /// <summary>

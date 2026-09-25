@@ -19,16 +19,9 @@ internal sealed class HudProfileManager
 
     public event Action<HudProfile>? ProfileApplied;
 
-    /// <summary>
-    /// Ensures a Default profile exists for the current (or given) game.
-    /// Safe to call on every game change / HUD tab load.
-    /// </summary>
     public bool EnsureDefaultProfile(Game? game = null)
         => HudProfileStore.EnsureDefaultProfile(game);
 
-    /// <summary>
-    /// Loads a profile by name for the current (or given) game and applies it.
-    /// </summary>
     public bool ApplyProfile(string profileName, Game? game = null)
     {
         var profile = HudProfileStore.Load(profileName, game);
@@ -43,9 +36,7 @@ internal sealed class HudProfileManager
     }
 
     /// <summary>
-    /// Applies a loaded profile:
-    /// 1. Stop active HUDs that are not in the profile (full layout switch).
-    /// 2. ApplySettings for every HUD in the profile (Enabled drives start/stop).
+    /// Full layout switch: disable reposition, wait for all HUDs to stop, then apply.
     /// </summary>
     public void ApplyProfile(HudProfile profile)
     {
@@ -54,23 +45,9 @@ internal sealed class HudProfileManager
 
         var lifecycle = OverlayLifecycleService.Instance;
 
-        // Names that belong to this profile (ordinal ignore-case)
-        var profileHudNames = new HashSet<string>(
-            profile.Huds.Keys,
-            StringComparer.OrdinalIgnoreCase);
+        lifecycle.SetRepositionMode(false);
+        lifecycle.StopAll();
 
-        // 1. Stop anything active that is not part of this profile
-        List<CommonAbstractOverlay> activeSnapshot = lifecycle.ActiveOverlays.ToList();
-        foreach (var overlay in activeSnapshot)
-        {
-            if (!profileHudNames.Contains(overlay.Name))
-            {
-                Debug.WriteLine($"[HudProfileManager] Stopping HUD not in profile: {overlay.Name}");
-                lifecycle.Stop(overlay.Name);
-            }
-        }
-
-        // 2. Apply each HUD entry from the profile
         foreach (var kv in profile.Huds)
         {
             string hudName = kv.Key;
@@ -81,7 +58,6 @@ internal sealed class HudProfileManager
 
             try
             {
-                // ApplySettings persists and Start/Stops according to settings.Enabled
                 lifecycle.ApplySettings(hudName, settings);
             }
             catch (Exception ex)
@@ -94,24 +70,15 @@ internal sealed class HudProfileManager
         Debug.WriteLine($"[HudProfileManager] Applied profile '{profile.Name}' ({profile.Huds.Count} HUDs)");
     }
 
-    /// <summary>
-    /// Captures the current live overlay settings into a profile and saves the folder.
-    /// Thin wrapper over HudProfileStore for a single entry point.
-    /// </summary>
     public HudProfile SaveCurrentAs(string profileName, string? description = null, bool isDefault = false, Game? game = null)
     {
+        OverlayLifecycleService.Instance.SetRepositionMode(false);
         return HudProfileStore.CaptureAndSave(profileName, description, isDefault, game);
     }
 
-    /// <summary>
-    /// Lists profile names for the current (or given) game.
-    /// </summary>
     public IReadOnlyList<string> ListProfiles(Game? game = null)
         => HudProfileStore.ListProfileNames(game);
 
-    /// <summary>
-    /// Deletes a profile folder.
-    /// </summary>
     public bool DeleteProfile(string profileName, Game? game = null)
         => HudProfileStore.Delete(profileName, game);
 }

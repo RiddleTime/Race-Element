@@ -14,7 +14,8 @@ using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
 namespace RaceElement.Controls.HUD;
 
 /// <summary>
-/// Overlay start / stop / apply and active-instance tracking
+/// Overlay start / stop / apply and active-instance tracking.
+/// Stop / StopAll wait until overlay.Stop() has returned.
 /// </summary>
 internal sealed class OverlayLifecycleService
 {
@@ -84,7 +85,7 @@ internal sealed class OverlayLifecycleService
         lock (_lock)
         {
             if (LiveList.Exists(o => o.Name == overlayName))
-                return; // already running
+                return;
 
             if (!TryGetOverlayType(overlayName, out Type? type) || type is null)
             {
@@ -112,6 +113,9 @@ internal sealed class OverlayLifecycleService
         }
     }
 
+    /// <summary>
+    /// Stops one HUD and waits until overlay.Stop() has finished (Close/Dispose).
+    /// </summary>
     public void Stop(string overlayName)
     {
         if (string.IsNullOrWhiteSpace(overlayName))
@@ -133,12 +137,8 @@ internal sealed class OverlayLifecycleService
 
         if (overlay is not null)
         {
-            new Thread(() =>
-            {
-                try { overlay.Stop(); }
-                catch (Exception ex) { Debug.WriteLine(ex); }
-            })
-            { IsBackground = true }.Start();
+            try { overlay.Stop(); }
+            catch (Exception ex) { Debug.WriteLine(ex); }
         }
 
         OverlayStopped?.Invoke(overlayName);
@@ -153,8 +153,13 @@ internal sealed class OverlayLifecycleService
             Start(overlayName);
     }
 
+    /// <summary>
+    /// Turns reposition off, then stops every live HUD and waits for each Stop().
+    /// </summary>
     public void StopAll()
     {
+        SetRepositionMode(false);
+
         List<CommonAbstractOverlay> snapshot;
 
         lock (_lock)
@@ -189,31 +194,25 @@ internal sealed class OverlayLifecycleService
         if (string.IsNullOrWhiteSpace(overlayName) || settings is null)
             return;
 
-        // 1. Persist as last-applied (root)
         OverlaySettings.SaveOverlaySettings(overlayName, settings);
 
-        // 2. Disabled → stop
         if (!settings.Enabled)
         {
             Stop(overlayName);
             return;
         }
 
-        // 3. Enabled → start or update live instance
         lock (_lock)
         {
             var live = LiveList.Find(o => o.Name == overlayName);
             if (live is not null)
             {
-                // Already running: push position (and anything else the base supports)
                 live.X = settings.X;
                 live.Y = settings.Y;
-                // If your base type has a reload-config helper, call it here.
                 return;
             }
         }
 
-        // Not running → Start (prefer that Start() loads X/Y from OverlaySettings)
         Start(overlayName);
     }
 
