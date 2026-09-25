@@ -53,6 +53,7 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 
     private int _currentGear = -1;
     private int _lastGear = -2;
+    private int _lastDrawnGear = -1;
     private const float MaxOpacity = 1f;
     private float _opacity = MaxOpacity;
     private Tweener _gearTweener;
@@ -130,6 +131,17 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
     {
         int currentGear = GetCurrentGear();
 
+        // Index 11 of the bitmap list draws a 10, so a gear above the range has to be dropped
+        // rather than clamped into it, which is what made a 10 flash up mid shift.
+        if (currentGear >= _gearBitmaps.Count)
+        {
+            if (_lastDrawnGear < 0) return;
+            currentGear = _lastDrawnGear;
+        }
+
+        currentGear.ClipMin(0);
+        _lastDrawnGear = currentGear;
+
         if (_lastGear != currentGear)
         {
             _opacity = 0.8f;
@@ -140,7 +152,6 @@ internal sealed class CurrentGearOverlay : CommonAbstractOverlay
 
         if (_opacity < MaxOpacity)
             _gearTweener.Update(secondsElapsed: (float)DateTime.Now.Subtract(_gearTweenerStart).TotalSeconds);
-        currentGear.Clip(0, 11);
 
         CachedBitmap bitmap = _gearBitmaps[currentGear];
         bitmap.Opacity = _opacity;
