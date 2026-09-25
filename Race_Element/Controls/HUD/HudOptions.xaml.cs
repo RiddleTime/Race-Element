@@ -100,7 +100,8 @@ public partial class HudOptions : UserControl
                     DisableMovementMode();
                     OverlayLifecycleService.Instance.StopAll();
 
-                    PreviewCache._cachedPreviews.Clear();
+                    PreviewCache.Clear();
+                    previewImage.Source = null;
 
                     PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
                     PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
@@ -988,6 +989,8 @@ public partial class HudOptions : UserControl
             bool ok = HudProfileManager.Instance.ApplyProfile(name);
             if (ok)
             {
+                PreviewCache.Clear();
+                previewImage.Source = null;
                 MainWindow.Instance.EnqueueSnackbarMessage($"Applied profile '{name}'.");
                 BuildOverlayPanel();
             }
