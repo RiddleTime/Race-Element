@@ -98,7 +98,7 @@ public partial class HudOptions : UserControl
                 if (e.next != Game.Any)
                 {
                     DisableMovementMode();
-                    OverlayLifecycleService.Instance.StopAll();
+                    OverlayLifecycleService.Instance.StopAll(persistDisabled: false);
 
                     PreviewCache.Clear();
                     previewImage.Source = null;

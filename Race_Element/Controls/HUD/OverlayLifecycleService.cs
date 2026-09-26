@@ -16,6 +16,7 @@ namespace RaceElement.Controls.HUD;
 /// <summary>
 /// Overlay start / stop / apply and active-instance tracking.
 /// Stop / StopAll wait until overlay.Stop() has returned.
+/// StopAll always drains ACC + Common package lists (CurrentGame may already have switched).
 /// </summary>
 internal sealed class OverlayLifecycleService
 {
@@ -35,7 +36,9 @@ internal sealed class OverlayLifecycleService
     public event Action<string>? OverlayStopped;
     public event Action? ActiveOverlaysChanged;
 
-    private List<CommonAbstractOverlay> LiveList => GameManager.CurrentGame switch
+    private List<CommonAbstractOverlay> LiveList => ListFor(GameManager.CurrentGame);
+
+    private static List<CommonAbstractOverlay> ListFor(Game game) => game switch
     {
         Game.AssettoCorsaCompetizione => OverlaysAcc.ActiveOverlays,
         Game.Any => [],
@@ -101,7 +104,7 @@ internal sealed class OverlayLifecycleService
                 if (LiveList.FindIndex(o => o.Name == overlay.Name) == -1)
                     LiveList.Add(overlay);
 
-                PersistEnabled(overlayName, true);
+                PersistEnabled(overlayName, true, overlay.GameWhenStarted);
 
                 OverlayStarted?.Invoke(overlayName);
                 ActiveOverlaysChanged?.Invoke();
@@ -132,7 +135,7 @@ internal sealed class OverlayLifecycleService
             overlay = LiveList[index];
             LiveList.RemoveAt(index);
 
-            PersistEnabled(overlayName, false);
+            PersistEnabled(overlayName, false, overlay.GameWhenStarted);
         }
 
         if (overlay is not null)
@@ -154,25 +157,39 @@ internal sealed class OverlayLifecycleService
     }
 
     /// <summary>
-    /// Turns reposition off, then stops every live HUD and waits for each Stop().
+    /// Turns reposition off, then stops every live HUD in <b>both</b> ACC and Common
+    /// package lists and waits for each Stop().
     /// </summary>
-    public void StopAll()
+    /// <param name="persistDisabled">
+    /// True (default): write Enabled=false using each overlay's GameWhenStarted (profile apply).
+    /// False: close windows only — keep previous game's overlay json (game change).
+    /// </param>
+    public void StopAll(bool persistDisabled = true)
     {
-        SetRepositionMode(false);
-
-        List<CommonAbstractOverlay> snapshot;
+        List<CommonAbstractOverlay> snapshot = [];
 
         lock (_lock)
         {
-            snapshot = LiveList.ToList();
-            LiveList.Clear();
+            snapshot.AddRange(OverlaysAcc.ActiveOverlays);
+            snapshot.AddRange(CommonHuds.ActiveOverlays);
+
+            foreach (var o in snapshot)
+            {
+                try { o.EnableReposition(false); }
+                catch (Exception ex) { Debug.WriteLine(ex); }
+            }
+
+            OverlaysAcc.ActiveOverlays.Clear();
+            CommonHuds.ActiveOverlays.Clear();
         }
 
         foreach (var overlay in snapshot)
         {
             try
             {
-                PersistEnabled(overlay.Name, false);
+                if (persistDisabled)
+                    PersistEnabled(overlay.Name, false, overlay.GameWhenStarted);
+
                 overlay.Stop();
             }
             catch (Exception ex)
@@ -225,12 +242,12 @@ internal sealed class OverlayLifecycleService
         }
     }
 
-    private static void PersistEnabled(string overlayName, bool enabled)
+    private static void PersistEnabled(string overlayName, bool enabled, Game gameWhenStarted = Game.Any)
     {
-        var settings = OverlaySettings.LoadOverlaySettings(overlayName)
+        var settings = OverlaySettings.LoadOverlaySettings(overlayName, gameWhenStarted)
                        ?? new OverlaySettingsJson();
 
         settings.Enabled = enabled;
-        OverlaySettings.SaveOverlaySettings(overlayName, settings);
+        OverlaySettings.SaveOverlaySettings(overlayName, settings, gameWhenStarted);
     }
 }
