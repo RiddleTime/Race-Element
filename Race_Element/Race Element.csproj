@@ -18,6 +18,7 @@
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>
+    <Nullable>enable</Nullable>
     <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
     <ImportWindowsDesktopTargets>true</ImportWindowsDesktopTargets>
     <Copyright>Copyright © Reinier Klarenberg 2022</Copyright>
