@@ -1,6 +1,7 @@
 ﻿using RaceElement.Core.Jobs.Loop;
 using RaceElement.Data.ACC.Laps;
 using RaceElement.Data.ACC.Session;
+using RaceElement.Data.ACC.Tyres;
 using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
@@ -37,6 +38,12 @@ internal sealed class TyreTempHistoryJob : AbstractLoopJob
     {
         LapTracker.Instance.LapFinished += OnLapFinished;
         RaceSessionTracker.Instance.OnNewSessionStarted += OnNewSessionStarted;
+        TyresTracker.Instance.OnTyresInfoChanged += OnTyreInfoChanged;
+    }
+
+    private void OnTyreInfoChanged(object sender, TyresTracker.TyresInfo e)
+    {
+        ResetLapData();
     }
 
     private void OnNewSessionStarted(object sender, RaceElement.Data.ACC.Database.SessionData.DbRaceSession e)
@@ -54,6 +61,7 @@ internal sealed class TyreTempHistoryJob : AbstractLoopJob
     {
         LapTracker.Instance.LapFinished -= OnLapFinished;
         RaceSessionTracker.Instance.OnNewSessionStarted -= OnNewSessionStarted;
+        TyresTracker.Instance.OnTyresInfoChanged -= OnTyreInfoChanged;
     }
 
     private TyreTempHistoryModel GetHistoryModel(int lap)
