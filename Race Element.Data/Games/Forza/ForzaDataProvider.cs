@@ -165,7 +165,7 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         localCar.Inputs.Steering = dash.Steer / 127f;
 
         localCar.Inputs.Gear = (int)dash.Gear > 0 ? dash.Gear + 1 : dash.Gear;
-        if (localCar.Inputs.Gear >= 12) localCar.Inputs.Gear = 0;
+        if (localCar.Inputs.Gear >= 12) localCar.Inputs.Gear = 1;
 
         localCar.Race.LapsDriven = (int)dash.Lap;
         localCar.Race.GlobalPosition = (int)dash.RacePosition;
