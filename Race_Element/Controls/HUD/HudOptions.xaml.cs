@@ -95,15 +95,6 @@ public partial class HudOptions : UserControl
             buttonProfileSave.Click += (_, _) => SaveCurrentProfile();
             buttonProfileDelete.Click += (_, _) => DeleteSelectedProfile();
 
-            comboProfiles.SelectionChanged += (_, _) =>
-            {
-                if (_suppressProfileSelectionPersist)
-                    return;
-                if (comboProfiles.SelectedItem is string selectedName)
-                    RememberSelectedProfile(selectedName);
-            };
-
-
             GameManager.OnGameChanged += (s, e) =>
             {
                 if (e.next != Game.Any)
