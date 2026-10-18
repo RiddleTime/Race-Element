@@ -1,0 +1,320 @@
+﻿using RaceElement.Data.Games;
+using RaceElement.HUD.Overlay.Configuration;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using static RaceElement.HUD.Overlay.Configuration.OverlaySettings;
+
+namespace RaceElement.Controls.HUD.HudProfiles;
+
+/// <summary>
+/// Load / save / list HUD profile folders. No UI, no Apply.
+/// HUD *.json uses OverlaySettings STJ (same converter as live overlay files).
+/// profile.json is metadata only (no ConfigField).
+/// </summary>
+internal static class HudProfileStore
+{
+    private static readonly JsonSerializerOptions ProfileMetaOptions = new()
+    {
+        WriteIndented = true,
+        PropertyNameCaseInsensitive = true
+    };
+
+    private const string ProfilesFolderName = "Profiles";
+    private const string ProfileJsonFileName = "profile.json";
+
+    /// <summary>
+    /// Root overlay directory for the current (or given) game.
+    /// Reuses the same location OverlaySettings already uses.
+    /// </summary>
+    public static string GetGameOverlayDirectory(Game? game = null)
+    {
+        game ??= GameManager.CurrentGame;
+
+        string root = Path.Combine(
+            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
+            "Race Element",
+            "Overlay",
+            game.Value.ToFriendlyName());
+        return root;
+    }
+
+    public static string GetProfilesRoot(Game? game = null)
+        => Path.Combine(GetGameOverlayDirectory(game), ProfilesFolderName);
+
+    public static string GetProfileFolder(string profileName, Game? game = null)
+        => Path.Combine(GetProfilesRoot(game), SanitizeFolderName(profileName));
+
+    private static string SanitizeFolderName(string name)
+    {
+        foreach (char c in Path.GetInvalidFileNameChars())
+            name = name.Replace(c, '_');
+        return name.Trim();
+    }
+
+    public const string DefaultProfileName = "Default";
+
+    /// <summary>
+    /// If the game has root-level HUD settings but no Default profile yet,
+    /// create Profiles\Default\ from the current root files.
+    /// Does not overwrite an existing Default profile.
+    /// Returns true when a new Default was created.
+    /// </summary>
+    public static bool EnsureDefaultProfile(Game? game = null)
+    {
+        game ??= GameManager.CurrentGame;
+        if (game == Game.Any)
+            return false;
+
+        string defaultFolder = GetProfileFolder(DefaultProfileName, game);
+        if (Directory.Exists(defaultFolder))
+        {
+            string profileJson = Path.Combine(defaultFolder, ProfileJsonFileName);
+            if (File.Exists(profileJson))
+                return false;
+        }
+
+        string overlayDir = GetGameOverlayDirectory(game);
+        if (!Directory.Exists(overlayDir))
+            return false;
+
+        List<string> rootHudFiles = Directory.GetFiles(overlayDir, "*.json")
+            .Where(f => !IsUnderProfilesFolder(f, overlayDir))
+            .ToList();
+
+        if (rootHudFiles.Count == 0)
+            return false;
+
+        HudProfile profile = new()
+        {
+            Name = DefaultProfileName,
+            Description = "Auto-created from existing HUD settings",
+            IsDefault = true,
+            LastModified = DateTime.UtcNow,
+            Conditions = []
+        };
+
+        foreach (string file in rootHudFiles)
+        {
+            string hudName = Path.GetFileNameWithoutExtension(file);
+            if (string.IsNullOrWhiteSpace(hudName))
+                continue;
+
+            try
+            {
+                OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettings(hudName, game.Value);
+                profile.Huds[hudName] = settings;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HudProfileStore] Default migrate skip '{hudName}': {ex.Message}");
+            }
+        }
+
+        if (profile.Huds.Count == 0)
+            return false;
+
+        Save(profile, game);
+        Debug.WriteLine($"[HudProfileStore] Created Default profile for {game} ({profile.Huds.Count} HUDs)");
+        return true;
+    }
+
+    private static bool IsUnderProfilesFolder(string filePath, string overlayDir)
+    {
+        string profilesRoot = Path.Combine(overlayDir, ProfilesFolderName);
+        return filePath.StartsWith(profilesRoot, StringComparison.OrdinalIgnoreCase);
+    }
+
+    public static IReadOnlyList<string> ListProfileNames(Game? game = null)
+    {
+        string root = GetProfilesRoot(game);
+        if (!Directory.Exists(root))
+            return [];
+
+        return Directory.GetDirectories(root)
+            .Select(Path.GetFileName)
+            .Where(n => !string.IsNullOrWhiteSpace(n))
+            .OrderBy(n => n, StringComparer.OrdinalIgnoreCase)
+            .ToList()!;
+    }
+
+    public static HudProfile? Load(string profileName, Game? game = null)
+    {
+        string folder = GetProfileFolder(profileName, game);
+        if (!Directory.Exists(folder))
+            return null;
+
+        string profileJsonPath = Path.Combine(folder, ProfileJsonFileName);
+        ProfileJson meta;
+
+        if (File.Exists(profileJsonPath))
+        {
+            try
+            {
+                string json = File.ReadAllText(profileJsonPath);
+                meta = JsonSerializer.Deserialize<ProfileJson>(json, ProfileMetaOptions) ?? new ProfileJson();
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HudProfileStore] Failed to read profile.json: {ex.Message}");
+                meta = new ProfileJson { Name = profileName };
+            }
+        }
+        else
+        {
+            meta = new ProfileJson { Name = profileName };
+        }
+
+        if (string.IsNullOrWhiteSpace(meta.Name))
+            meta.Name = profileName;
+
+        HudProfile profile = new()
+        {
+            Name = meta.Name,
+            Description = meta.Description ?? string.Empty,
+            IsDefault = meta.IsDefault,
+            LastModified = meta.LastModified,
+            FolderPath = folder,
+            Conditions = meta.Conditions ?? []
+        };
+
+        DirectoryInfo dir = new(folder);
+        foreach (string file in Directory.GetFiles(folder, "*.json"))
+        {
+            string fileName = Path.GetFileName(file);
+            if (fileName.Equals(ProfileJsonFileName, StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            string hudName = Path.GetFileNameWithoutExtension(file);
+            try
+            {
+                OverlaySettingsJson settings = OverlaySettings.LoadOverlaySettingsFromDirectory(hudName, dir);
+                if (settings is not null)
+                    profile.Huds[hudName] = settings;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HudProfileStore] Skip '{fileName}': {ex.Message}");
+            }
+        }
+
+        return profile;
+    }
+
+    public static IReadOnlyList<HudProfile> LoadAll(Game? game = null)
+    {
+        List<HudProfile> list = [];
+
+        foreach (string name in ListProfileNames(game))
+        {
+            var p = Load(name, game);
+            if (p is not null)
+                list.Add(p);
+        }
+
+        return list;
+    }
+
+    public static void Save(HudProfile profile, Game? game = null)
+    {
+        if (profile is null || string.IsNullOrWhiteSpace(profile.Name))
+            throw new ArgumentException("Profile must have a name.", nameof(profile));
+
+        string folder = GetProfileFolder(profile.Name, game);
+        Directory.CreateDirectory(folder);
+        profile.FolderPath = folder;
+        profile.LastModified = DateTime.UtcNow;
+
+        ProfileJson meta = new()
+        {
+            Name = profile.Name,
+            Description = profile.Description ?? string.Empty,
+            IsDefault = profile.IsDefault,
+            LastModified = profile.LastModified,
+            Conditions = profile.Conditions ?? []
+        };
+
+        string profileJsonPath = Path.Combine(folder, ProfileJsonFileName);
+        File.WriteAllText(profileJsonPath, JsonSerializer.Serialize(meta, ProfileMetaOptions));
+
+        DirectoryInfo dir = new(folder);
+        foreach (var kv in profile.Huds)
+            OverlaySettings.SaveOverlaySettingsToDirectory(kv.Key, kv.Value, dir);
+    }
+
+    /// <summary>
+    /// Builds a HudProfile from the current root-level OverlaySettings files
+    /// for the game (the same files the app uses today). Does not write until Save is called.
+    /// </summary>
+    public static HudProfile CaptureCurrentState(string profileName, Game? game = null)
+    {
+        game ??= GameManager.CurrentGame;
+        string overlayDir = GetGameOverlayDirectory(game);
+
+        var profile = new HudProfile
+        {
+            Name = profileName,
+            Description = string.Empty,
+            IsDefault = false,
+            LastModified = DateTime.UtcNow,
+            Conditions = []
+        };
+
+        if (!Directory.Exists(overlayDir))
+            return profile;
+
+        foreach (string file in Directory.GetFiles(overlayDir, "*.json"))
+        {
+            string fileName = Path.GetFileName(file);
+            if (fileName.Equals(ProfileJsonFileName, StringComparison.OrdinalIgnoreCase))
+                continue;
+
+            string hudName = Path.GetFileNameWithoutExtension(file);
+            try
+            {
+                var settings = OverlaySettings.LoadOverlaySettings(hudName, game.Value);
+                if (settings is not null)
+                    profile.Huds[hudName] = settings;
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"[HudProfileStore] Capture skip '{hudName}': {ex.Message}");
+            }
+        }
+
+        return profile;
+    }
+
+    /// <summary>
+    /// Convenience: capture current state and write the profile folder in one call.
+    /// </summary>
+    public static HudProfile CaptureAndSave(string profileName, string? description = null, bool isDefault = false, Game? game = null)
+    {
+        var profile = CaptureCurrentState(profileName, game);
+        profile.Description = description ?? string.Empty;
+        profile.IsDefault = isDefault;
+        Save(profile, game);
+        return profile;
+    }
+
+    public static bool Delete(string profileName, Game? game = null)
+    {
+        string folder = GetProfileFolder(profileName, game);
+        if (!Directory.Exists(folder))
+            return false;
+
+        try
+        {
+            Directory.Delete(folder, recursive: true);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"[HudProfileStore] Delete failed: {ex.Message}");
+            return false;
+        }
+    }
+}
