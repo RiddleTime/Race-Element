@@ -10,7 +10,9 @@ public static class ReleaseNotes
                     "\n- Added HUD Profiles. Save your active settings to a profile and load them at any time."+
 
                     "\n\nForza Horizon 6"+
-                    "\n- Current Gear HUD: Fixed gear data, will no longer display 10 during a shift."
+                    "\n- Current Gear HUD: Fixed gear data, will no longer display 10 during a shift."+
+                    "\n\nForza Motorsport"+
+                    "\n- The app now recognizes the microsoft store version."
                     },
         {"2.7.1.6", "Race Element"+
                     "\n- Reworked HUD Internals."+
