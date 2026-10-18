@@ -1,6 +1,7 @@
 ﻿using Gma.System.MouseKeyHook;
 using RaceElement.Controls.HUD;
 using RaceElement.Controls.HUD.Controls;
+using RaceElement.Controls.HUD.HudProfiles;
 using RaceElement.Controls.Util.SetupImage;
 using RaceElement.Data.Games;
 using RaceElement.HUD.ACC;
@@ -43,6 +44,8 @@ public partial class HudOptions : UserControl
     private HudSettingsJson _hudSettingsJson;
 
     private readonly object[] DefaultOverlayArgs = [new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150)];
+    private readonly HudProfileUiSettings _profileUiSettings = new();
+    private bool _suppressProfileSelectionPersist;
 
     private DateTime _lastMovementModeChange = DateTime.MinValue;
     private const int MovementModeDebounce = 250;
@@ -87,28 +90,26 @@ public partial class HudOptions : UserControl
                 listOverlays.SelectedIndex = -1;
             };
 
+            buttonProfileApply.Click += (_, _) => ApplySelectedProfile();
+            buttonProfileUpdate.Click += (_, _) => UpdateSelectedProfile();
+            buttonProfileSave.Click += (_, _) => SaveCurrentProfile();
+            buttonProfileDelete.Click += (_, _) => DeleteSelectedProfile();
+
             GameManager.OnGameChanged += (s, e) =>
             {
                 if (e.next != Game.Any)
                 {
-                    switch (e.previous)
-                    {
-                        case Game.Any: break;
-                        case Game.AssettoCorsaCompetizione:
-                            {
-                                OverlaysAcc.CloseAll(); break;
-                            }
-                        default:
-                            {
-                                CommonHuds.CloseAll(); break;
-                            }
-                    }
+                    DisableMovementMode();
+                    OverlayLifecycleService.Instance.StopAll(persistDisabled: false);
 
-                    PreviewCache._cachedPreviews.Clear();
-                    Thread.Sleep(1000);
+                    PreviewCache.Clear();
+                    previewImage.Source = null;
 
                     PopulateCategoryCombobox(comboOverlays, listOverlays, OverlayType.Drive);
                     PopulateCategoryCombobox(comboDebugOverlays, listDebugOverlays, OverlayType.Pitwall);
+
+                    HudProfileManager.Instance.EnsureDefaultProfile(e.next);
+                    RefreshProfileList();
 
                     BuildOverlayPanel();
                 }
@@ -493,74 +494,29 @@ public partial class HudOptions : UserControl
         toggle.Checked += (s, e) =>
         {
             toggle.Background = Brushes.Green;
-
             stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
             overlayNameLabel.Foreground = Brushes.LimeGreen;
+            overlayNameLabel.BorderBrush = Brushes.Green;
 
+            listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
+            listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
 
-            CommonAbstractOverlay overlay = null;
-            if (GameManager.CurrentGame == Game.AssettoCorsaCompetizione)
-            {
-                overlay = ActiveOverlays.Find(f => f.GetType() == type);
-            }
-            else
-            {
-                overlay = CommonHuds.ActiveOverlays.Find(f => f.GetType() == type);
-            }
-
-            if (overlay == null)
-            {
-
-                overlayNameLabel.BorderBrush = Brushes.Green;
-                listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
-                listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
-                overlay = (CommonAbstractOverlay)Activator.CreateInstance(type, DefaultOverlayArgs);
-                overlay.Start();
-
-                SaveOverlaySettings(overlay, true);
-
-                configStacker.IsEnabled = false;
-
-                if (GameManager.CurrentGame == Game.AssettoCorsaCompetizione)
-                {
-                    if (ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
-                        ActiveOverlays.Add(overlay);
-                }
-                else
-                {
-                    if (CommonHuds.ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
-                        CommonHuds.ActiveOverlays.Add(overlay);
-                }
-            }
+            OverlayLifecycleService.Instance.Start(overlayAttribute.Name);
+            configStacker.IsEnabled = false;
         };
+
         toggle.Unchecked += (s, e) =>
         {
             toggle.Background = Brushes.Transparent;
-
             stackerOverlayInfo.Background = new SolidColorBrush(Color.FromArgb(140, 0, 0, 0));
             overlayNameLabel.BorderBrush = Brushes.OrangeRed;
             overlayNameLabel.Foreground = Brushes.White;
 
-            lock (ActiveOverlays)
-            {
-                listViewItem.Background = Brushes.Transparent;
-                listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
-                CommonAbstractOverlay overlay = ActiveOverlays.Find(f => f.GetType() == type);
-                if (overlay == null) return;
-                SaveOverlaySettings(overlay, false);
+            listViewItem.Background = Brushes.Transparent;
+            listViewItem.BorderBrush = new SolidColorBrush(Colors.Transparent);
 
-
-
-                int index = ActiveOverlays.FindIndex(o => o.Name == overlay.Name);
-                if (index != -1)
-                    ActiveOverlays.RemoveAt(index);
-                new Thread(() =>
-                 {
-                     overlay?.Stop();
-                 })
-                { IsBackground = true }.Start();
-                configStacker.IsEnabled = true;
-            }
+            OverlayLifecycleService.Instance.Stop(overlayAttribute.Name);
+            configStacker.IsEnabled = true;
         };
         activationPanel.PreviewMouseLeftButtonDown += (s, e) => toggle.IsChecked = !toggle.IsChecked;
 
@@ -659,17 +615,16 @@ public partial class HudOptions : UserControl
 
         if (enabled)
         {
-            mousePositionOverlay ??= new MousePositionOverlay(new System.Drawing.Rectangle(0, 0, 150, 150), "Mouse Position");
+            mousePositionOverlay ??= new MousePositionOverlay(
+                new System.Drawing.Rectangle(0, 0, 150, 150), "Mouse Position");
             mousePositionOverlay.Start(false);
         }
         else
         {
-            if (mousePositionOverlay != null)
-                mousePositionOverlay.Stop();
+            mousePositionOverlay?.Stop();
         }
 
-        foreach (CommonAbstractOverlay overlay in ActiveOverlays)
-            overlay.EnableReposition(enabled);
+        OverlayLifecycleService.Instance.SetRepositionMode(enabled);
     }
 
     private void BuildOverlayPanel()
@@ -732,7 +687,7 @@ public partial class HudOptions : UserControl
             if (overlayAttribute.OverlayType != overlayType)
                 continue;
 
-          
+
             Thickness defaultTextBlockMargin = new(14, 0.5, 0, 0.5);
             Thickness selectedTextBlockMargin = new(12, 0.5, 0, 0.5);
 
@@ -758,12 +713,14 @@ public partial class HudOptions : UserControl
                 BorderBrush = new SolidColorBrush(Colors.Transparent),
                 BorderThickness = new Thickness(4, 0, 0, 0),
             };
-            listViewItem.Selected += (s, e) => {
+            listViewItem.Selected += (s, e) =>
+            {
                 textBlock.FontWeight = FontWeights.Bold;
                 textBlock.FontStyle = FontStyles.Italic;
                 textBlock.Margin = selectedTextBlockMargin;
             };
-            listViewItem.Unselected += (s, e) => {
+            listViewItem.Unselected += (s, e) =>
+            {
                 textBlock.FontWeight = FontWeights.Normal;
                 textBlock.FontStyle = FontStyles.Normal;
                 textBlock.Margin = defaultTextBlockMargin;
@@ -795,20 +752,7 @@ public partial class HudOptions : UserControl
                     listViewItem.Background = new SolidColorBrush(Color.FromArgb(50, 0, 0, 0));
                     listViewItem.BorderBrush = new SolidColorBrush(Colors.LimeGreen);
 
-                    lock (ActiveOverlays)
-                    {
-                        CommonAbstractOverlay overlay = (CommonAbstractOverlay)Activator.CreateInstance(x.Value, DefaultOverlayArgs);
-                        if (ActiveOverlays.FindIndex(o => o.Name == overlay.Name) == -1)
-                        {
-                            SaveOverlaySettings(overlay, true);
-                            ActiveOverlays.Add(overlay);
-                            overlay.Start();
-                        }
-                        else
-                        {
-                            overlay.Dispose();
-                        }
-                    }
+                    OverlayLifecycleService.Instance.Start(overlayAttribute.Name);
                 }
 
             listView.Items.Add(listViewItem);
@@ -1014,4 +958,293 @@ public partial class HudOptions : UserControl
 
         return temp;
     }
+
+    private void RefreshProfileList()
+    {
+        string? previous = comboProfiles.SelectedItem as string;
+
+        _suppressProfileSelectionPersist = true;
+        try
+        {
+            comboProfiles.Items.Clear();
+
+            if (GameManager.CurrentGame == Game.Any)
+                return;
+
+            foreach (string name in HudProfileManager.Instance.ListProfiles())
+                comboProfiles.Items.Add(name);
+
+            string? remembered = GetRememberedProfile();
+            if (remembered != null && comboProfiles.Items.Contains(remembered))
+                comboProfiles.SelectedItem = remembered;
+            else if (previous != null && comboProfiles.Items.Contains(previous))
+                comboProfiles.SelectedItem = previous;
+            else if (comboProfiles.Items.Contains("Default"))
+                comboProfiles.SelectedItem = "Default";
+            else if (comboProfiles.Items.Count > 0)
+                comboProfiles.SelectedIndex = 0;
+        }
+        finally
+        {
+            _suppressProfileSelectionPersist = false;
+        }
+    }
+
+    private void ApplySelectedProfile()
+    {
+        if (comboProfiles.SelectedItem is not string name || string.IsNullOrWhiteSpace(name))
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Select a profile to apply.");
+            return;
+        }
+
+        try
+        {
+            DisableMovementMode();
+            bool ok = HudProfileManager.Instance.ApplyProfile(name);
+            if (ok)
+            {
+                RememberSelectedProfile(name);
+                PreviewCache.Clear();
+                previewImage.Source = null;
+                MainWindow.Instance.EnqueueSnackbarMessage($"Applied profile '{name}'.");
+                BuildOverlayPanel();
+            }
+            else
+                MainWindow.Instance.EnqueueSnackbarMessage($"Profile '{name}' could not be applied.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            MainWindow.Instance.EnqueueSnackbarMessage("Failed to apply profile.");
+        }
+    }
+
+    /// <summary>
+    /// Overwrite the selected profile with the current HUD layout (no name prompt).
+    /// </summary>
+    private void UpdateSelectedProfile()
+    {
+        if (GameManager.CurrentGame == Game.Any)
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Select a game first.");
+            return;
+        }
+
+        if (comboProfiles.SelectedItem is not string name || string.IsNullOrWhiteSpace(name))
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Select a profile to update.");
+            return;
+        }
+
+        if (string.Equals(name, "Default", StringComparison.OrdinalIgnoreCase))
+        {
+            var confirm = MessageBox.Show(
+                "Overwrite the Default profile with the current HUD layout?",
+                "Update profile",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+            if (confirm != MessageBoxResult.Yes)
+                return;
+        }
+
+        try
+        {
+            DisableMovementMode();
+            HudProfileManager.Instance.SaveCurrentAs(name);
+            RememberSelectedProfile(name);
+            RefreshProfileList();
+            comboProfiles.SelectedItem = name;
+            MainWindow.Instance.EnqueueSnackbarMessage($"Updated profile '{name}'.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            MainWindow.Instance.EnqueueSnackbarMessage("Failed to update profile.");
+        }
+    }
+
+    private void SaveCurrentProfile()
+    {
+        if (GameManager.CurrentGame == Game.Any)
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Select a game first.");
+            return;
+        }
+
+        string? name = PromptForProfileName();
+        if (string.IsNullOrWhiteSpace(name))
+            return;
+
+        try
+        {
+            DisableMovementMode();
+            string trimmed = name.Trim();
+            HudProfileManager.Instance.SaveCurrentAs(trimmed);
+            RememberSelectedProfile(trimmed);
+            RefreshProfileList();
+            comboProfiles.SelectedItem = trimmed;
+            MainWindow.Instance.EnqueueSnackbarMessage($"Saved profile '{trimmed}'.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            MainWindow.Instance.EnqueueSnackbarMessage("Failed to save profile.");
+        }
+    }
+
+    private void DeleteSelectedProfile()
+    {
+        if (comboProfiles.SelectedItem is not string name || string.IsNullOrWhiteSpace(name))
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Select a profile to delete.");
+            return;
+        }
+
+        var result = MessageBox.Show(
+            $"Delete profile '{name}'? This cannot be undone.",
+            "Delete profile",
+            MessageBoxButton.YesNo,
+            MessageBoxImage.Warning);
+
+        if (result != MessageBoxResult.Yes)
+            return;
+
+        if (HudProfileManager.Instance.DeleteProfile(name))
+        {
+            ClearRememberedIfMatches(name);
+            RefreshProfileList();
+            MainWindow.Instance.EnqueueSnackbarMessage($"Deleted profile '{name}'.");
+        }
+        else
+            MainWindow.Instance.EnqueueSnackbarMessage($"Could not delete '{name}'.");
+    }
+
+    private void RememberSelectedProfile(string? name)
+    {
+        if (GameManager.CurrentGame == Game.Any || string.IsNullOrWhiteSpace(name))
+            return;
+
+        try
+        {
+            var data = _profileUiSettings.Get();
+            data.LastSelectedByGame ??= new Dictionary<string, string>();
+            data.LastSelectedByGame[GameManager.CurrentGame.ToFriendlyName()] = name;
+            _profileUiSettings.Save(data);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+    }
+
+    private string? GetRememberedProfile()
+    {
+        if (GameManager.CurrentGame == Game.Any)
+            return null;
+
+        try
+        {
+            var data = _profileUiSettings.Get();
+            if (data.LastSelectedByGame is null)
+                return null;
+
+            if (data.LastSelectedByGame.TryGetValue(GameManager.CurrentGame.ToFriendlyName(), out string? name))
+                return name;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+
+        return null;
+    }
+
+    private void ClearRememberedIfMatches(string deletedName)
+    {
+        if (GameManager.CurrentGame == Game.Any || string.IsNullOrWhiteSpace(deletedName))
+            return;
+
+        try
+        {
+            var data = _profileUiSettings.Get();
+            if (data.LastSelectedByGame is null)
+                return;
+
+            string key = GameManager.CurrentGame.ToFriendlyName();
+            if (data.LastSelectedByGame.TryGetValue(key, out string? current)
+                && string.Equals(current, deletedName, StringComparison.OrdinalIgnoreCase))
+            {
+                data.LastSelectedByGame.Remove(key);
+                _profileUiSettings.Save(data);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+    }
+
+    /// <summary>
+    /// Minimal name prompt for Save as.
+    /// </summary>
+    private string? PromptForProfileName()
+    {
+        var dialog = new Window
+        {
+            Title = "Save profile as…",
+            Width = 360,
+            Height = 140,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            ResizeMode = ResizeMode.NoResize,
+            Owner = Window.GetWindow(this)
+        };
+
+        var box = new TextBox { Margin = new Thickness(12), FontSize = 14 };
+        string? result = null;
+
+        var ok = new Button { Content = "OK", Width = 80, Margin = new Thickness(4), IsDefault = true };
+        ok.Click += (_, _) => { result = box.Text; dialog.DialogResult = true; };
+
+        var cancel = new Button { Content = "Cancel", Width = 80, Margin = new Thickness(4), IsCancel = true };
+
+        var buttons = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            Margin = new Thickness(8)
+        };
+        buttons.Children.Add(ok);
+        buttons.Children.Add(cancel);
+
+        var root = new DockPanel();
+        DockPanel.SetDock(buttons, Dock.Bottom);
+        root.Children.Add(buttons);
+        root.Children.Add(box);
+        dialog.Content = root;
+
+        box.Focus();
+        return dialog.ShowDialog() == true ? result : null;
+    }
+
+    /// <summary>
+    /// Turns movement mode off in the UI (persists live X/Y via EnableReposition(false)).
+    /// Safe from the UI thread or a GameChanged callback.
+    /// </summary>
+    private void DisableMovementMode()
+    {
+        void Go()
+        {
+            if (listBoxItemToggleMovementMode.IsSelected)
+                listBoxItemToggleMovementMode.IsSelected = false;
+            else
+                SetRepositionMode(false);
+        }
+
+        if (Dispatcher.CheckAccess())
+            Go();
+        else
+            Dispatcher.Invoke(Go);
+    }
+   
 }
