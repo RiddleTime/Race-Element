@@ -44,6 +44,8 @@ public partial class HudOptions : UserControl
     private HudSettingsJson _hudSettingsJson;
 
     private readonly object[] DefaultOverlayArgs = [new System.Drawing.Rectangle((int)SystemParameters.PrimaryScreenWidth / 2, (int)SystemParameters.PrimaryScreenHeight / 2, 300, 150)];
+    private readonly HudProfileUiSettings _profileUiSettings = new();
+    private bool _suppressProfileSelectionPersist;
 
     private DateTime _lastMovementModeChange = DateTime.MinValue;
     private const int MovementModeDebounce = 250;
@@ -89,8 +91,17 @@ public partial class HudOptions : UserControl
             };
 
             buttonProfileApply.Click += (_, _) => ApplySelectedProfile();
+            buttonProfileUpdate.Click += (_, _) => UpdateSelectedProfile();
             buttonProfileSave.Click += (_, _) => SaveCurrentProfile();
             buttonProfileDelete.Click += (_, _) => DeleteSelectedProfile();
+
+            comboProfiles.SelectionChanged += (_, _) =>
+            {
+                if (_suppressProfileSelectionPersist)
+                    return;
+                if (comboProfiles.SelectedItem is string selectedName)
+                    RememberSelectedProfile(selectedName);
+            };
 
 
             GameManager.OnGameChanged += (s, e) =>
@@ -961,18 +972,31 @@ public partial class HudOptions : UserControl
     {
         string? previous = comboProfiles.SelectedItem as string;
 
-        comboProfiles.Items.Clear();
+        _suppressProfileSelectionPersist = true;
+        try
+        {
+            comboProfiles.Items.Clear();
 
-        if (GameManager.CurrentGame == Game.Any)
-            return;
+            if (GameManager.CurrentGame == Game.Any)
+                return;
 
-        foreach (string name in HudProfileManager.Instance.ListProfiles())
-            comboProfiles.Items.Add(name);
+            foreach (string name in HudProfileManager.Instance.ListProfiles())
+                comboProfiles.Items.Add(name);
 
-        if (previous != null && comboProfiles.Items.Contains(previous))
-            comboProfiles.SelectedItem = previous;
-        else if (comboProfiles.Items.Count > 0)
-            comboProfiles.SelectedIndex = 0;
+            string? remembered = GetRememberedProfile();
+            if (remembered != null && comboProfiles.Items.Contains(remembered))
+                comboProfiles.SelectedItem = remembered;
+            else if (previous != null && comboProfiles.Items.Contains(previous))
+                comboProfiles.SelectedItem = previous;
+            else if (comboProfiles.Items.Contains("Default"))
+                comboProfiles.SelectedItem = "Default";
+            else if (comboProfiles.Items.Count > 0)
+                comboProfiles.SelectedIndex = 0;
+        }
+        finally
+        {
+            _suppressProfileSelectionPersist = false;
+        }
     }
 
     private void ApplySelectedProfile()
@@ -989,6 +1013,7 @@ public partial class HudOptions : UserControl
             bool ok = HudProfileManager.Instance.ApplyProfile(name);
             if (ok)
             {
+                RememberSelectedProfile(name);
                 PreviewCache.Clear();
                 previewImage.Source = null;
                 MainWindow.Instance.EnqueueSnackbarMessage($"Applied profile '{name}'.");
@@ -1001,6 +1026,50 @@ public partial class HudOptions : UserControl
         {
             Debug.WriteLine(ex);
             MainWindow.Instance.EnqueueSnackbarMessage("Failed to apply profile.");
+        }
+    }
+
+    /// <summary>
+    /// Overwrite the selected profile with the current HUD layout (no name prompt).
+    /// </summary>
+    private void UpdateSelectedProfile()
+    {
+        if (GameManager.CurrentGame == Game.Any)
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Select a game first.");
+            return;
+        }
+
+        if (comboProfiles.SelectedItem is not string name || string.IsNullOrWhiteSpace(name))
+        {
+            MainWindow.Instance.EnqueueSnackbarMessage("Select a profile to update.");
+            return;
+        }
+
+        if (string.Equals(name, "Default", StringComparison.OrdinalIgnoreCase))
+        {
+            var confirm = MessageBox.Show(
+                "Overwrite the Default profile with the current HUD layout?",
+                "Update profile",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question);
+            if (confirm != MessageBoxResult.Yes)
+                return;
+        }
+
+        try
+        {
+            DisableMovementMode();
+            HudProfileManager.Instance.SaveCurrentAs(name);
+            RememberSelectedProfile(name);
+            RefreshProfileList();
+            comboProfiles.SelectedItem = name;
+            MainWindow.Instance.EnqueueSnackbarMessage($"Updated profile '{name}'.");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+            MainWindow.Instance.EnqueueSnackbarMessage("Failed to update profile.");
         }
     }
 
@@ -1019,10 +1088,12 @@ public partial class HudOptions : UserControl
         try
         {
             DisableMovementMode();
-            HudProfileManager.Instance.SaveCurrentAs(name.Trim());
+            string trimmed = name.Trim();
+            HudProfileManager.Instance.SaveCurrentAs(trimmed);
+            RememberSelectedProfile(trimmed);
             RefreshProfileList();
-            comboProfiles.SelectedItem = name.Trim();
-            MainWindow.Instance.EnqueueSnackbarMessage($"Saved profile '{name.Trim()}'.");
+            comboProfiles.SelectedItem = trimmed;
+            MainWindow.Instance.EnqueueSnackbarMessage($"Saved profile '{trimmed}'.");
         }
         catch (Exception ex)
         {
@@ -1039,7 +1110,6 @@ public partial class HudOptions : UserControl
             return;
         }
 
-        // Simple confirm — use your existing dialog pattern if available
         var result = MessageBox.Show(
             $"Delete profile '{name}'? This cannot be undone.",
             "Delete profile",
@@ -1051,11 +1121,119 @@ public partial class HudOptions : UserControl
 
         if (HudProfileManager.Instance.DeleteProfile(name))
         {
+            ClearRememberedIfMatches(name);
             RefreshProfileList();
             MainWindow.Instance.EnqueueSnackbarMessage($"Deleted profile '{name}'.");
         }
         else
             MainWindow.Instance.EnqueueSnackbarMessage($"Could not delete '{name}'.");
+    }
+
+    private void RememberSelectedProfile(string? name)
+    {
+        if (GameManager.CurrentGame == Game.Any || string.IsNullOrWhiteSpace(name))
+            return;
+
+        try
+        {
+            var data = _profileUiSettings.Get();
+            data.LastSelectedByGame ??= new Dictionary<string, string>();
+            data.LastSelectedByGame[GameManager.CurrentGame.ToFriendlyName()] = name;
+            _profileUiSettings.Save(data);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+    }
+
+    private string? GetRememberedProfile()
+    {
+        if (GameManager.CurrentGame == Game.Any)
+            return null;
+
+        try
+        {
+            var data = _profileUiSettings.Get();
+            if (data.LastSelectedByGame is null)
+                return null;
+
+            if (data.LastSelectedByGame.TryGetValue(GameManager.CurrentGame.ToFriendlyName(), out string? name))
+                return name;
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+
+        return null;
+    }
+
+    private void ClearRememberedIfMatches(string deletedName)
+    {
+        if (GameManager.CurrentGame == Game.Any || string.IsNullOrWhiteSpace(deletedName))
+            return;
+
+        try
+        {
+            var data = _profileUiSettings.Get();
+            if (data.LastSelectedByGame is null)
+                return;
+
+            string key = GameManager.CurrentGame.ToFriendlyName();
+            if (data.LastSelectedByGame.TryGetValue(key, out string? current)
+                && string.Equals(current, deletedName, StringComparison.OrdinalIgnoreCase))
+            {
+                data.LastSelectedByGame.Remove(key);
+                _profileUiSettings.Save(data);
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+    }
+
+    /// <summary>
+    /// Minimal name prompt for Save as.
+    /// </summary>
+    private string? PromptForProfileName()
+    {
+        var dialog = new Window
+        {
+            Title = "Save profile as…",
+            Width = 360,
+            Height = 140,
+            WindowStartupLocation = WindowStartupLocation.CenterOwner,
+            ResizeMode = ResizeMode.NoResize,
+            Owner = Window.GetWindow(this)
+        };
+
+        var box = new TextBox { Margin = new Thickness(12), FontSize = 14 };
+        string? result = null;
+
+        var ok = new Button { Content = "OK", Width = 80, Margin = new Thickness(4), IsDefault = true };
+        ok.Click += (_, _) => { result = box.Text; dialog.DialogResult = true; };
+
+        var cancel = new Button { Content = "Cancel", Width = 80, Margin = new Thickness(4), IsCancel = true };
+
+        var buttons = new StackPanel
+        {
+            Orientation = Orientation.Horizontal,
+            HorizontalAlignment = HorizontalAlignment.Right,
+            Margin = new Thickness(8)
+        };
+        buttons.Children.Add(ok);
+        buttons.Children.Add(cancel);
+
+        var root = new DockPanel();
+        DockPanel.SetDock(buttons, Dock.Bottom);
+        root.Children.Add(buttons);
+        root.Children.Add(box);
+        dialog.Content = root;
+
+        box.Focus();
+        return dialog.ShowDialog() == true ? result : null;
     }
 
     /// <summary>
@@ -1077,48 +1255,5 @@ public partial class HudOptions : UserControl
         else
             Dispatcher.Invoke(Go);
     }
-
-    /// <summary>
-    /// Minimal name prompt. Swap for a MaterialDesign dialog when you want something nicer.
-    /// </summary>
-    private string? PromptForProfileName()
-    {
-        // If the project already has an input dialog, use that instead.
-        // Fallback: use a simple WPF Window or reuse any existing prompt helper.
-        var dialog = new Window
-        {
-            Title = "Save profile as…",
-            Width = 360,
-            Height = 140,
-            WindowStartupLocation = WindowStartupLocation.CenterOwner,
-            Owner = MainWindow.Instance,
-            ResizeMode = ResizeMode.NoResize
-        };
-
-        var box = new TextBox { Margin = new Thickness(12), FontSize = 14 };
-        var ok = new Button { Content = "Save", Width = 80, IsDefault = true, Margin = new Thickness(0, 0, 8, 0) };
-        var cancel = new Button { Content = "Cancel", Width = 80, IsCancel = true };
-
-        string? result = null;
-        ok.Click += (_, _) => { result = box.Text; dialog.DialogResult = true; };
-        cancel.Click += (_, _) => { dialog.DialogResult = false; };
-
-        var buttons = new StackPanel
-        {
-            Orientation = Orientation.Horizontal,
-            HorizontalAlignment = HorizontalAlignment.Right,
-            Margin = new Thickness(12, 0, 12, 12)
-        };
-        buttons.Children.Add(ok);
-        buttons.Children.Add(cancel);
-
-        var root = new DockPanel();
-        DockPanel.SetDock(buttons, Dock.Bottom);
-        root.Children.Add(buttons);
-        root.Children.Add(box);
-        dialog.Content = root;
-
-        box.Focus();
-        return dialog.ShowDialog() == true ? result : null;
-    }
+   
 }
