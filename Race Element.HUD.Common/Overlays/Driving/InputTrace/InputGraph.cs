@@ -18,6 +18,7 @@ internal sealed class InputGraph : IDisposable
     private readonly Pen _steeringPen;
     private readonly Pen _tractionControlPen;
     private readonly Pen _absPen;
+    private readonly Pen _speedPen;
 
 
     // Reusable buffers to avoid per-frame allocations
@@ -27,6 +28,7 @@ internal sealed class InputGraph : IDisposable
     private readonly List<int> _steeringBuffer = [];
     private readonly List<bool> _tractionControlBuffer = [];
     private readonly List<bool> _absBuffer = [];
+    private readonly List<int> _speedBuffer = [];
     private readonly List<Point> _pointsBuffer = [];
 
     public InputGraph(int x, int y, int width, int height, InputTraceConfiguration config)
@@ -43,6 +45,7 @@ internal sealed class InputGraph : IDisposable
         _steeringPen = new Pen(Color.FromArgb(_config.Colors.SteeringOpacity, _config.Colors.SteeringColor), _config.Chart.LineThickness);
         _tractionControlPen = new Pen(Color.FromArgb(_config.TractionControl.TractionControlOpacity, _config.TractionControl.TractionControlColor), 1);
         _absPen = new Pen(Color.FromArgb(_config.Abs.AbsOpacity, _config.Abs.AbsColor), 1);
+        _speedPen = new Pen(Color.FromArgb(_config.Colors.SpeedOpacity, _config.Colors.SpeedColor), 1);
 
         _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
         {
@@ -80,6 +83,7 @@ internal sealed class InputGraph : IDisposable
         _steeringBuffer.Clear();
         _tractionControlBuffer.Clear();
         _absBuffer.Clear();
+        _speedBuffer.Clear();
 
         foreach (var item in data)
         {
@@ -89,14 +93,20 @@ internal sealed class InputGraph : IDisposable
             _steeringBuffer.Add(item.Steering);
             _tractionControlBuffer.Add(item.TractionControlActivation);
             _absBuffer.Add(item.AbsActivation);
+            _speedBuffer.Add(item.Speed);
         }
 
-        if (_config.Chart.ClutchInput)
+        if (_config.Data.Speed)
+        {
+            DrawData(g, _speedBuffer, _speedPen);
+        }
+
+        if (_config.Data.Clutch)
         {
             DrawData(g, _clutchBuffer, _clutchPen);
         }
 
-        if (_config.Chart.SteeringInput)
+        if (_config.Data.Steering)
         {
             DrawData(g, _steeringBuffer, _steeringPen);
         }

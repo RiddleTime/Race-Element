@@ -33,11 +33,11 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
 
         _graph = new InputGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, this._config);
 
-        for (int i = 0; i < _config.Chart.Width - 1; i++) _dataQueue.Enqueue(new(0, 0, 50, 0, false, false));
+        for (int i = 0; i < _config.Chart.Width - 1; i++) _dataQueue.Enqueue(new(0, 0, 50, 0, 40, false, false));
 
         if (!IsPreviewing)
         {
-            _dataCollector = new() { IntervalMillis = (int)(1000f / _config.Data.Herz) };
+            _dataCollector = new(_config) { IntervalMillis = (int)(1000f / _config.Data.Herz) };
             _dataCollector.OnCollected += OnNewData;
             _dataCollector.Run();
         }
@@ -65,16 +65,26 @@ internal sealed class InputTraceOverlay(Rectangle rectangle) : CommonAbstractOve
     public sealed override void Render(Graphics g) => _graph?.Draw(g, _dataQueue);
 }
 
-internal readonly record struct InputsData(int Throttle, int Brake, int Steering, int Clutch, bool TractionControlActivation, bool AbsActivation);
-internal sealed class DataCollector : AbstractCollectionJob<InputsData>
+internal readonly record struct InputsData(int Throttle, int Brake, int Steering, int Clutch, int Speed, bool TractionControlActivation, bool AbsActivation);
+internal sealed class DataCollector(InputTraceConfiguration InputTraceConfig) : AbstractCollectionJob<InputsData>
 {
-    public sealed override InputsData Collect => new()
+    public sealed override InputsData Collect
     {
-        Throttle = (int)(SimDataProvider.LocalCar.Inputs.Throttle * 100f),
-        Brake = (int)(SimDataProvider.LocalCar.Inputs.Brake * 100),
-        Steering = (int)(((SimDataProvider.LocalCar.Inputs.Steering + 1.0f) / 2f) * 100f),
-        Clutch = (int)(SimDataProvider.LocalCar.Inputs.Clutch * 100f),
-        TractionControlActivation = SimDataProvider.LocalCar.Electronics.TractionControlActivation > 0,
-        AbsActivation = SimDataProvider.LocalCar.Electronics.AbsActivation > 0,
-    };
+        get
+        {
+            int speed = (int)SimDataProvider.LocalCar.Physics.Velocity;
+            if (speed < 0) speed *= -1;
+            int scaledSpeed = (int)(100f * speed / InputTraceConfig.Data.MaxSpeed);
+            return new()
+            {
+                Throttle = (int)(SimDataProvider.LocalCar.Inputs.Throttle * 100f),
+                Brake = (int)(SimDataProvider.LocalCar.Inputs.Brake * 100),
+                Steering = (int)(((SimDataProvider.LocalCar.Inputs.Steering + 1.0f) / 2f) * 100f),
+                Speed = scaledSpeed,
+                Clutch = (int)(SimDataProvider.LocalCar.Inputs.Clutch * 100f),
+                TractionControlActivation = SimDataProvider.LocalCar.Electronics.TractionControlActivation > 0,
+                AbsActivation = SimDataProvider.LocalCar.Electronics.AbsActivation > 0,
+            };
+        }
+    }
 }
