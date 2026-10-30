@@ -16,13 +16,12 @@ export const routeMeta: RouteMeta = {
 };
 
 @Component({
-  standalone: true,
-  template: `
+    template: `
   <div class="container mx-auto text-center select-none">
     <h2>Trying to Open Race Element's Setup Importer</h2>
   </div>
   `,
-  imports: []
+    imports: []
 })
 export default class SetupLinkPage implements OnInit {
 

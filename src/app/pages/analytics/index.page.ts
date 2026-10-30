@@ -3,13 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
 @Component({
-  standalone: true,
-  template: `
+    template: `
   <div class="container mx-auto text-center select-none">
     <h2>.</h2>
   </div>
   `,
-  imports: []
+    imports: []
 })
 export default class AnalyticsComponent implements OnInit {
 

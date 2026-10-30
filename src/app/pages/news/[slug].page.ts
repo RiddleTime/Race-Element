@@ -5,10 +5,9 @@ import PostAttributes from '../../post-attributes';
 import { Meta } from '@angular/platform-browser';
 
 @Component({
-  selector: 'app-news-post',
-  standalone: true,
-  imports: [AsyncPipe, MarkdownComponent, CommonModule],
-  template: `
+    selector: 'app-news-post',
+    imports: [AsyncPipe, MarkdownComponent, CommonModule],
+    template: `
     @if (post | async; as post) {
     <article class="rounded-lg container mx-auto max-w-4xl px-3">
       <h1 class="text-xl md:text-3xl font-['Conthrax'] select-none dark:text-gray-300 dark:bg-black rounded-tl-xl border-l-2 pl-2 pr-2 pt-1 pb-1 border-red-800">
@@ -21,11 +20,11 @@ import { Meta } from '@angular/platform-browser';
     </article>
     }
   `,
-  styles: [
-    `
+    styles: [
+        `
     `,
-  ],
-  encapsulation: ViewEncapsulation.None,
+    ],
+    encapsulation: ViewEncapsulation.None
 })
 export default class NewsSlugComponent implements OnInit{
   readonly post = injectContent<PostAttributes>({

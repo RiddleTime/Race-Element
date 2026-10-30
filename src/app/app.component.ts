@@ -22,9 +22,8 @@ export const routeMeta: RouteMeta = {
 };
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  template: `
+    selector: 'app-root',
+    template: `
     <div class="container mx-auto flex flex-col self-center pt-2 select-none">
 
       <div class="mx-auto mb-3">
@@ -57,11 +56,11 @@ export const routeMeta: RouteMeta = {
       </footer>
     </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
     `,
-  ],
-  imports: [RouterOutlet, SocialsComponent]
+    ],
+    imports: [RouterOutlet, SocialsComponent]
 })
 export class AppComponent {
   ThisYear: number = new Date().getFullYear();

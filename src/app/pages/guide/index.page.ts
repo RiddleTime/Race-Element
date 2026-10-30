@@ -19,10 +19,9 @@ export const routeMeta: RouteMeta = {
 };
 
 @Component({
-  selector: 'app-guides',
-  standalone: true,
-  imports: [RouterLink, CommonModule],
-  template: `
+    selector: 'app-guides',
+    imports: [RouterLink, CommonModule],
+    template: `
   <div class="mx-auto rounded-lg shadow-lg select-none container max-w-4xl px-3">
     <h1 class="font-['Conthrax'] text-4xl mb-2 md:mb-1 text-center">Guides</h1>
     <div class="container mx-auto flex-wrap">
@@ -41,11 +40,11 @@ export const routeMeta: RouteMeta = {
     </div>
   </div>
   `,
-  styles: [
-    `
+    styles: [
+        `
 
     `,
-  ],
+    ]
 })
 export default class GuidesIndexComponent implements OnInit {
   readonly posts = injectContentFiles<PostAttributes>((contentFile) => {
