@@ -28,10 +28,10 @@ export const routeMeta: RouteMeta = {
     <div class="container mx-auto flex flex-col self-center pt-2 select-none">
 
       <div class="mx-auto mb-3">
-        <a href="/" class="hud-title font-['Conthrax'] text-3xl sm:text-4xl md:text-6xl">
+        <a href="/" class="hud-title font-['Conthrax']">
           Race Element
         </a>
-        <p class="text-center font-['Conthrax']">Solutions for Simulators</p>
+        <p class="text-center font-['Conthrax'] -mt-1">Solutions for Simulators</p>
         <p class="text-xs uppercase tracking-wider text-white/60 mt-1 text-center">21+ Sims · 40+ HUDs · Open Source</p>
       </div>
 

@@ -18,8 +18,6 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
-
-
 }
 
 @font-face {
@@ -143,6 +141,31 @@ button:focus-visible {
 
 .logo {
   @apply box-content;
+}
+
+.hud-title {
+  display: inline-block;
+  color: orangered;
+  font-size: 2.1rem;
+  font-weight: 700;
+  transform: skewX(-16deg);
+  letter-spacing: 0.01em;
+  text-shadow:
+    3px 3px 0 rgba(0, 0, 0, 0.7),
+    0 0 4px rgba(255, 50, 0, 0.8),
+    0 0 10px rgba(255, 30, 0, 0.55),
+    0 0 18px rgba(200, 20, 0, 0.35);
+}
+
+@media (min-width: 768px) {
+  .hud-title {
+    font-size: 3rem;
+  }
+}
+
+.hud-title:hover {
+  color: orangered;
+  text-decoration: none;
 }
 
 @media (prefers-color-scheme: light) {
