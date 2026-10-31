@@ -1,12 +1,12 @@
-import { Component,OnInit,ViewEncapsulation } from '@angular/core';
+import { Component, inject, OnInit, ViewEncapsulation } from '@angular/core';
 import { injectContent, MarkdownComponent } from '@analogjs/content';
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import PostAttributes from '../../post-attributes';
 import { Meta } from '@angular/platform-browser';
 
 @Component({
     selector: 'app-news-post',
-    imports: [AsyncPipe, MarkdownComponent, CommonModule],
+    imports: [AsyncPipe, MarkdownComponent, DatePipe],
     template: `
     @if (post | async; as post) {
     <article class="rounded-lg container mx-auto max-w-4xl px-3">
@@ -26,13 +26,12 @@ import { Meta } from '@angular/platform-browser';
     ],
     encapsulation: ViewEncapsulation.None
 })
-export default class NewsSlugComponent implements OnInit{
+export default class NewsSlugComponent implements OnInit {
+  private readonly meta = inject(Meta);
   readonly post = injectContent<PostAttributes>({
     param: 'slug',
     subdirectory: 'news',
   });
-
-  constructor(private meta: Meta) {}
 
   ngOnInit(): void {
     this.post.forEach(x => {

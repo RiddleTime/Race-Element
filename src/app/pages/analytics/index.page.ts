@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Title } from '@angular/platform-browser';
 
@@ -7,14 +7,12 @@ import { Title } from '@angular/platform-browser';
   <div class="container mx-auto text-center select-none">
     <h2>.</h2>
   </div>
-  `,
+    `,
     imports: []
 })
 export default class AnalyticsComponent implements OnInit {
-
-  constructor(private route: ActivatedRoute, private title: Title) {
-
-  }
+  private readonly route = inject(ActivatedRoute);
+  private readonly title = inject(Title);
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: { [x: string]: any; }) => {
@@ -24,5 +22,4 @@ export default class AnalyticsComponent implements OnInit {
       }
     });
   }
-
 }

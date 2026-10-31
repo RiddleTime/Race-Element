@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { DatePipe } from '@angular/common';
 import { injectContentFiles } from '@analogjs/content';
 import PostAttributes from '../../post-attributes';
 import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
 import { RouteMeta } from '@analogjs/router';
 
 export const routeMeta: RouteMeta = {
@@ -20,7 +20,7 @@ export const routeMeta: RouteMeta = {
 
 @Component({
     selector: 'app-news',
-    imports: [RouterLink, CommonModule],
+    imports: [RouterLink, DatePipe],
     template: `
   <div class="mx-auto rounded-lg shadow-lg select-none container max-w-4xl px-3">
     <h1 class="font-['Conthrax'] text-4xl mb-1 text-center">News</h1>
@@ -47,23 +47,18 @@ export const routeMeta: RouteMeta = {
     `,
     ]
 })
-export default class NewsIndexComponent implements OnInit {
-
+export default class NewsIndexComponent {
   readonly posts = injectContentFiles<PostAttributes>((contentFile) => {
     return contentFile.attributes.type === 'news';
-  });
-
-  ngOnInit(): void {
-    this.posts.sort((a, b) => {
-      if (a.attributes.date === undefined || b.attributes.date === undefined) {
-        if (a.attributes.date !== undefined) {
-          return -1;
-        }
-
-        return b.attributes.title < a.attributes.title ? 1 : b.attributes.title > a.attributes.title ? -1 : 0;
+  }).sort((a, b) => {
+    if (a.attributes.date === undefined || b.attributes.date === undefined) {
+      if (a.attributes.date !== undefined) {
+        return -1;
       }
 
-      return a.attributes.date < b.attributes.date ? 1 : -1
-    });
-  }
+      return b.attributes.title < a.attributes.title ? 1 : b.attributes.title > a.attributes.title ? -1 : 0;
+    }
+
+    return a.attributes.date < b.attributes.date ? 1 : -1;
+  });
 }
