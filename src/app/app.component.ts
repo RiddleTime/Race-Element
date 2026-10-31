@@ -31,16 +31,16 @@ export const routeMeta: RouteMeta = {
         <a href="/" class="hud-title font-['Conthrax']">
           Race Element
         </a>
-        <p class="text-center font-['Conthrax'] -mt-1">Solutions for Simulators</p>
+        <p class="text-center font-['Conthrax'] -mt-3">Solutions for Simulators</p>
         <p class="text-xs uppercase tracking-wider text-white/60 mt-1 text-center">21 SIMS · HUDs & PLUGINS · OPEN SOURCE</p>
       </div>
 
       <div class="flex flex-col items-center gap-2 mt-3">
         <nav class="font-['Conthrax'] text-xs sm:text-sm md:text-base uppercase tracking-wide flex flex-wrap justify-center gap-x-2 sm:gap-x-3 md:gap-x-4 gap-y-1">
-          <a routerLink="/news" routerLinkActive="border-b-2 border-[#00E000]" class="text-white/80 hover:text-[orangered] pb-1">News</a>
-          <a routerLink="/guide" routerLinkActive="border-b-2 border-[#00E000]" [routerLinkActiveOptions]="{exact:true}" class="text-white/80 hover:text-[orangered] pb-1">Guides</a>
-          <a routerLink="/guide/features" routerLinkActive="border-b-2 border-[#00E000]" class="text-white/80 hover:text-[orangered] pb-1">Features</a>
-          <a routerLink="/guide/how-to-get-started" routerLinkActive="border-b-2 border-[#00E000]" class="text-white/80 hover:text-[orangered] pb-1">Download</a>
+          <a routerLink="/news" routerLinkActive="border-b-2 border-[#00E000]" class="text-white/80 hover:text-[white]">News</a>
+          <a routerLink="/guide" routerLinkActive="border-b-2 border-[#00E000]" [routerLinkActiveOptions]="{exact:true}" class="text-white/80 hover:text-[white]">Guides</a>
+          <a routerLink="/guide/features" routerLinkActive="border-b-2 border-[#00E000]" class="text-white/80 hover:text-[white]">Features</a>
+          <a routerLink="/guide/how-to-get-started" routerLinkActive="border-b-2 border-[#00E000]" class="text-white/80 hover:text-[white]">Download</a>
         </nav>
         <app-socials />
       </div>
