@@ -2,6 +2,7 @@
 title: Sponsor
 slug: sponsor
 description: Support Developement
+type: guide 
 ---
 # More than a 1000 hours have been spent on this project, if you want to support me on this journey leave a donation or become a patreon.
 ## Sponsor

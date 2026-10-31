@@ -2,6 +2,7 @@
 title: Features
 slug: features
 description: General features
+type: guide 
 ---
 ## **[Open Download and Installation Guide](/guide/how-to-get-started)**
 
