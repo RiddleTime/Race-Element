@@ -1,0 +1,1 @@
+import{At as e}from"./_debug_node-chunk-CQNsXINp.js";var t,n=class{};t=n,t.ɵfac=function(e){return new(e||t)},t.ɵcmp=e({type:t,selectors:[[`app-not-found`]],decls:0,vars:0,template:function(e,t){},encapsulation:2});export{n as default};

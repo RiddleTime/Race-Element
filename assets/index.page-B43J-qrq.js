@@ -1,0 +1,1 @@
+var e={redirectTo:`/news`,pathMatch:`full`};export{e as routeMeta};
