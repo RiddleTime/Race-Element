@@ -28,7 +28,7 @@ export const routeMeta: RouteMeta = {
     <div class="container mx-auto flex flex-col self-center pt-2 select-none">
 
       <div class="mx-auto mb-3">
-        <a href="/" class="font-['Conthrax'] text-3xl sm:text-4xl md:text-6xl text-[orangered] italic uppercase tracking-wide">
+        <a href="/" class="hud-title font-['Conthrax'] text-3xl sm:text-4xl md:text-6xl">
           Race Element
         </a>
         <p class="text-center font-['Conthrax']">Solutions for Simulators</p>
