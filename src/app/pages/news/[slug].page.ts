@@ -15,7 +15,7 @@ import { Meta } from '@angular/platform-browser';
       </h1>
       <div class="container dark:bg-[#050505] pl-3 pr-[1em] pt-2 rounded-br-xl">
         <p class="select-none text-sm mb-3">{{post.attributes.date !== undefined? (post.attributes.date | date:'longDate') : ''}}</p>
-        <analog-markdown class="whitespace-pre-line" [content]="post.content" />
+        <analog-markdown [content]="post.content" />
       </div>
     </article>
     }

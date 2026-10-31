@@ -36,7 +36,7 @@ export const routeMeta: RouteMeta = {
       </div>
 
       <div class="mx-auto container place-content-center grid max-w-2xl md:max-w-3xl grid-cols-2 md:grid-cols-1">
-        <nav class="font-['Conthrax'] text-sm md:text-base uppercase tracking-wide flex flex-wrap justify-center gap-4 md:gap-6 mt-3">
+        <nav class="font-['Conthrax'] text-sm md:text-base uppercase tracking-wide flex flex-wrap justify-center gap-4 md:gap-6 mt-3 mb-3">
           <a routerLink="/news" routerLinkActive="text-[orangered] border-b-2 border-[orangered]" class="text-white/80 hover:text-[orangered] pb-1">News</a>
           <a routerLink="/guide" routerLinkActive="text-[orangered] border-b-2 border-[orangered]" [routerLinkActiveOptions]="{exact:true}" class="text-white/80 hover:text-[orangered] pb-1">Guides</a>
           <a routerLink="/guide/features" routerLinkActive="text-[orangered] border-b-2 border-[orangered]" class="text-white/80 hover:text-[orangered] pb-1">Features</a>

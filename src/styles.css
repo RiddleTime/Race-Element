@@ -29,7 +29,7 @@
 }
 
 .analog-markdown {
-  line-height: 1.4rem;
+  line-height: 1.35;
   @apply md:text-base;
   @apply select-text;
 
@@ -58,24 +58,21 @@
     @apply border-red-950;
   }
 
-  >ul {
+  >ul,
+  >ol {
     list-style-type: disc;
-    padding-left: 1.5em;
-    margin: 0.6em 0 0.8em 0;
-
-    >li {
-      margin-bottom: 0.25em;
-    }
+    margin: 0.3em 0 0.5em 0;
+    padding-left: 1.2em;
+    line-height: 1.3;
   }
 
-  >ol {
-    list-style-type: number;
-    padding-left: 1.3em;
-    margin: 0.6em 0 0.8em 0;
-
-    >li {
-      margin-bottom: 0.25em;
-    }
+  >ul > li,
+  >ol > li {
+    margin: 0;
+    margin-bottom: 0.15em;
+    padding: 0;
+    line-height: 1.3;
+    display: list-item;
   }
 
   >p {
