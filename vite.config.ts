@@ -4,7 +4,7 @@ import { defineConfig } from 'vite';
 import analog, { type PrerenderContentFile } from '@analogjs/platform';
 
 // https://vitejs.dev/config/
-export default defineConfig(({ mode }) => ({
+export default defineConfig(() => ({
   build: {
     target: ['es2020'],
   },
@@ -14,6 +14,7 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     analog({
       static: true,
+      content: { highlighter: 'prism' },
       prerender: {
         routes: [
           '/',
@@ -57,8 +58,5 @@ export default defineConfig(({ mode }) => ({
     setupFiles: ['src/test-setup.ts'],
     include: ['**/*.spec.ts'],
     reporters: ['default'],
-  },
-  define: {
-    'import.meta.vitest': mode !== 'production',
   },
 }));

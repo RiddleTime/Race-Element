@@ -1,5 +1,5 @@
 import { RouteMeta } from '@analogjs/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
 export const routeMeta: RouteMeta = {
@@ -16,22 +16,19 @@ export const routeMeta: RouteMeta = {
 };
 
 @Component({
-  standalone: true,
-  template: `
+    template: `
   <div class="container mx-auto text-center select-none">
     <h2>Trying to Open Race Element's Setup Importer</h2>
   </div>
   `,
-  imports: []
+    imports: []
 })
 export default class SetupLinkPage implements OnInit {
+  private readonly route = inject(ActivatedRoute);
 
   // https://race.elementfuture.com/setup?....
 
   setupLink: string = '';
-  constructor(private route: ActivatedRoute) {
-
-  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe((params: { [x: string]: any; }) => {
