@@ -2,7 +2,7 @@ var e=`---
 title: HUD Profiles are added
 slug: hud-profiles-added
 description: You can now save and load your HUD settings at any time
-date: 2026-11-1
+date: 2026-11-01
 type: news
 ---
 
