@@ -16,6 +16,7 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
     private bool _isRunning;
 
     private readonly Lock _lock = new();
+    private readonly ForzaRevLimiterDetector _revLimiterDetector = new();
     private LocalCarData _localCar = new();
     private SessionData _sessionData = new();
     private GameData _gameData = new();
@@ -127,10 +128,13 @@ public sealed class ForzaDataProvider(Game Game) : AbstractSimDataProvider
         }
 
 
+        _revLimiterDetector.Update(sled, dash);
+
         // Map SledData to LocalCarData 
         localCar.Engine.Rpm = (int)sled.CurrentEngineRpm;
         localCar.Engine.IsRunning = dash.Fuel > 0;
         localCar.Engine.MaxRpm = (int)sled.EngineMaxRpm;
+        localCar.Engine.RevLimiterRpm = _revLimiterDetector.RevLimiterRpm;
         localCar.Engine.FuelLiters = dash.Fuel;
         localCar.Physics.Acceleration = new Vector3(-sled.AccelerationX / 9.80665f, sled.AccelerationY / 9.80665f, sled.AccelerationZ / 9.80665f);
         localCar.Physics.Velocity = (float)Math.Sqrt(sled.VelocityX * sled.VelocityX + sled.VelocityY * sled.VelocityY + sled.VelocityZ * sled.VelocityZ) * 3.6f;
