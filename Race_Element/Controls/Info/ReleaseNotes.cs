@@ -6,6 +6,9 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.9.0.2", "Race Element"+
+                    "\n- Fix Shutdown and HUD saving problems."
+                    },
         {"2.9.0.0", "Race Element"+
                     "\n- Bump .NET version to 11."+
                     "\n- Bump AutoMapper version due to vulnerability in AutoMapper."+
