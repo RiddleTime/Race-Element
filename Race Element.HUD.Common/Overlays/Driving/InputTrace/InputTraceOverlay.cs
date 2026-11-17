@@ -73,7 +73,7 @@ internal sealed class DataCollector(InputTraceConfiguration InputTraceConfig) : 
         get
         {
             int speed = (int)SimDataProvider.LocalCar.Physics.Velocity;
-            if (speed < 0) speed *= -1;
+            speed.Clip(0, InputTraceConfig.Data.MaxSpeed);
             int scaledSpeed = (int)(100f * speed / InputTraceConfig.Data.MaxSpeed);
             return new()
             {

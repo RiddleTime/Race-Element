@@ -45,7 +45,7 @@ internal sealed class InputGraph : IDisposable
         _steeringPen = new Pen(Color.FromArgb(_config.Colors.SteeringOpacity, _config.Colors.SteeringColor), _config.Chart.LineThickness);
         _tractionControlPen = new Pen(Color.FromArgb(_config.TractionControl.TractionControlOpacity, _config.TractionControl.TractionControlColor), 1);
         _absPen = new Pen(Color.FromArgb(_config.Abs.AbsOpacity, _config.Abs.AbsColor), 1);
-        _speedPen = new Pen(Color.FromArgb(_config.Colors.SpeedOpacity, _config.Colors.SpeedColor), 1);
+        _speedPen = new Pen(Color.FromArgb(_config.Colors.SpeedOpacity, _config.Colors.SpeedColor), _config.Chart.LineThickness);
 
         _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
         {
