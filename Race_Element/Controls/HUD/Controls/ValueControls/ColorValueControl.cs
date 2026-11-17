@@ -181,9 +181,16 @@ internal sealed class ColorValueControl : IValueControl<System.Drawing.Color>
                 Children.Add(row);
             }
 
-            // read box values only on lost focus or the enter key to avoid reading half-typed values
             foreach (TextBox box in boxes)
             {
+                // pasting does not raise PreviewTextInput, so it is validated here
+                DataObject.AddPastingHandler(box, (s, e) =>
+                {
+                    e.CancelCommand();
+                    PasteChannel(box, e.DataObject.GetData(DataFormats.UnicodeText) as string);
+                });
+
+                // read box values only on lost focus or the enter key to avoid reading half-typed values
                 box.LostFocus += (s, e) => ApplyBoxes();
                 box.KeyDown += (s, e) =>
                 {
@@ -219,7 +226,7 @@ internal sealed class ColorValueControl : IValueControl<System.Drawing.Color>
         /// </summary>
         private void ApplyBoxes()
         {
-            // accept whole numbers from 0-255, surrounding whitespaces and a leading '+' or '-' from pasted text are also tolerated
+            // accept whole numbers from 0-255
             if (byte.TryParse(_redBox.Text, out byte r) && byte.TryParse(_greenBox.Text, out byte g) && byte.TryParse(_blueBox.Text, out byte b))
             {
                 if ((r, g, b) != _current)
@@ -230,6 +237,22 @@ internal sealed class ColorValueControl : IValueControl<System.Drawing.Color>
             }
 
             // restore the last valid values or normalize valid ones (e.g. 007 -> 7)
+            ShowCurrent();
+        }
+
+        /// <summary>
+        /// Replaces the value of <paramref name="box"/> with the trimmed pasted text when it is<br/>
+        /// a whole number from 0-255, otherwise the box is reset to its last valid value.
+        /// </summary>
+        private void PasteChannel(TextBox box, string? text)
+        {
+            if (text != null && byte.TryParse(text.Trim(), out byte value))
+            {
+                box.Text = value.ToString();
+                box.CaretIndex = box.Text.Length;
+                return;
+            }
+
             ShowCurrent();
         }
 
@@ -246,6 +269,7 @@ internal sealed class ColorValueControl : IValueControl<System.Drawing.Color>
             TextBox box = new()
             {
                 Width = 36,
+                MaxLength = 3,
                 Height = 20, // 3 rows × (20 box + 1px margin top + 1px margin bottom) = 66
                 FontSize = 11,
                 Padding = new Thickness(0),
@@ -253,8 +277,9 @@ internal sealed class ColorValueControl : IValueControl<System.Drawing.Color>
                 VerticalContentAlignment = VerticalAlignment.Center,
                 ToolTip = toolTip,
             };
+            TextFieldAssist.SetCharacterCounterVisibility(box, Visibility.Collapsed);
 
-            // block non-digit typing, pasted text bypasses this and is validated in ApplyBoxes()
+            // block non-digit typing
             box.PreviewTextInput += (s, e) => e.Handled = !e.Text.All(char.IsAsciiDigit);
 
             // select the whole value on keyboard focus ...
