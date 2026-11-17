@@ -6,6 +6,10 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.8.1.0", "Race Element"+
+                    "\n- Bump .NET version to 11."+
+                    "\n- Bump AutoMapper version due to vulrenrability in AutoMapper."
+                    },
         {"2.8.0.0", "HUDs"+
                     "\n- Added HUD Profiles. Save your active settings to a profile and load them at any time."+
 
