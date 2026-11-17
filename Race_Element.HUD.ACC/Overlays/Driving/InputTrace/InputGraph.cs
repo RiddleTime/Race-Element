@@ -20,6 +20,7 @@ internal class InputGraph : IDisposable
     private readonly Pen _steeringPen;
     private readonly Pen _tractionControlPen;
     private readonly Pen _absPen;
+    private readonly Pen _speedPen;
 
     public InputGraph(int x, int y, int width, int height, InputDataJob dataJob, InputTraceConfiguration config)
     {
@@ -35,6 +36,7 @@ internal class InputGraph : IDisposable
         _steeringPen = new Pen(Color.FromArgb(_config.Colors.SteeringOpacity, _config.Colors.SteeringColor), _config.Chart.LineThickness);
         _tractionControlPen = new Pen(Color.FromArgb(_config.Colors.TractionControlOpacity, _config.Colors.TractionControlColor), 1);
         _absPen = new Pen(Color.FromArgb(_config.Colors.AbsOpacity, _config.Colors.AbsColor), 1);
+        _speedPen = new Pen(Color.FromArgb(_config.Colors.SpeedOpacity, _config.Colors.SpeedColor), _config.Chart.LineThickness);
 
         _cachedBackground = new CachedBitmap(_width + 1, _height + 1, g =>
         {
@@ -70,6 +72,12 @@ internal class InputGraph : IDisposable
         {
             List<int> iData;
             List<bool> bData;
+
+            if (_config.Data.Speed)
+            {
+                lock (_dataJob.Speed) iData = new(_dataJob.Speed);
+                DrawData(g, iData, _speedPen);
+            }
 
             if (_config.Chart.SteeringInput)
             {
