@@ -163,5 +163,6 @@ internal class InputGraph : IDisposable
         _steeringPen?.Dispose();
         _tractionControlPen?.Dispose();
         _absPen?.Dispose();
+        _speedPen?.Dispose();
     }
 }
