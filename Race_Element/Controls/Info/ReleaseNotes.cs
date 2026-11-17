@@ -10,6 +10,8 @@ public static class ReleaseNotes
                     "\n- Bump .NET version to 11."+
                     "\n- Bump AutoMapper version due to vulrenrability in AutoMapper."+
                     "\n\nCommon HUDs"+
+                    "\n- Input Trace: Added Speed."+
+                    "\n\nAssetto Corsa Competizione"+
                     "\n- Input Trace: Added Speed."
                     },
         {"2.8.0.0", "HUDs"+
