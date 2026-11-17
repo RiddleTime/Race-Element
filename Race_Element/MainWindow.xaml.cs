@@ -304,9 +304,9 @@ public partial class MainWindow : Window
 
         _notifyIcon?.Dispose();
 
-        // Use the lifecycle service so cleanup runs synchronously on this (UI) thread.
-        // The old CloseAll() spawned an STA thread + Join which deadlocked with WPF cursor / NativeWindow calls when HUDs were active.
-        OverlayLifecycleService.Instance.StopAll();
+        // Stop windows only — do NOT persist Enabled=false.
+        // Old CloseAll() left the saved settings untouched so enabled HUDs stayed enabled for next launch.
+        OverlayLifecycleService.Instance.StopAll(persistDisabled: false);
 
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
@@ -329,7 +329,7 @@ public partial class MainWindow : Window
         TraceOutputListener.Stop();
 
         _notifyIcon?.Dispose();
-        OverlayLifecycleService.Instance.StopAll();
+        OverlayLifecycleService.Instance.StopAll(persistDisabled: false);
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
