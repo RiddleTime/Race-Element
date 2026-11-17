@@ -1,5 +1,6 @@
-﻿using RaceElement.Broadcast;
+using RaceElement.Broadcast;
 using RaceElement.Controls;
+using RaceElement.Controls.HUD;
 using RaceElement.Data.ACC.Tracker;
 using RaceElement.Data.Games;
 using RaceElement.Hardware.ACC.SteeringLock;
@@ -303,8 +304,10 @@ public partial class MainWindow : Window
 
         _notifyIcon?.Dispose();
 
-        OverlaysAcc.CloseAll();
-        CommonHuds.CloseAll();
+        // Use the lifecycle service so cleanup runs synchronously on this (UI) thread.
+        // The old CloseAll() spawned an STA thread + Join which deadlocked with WPF cursor / NativeWindow calls when HUDs were active.
+        OverlayLifecycleService.Instance.StopAll();
+
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
@@ -326,8 +329,7 @@ public partial class MainWindow : Window
         TraceOutputListener.Stop();
 
         _notifyIcon?.Dispose();
-        OverlaysAcc.CloseAll();
-        CommonHuds.CloseAll();
+        OverlayLifecycleService.Instance.StopAll();
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();

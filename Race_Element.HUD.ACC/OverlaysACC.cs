@@ -1,10 +1,9 @@
-﻿using RaceElement.HUD.Overlay.Internal;
+using RaceElement.HUD.Overlay.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Windows.Input;
 
 namespace RaceElement.HUD.ACC;
 
@@ -29,29 +28,29 @@ public sealed class OverlaysAcc
         }
     }
 
+    /// <summary>
+    /// Stops every active ACC overlay on the calling thread.
+    /// Previously spawned an STA thread + Join which deadlocked with the UI thread
+    /// (Mouse.SetCursor / NativeWindow affinity) when HUDs were enabled.
+    /// </summary>
     public static void CloseAll()
     {
-        var closeAllSTa = new Thread(() =>
+        lock (_lock)
         {
-            Mouse.SetCursor(Cursors.Wait);
-            int activeCount = AbstractOverlays.Count;
-
-            lock (_lock)
-                while (ActiveOverlays.Count > 0)
+            while (ActiveOverlays.Count > 0)
+            {
+                var overlay = ActiveOverlays[0];
+                try
                 {
-                    ActiveOverlays[0].EnableReposition(false);
-                    ActiveOverlays[0].Stop();
-                    ActiveOverlays.Remove(ActiveOverlays[0]);
+                    overlay.EnableReposition(false);
+                    overlay.Stop();
                 }
-
-            if (activeCount > 0)
-                Thread.Sleep(500);
-
-
-            Mouse.SetCursor(Cursors.Wait);
-        });
-        closeAllSTa.SetApartmentState(ApartmentState.STA);
-        closeAllSTa.Start();
-        closeAllSTa.Join();
+                catch (Exception ex)
+                {
+                    System.Diagnostics.Debug.WriteLine(ex);
+                }
+                ActiveOverlays.RemoveAt(0);
+            }
+        }
     }
 }
