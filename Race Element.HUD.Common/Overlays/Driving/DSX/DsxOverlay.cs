@@ -29,6 +29,16 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
 
     internal bool _hasSetLighting = false;
 
+    /// <summary>
+    /// The index of the controller that packets are sent to.
+    /// </summary>
+    private const int ControllerIndex = 0;
+
+    /// <summary>
+    /// Set when the overlay stops. Wakes up a blinking light bar so stopping doesn't wait for the blink to finish.
+    /// </summary>
+    private readonly ManualResetEventSlim _stopping = new(false);
+
     public DsxOverlay(Rectangle rectangle) : base(rectangle, "DSX")
     {
         Width = 1; Height = 1;
@@ -40,6 +50,7 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
     {
         if (IsPreviewing) return;
 
+        _stopping.Reset();
         _dsxJob = new DsxJob(this) { IntervalMillis = 1000 / 200 };
         _dsxJob.Run();
     }
@@ -47,6 +58,7 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
     {
         if (IsPreviewing) return;
 
+        _stopping.Set();
         _dsxJob?.CancelJoin();
         _client?.Close();
         _client?.Dispose();
@@ -60,20 +72,63 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
     {
         Debug.WriteLine("Changing RGB");
 
-        int controllerIndex = 0;
-
-        DsxPacket p = new()
+        // when interrupted the overlay is stopping and StopClient resets the light bar
+        if (_config.LightBar.BlinkOnConnect && !BlinkLightBar())
         {
-            Instructions = [new() { Type = InstructionType.RGBUpdate, Parameters = [controllerIndex, 255, 69, 0] }]
-        };
+            return;
+        }
 
-        Send(p);
-        ServerResponse lightingReponse = Receive();
-        if (lightingReponse != null)
+        if (_config.LightBar.OverrideColor)
         {
-            HandleResponse(lightingReponse);
+            Send(CreateLightBarPacket(_config.LightBar.Color));
+            ServerResponse? lightingResponse = Receive();
+            HandleResponse(lightingResponse);
         }
         _hasSetLighting = true;
+    }
+
+    /// <summary>
+    /// Blinks the light bar on and off. When <see cref="DsxConfiguration.LightBarConfig.OverrideColor"/> is Off, the bar is handed<br/>
+    /// back to the user's DSX settings afterwards, otherwise the caller applies the <see cref="DsxConfiguration.LightBarConfig.Color"/>.
+    /// </summary>
+    /// <remarks>
+    /// DSX has no instruction to restore only the light bar, so handing it back uses the controller-wide <see cref="InstructionType.ResetToUserSettings"/>.<br/>
+    /// This is safe here because it runs once on connect, before any trigger effects are sent.
+    /// </remarks>
+    /// <returns><c>false</c> when interrupted because the overlay is stopping, <c>true</c> otherwise.</returns>
+    private bool BlinkLightBar()
+    {
+        for (int i = 0; i < _config.LightBar.BlinkCount; i++)
+        {
+            Send(CreateLightBarPacket(_config.LightBar.BlinkColor));
+            if (_stopping.Wait(_config.LightBar.BlinkInterval))
+            {
+                return false;
+            }
+
+            Send(CreateLightBarPacket(Color.Black));
+            if (_stopping.Wait(_config.LightBar.BlinkInterval))
+            {
+                return false;
+            }
+        }
+
+        if (!_config.LightBar.OverrideColor)
+        {
+            DsxPacket resetPacket = new();
+            resetPacket.AddResetToPacket(ControllerIndex);
+            Send(resetPacket);
+        }
+
+        return true;
+    }
+
+    private static DsxPacket CreateLightBarPacket(Color color)
+    {
+        return new DsxPacket
+        {
+            Instructions = [new() { Type = InstructionType.RGBUpdate, Parameters = [ControllerIndex, color.R, color.G, color.B] }]
+        };
     }
 
     internal void CreateEndPoint()
@@ -86,7 +141,7 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
     {
         _hasSetLighting = false;
         DsxPacket resetPacket = new();
-        resetPacket.AddResetToPacket(0);
+        resetPacket.AddResetToPacket(ControllerIndex);
         Send(resetPacket);
 
         _client?.Close();
@@ -117,7 +172,7 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
         return null;
     }
 
-    private void HandleResponse(ServerResponse response)
+    private void HandleResponse(ServerResponse? response)
     {
         if (response != null)
         {
