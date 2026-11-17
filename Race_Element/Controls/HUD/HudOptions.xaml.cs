@@ -181,6 +181,10 @@ public partial class HudOptions : UserControl
 
                     listDebugOverlays.MouseDoubleClick += (s, e) => { if (ToggleViewingOverlay()) e.Handled = true; };
 
+                    /// enables <see cref="ListViewScrollHandler"/>
+                    listOverlays.PreviewMouseWheel += (s, e) => ListViewScrollHandler(s, e, listOverlays);
+                    listDebugOverlays.PreviewMouseWheel += (s, e) => ListViewScrollHandler(s, e, listDebugOverlays);
+
                     m_GlobalHook = Hook.GlobalEvents();
                     m_GlobalHook.OnCombination(new Dictionary<Combination, Action> {
                         { Combination.FromString("Control+Home"), () => {
@@ -213,6 +217,42 @@ public partial class HudOptions : UserControl
         }));
 
         Instance = this;
+    }
+
+    /// <summary>
+    /// Handles mouse wheel scrolling for a ListView, providing up/down selection when not over the scrollbar,
+    /// and normal scrolling behavior when the mouse is over the scrollbar.
+    /// </summary>
+    /// <param name="sender">The source of the event.</param>
+    /// <param name="e">The event data containing mouse wheel and position information.</param>
+    /// <param name="listView">The ListView to apply scrolling behavior to.</param>
+    private static void ListViewScrollHandler(object sender, MouseWheelEventArgs e, ListView listView)
+    {
+        // Check if mouse is over the scrollbar
+        ScrollViewer scrollViewer = FindVisualChild<ScrollViewer>(listView);
+        if (scrollViewer != null)
+        {
+            Point mousePosition = e.GetPosition(listView);
+            bool isOverScrollBar = mousePosition.X > listView.ActualWidth - SystemParameters.VerticalScrollBarWidth;
+
+            // If mouse is over scrollbar, allow default scrolling behavior
+            if (isOverScrollBar)
+            {
+                e.Handled = false;
+                return;
+            }
+        }
+
+        if (e.Delta > 0)
+        {
+            scrollViewer?.LineUp();
+            e.Handled = true;
+        }
+        else if (e.Delta < 0)
+        {
+            scrollViewer?.LineDown();
+            e.Handled = true;
+        }
     }
 
     /// <summary>
@@ -1191,5 +1231,5 @@ public partial class HudOptions : UserControl
         else
             Dispatcher.Invoke(Go);
     }
-   
+
 }
