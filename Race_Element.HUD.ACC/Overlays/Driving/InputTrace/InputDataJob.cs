@@ -1,4 +1,6 @@
 ﻿using RaceElement.Core.Jobs.Loop;
+using RaceElement.Data.Common;
+using RaceElement.Util.SystemExtensions;
 using System.Collections.Generic;
 using static RaceElement.ACCSharedMemory;
 
@@ -7,6 +9,9 @@ namespace RaceElement.HUD.ACC.Overlays.Driving.InputTrace;
 internal sealed class InputDataJob : AbstractLoopJob
 {
     public InputTraceOverlay Overlay { get; private init; }
+
+    private InputTraceConfiguration Config { get; set; }
+
     public int DataCount { get; private init; }
 
     /// <summary>
@@ -34,16 +39,23 @@ internal sealed class InputDataJob : AbstractLoopJob
     /// </summary>
     public readonly List<bool> TC = [];
 
-    public InputDataJob(InputTraceOverlay overlay, int dataCount)
+    /// <summary>
+    /// Stores the Car's Speed data
+    /// </summary>
+    public readonly List<int> Speed = [];
+
+    public InputDataJob(InputTraceOverlay overlay, InputTraceConfiguration config, int dataCount)
     {
         Overlay = overlay;
+        Config = config;
         DataCount = dataCount;
 
-        int presetSteering = 50, presetThrottle = 0, presetBrake = 0;
+        int presetSteering = 50, presetThrottle = 0, presetBrake = 0, presetSpeed = 0;
         if (Overlay.IsPreviewing)
         {
             presetSteering = 45;
             presetThrottle = 55;
+            presetSpeed = 25;
             presetBrake = 5;
         }
         for (int i = 0; i < DataCount; i++)
@@ -53,6 +65,7 @@ internal sealed class InputDataJob : AbstractLoopJob
             Brake.Insert(0, presetBrake);
             ABS.Insert(0, false);
             TC.Insert(0, false);
+            Speed.Insert(0, presetSpeed);
         }
     }
 
@@ -92,6 +105,15 @@ internal sealed class InputDataJob : AbstractLoopJob
             TC.Insert(0, filePhysics.TC > 0);
             if (TC.Count > DataCount)
                 TC.RemoveAt(TC.Count - 1);
+        }
+        lock (Speed)
+        {
+            int speed = (int)filePhysics.SpeedKmh;
+            speed.Clip(0, Config.Data.MaxSpeed);
+            speed = (int)(100f * speed / Config.Data.MaxSpeed);
+            Speed.Insert(0, speed);
+            if (Speed.Count > DataCount)
+                Speed.RemoveAt(Speed.Count - 1);
         }
     }
 }

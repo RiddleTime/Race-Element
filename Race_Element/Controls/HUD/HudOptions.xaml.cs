@@ -243,29 +243,14 @@ public partial class HudOptions : UserControl
             }
         }
 
-        int selectedIndex = listView.SelectedIndex;
-
-        // Handle no selection
-        if (selectedIndex == -1)
-        {
-            listView.SelectedIndex = 0;
-            return;
-        }
-
-        // Handle first and last selection when trying to select out of bounds
-        if (selectedIndex == 0 && e.Delta > 0) return;
-        if (selectedIndex >= listView.Items.Count - 1 && e.Delta < 0) return;
-
         if (e.Delta > 0)
         {
-            listView.SelectedIndex -= 1;
-            listView.ScrollIntoView(listView.SelectedItem);
+            scrollViewer?.LineUp();
             e.Handled = true;
         }
         else if (e.Delta < 0)
         {
-            listView.SelectedIndex += 1;
-            listView.ScrollIntoView(listView.SelectedItem);
+            scrollViewer?.LineDown();
             e.Handled = true;
         }
     }
@@ -1246,5 +1231,5 @@ public partial class HudOptions : UserControl
         else
             Dispatcher.Invoke(Go);
     }
-   
+
 }

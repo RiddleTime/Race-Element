@@ -18,6 +18,13 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         [ToolTip("Sets the drawing refresh rate.")]
         [IntRange(10, 60, 2)]
         public int HudRefreshRate { get; init; } = 30;
+
+        [ToolTip("Displays the speed of the car as a line in the trace.")]
+        public bool Speed { get; init; } = true;
+
+        [ToolTip("Sets the max speed used by the live trace.")]
+        [IntRange(Min = 50, Max = 1000, Increment = 10)]
+        public int MaxSpeed { get; init; } = 300;
     }
 
     [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or hide the steering input.")]
@@ -72,5 +79,9 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         public Color AbsColor { get; init; } = Color.FromArgb(255, 0, 0);
         [IntRange(2, 255, 1)]
         public int AbsOpacity { get; init; } = 110;
+
+        public Color SpeedColor { get; init; } = Color.FromArgb(255, 165, 0);
+        [IntRange(70, 255, 1)]
+        public int SpeedOpacity { get; init; } = 190;
     }
 }

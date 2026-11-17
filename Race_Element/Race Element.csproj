@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net10.0-windows</TargetFramework>
+    <TargetFramework>net11.0-windows</TargetFramework>
     <OutputType>WinExe</OutputType>
     <RootNamespace>RaceElement</RootNamespace>
     <AssemblyName>RaceElement</AssemblyName>
@@ -12,9 +12,9 @@
     <SuiteName>Race Element</SuiteName>
     <OpenBrowserOnPublish>false</OpenBrowserOnPublish>
     <DisallowUrlActivation>true</DisallowUrlActivation>
-    <ApplicationVersion>2.8.0.1</ApplicationVersion>
-    <AssemblyVersion>2.8.0.1</AssemblyVersion>
-    <Version>2.8.0.1</Version>
+    <ApplicationVersion>2.9.0.2</ApplicationVersion>
+    <AssemblyVersion>2.9.0.2</AssemblyVersion>
+    <Version>2.9.0.2</Version>
     <GenerateAssemblyInfo>True</GenerateAssemblyInfo>
     <UseWindowsForms>true</UseWindowsForms>
     <UseWPF>true</UseWPF>

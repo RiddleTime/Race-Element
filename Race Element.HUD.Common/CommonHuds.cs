@@ -1,8 +1,11 @@
-﻿using RaceElement.Data.Games;
+using RaceElement.Data.Games;
 using RaceElement.HUD.Overlay.Internal;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
-using System.Windows.Input;
+using System.Threading;
 
 namespace RaceElement.HUD.Common;
 public static class CommonHuds
@@ -32,7 +35,6 @@ public static class CommonHuds
 
                 if (overlayType.UnsupportedGames != Game.Any)
                 {
-                    ;
                     if (overlayType.UnsupportedGames.HasFlag(GameManager.CurrentGame))
                     {
                         continue;
@@ -44,29 +46,29 @@ public static class CommonHuds
         }
     }
 
+    /// <summary>
+    /// Stops every active common overlay on the calling thread.
+    /// Previously spawned an STA thread + Join which deadlocked with the UI thread
+    /// (Mouse.SetCursor / NativeWindow affinity) when HUDs were enabled.
+    /// </summary>
     public static void CloseAll()
     {
-        var closeAllSTa = new Thread(() =>
+        lock (_lock)
         {
-            Mouse.SetCursor(Cursors.Wait);
-            int activeCount = AbstractOverlays.Count;
-
-            lock (_lock)
-                while (ActiveOverlays.Count > 0)
+            while (ActiveOverlays.Count > 0)
+            {
+                var overlay = ActiveOverlays[0];
+                try
                 {
-                    ActiveOverlays[0].EnableReposition(false);
-                    ActiveOverlays[0].Stop();
-                    ActiveOverlays.Remove(ActiveOverlays[0]);
+                    overlay.EnableReposition(false);
+                    overlay.Stop();
                 }
-
-            if (activeCount > 0)
-                Thread.Sleep(500);
-
-
-            Mouse.SetCursor(Cursors.Wait);
-        });
-        closeAllSTa.SetApartmentState(ApartmentState.STA);
-        closeAllSTa.Start();
-        closeAllSTa.Join();
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex);
+                }
+                ActiveOverlays.RemoveAt(0);
+            }
+        }
     }
 }

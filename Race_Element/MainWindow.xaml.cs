@@ -1,5 +1,6 @@
-﻿using RaceElement.Broadcast;
+using RaceElement.Broadcast;
 using RaceElement.Controls;
+using RaceElement.Controls.HUD;
 using RaceElement.Data.ACC.Tracker;
 using RaceElement.Data.Games;
 using RaceElement.Hardware.ACC.SteeringLock;
@@ -303,8 +304,10 @@ public partial class MainWindow : Window
 
         _notifyIcon?.Dispose();
 
-        OverlaysAcc.CloseAll();
-        CommonHuds.CloseAll();
+        // Stop windows only — do NOT persist Enabled=false.
+        // Old CloseAll() left the saved settings untouched so enabled HUDs stayed enabled for next launch.
+        OverlayLifecycleService.Instance.StopAll(persistDisabled: false);
+
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
@@ -326,8 +329,7 @@ public partial class MainWindow : Window
         TraceOutputListener.Stop();
 
         _notifyIcon?.Dispose();
-        OverlaysAcc.CloseAll();
-        CommonHuds.CloseAll();
+        OverlayLifecycleService.Instance.StopAll(persistDisabled: false);
         HudTrackers.StopAll();
         ACCTrackerDispose.Dispose();
         HudOptions.Instance.DisposeKeyboardHooks();
