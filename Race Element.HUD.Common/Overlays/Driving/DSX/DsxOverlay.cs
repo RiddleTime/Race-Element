@@ -82,10 +82,7 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
         {
             Send(CreateLightBarPacket(_config.LightBar.Color));
             ServerResponse? lightingResponse = Receive();
-            if (lightingResponse != null)
-            {
-                HandleResponse(lightingResponse);
-            }
+            HandleResponse(lightingResponse);
         }
         _hasSetLighting = true;
     }
@@ -175,7 +172,7 @@ internal sealed class DsxOverlay : CommonAbstractOverlay
         return null;
     }
 
-    private void HandleResponse(ServerResponse response)
+    private void HandleResponse(ServerResponse? response)
     {
         if (response != null)
         {
