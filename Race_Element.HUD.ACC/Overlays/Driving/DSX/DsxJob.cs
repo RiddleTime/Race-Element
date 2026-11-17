@@ -42,6 +42,8 @@ internal sealed class DsxJob(DsxOverlay overlay) : AbstractLoopJob
     }
     public override void AfterCancel()
     {
+        // hand the controller back to the user's DSX settings, otherwise the light bar stays on the last color
+        overlay.ResetLightBar();
         overlay?._client?.Close();
         overlay?._client?.Dispose();
     }
