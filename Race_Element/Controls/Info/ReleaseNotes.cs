@@ -9,6 +9,9 @@ public static class ReleaseNotes
         {"2.8.1.0", "Race Element"+
                     "\n- Bump .NET version to 11."+
                     "\n- Bump AutoMapper version due to vulrenrability in AutoMapper."+
+                    "\n\nHUD Tab"+
+                    "\n- Remove scroll by item, now the hud lists scrolls like you expect it to scroll."+
+                    "\n- The HUD Profile bar now shows on both the Drive and Pitwall tab."+
                     "\n\nCommon HUDs"+
                     "\n- Input Trace: Added Speed."+
                     "\n\nAssetto Corsa Competizione"+
