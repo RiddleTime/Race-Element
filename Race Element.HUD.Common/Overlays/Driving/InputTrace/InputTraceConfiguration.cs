@@ -15,6 +15,19 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         [ToolTip("Sets the data collection rate.\n70 Hz and higher will affect cpu usage, don't blame us for your cpu.")]
         [IntRange(Min = 10, Max = 150, Increment = 2, GameMaxs = [120], MaxGames = [Game.iRacing])]
         public int Herz { get; init; } = 60;
+
+        [ToolTip("Displays the clutch input as a line in the trace, color customizable in the colors section.")]
+        public bool Clutch { get; init; } = true;
+
+        [ToolTip("Displays the steering input in the trace.")]
+        public bool Steering { get; init; } = true;
+
+        [ToolTip("Displays the speed of the car as a line in the trace.")]
+        public bool Speed { get; init; } = true;
+
+        [ToolTip("Sets the max speed used by the live trace.")]
+        [IntRange(Min = 50, Max = 1000, Increment = 10)]
+        public int MaxSpeed { get; init; } = 300;
     }
 
     [ConfigGrouping("Chart", "Customize the charts refresh rate, data points or hide the steering input.")]
@@ -32,12 +45,6 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         [ToolTip("Set the thickness of the lines in the chart.")]
         [IntRange(1, 4, 1)]
         public int LineThickness { get; init; } = 2;
-
-        [ToolTip("Displays the steering input as a white line in the trace.")]
-        public bool SteeringInput { get; init; } = true;
-
-        [ToolTip("Displays the clutch input as a line in the trace, color customizable in the colors section.")]
-        public bool ClutchInput { get; init; } = true;
 
         [ToolTip("Show horizontal grid lines.")]
         public bool GridLines { get; init; } = true;
@@ -91,5 +98,9 @@ internal sealed class InputTraceConfiguration : OverlayConfiguration
         public Color SteeringColor { get; init; } = Color.FromArgb(255, 255, 255);
         [IntRange(70, 255, 1)]
         public int SteeringOpacity { get; init; } = 190;
+
+        public Color SpeedColor { get; init; } = Color.FromArgb(255, 165, 0);
+        [IntRange(70, 255, 1)]
+        public int SpeedOpacity { get; init; } = 190;
     }
 }

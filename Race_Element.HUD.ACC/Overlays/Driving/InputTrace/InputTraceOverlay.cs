@@ -27,7 +27,7 @@ internal sealed class InputTraceOverlay : AbstractOverlay
 
     public sealed override void BeforeStart()
     {
-        _dataJob = new(this, _config.Chart.Width - 1) { IntervalMillis = 1000 / _config.Data.Herz };
+        _dataJob = new(this, _config, _config.Chart.Width - 1) { IntervalMillis = 1000 / _config.Data.Herz };
         _graph = new InputGraph(0, 0, _config.Chart.Width - 1, _config.Chart.Height - 1, _dataJob, this._config);
 
         if (!IsPreviewing)

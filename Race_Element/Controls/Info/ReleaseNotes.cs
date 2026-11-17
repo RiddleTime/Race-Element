@@ -6,6 +6,17 @@ public static class ReleaseNotes
 {
     internal static readonly Dictionary<string, string> Notes = new()
     {
+        {"2.9.0.0", "Race Element"+
+                    "\n- Bump .NET version to 11."+
+                    "\n- Bump AutoMapper version due to vulnerability in AutoMapper."+
+                    "\n\nHUD Tab"+
+                    "\n- Remove scroll by item, now the hud lists scrolls like you expect it to scroll."+
+                    "\n- The HUD Profile bar now shows on both the Drive and Pitwall tab."+
+                    "\n\nCommon HUDs"+
+                    "\n- Input Trace: Added Speed."+
+                    "\n\nAssetto Corsa Competizione"+
+                    "\n- Input Trace: Added Speed."
+                    },
         {"2.8.0.0", "HUDs"+
                     "\n- Added HUD Profiles. Save your active settings to a profile and load them at any time."+
 

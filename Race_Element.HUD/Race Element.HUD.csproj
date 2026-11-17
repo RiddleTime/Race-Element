@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
     <PropertyGroup>
-        <TargetFramework>net10.0-windows</TargetFramework>
+        <TargetFramework>net11.0-windows</TargetFramework>
         <OutputType>Library</OutputType>
         <RootNamespace>RaceElement.HUD</RootNamespace>
         <AssemblyName>RaceElement.HUD</AssemblyName>
@@ -36,7 +36,7 @@
         <ProjectReference Include="..\Race_Element.Util\Race Element.Util.csproj" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="AutoMapper" Version="16.1.1" />
+        <PackageReference Include="AutoMapper" Version="16.3.0" />
         <PackageReference Include="Newtonsoft.Json" Version="13.0.4" />
         <PackageReference Include="Riok.Mapperly" Version="4.1.1" />
     </ItemGroup>
