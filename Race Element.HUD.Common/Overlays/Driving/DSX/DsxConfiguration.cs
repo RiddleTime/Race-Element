@@ -1,4 +1,5 @@
 using RaceElement.HUD.Overlay.Configuration;
+using System.Drawing;
 
 namespace RaceElement.HUD.Common.Overlays.Driving.DSX;
 
@@ -88,6 +89,31 @@ internal sealed class DsxConfiguration : OverlayConfiguration
         [ToolTip("Sets the max frequency of the vibration effect in the trigger.")]
         [IntRange(20, 150, 1)]
         public int MaxFrequency { get; init; } = 96;
+    }
+
+    [ConfigGrouping("Light Bar", "Customize the DualSense's light bar behavior while connected to DSX.")]
+    public LightBarConfig LightBar { get; init; } = new();
+    public sealed class LightBarConfig
+    {
+        [ToolTip("Sets the light bar to the Color below while connected to DSX.\nWhen set to Off, the light bar is left to your DSX settings.")]
+        public bool OverrideColor { get; init; } = true;
+
+        [ToolTip("The color the light bar shows while connected to DSX.")]
+        public Color Color { get; init; } = Color.FromArgb(255, 255, 69, 0);
+
+        [ToolTip("Blinks the light bar according to the options below when connected to DSX.\nIf Override Color is set to Off, the light bar then returns to your DSX settings.")]
+        public bool BlinkOnConnect { get; init; }
+
+        [ToolTip("The color the light bar blinks with when connected to DSX.")]
+        public Color BlinkColor { get; init; } = Color.FromArgb(255, 255, 69, 0);
+
+        [ToolTip("How many times the light bar blinks when connected to DSX.")]
+        [IntRange(1, 10, 1)]
+        public int BlinkCount { get; init; } = 3;
+
+        [ToolTip("How long the light bar stays on and off for each blink, in milliseconds.")]
+        [IntRange(50, 250, 10)]
+        public int BlinkInterval { get; init; } = 150;
     }
 
     [ConfigGrouping("DSX UDP", "Adjust the port DSX uses, 6969 is default.")]
